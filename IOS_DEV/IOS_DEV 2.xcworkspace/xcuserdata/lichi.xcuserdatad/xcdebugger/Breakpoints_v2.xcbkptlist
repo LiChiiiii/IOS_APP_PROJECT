@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "A438E52F-CC83-445E-89BA-FA39EB4CDCA3"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "IOS_DEV/Bindings/MovieSearchState.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "MovieSearchState"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - 26ddffc9e9ccf99b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of IOS_DEV.MovieSearchState.movies : Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "41">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - 90228a073037f4f3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.movies.getter : Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - 762668d2f6644d0f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.movies.setter : Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "130">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - 895f4543aa4f6c81"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.movies.modify : Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - c03f128313e38513"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.movies.modify : Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "34">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - a9b144ed15e25209"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.$movies.getter : Combine.Published&lt;Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;&gt;.Publisher"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "110">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - a9b144ed15e25209"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.$movies.setter : Combine.Published&lt;Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;&gt;.Publisher"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "233">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - d3d78bbb6a5d124b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.$movies.modify : Combine.Published&lt;Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;&gt;.Publisher"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "53">
+               </Location>
+               <Location
+                  uuid = "95F978EB-A5F9-47D7-97A5-B7EA509518A0 - 359b769482d32644"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "IOS_DEV.MovieSearchState.$movies.modify : Combine.Published&lt;Swift.Optional&lt;Swift.Array&lt;IOS_DEV.Movie&gt;&gt;&gt;.Publisher with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "IOS_DEV"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/lichi/Desktop/project/IOS_APP_PROJECT/IOS_DEV/IOS_DEV/Bindings/MovieSearchState.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "17">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
