@@ -10,6 +10,22 @@ import SwiftUI
 import AVKit
 
 //let AVPlayerController to SWiftUI
+
+struct TrailerPlayer:UIViewControllerRepresentable{
+    var player:AVPlayer
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let movieTrailerPlayer = AVPlayerViewController()
+        movieTrailerPlayer.player = player
+        movieTrailerPlayer.showsPlaybackControls = false
+        return movieTrailerPlayer
+    }
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+        //to update view
+    }
+}
+
+
+
 struct Player:UIViewControllerRepresentable{
     var VideoPlayer:AVPlayer
     
@@ -33,9 +49,10 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         return PlayerScrollView.Coordinator(parent: self,didRefresh: self.$reload)
     }
 
-    @Binding var trainer:[Traier]
+    @Binding var trailerList:[Trailer]
     @Binding var reload:Bool
-    @Binding var value:Float 
+    @Binding var value:Float
+    @Binding var isAnimation:Bool
     let pageHegiht:CGFloat
     let content:()->Content
 
@@ -47,11 +64,11 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         let rootView = UIHostingController(rootView: self.content())
 
         //Total Height of this view is the fullscreen * total trainer
-        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trainer.count))
+        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trailerList.count))
 
         //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height))
-        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trainer.count))
+        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trailerList.count))
 
         view.addSubview(rootView.view)
         view.showsVerticalScrollIndicator = false
@@ -71,14 +88,14 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
     func updateUIView(_ uiView: UIScrollView, context: Context) {
         //TODO
-        uiView.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trainer.count))
+        uiView.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
         
 
         for i in 0..<uiView.subviews.count{
             //let all subview have same frame size
             //in this case ,we only have 1 subview:rootView:PlayerView
             //when trainer data is updated
-            uiView.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trainer.count))
+            uiView.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
         }
     }
 
@@ -122,25 +139,28 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
             if index != currentIndex{
                 index = currentIndex
 
-                for i in 0..<parentView.trainer.count{
-                    parentView.trainer[i].videoPlayer.seek(to: .zero) //video time line to 0
-                    parentView.trainer[i].videoPlayer.pause() //pause the video
+                for i in 0..<parentView.trailerList.count{
+                    parentView.trailerList[i].videoPlayer.seek(to: .zero) //video time line to 0
+                    parentView.trailerList[i].videoPlayer.pause() //pause the video
+                    parentView.isAnimation = false
                 }
 
-                parentView.trainer[index].videoPlayer.play() //play the video
-                parentView.trainer[index].videoPlayer.actionAtItemEnd = .none
+                parentView.trailerList[index].videoPlayer.play() //play the video
+                parentView.trailerList[index].videoPlayer.actionAtItemEnd = .none
+                
+                parentView.isAnimation = true
                 
                 
                 //add Observer to player timeer
-                parentView.trainer[index].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-                    self.parentView.value =  Float(self.parentView.trainer[self.index].videoPlayer.currentTime().seconds / self.parentView.trainer[self.index].videoPlayer.currentItem!.duration.seconds)
+                parentView.trailerList[index].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
+                    self.parentView.value =  Float(self.parentView.trailerList[self.index].videoPlayer.currentTime().seconds / self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds)
                     
                 }
 
-                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.trainer[index].videoPlayer.currentItem, queue: .main){ (_) in
-                    self.parentView.trainer[self.index].videoReplay = true
-                    self.parentView.trainer[self.index].videoPlayer.seek(to: .zero)
-                    self.parentView.trainer[self.index].videoPlayer.play()
+                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.trailerList[index].videoPlayer.currentItem, queue: .main){ (_) in
+                    self.parentView.trailerList[self.index].videoReplay = true
+                    self.parentView.trailerList[self.index].videoPlayer.seek(to: .zero)
+                    self.parentView.trailerList[self.index].videoPlayer.play()
 
                 }
             }

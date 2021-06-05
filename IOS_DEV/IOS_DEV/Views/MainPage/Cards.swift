@@ -46,9 +46,6 @@ let sectionData3 = Section(
  
 let sectionData = [sectionData1,sectionData2,sectionData3]
  
-
- 
- 
 struct SectionView: View
 {
     var section: Section
@@ -85,42 +82,69 @@ struct SectionView: View
     }
 }
  
-
-
- 
-struct CardScroll: View
-{
+struct CardScroll: View{
+    @Binding var isCardSelectedMovie:Bool
+    private func getScale(geo : GeometryProxy)->CGFloat{
+        var scale:CGFloat = 1.0
+        let x = geo.frame(in: .global).minX
+        
+        let newScale = abs(x)
+        if newScale < 100{
+            scale = 1 + (100 - newScale) / 500
+        }
+        
+        return scale
+    }
+    
     var body: some View
     {
         
         ScrollView(.horizontal, showsIndicators: false)
         {
-            HStack(spacing: 35)
+            HStack(spacing: 30)
             {
-                            ForEach(sectionData) { item in
-                                GeometryReader { geometry in
-                                    SectionView(section: item)
-                                        .rotation3DEffect(Angle(degrees:
-                                            Double(geometry.frame(in: .global).minX - 50) / -20
-                                        ), axis: (x: 0, y: 10, z: 0))
+                ForEach(0..<morelist.count) { item in
+                    GeometryReader { proxy in
+                        let scaleValue = getScale(geo: proxy)
+
+                        MovieCoverStack(isCardSelectedMovie: $isCardSelectedMovie, movies: morelist[item])
+                                .rotation3DEffect(Angle(degrees:Double(proxy.frame(in: .global).minX - 30)  / -20), axis: (x: 0, y: 20.0, z: 0))
+                                .scaleEffect(CGSize(width: scaleValue, height: scaleValue))
+                            .onTapGesture {
+                                withAnimation(){
+                                    
+                                    self.isCardSelectedMovie.toggle()
+                                    
                                 }
-                                .frame(width: 250, height: 570)
+                                
                             }
-                        }
-                        .padding(50)
-                        .padding(.bottom, 30)
-                        .frame(height:800)
+                        
+//
+//                            Text(proxy.frame(in: .global).minX.description)
+//                                .bold()
+//                                .padding()
+//
+                        
+                    }
+                    .frame(width: 275)
+                }
+                
+                
+            }
+            .padding(.vertical,50)
+            .padding(.horizontal,28)
+            .padding(.top,50)
+            
         }
-        .offset(y: -30)
+        .frame(height:600)
     }
 }
 struct CardsView: View
 {
     var body: some View
     {
-        List{
-            CardScroll()
-        }
+
+        CardScroll(isCardSelectedMovie: .constant(false))
     }
 }
  
@@ -130,7 +154,7 @@ struct Cards_Previews: PreviewProvider
     static var previews: some View
     {
         CardsView()
-            
+           .preferredColorScheme(.dark)
     }
 }
 

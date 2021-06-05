@@ -7,137 +7,111 @@
 
 import SwiftUI
 
-struct Info:Identifiable
-{
-    var id = UUID()
-    let movieScore:String
-    let Age:String
-    let Leaderboard:String
-    let movieLanguage:String
-    let movieByte:String
-}
+//GIVEN INFO OF CURRENT MOVIE
+/*
+ 1.RANKING //No Need
+ 2.RELEASE DAY
+ 3.MOVIE TIME
+ 4.Movie Rate
+ 5.Movie Language
+ 6.Type
+ 
+ ju
+ 
+ */
 
-let data1 = Info(
-    movieScore:"4",
-    Age:"15+",
-    Leaderboard:"#1",
-    movieLanguage:"ZH",
-    movieByte:"2.9"
-)
-let data2 = Info(
-    movieScore:"4",
-    Age:"18+",
-    Leaderboard:"#2",
-    movieLanguage:"ZH",
-    movieByte:"0.9"
-)
-let data3 = Info(
-    movieScore:"4",
-    Age:"3+",
-    Leaderboard:"#5",
-    movieLanguage:"ZH",
-    movieByte:"1.9"
-)
-
-let data = [data1,data2,data3]
-
-struct InfoView: View
-{
-    var info :Info
+struct HScrollList: View {
+    var info:[DetailInfo]
     
-    var body: some View
-    {
-        HStack(spacing:15)
-        {
-            VStack
-            {
-                Text("評分")
-                Text(info.movieScore)
-            }
-            
-            Divider()
-            
-            VStack
-            {
-                Text("年齡")
-                Text(info.Age)
-            }
-            
-            Divider()
-            
-            VStack
-            {
-                Text("語言")
-                Text(info.movieLanguage)
-            }
-            
-            Divider()
-            
-            VStack
-            {
-                Text("排行榜")
-                Text(info.Leaderboard)
-            }
-            
-            Divider()
-            
-            VStack
-            {
-                Text(info.movieByte)
-                Text("GB")
-            }
-            
-            Divider()
-            
-        }
-        .frame(width: UIScreen.main.bounds.width, height: 55)
-        
-    }
-}
-
-struct Scroll: View
-{
-    var body: some View
-    
-    {
-        let full_Screen = UIScreen.main.bounds.size
-        
-        ScrollView(.horizontal, showsIndicators: false)
-        {
-            HStack(spacing:15)
-            {
-                ForEach(data) { item in
-                    GeometryReader { geometry in
-                        InfoView(info: item)
-                            .rotation3DEffect(Angle(degrees:
-                                Double(geometry.frame(in: .global).minX - 50) / -20
-                            ), axis: (x: 0, y: 10, z: 0))
-                    }
-                    .frame(width: UIScreen.main.bounds.width, height: 50)
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false){
+            HStack(alignment:.center,spacing:15){
+                //DATE
+                VStack(spacing:10){
+                    Text("RELEASE DATE")
+                        .bold()
+                    Text("2012")
+                        .font(.subheadline)
+                        
                 }
+                .frame(minWidth:80)
+ 
+
+                Divider()
+                    .background(Color.gray)
+                
+                VStack(spacing:10){
+                    Text("TIME")
+                        .bold()
+                    Text("162MINS")
+                        .font(.subheadline)
+                }
+                .frame(minWidth:80)
+     
+                
+                Divider()
+                    .background(Color.gray)
+                
+                //LANGUAGE
+                VStack(spacing:10){
+                    Text("LANGUAGE")
+                        .bold()
+                    Text("ENG")
+                        .font(.subheadline)
+                }
+                .frame(minWidth:80)
+               
+                
+                Divider()
+                    .background(Color.gray)
+                
+                VStack(spacing:10){
+                    Text("RESTRICTED.LV")
+                        .bold()
+                    Text("13+")
+                        .font(.subheadline)
+                }
+                .frame(minWidth:80)
+
+                
+//                Divider()
+//                    .background(Color.gray)
+                
+//                VStack(spacing:10){
+//                    Text("TYPE")
+//                        .bold()
+//                    Text("Action 3+")
+//                        .font(.subheadline)
+//
+//                }
+//                .frame(minWidth:80)
+    
+            
             }
+            .frame(height: 50)
+            .foregroundColor(.gray)
             
         }
-        .frame(width: full_Screen.width, height: 70)
+        .foregroundColor(.white)
+        
+        
     }
+}
     
-}
-
-struct HScrollList: View
-{
-    var body: some View
-    {
-        List{
-            Scroll()
+struct HScrollList_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack{
+            Color.black.edgesIgnoringSafeArea(.all)
+            HScrollList(info: [.data,.time,.language,.rate])
         }
+        
     }
 }
 
 
-struct HScrollList_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        HScrollList()
-    }
+enum DetailInfo:String {
+    case data = "RELEASE DATE"
+    case time = "TIME"
+    case language = "LANGUAGE"
+    case rate = "RESTRICTED.LV"
 }
