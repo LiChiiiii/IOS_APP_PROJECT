@@ -10,7 +10,7 @@ import Firebase
 import GoogleSignIn
 import AuthenticationServices
 import CryptoKit
-let networkingService = NetworkingService()
+var NowUser:String = ""
 
 
 struct SignIn: View {
@@ -67,7 +67,7 @@ struct SignInCell : View{
     @State var isPresented = false
     @State var ErrorAlert = false
     @State var articleData:[Article] = []
-    
+    let networkingService = NetworkingService()
 
     
     func Login(){
@@ -83,13 +83,15 @@ struct SignInCell : View{
                 //get article
                 self.isPresented.toggle()
                 ErrorAlert = false
+                NowUser = self.username
+                //進入討論區
                 networkingService.request(endpoint: "/article"){(result) in
                     //print(result)
                     switch result {
                     case .success(let article):
                         print("article success")
                         self.articleData = article
-                    
+
                     case .failure: print("article failed")
                     }
                 }
@@ -99,6 +101,8 @@ struct SignInCell : View{
                 ErrorAlert = true
             }
         }
+        
+        
       
     }
 
@@ -167,7 +171,7 @@ struct SignInCell : View{
                 self.Login()
             }.padding(.horizontal,50)
             .fullScreenCover(isPresented: $isPresented, content: {
-                TractateView(articles: self.articleData)
+                TopicView(articles: self.articleData)
             })
             .alert(isPresented: $ErrorAlert, content: {
                 Alert(title: Text("帳號密碼錯誤"),

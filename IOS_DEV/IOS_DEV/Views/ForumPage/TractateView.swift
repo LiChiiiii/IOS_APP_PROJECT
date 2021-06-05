@@ -47,16 +47,15 @@ struct TractateView: View
                     //TODO
                     //two 'TractateFrame' in a Row
          
-                    ForEach(self.articles ,id: \.Title) { article in
-                        NavigationLink(destination:Message_BoardView()) {
-                            HStack
-                            {
-                                TractateFrame(article:article)
-                                TractateFrame(article:article)
-                            }.padding(.bottom)
-                                
-                        }.foregroundColor(.black)
-                    }
+//                    ForEach(self.articles ,id: \.id) { article in
+//                        NavigationLink(destination:MessageBoardView(article: article )) {
+//                            HStack
+//                            {
+//                                TractateFrame(article:article)
+//                            }.padding(.bottom)
+//
+//                        }.foregroundColor(.black)
+//                    }
                             
             }
         }

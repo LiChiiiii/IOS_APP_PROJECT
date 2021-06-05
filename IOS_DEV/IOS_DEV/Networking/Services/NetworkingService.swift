@@ -75,6 +75,10 @@ class NetworkingService: ObservableObject {
     }
     
     
+    func getToken() -> String{
+        return token
+    }
+    
     
     func handleResponse(for request: URLRequest,
                         completion: @escaping (Result<[Article], Error>) -> Void){
