@@ -49,7 +49,6 @@ struct MainHomeView:View{
     @State private var isActive = false
     @State private var isLoading = true
     @State private var NavIndex = 0
-    @State private var isCardSelectedMovie = false
     @Binding var showHomePage:Bool
 
     
@@ -66,7 +65,7 @@ struct MainHomeView:View{
                             SubHomeView_Player(topBarIndx:$topBarIndx,trailerData:$trailerData,isReload:$isReload,value:$value,isAnimation:$isAnimation,isNavBarHidden:$isNavBarHidden,isActive:$isActive,isLoading:$isLoading, pageHeight: geo.frame(in:.global).height)
                             
                             NavigationLink(
-                                destination: tab(isCardSelectedMovie: $isCardSelectedMovie, showHomePage: $showHomePage),
+                                destination:  MovieListView(showHomePage: $showHomePage),
                                 isActive: $showHomePage){
                                 BackHomePageButton(){
                                     //jump back to home page
@@ -87,13 +86,7 @@ struct MainHomeView:View{
                 
             }
             .edgesIgnoringSafeArea(.all)
-            .blur(radius: isCardSelectedMovie ? 20 : 0)
-            
-            if isCardSelectedMovie{
-                    MovieCoverStackRemovablePreview(movies: coverList,backHomePage: $isCardSelectedMovie)
-                        .transition(.slide)
-                
-            }
+
             
             
         }
@@ -249,18 +242,24 @@ struct MovieIntrol: View {
                 }
                 .font(.body)
                 Spacer()
-//
-                NavigationLink(
-                    destination: WebImages(
-                        navBarHidden: $navBarHidden,
-                        isAction: $isActive,
-                        isLoading: $isLoading).redacted(reason: self.isLoading ? .placeholder : []),
-                    isActive: $isActive){
-                    Button(action:{isActive.toggle()}){
-                        SmallCoverIcon()
-                        
-                    }
+                
+                
+                //click icon enter to moviedetail page
+                NavigationLink(destination: MovieDetailView(movieId:399566,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading))
+                {
+                    SmallCoverIcon()
                 }
+//                NavigationLink(
+//                    destination: WebImages(
+//                        navBarHidden: $navBarHidden,
+//                        isAction: $isActive,
+//                        isLoading: $isLoading).redacted(reason: self.isLoading ? .placeholder : []),
+//                    isActive: $isActive){
+//                    Button(action:{isActive.toggle()}){
+//                        SmallCoverIcon()
+//
+//                    }
+//                }
                 .navigationTitle("")
                 .navigationBarTitle("")
                 .navigationBarHidden(true)
@@ -281,7 +280,7 @@ struct BackHomePageButton:View{
             ZStack{
                 Circle()
                     .foregroundColor(Color.init("ThemeSubColor").opacity(0.8))
-                    .frame(width: 30, height: 30)
+                    .frame(width: 30, height: 50)
                 
                 Image(systemName: "xmark.circle.fill")
                     .resizable()

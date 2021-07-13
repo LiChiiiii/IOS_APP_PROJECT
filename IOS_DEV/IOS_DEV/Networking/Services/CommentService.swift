@@ -5,6 +5,8 @@
 //  Created by Kao Li Chi on 2021/6/3.
 //
 
+//just for comment
+
 import Foundation
 
 
@@ -72,6 +74,7 @@ class CommentService: ObservableObject {
         
     }
     
+    //get comment
     func GETrequest(endpoint: String,
                  completion: @escaping (Result<[Comment], Error>) -> Void) {
         
@@ -89,6 +92,7 @@ class CommentService: ObservableObject {
         
     }
     
+    //post comment
     func POSTrequest(endpoint: String,
                  RegisterObject: CommentTodo,
                  completion: @escaping (Result<CommentRes, Error>) -> Void) {

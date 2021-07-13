@@ -5,8 +5,9 @@
 //  Created by Kao Li Chi on 2021/5/2.
 //
 
-import Foundation
+//just for register
 
+import Foundation
 
 class RegisterService: ObservableObject {
     

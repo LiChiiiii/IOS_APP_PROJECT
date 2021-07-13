@@ -23,9 +23,9 @@ struct TractateFrame: View
                 VStack(alignment:.leading)
                 {
                     Spacer()
+                    Spacer()
                     HStack()
                     {
-                        
                         Image("ka")
                             .resizable()
                             .frame(width: 40, height: 40)
@@ -38,29 +38,32 @@ struct TractateFrame: View
                     Text(article.Title)
                         .font(.system(.title, design: .rounded))
                         .padding(.leading,8)
-                   // Spacer()
+                    Spacer()
                     Text(article.Text)
                         .padding(.leading,8)
                     Spacer()
 
                     Text(article.updatedOn)
+                        .padding(.leading,8)
                     
                     
                     HStack()
                     {
-                        Image(systemName:"text.bubble")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                        Text(article.movie!.title)
-                        
+//                        Image(systemName:"text.bubble")
+//                            .resizable()
+//                            .frame(width: 25, height: 25)
+//                        Text("20")
+                        Spacer()
                         Image(systemName:"heart")
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundColor(.pink)
                         Text(article.LikeCount)
-                        
+
                     }
-                    .padding([.leading, .bottom],8)
+                    .padding([.trailing,.bottom],20)
+                    
+                    Spacer()
                     
                     
                 
@@ -68,11 +71,13 @@ struct TractateFrame: View
                 }
                 
             }
-            .frame(width: 170, height: 175, alignment: .leading)
+            .frame(width: 170, height: 190, alignment: .leading)
             .background(Color.white)
             .cornerRadius(20)
-            .shadow(color: .gray, radius: 2, x: 1.0, y: 1.0)
+            .shadow(color: .gray, radius: 2, x: 1.5, y: 1.5)
             .padding(.horizontal, 10)
+            .foregroundColor(.black)
+            
        
     }
    

@@ -90,7 +90,8 @@ struct tab:View{
                 .frame(width:proxy.frame(in: .global).width, height: proxy.frame(in: .global).height)
             }
 //            .background(Color.init("ThemeBackGroundColor").edgesIgnoringSafeArea(.all))
-            NavBar(selectedIndex: .constant(0))
+            
+//            NavBar(index: 0)
             
         }
 //

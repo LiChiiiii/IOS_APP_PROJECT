@@ -2,10 +2,9 @@
 //  ImageLoader.swift
 //  IOS_DEV
 //
-//  Created by Kao Li Chi on 2021/5/2.
+//  Created by Kao Li Chi on 2021/7/7.
 //
 
-import Foundation
 import SwiftUI
 import UIKit
 

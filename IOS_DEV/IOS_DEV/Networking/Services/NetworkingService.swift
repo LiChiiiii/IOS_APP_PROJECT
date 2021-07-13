@@ -5,6 +5,8 @@
 //  Created by Kao Li Chi on 2021/5/18.
 //
 
+//for login and get article
+
 import Foundation
 
 class NetworkingService: ObservableObject {
@@ -12,6 +14,7 @@ class NetworkingService: ObservableObject {
     let baseUrl="http://127.0.0.1:8080"
     var token = ""
         
+    //login
     func requestLogin(endpoint: String,
                  loginObject: UserLogin,
                  completion: @escaping (Result<Me, Error>) -> Void) {
@@ -138,6 +141,8 @@ class NetworkingService: ObservableObject {
         
     }
     
+    
+    //get article
     func request(endpoint: String,
                  completion: @escaping (Result<[Article], Error>) -> Void) {
         

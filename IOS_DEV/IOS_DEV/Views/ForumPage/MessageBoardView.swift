@@ -12,17 +12,18 @@ struct MessageBoardView: View
 {
     var article:Article
     var comment:[Comment]
-    @Binding var GotoDetail:Bool
+    @Binding var todo:Bool
     
     var body: some View
     {
         
         
         Spacer()
+    
         Button(action:{
             withAnimation(){
-                GotoDetail.toggle()
-                
+                todo.toggle()
+
             }
         }){
             HStack {
@@ -32,9 +33,10 @@ struct MessageBoardView: View
                     .padding(.bottom,20)
                     .padding(.leading)
                 Spacer()
-                
+
             }
         }
+    
         
         ScrollView
         {

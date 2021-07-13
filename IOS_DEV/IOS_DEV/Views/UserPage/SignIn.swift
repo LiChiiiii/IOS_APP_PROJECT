@@ -10,7 +10,7 @@ import Firebase
 import GoogleSignIn
 import AuthenticationServices
 import CryptoKit
-var NowUser:String = ""
+var NowUser:String = "" // user who login
 
 
 struct SignIn: View {
@@ -66,7 +66,6 @@ struct SignInCell : View{
     @Binding var password:String
     @State var isPresented = false
     @State var ErrorAlert = false
-    @State var articleData:[Article] = []
     let networkingService = NetworkingService()
 
     
@@ -80,21 +79,9 @@ struct SignInCell : View{
             switch result {
                 
             case .success: print("login success")
-                //get article
                 self.isPresented.toggle()
                 ErrorAlert = false
                 NowUser = self.username
-                //進入討論區
-                networkingService.request(endpoint: "/article"){(result) in
-                    //print(result)
-                    switch result {
-                    case .success(let article):
-                        print("article success")
-                        self.articleData = article
-
-                    case .failure: print("article failed")
-                    }
-                }
                 
             case .failure:
                 print("login failed")
@@ -171,7 +158,8 @@ struct SignInCell : View{
                 self.Login()
             }.padding(.horizontal,50)
             .fullScreenCover(isPresented: $isPresented, content: {
-                TopicView(articles: self.articleData)
+                NavBar(index: 0)
+                //TopicView(articles: self.articleData)
             })
             .alert(isPresented: $ErrorAlert, content: {
                 Alert(title: Text("帳號密碼錯誤"),

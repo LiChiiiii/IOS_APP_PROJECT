@@ -13,7 +13,10 @@ struct IOS_DEVApp: App {
     
     var body: some Scene {
         WindowGroup {
-               HomePage()
+               //WelcomePage()
+            HomePage()
+                  .preferredColorScheme(.dark)
+          
         }
     }
 }
