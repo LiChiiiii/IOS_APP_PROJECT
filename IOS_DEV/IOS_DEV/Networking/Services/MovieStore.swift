@@ -61,6 +61,19 @@ class MovieStore: MovieService {
         ], completion: completion)
     }
     
+    func searchPerson(query: String, completion: @escaping (Result<PersonResponse, MovieError>) -> ()) {
+        guard let url = URL(string: "\(baseAPIURL)/search/person") else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        self.loadURLAndDecode(url: url, params: [
+            "language": "zh-TW",
+            "include_adult": "false",
+            "query": query
+        ], completion: completion)
+    }
+    
+    
     func GenreType(genreID: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/discover/movie") else {
             completion(.failure(.invalidEndpoint))
@@ -104,6 +117,9 @@ class MovieStore: MovieService {
             return
         }
         
+//        print("//////////////////////")
+//        print(finalURL)
+        
         urlSession.dataTask(with: finalURL) { [weak self] (data, response, error) in
             guard let self = self else { return }
 
@@ -136,7 +152,63 @@ class MovieStore: MovieService {
             completion(result)
         }
     }
+    
+    
+    
+    //---------以下為抓取片源---------//
+    
+    func fetchMovieResource(query: String, completion: @escaping (Result<[ResourceResponse], MovieError>) -> ()) {
+        guard let url = URL(string: "https://url-detect.robin019.xyz/search") else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        self.loadURLAndDecodeResource(url: url,query: query, completion: completion)
+    }
+    
+    private func loadURLAndDecodeResource<D: Decodable>(url: URL, query: String, completion: @escaping (Result<D, MovieError>) -> ()) {
+        guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
 
+        let queryItems = [URLQueryItem(name: "query", value: query)]
+        
+        urlComponents.queryItems = queryItems
 
+        guard let finalURL = urlComponents.url else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+
+        urlSession.dataTask(with: finalURL) { [weak self] (data, response, error) in
+            guard let self = self else { return }
+
+            if error != nil {
+                self.executeCompletionHandlerInMainThread(with: .failure(.apiError), completion: completion)
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode else {
+                self.executeCompletionHandlerInMainThread(with: .failure(.invalidResponse), completion: completion)
+                return
+            }
+
+            guard let data = data else {
+                self.executeCompletionHandlerInMainThread(with: .failure(.noData), completion: completion)
+                return
+            }
+
+            do {
+                let decodedResponse = try self.jsonDecoder.decode(D.self, from: data)
+                self.executeCompletionHandlerInMainThread(with: .success(decodedResponse), completion: completion)
+            } catch {
+                self.executeCompletionHandlerInMainThread(with: .failure(.serializationError), completion: completion)
+            }
+        }.resume()
+    }
+    
+    //---------以上為抓取片源---------//
+
+    
 
 }

@@ -270,7 +270,7 @@ struct MovieInfoDetail: View {
                 .padding(.horizontal,10)
           //      .unredacted()
 
-                MovieDetailList(movie: movie, tabs: [.overView,.trailer,.more,.resouces])
+                MovieDetailList(movie: movie, tabs: [.overView,.trailer,.more,.resources])
                     
 //
 //                VerticalButton()

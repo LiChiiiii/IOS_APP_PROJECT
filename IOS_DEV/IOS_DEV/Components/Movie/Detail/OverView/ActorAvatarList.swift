@@ -10,31 +10,31 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ActorAvatarList: View {
-    var actorList : [MovieActor]
+    var actorList : [Person]
     var body:some View{
         ScrollView(.horizontal, showsIndicators: false){
             LazyHStack(){
-                ForEach(0..<actorList.count){index in
-                    Avatar(actorList: actorList[index])
+                
+               Avatar(actorList: actorList[0])
                         
-                }
+                
             }
             
         }
     }
 }
 
-struct ActorAvatarList_Previews: PreviewProvider {
-    static var previews: some View {
-        ActorAvatarList(actorList: ActorLists)
-    }
-}
+//struct ActorAvatarList_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ActorAvatarList(actorList: ActorLists)
+//    }
+//}
 
 struct Avatar:View{
-    var actorList : MovieActor
+    var actorList : Person
     var body:some View{
         VStack(spacing:5){
-            WebImage(url: URL(string:actorList.actorAvatorImage))
+            WebImage(url: actorList.ProfileImageURL)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 80, height: 80)
@@ -47,14 +47,14 @@ struct Avatar:View{
                 )
             
             Group{
-                Text(actorList.actorName)
+                Text(actorList.name)
                     .bold()
                     .foregroundColor(.white)
                     .font(.system(size: 15))
                 //    .multilineTextAlignment(.center)
                     .frame(width:120)
                 
-                Text(actorList.actorCharactorName)
+                Text(actorList.name)
                     .foregroundColor(.gray)
                     .font(.caption)
             }

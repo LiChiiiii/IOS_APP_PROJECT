@@ -11,26 +11,32 @@ import SDWebImageSwiftUI
 
 struct GetMovieOverviews: View{
     let movie: Movie
-    @ObservedObject private var movieImagesState = MovieImagesState()
 
+    @ObservedObject private var movieImagesState = MovieImagesState()
+    @ObservedObject private var personSearchState = PersonSearchState()
+ 
     var body: some View {
         ZStack {
             LoadingView(isLoading: self.movieImagesState.isLoading, error: self.movieImagesState.error) {
                 self.movieImagesState.loadMovieImage(id: movie.id)
             }
-
-            if movieImagesState.movieImage != nil {
-                MovieOverviews(movie: movie,movieImages: self.movieImagesState.movieImage!)
+            
+            if movieImagesState.movieImage != nil && personSearchState.person != nil {
+                MovieOverviews(movie: movie,person: self.personSearchState.person!, movieImages: self.movieImagesState.movieImage!)
             }
+            
         }
         .onAppear {
             self.movieImagesState.loadMovieImage(id: movie.id)
+            self.personSearchState.searchPerson(query: movie.cast![0].name)
+            
         }
     }
 }
 
 struct MovieOverviews:View {
     let movie: Movie
+    let person: [Person]
     @State private var selectedTrailer: MovieVideo?
     let imageLoader = ImageLoader()
     let movieImages: MovieImages
@@ -112,8 +118,9 @@ struct MovieOverviews:View {
                         Spacer()
                     }
                     .padding(.horizontal,10)
-
-                    ActorAvatarList(actorList: ActorLists)
+                    
+                  
+                    ActorAvatarList(actorList: person)
 
                 }
 

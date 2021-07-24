@@ -63,11 +63,11 @@ struct MovieDetailList: View {
                 case .overView:
                     GetMovieOverviews(movie: movie)
                 case .trailer:
-                    MovieTrailer(movieId: movie.id)
+                    GetMovieTrailer(movieId: movie.id)
                 case .more:
                     MoreMovieView() //in progress
-                case .resouces:
-                    Text("test")
+                case .resources:
+                    MovieOTT(movieTitle: movie.title)
              //   case .info:
                  //   MovieInfoView(data: tempData)
 
@@ -88,14 +88,14 @@ enum Tabs : String{
     case overView = "OVERVIEW"
     case trailer = "TRAILER & MORE"
     case more = "MORE MOVIE"
-    case resouces = "MOVIE RESOURCE"
+    case resources = "MOVIE RESOURCE"
 }
 
 
 struct MovieDetailList_Previews: PreviewProvider {
     static var previews: some View {
         ZStack{
-            MovieDetailList(movie: stubbedMovie[0], tabs: [.overView,.trailer,.more,.resouces])
+            MovieDetailList(movie: stubbedMovie[0], tabs: [.overView,.trailer,.more,.resources])
                 .preferredColorScheme(.dark)
         }
     }

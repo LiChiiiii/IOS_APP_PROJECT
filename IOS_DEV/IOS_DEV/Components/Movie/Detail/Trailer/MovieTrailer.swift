@@ -9,7 +9,7 @@ import SwiftUI
 import SafariServices
 
 
-struct MovieTrailer: View {
+struct GetMovieTrailer: View {
 
     let movieId: Int
     @ObservedObject private var movieDetailState = MovieDetailState()
@@ -82,7 +82,7 @@ struct TrailerView:View {
 
 struct MovieTrailer_Previews: PreviewProvider {
     static var previews: some View {
-        MovieTrailer(movieId: 379686)
+        GetMovieTrailer(movieId: 379686)
             .preferredColorScheme(.dark)
     }
 }

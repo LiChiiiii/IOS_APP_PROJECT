@@ -145,23 +145,6 @@ struct MovieCrew: Decodable, Identifiable {
     let name: String
 }
 
-struct MovieImages: Decodable, Identifiable {
-    let id: Int
-    let backdrops: [ImagePath]
-}
-
-struct ImagePath: Decodable {
-    let height: Int
-    let filePath: String?
-    let width : Int
-    
-    var MovieImageURL: URL {
-        return URL(string: "https://image.tmdb.org/t/p/w500\(filePath ?? "")")!
-    }
-
-}
-
-
 struct MovieVideoResponse: Decodable {
     
     let results: [MovieVideo]
@@ -181,8 +164,6 @@ struct MovieVideo: Decodable, Identifiable {
         return URL(string: "https://youtube.com/watch?v=\(key)")
     }
 }
-
-
 
 
 

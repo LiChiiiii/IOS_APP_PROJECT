@@ -31,7 +31,6 @@ class MovieImagesState: ObservableObject {
 //                print(image)
             case .failure(let error):
                 self.error = error as NSError
-                print("failure")
             }
         }
     }
