@@ -10,22 +10,22 @@ import SafariServices
 
 
 struct MovieTrailer: View {
-    
+
     let movieId: Int
     @ObservedObject private var movieDetailState = MovieDetailState()
-    
+
     var body: some View {
         ZStack {
             LoadingView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
-                self.movieDetailState.loadMovie(id: self.movieId)
+                self.movieDetailState.loadMovieWithEng(id: self.movieId)
             }
-            
+
             if movieDetailState.movie != nil {
                 TrailerView(movie: self.movieDetailState.movie!)
             }
         }
         .onAppear {
-            self.movieDetailState.loadMovie(id: self.movieId)
+            self.movieDetailState.loadMovieWithEng(id: self.movieId)
         }
     }
 }
@@ -41,15 +41,12 @@ struct TrailerView:View {
     var body: some View {
      
             
-            List {  //List會讓這塊無法顯示在頁面上 
+            VStack{
 
                 if movie.youtubeTrailers != nil && movie.youtubeTrailers!.count > 0 {
-                    Text("Trailers").font(.headline)
-                    
+//                    Text("Trailers").font(.headline)
+
                     Spacer()
-                    
-                    Divider()
-                        .background(Color.gray)
                     
                     ForEach(movie.youtubeTrailers!) { trailer in
                         Button(action: {
@@ -61,14 +58,22 @@ struct TrailerView:View {
                                 Image(systemName: "play.circle.fill")
                                     .foregroundColor(Color(UIColor.systemBlue))
                             }
+                            Spacer()
+
+                            Divider()
+                                .background(Color.gray)
                         }
                     }
+                }
+                else
+                {
+                    Text("目前無預告片")
                 }
             
             }
             .sheet(item: self.$selectedTrailer) { trailer in
                 SafariView(url: trailer.youtubeURL!)
-            
+
             }
        
         
@@ -77,7 +82,7 @@ struct TrailerView:View {
 
 struct MovieTrailer_Previews: PreviewProvider {
     static var previews: some View {
-        MovieTrailer(movieId: 399566)
+        MovieTrailer(movieId: 379686)
             .preferredColorScheme(.dark)
     }
 }

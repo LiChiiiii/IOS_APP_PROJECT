@@ -61,7 +61,7 @@ struct MovieDetailList: View {
                 
                 switch currentTab{
                 case .overView:
-                    MovieOverviews(movie:movie)
+                    GetMovieOverviews(movie: movie)
                 case .trailer:
                     MovieTrailer(movieId: movie.id)
                 case .more:

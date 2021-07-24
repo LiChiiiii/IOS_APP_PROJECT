@@ -145,6 +145,23 @@ struct MovieCrew: Decodable, Identifiable {
     let name: String
 }
 
+struct MovieImages: Decodable, Identifiable {
+    let id: Int
+    let backdrops: [ImagePath]
+}
+
+struct ImagePath: Decodable {
+    let height: Int
+    let filePath: String?
+    let width : Int
+    
+    var MovieImageURL: URL {
+        return URL(string: "https://image.tmdb.org/t/p/w500\(filePath ?? "")")!
+    }
+
+}
+
+
 struct MovieVideoResponse: Decodable {
     
     let results: [MovieVideo]
@@ -184,3 +201,13 @@ let GenreID:[MovieGenreID] = [
     MovieGenreID(id:"35"),
 
 ]
+
+//let TestImage:[MovieImages] = [
+//
+//    MovieImages(id: 123, backdrops: [
+//        MovieBackDrops(path:
+//                    MovieBackDropsPath(file_path: "11111111"),
+//                       MovieBackDropsPath(file_path: "22222"))
+//
+//    ])
+//]

@@ -7,102 +7,143 @@
 
 import Foundation
 import SwiftUI
+import SDWebImageSwiftUI
+
+struct GetMovieOverviews: View{
+    let movie: Movie
+    @ObservedObject private var movieImagesState = MovieImagesState()
+
+    var body: some View {
+        ZStack {
+            LoadingView(isLoading: self.movieImagesState.isLoading, error: self.movieImagesState.error) {
+                self.movieImagesState.loadMovieImage(id: movie.id)
+            }
+
+            if movieImagesState.movieImage != nil {
+                MovieOverviews(movie: movie,movieImages: self.movieImagesState.movieImage!)
+            }
+        }
+        .onAppear {
+            self.movieImagesState.loadMovieImage(id: movie.id)
+        }
+    }
+}
 
 struct MovieOverviews:View {
     let movie: Movie
     @State private var selectedTrailer: MovieVideo?
     let imageLoader = ImageLoader()
+    let movieImages: MovieImages
     
     var body:some View{
         
-            VStack(spacing:5){
-                VStack(spacing:10){
-                    HStack(alignment:.bottom){
-                        Text("Plot Summary:")
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                    }
+        VStack{
+            //-----summary-----//
+            VStack{
+                HStack(alignment:.bottom){
+                    Text("Plot Summary:")
+                        .foregroundColor(.white)
                     
-                    //just support at most 5 line
-                    
-                    ExpandableText(movie.overview, lineLimit: 5)
+                    Spacer()
                 }
-                .padding(.horizontal,10)
-
                 
-                Spacer()
+                //ExpandableText(movie.overview, lineLimit: 5)
+                Text(movie.overview)
+                    
                 
+                
+            }
+            .padding(10)
+            
+            VStack{
+                //-----star-----//
                 HStack {
                     if !movie.ratingText.isEmpty {
                         Text(movie.ratingText).foregroundColor(.yellow)
                     }
                     Text(movie.scoreText)
                 }
-                
+
                 Spacer()
-                
+
                 Divider()
                     .background(Color.gray)
 
-                
-                Group{
-                    VStack(spacing:10){
-                        HStack(alignment:.bottom){
-                            Text("Movie Capture:")
-                                .foregroundColor(.white)
-                            Spacer()
-                        }
-                        .padding(.horizontal,10)
-                        
-                        MovieDetailImage(imageLoader: imageLoader, imageURL: self.movie.backdropURL)
-                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-
+                //-----movie pic-----//
+                VStack(spacing:10){
+                    HStack(alignment:.bottom){
+                        Text("Movie Capture:")
+                            .foregroundColor(.white)
+                        Spacer()
                     }
+                    .padding(.horizontal,10)
 
-                    Spacer()
-                    
-                    Divider()
-                        .background(Color.gray)
-                    
-                    VStack(spacing:10){
-                        HStack(alignment:.bottom){
-                            Text("Movie Cast:")
-                                .foregroundColor(.white)
-                            Spacer()
+
+                    ScrollView(.horizontal, showsIndicators: false){
+                        LazyHStack(){
+                            ForEach(self.movieImages.backdrops,id: \.filePath){ backdrop in
+                                WebImage(url: backdrop.MovieImageURL)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .cornerRadius(5)
+                                    
+//                                MovieDetailImage(imageLoader: imageLoader, imageURL: backdrop.MovieImageURL)
+//                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            }
+                            .padding(.all, 5.0)
+                            
                         }
-                        .padding(.horizontal,10)
 
-                        ActorAvatarList(actorList: ActorLists)
+                    }.frame(height: 250)
 
-                    }
-                    
-                    Spacer()
-
-//                    Divider()
-//                        .background(Color.gray)
-//
-//                    MovieInfoView(movie: movie)
-//                        .padding(.horizontal,10)
-                    
-                    
                 }
+
+                Spacer()
+
+                Divider()
+                    .background(Color.gray)
                 
-                
+                //-----cast-----//
+
+                VStack(spacing:10){
+                    HStack(alignment:.bottom){
+                        Text("Movie Cast:")
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.horizontal,10)
+
+                    ActorAvatarList(actorList: ActorLists)
+
+                }
+
+                Spacer()
                 
             }
-            .foregroundColor(.gray)
+           
+            
+        }
+        
+
+
+
+        
+                
+                
+         
         
     }
 }
 
 
 
+
 struct ExpandableText: View {
     @State private var expanded: Bool = false
     @State private var truncated: Bool = false
-    private var text: String
+    var text: String
 
+    
     let lineLimit: Int
 
     init(_ text: String, lineLimit: Int) {
@@ -126,14 +167,16 @@ struct ExpandableText: View {
                     Text(text).lineLimit(lineLimit)
                         .background(GeometryReader { visibleTextGeometry in
                             ZStack { //large size zstack to contain any size of text
-                                Text(self.text)
+                                Text(text)
                                     .background(GeometryReader { fullTextGeometry in
                                         Color.clear.onAppear {
                                             self.truncated = fullTextGeometry.size.height > visibleTextGeometry.size.height
                                         }
                                     })
+                                    
                             }
                             .frame(height: .greatestFiniteMagnitude)
+                           
                         })
                         .hidden() //keep hidden
             )
@@ -152,27 +195,33 @@ struct ExpandableText: View {
         }
         .font(.subheadline)
         .foregroundColor(Color(UIColor.systemGray3))
+        
+
+        
     }
 }
 
 
-
-struct MovieDetailImage: View {
-    
-    @ObservedObject var imageLoader: ImageLoader
-    let imageURL: URL
-    
-    var body: some View {
-        ZStack {
-            Rectangle().fill(Color.gray.opacity(0.3))
-            if self.imageLoader.image != nil {
-                Image(uiImage: self.imageLoader.image!)
-                    .resizable()
-            }
-        }
-        .aspectRatio(16/9, contentMode: .fit)
-        .onAppear {
-            self.imageLoader.loadImage(with: self.imageURL)
-        }
-    }
-}
+//
+//
+//struct MovieDetailImage: View {
+//
+//    @ObservedObject var imageLoader: ImageLoader
+//    let imageURL: URL
+//
+//    var body: some View {
+//
+//
+//        ZStack {
+//            Rectangle().fill(Color.gray.opacity(0.3))
+//            if self.imageLoader.image != nil {
+//                Image(uiImage: self.imageLoader.image!)
+//                    .resizable()
+//            }
+//        }
+//        .aspectRatio(16/9, contentMode: .fit)
+//        .onAppear {
+//            self.imageLoader.loadImage(with: self.imageURL)
+//        }
+//    }
+//}

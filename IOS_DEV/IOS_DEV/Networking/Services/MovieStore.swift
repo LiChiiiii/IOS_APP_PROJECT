@@ -37,6 +37,17 @@ class MovieStore: MovieService {
         ], completion: completion)
     }
 
+    func fetchMovieWithEng(id: Int, completion: @escaping (Result<Movie, MovieError>) -> ()) {
+        guard let url = URL(string: "\(baseAPIURL)/movie/\(id)") else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        self.loadURLAndDecode(url: url, params: [
+            "append_to_response": "videos,credits",
+            "language": "en-US"
+        ], completion: completion)
+    }
+    
     func searchMovie(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/search/movie") else {
             completion(.failure(.invalidEndpoint))
@@ -63,6 +74,15 @@ class MovieStore: MovieService {
         
     }
     
+  
+    func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ()) {
+        guard let url = URL(string: "\(baseAPIURL)/movie/\(id)/images") else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        self.loadURLAndDecode(url: url,  params: nil,  completion: completion)
+    }
+    
 
     private func loadURLAndDecode<D: Decodable>(url: URL, params: [String: String]? = nil, completion: @escaping (Result<D, MovieError>) -> ()) {
         guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
@@ -71,17 +91,19 @@ class MovieStore: MovieService {
         }
 
         var queryItems = [URLQueryItem(name: "api_key", value: apiKey)]
-        if let params = params {
-            queryItems.append(contentsOf: params.map { URLQueryItem(name: $0.key, value: $0.value) })
+        if params != nil{
+            if let params = params {
+                queryItems.append(contentsOf: params.map { URLQueryItem(name: $0.key, value: $0.value) })
+            }
         }
-
+        
         urlComponents.queryItems = queryItems
 
         guard let finalURL = urlComponents.url else {
             completion(.failure(.invalidEndpoint))
             return
         }
-
+        
         urlSession.dataTask(with: finalURL) { [weak self] (data, response, error) in
             guard let self = self else { return }
 
