@@ -305,6 +305,8 @@
 				01AA7CAA269B61A600F80796 /* Trailer */,
 				01CF13B0266B39C600066FC2 /* OverView */,
 				0194A5E72695DBA700E24598 /* MovieDetailList.swift */,
+				01CF13A4266B381400066FC2 /* Genre.swift */,
+				7AB42EC3263184A300AC7FA6 /* HScrollList.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -624,12 +626,10 @@
 				01CF139A266B2F0C00066FC2 /* SmallCoverIcon.swift */,
 				7ADA5A6E26104355000A84D9 /* SearchBar.swift */,
 				01CF139E266B30B900066FC2 /* CircleText.swift */,
-				01CF13A4266B381400066FC2 /* Genre.swift */,
 				7ADA5A6F26104355000A84D9 /* UserIcon.swift */,
 				7ADA5A7126104355000A84D9 /* RoundedRectangle.swift */,
 				7ADA5A7226104355000A84D9 /* Squsre1.swift */,
 				7A6CE7E92610E7EA00DB962B /* SocialLoginButton.swift */,
-				7AB42EC3263184A300AC7FA6 /* HScrollList.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";

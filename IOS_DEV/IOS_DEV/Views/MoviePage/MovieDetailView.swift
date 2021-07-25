@@ -105,9 +105,11 @@ struct WebImages: View {
                         
                     }
                 }
-                .frame(height:480 - 150)
+                .frame(height: 510)
+                //.frame(height:480 - 150)
                 .animation(.spring(),value:showAnimation)
                 //                        Detail Items
+                
                 
                 MovieInfoDetail(movie: movie)
                     .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
@@ -209,7 +211,7 @@ struct MovieInfoDetail: View {
                 
                 Text(movie.title)
                     .bold()
-                    .font(.system(size:40))
+                    .font(.system(size:35))
                     .foregroundColor(.red)
               //      .unredacted()
                 
@@ -217,7 +219,7 @@ struct MovieInfoDetail: View {
             
                 Spacer()
                 smallNavButton(buttonColor: .blue, buttonTextColor: .white, text: "CHAT"){
-                    print("WebImages 192 chat")
+                    print("MovieDetailView 220 chat")
                 }
              //   .unredacted()
 
@@ -226,14 +228,14 @@ struct MovieInfoDetail: View {
             
             Spacer()
             
-            HScrollList(info: [.data,.time,.language,.rate])
+            HScrollList(info: movie)
                 .font(.system(size: 14))
              //   .unredacted()
             
             
             
             Spacer()
-            Genre(Genres: [.Action,.Adventure,.Horror])
+            Genre(Genres: movie.genres!)
                 .padding(.horizontal,10)
               //  .unredacted()
             
