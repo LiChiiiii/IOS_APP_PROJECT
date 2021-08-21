@@ -71,7 +71,7 @@ struct TractateView: View
 
 
 struct TractateButton:View{
-    let controller = ArticleController()
+    let controller = ForumController()
     @State var article:Article
 
     @State private var todo : Bool = false
@@ -105,10 +105,10 @@ struct TractateButton:View{
 }
 
 
-//struct TractateView_Previews: PreviewProvider
-//{
-//    static var previews: some View
-//    {
-//        TractateView()
-//    }
-//}
+struct TractateView_Previews: PreviewProvider
+{
+    static var previews: some View
+    {
+        TractateView(articles: stubbedArticles)
+    }
+}

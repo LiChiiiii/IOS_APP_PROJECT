@@ -69,6 +69,8 @@ struct TrailerView:View {
                 {
                     Text("目前無預告片")
                 }
+                
+                Spacer(minLength: 80)
             
             }
             .sheet(item: self.$selectedTrailer) { trailer in

@@ -23,7 +23,9 @@ class MovieStore: MovieService {
             completion(.failure(.invalidEndpoint))
             return
         }
-        self.loadURLAndDecode(url: url, completion: completion)
+        self.loadURLAndDecode(url: url, params: [
+            "language": "zh-TW"
+        ], completion: completion)
     }
 
     func fetchMovie(id: Int, completion: @escaping (Result<Movie, MovieError>) -> ()) {
@@ -45,6 +47,16 @@ class MovieStore: MovieService {
         self.loadURLAndDecode(url: url, params: [
             "append_to_response": "videos,credits",
             "language": "en-US"
+        ], completion: completion)
+    }
+    
+    func MovieReccomend(id: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ()){
+        guard let url = URL(string: "\(baseAPIURL)/movie/\(id)/recommendations") else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        self.loadURLAndDecode(url: url, params: [
+            "language": "zh-TW"
         ], completion: completion)
     }
     

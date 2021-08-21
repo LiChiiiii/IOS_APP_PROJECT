@@ -11,17 +11,20 @@ import SwiftUI
 
 struct MovieCardGesture :View{
     let imageLoader = ImageLoader()
-    @State var movies : [Movie] //allow as to remove
-    @State private var currentMovie:Movie?
+
+    @State var movies : [Movie]  //allow as to remove
+    @State var currentMovie:Movie?
     @State var gestureState = CardGesture.CardGestureState.inactive
     @Binding var backHomePage:Bool
     var body: some View {
         ZStack(){
-            
+
+
             ForEach(movies){movie in
-                
+
                 if self.movies.reversed().firstIndex(where: {$0.id == movie.id}) == 0{
                     //render the current item as CoverGesture view
+
                     CardGesture(
                         DragState: self.$gestureState,
                         onTapGesture: {},
@@ -29,17 +32,18 @@ struct MovieCardGesture :View{
                         EndTranslation: {(direction) in
                             self.getEndPostion(direction: direction)
                         }, movie: movie)
+                    
                 }else{
                     TheCard(movie: movie)
                         .frame(width:245)
                         .scaleEffect( 1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movie.id})!) * 0.03 + self.calculateScale())
                         .padding(.top,1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movie.id})!) * 16)
                         .animation(.spring())
-                    
+
                 }
 
             }
-            
+
 
             GeometryReader{proxy in
                     Button(action:{
@@ -61,61 +65,69 @@ struct MovieCardGesture :View{
                               , y: proxy.frame(in: .local).minY + 10)
 
 
-
-                Text(": Action,Science fiction")
-                    .foregroundColor(.white)
-                    .font(.system(size: 16))
-                    .position(x: proxy.frame(in: .local).midX
-                              , y: proxy.frame(in: .local).minY + 50)
+//                Text(self.currentMovie!.ratingText)
+//                    .foregroundColor(.yellow)
+//                    .font(.system(size: 20))
+//                    .position(x: proxy.frame(in: .local).midX
+//                              , y: proxy.frame(in: .local).minY + 50)
 
                 self.renderCurrentInfo()
                 .position(x: proxy.frame(in: .local).midX
-                          , y: proxy.frame(in: .local).maxY - 50)
+                          , y: proxy.frame(in: .local).maxY - 100)
 
             }
-            
-          
-            
-            
-        }.background(FullMovieCoverBackground(urlPath: movies[0].posterURL).blur(radius: 50))
-        
+
+
+
+
+        }
+        .background(FullMovieCoverBackground(urlPath: self.currentMovie?.posterPath ?? "").blur(radius: 50))
+
     }
-    
-    
+
+
     func renderCurrentInfo() -> some View{
         ZStack{
-           
-            if currentMovie != nil{
-                Text(currentMovie!.title)
-                    .bold()
-                    .frame(width:300)
-                    .foregroundColor(.white)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 25))
-                    .opacity(self.gestureState.isDragging ? 0 : 1)
-                    .animation(.easeInOut)
 
-                
+            if currentMovie != nil{
+                VStack(spacing:10){
+                    
+                    Text(currentMovie!.title)
+                        .bold()
+                        .foregroundColor(.white)
+                        .lineLimit(2)
+                        .font(.system(size: 25))
+
+                    Text(self.currentMovie!.ratingText)
+                        .foregroundColor(.yellow)
+                        .font(.system(size: 23))
+                    
+                }
+                .frame(width:300)
+                .multilineTextAlignment(.center)
+                .opacity(self.gestureState.isDragging ? 0 : 1)
+                .animation(.easeInOut)
+               
+
                 //More here
             }
-           
+
         }
 
     }
-    
+
     func getEndPostion(direction:CardGesture.EndTranslationPostion){
         if direction == .left || direction == .right{
             //TODO
             //remove the last movie in array and set current movie
-                
+
                 _ = self.movies.popLast()
                 currentMovie = self.movies.last
-            
-                
+
+
         }
     }
-    
+
     func calculateScale()->CGFloat{
         //when dragging it will affect other card behind
         return CGFloat(abs(self.gestureState.translation.width / 6000))
@@ -125,7 +137,7 @@ struct MovieCardGesture :View{
 struct MovieCardGesture_Previews: PreviewProvider {
     static var previews: some View {
 
-        MovieCardGesture(movies: stubbedMovie, backHomePage: .constant(false))
+        MovieCardGesture(movies: stubbedMovie,currentMovie: stubbedMovie.last, backHomePage: .constant(false))
     }
 }
 
@@ -137,7 +149,7 @@ struct CardGesture: View {
         case inactive //doing nothing
         case pressing //pressing the image only
         case dragging(translation:CGSize,predictEndLocation:CGPoint)
-        
+
         //getting dragging translation
         var translation:CGSize{
             switch self {
@@ -147,7 +159,7 @@ struct CardGesture: View {
                 return translation
             }
         }
-        
+
         //location to end
         var predictEndLocation:CGPoint{
             switch self {
@@ -157,7 +169,7 @@ struct CardGesture: View {
                 return predictEndlocation
             }
         }
-        
+
         var isActive:Bool{
             switch self {
             case .inactive:
@@ -166,7 +178,7 @@ struct CardGesture: View {
                 return true
             }
         }
-        
+
         var isDragging:Bool{
             switch self {
             case .inactive,.pressing:
@@ -175,22 +187,23 @@ struct CardGesture: View {
                 return true
             }
         }
-        
+
     }
-    
+
     enum EndTranslationPostion{
         case left,right,cancle
     }
-    
+
     @Binding var DragState:CardGestureState //let parent know what is current state
     var onTapGesture:()->Void
     var willEndTranslation : (CGSize)->Void //geting current Translation postion
     var EndTranslation:(EndTranslationPostion)->Void //getting the state to end
 
     @GestureState private var gestureState:CardGestureState = .inactive //default is inactive
+    @State private var todo : Bool = false
     @State private var hasMove = false
     @State private var predictEndLocation:CGPoint? = nil
-    var movie:Movie
+    var movie: Movie
     var body: some View {
         //concate 2 Gesture to Create a new Gesture
         //in this case longPrssingGesture + GragGresture
@@ -210,7 +223,7 @@ struct CardGesture: View {
             .onChanged{ (value) in
                 //TODO:
                 //Check current translation is zero??(jsut pressing not dragging) or other
-                if self.gestureState.translation.width == 0.0{
+                if self.gestureState.translation.width == 0 {
                     self.DragState = .pressing
                     self.hasMove = false
                 }
@@ -225,9 +238,9 @@ struct CardGesture: View {
             .onEnded{ (value) in
                 //because binding value is now up to date
                 //when user on release-> trigger
-                
+
                 let endLocation = self.DragState.predictEndLocation
-                
+
                 if endLocation.x < -150{
                     self.willEndTranslation(self.gestureState.translation)
                     self.predictEndLocation = endLocation
@@ -250,10 +263,10 @@ struct CardGesture: View {
                     print("cancle")
                 }
                 self.DragState = .inactive
-               
+
             }
-            
-        
+
+
        return TheCard(movie: movie)
         .frame(width:245)
         .offset(self.calculateOffset())
@@ -266,25 +279,31 @@ struct CardGesture: View {
         .simultaneousGesture(TapGesture(count: 1).onEnded({_ in
             if !self.hasMove{
                 self.onTapGesture()
+                self.todo = true
+                print("press")
             }
         }))
+        .fullScreenCover(isPresented: self.$todo, content: {
+            GestureDetailVeiw(movieId: movie.id,navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true),isPresented: self.$todo)
+                .preferredColorScheme(.dark)
+        })
         .onTapGesture {
             //Given a feed back
             self.feedBack.prepare()
         }
-        
-            
+
+
     }
-    
+
     let feedBack = UISelectionFeedbackGenerator()
-    
+
     func calculateOffset() -> CGSize{
         if let endLocation = self.predictEndLocation{
             return CGSize(width: endLocation.x, height: 0)
         }
         return CGSize(width: self.gestureState.isActive ? self.gestureState.translation.width : 0, height: 0)
     }
-    
+
     func calculateAngle()->Angle{
         if let endLocation = self.predictEndLocation{
             return Angle(degrees: Double(endLocation.x) / 15)
@@ -295,13 +314,15 @@ struct CardGesture: View {
 
 //--------------------BACKGROUND--------------------//
 struct FullMovieCoverBackground:View{
-    var urlPath:URL
+    var urlPath: String
     var body: some View{
-        WebImage(url: urlPath)
+        
+        WebImage(url: URL(string: "https://image.tmdb.org/t/p/w500\(urlPath)"))
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             .edgesIgnoringSafeArea(.all)
+            
     }
 }
 
@@ -309,14 +330,19 @@ struct FullMovieCoverBackground:View{
 //--------------------CARD-------------------//
 
 struct TheCard:View{
-    var movie:Movie
+    var movie: Movie
+    @State private var todo : Bool = false
     var body: some View{
-        
+       
+            
         WebImage(url:movie.posterURL)
             .resizable()
             .aspectRatio(0.66,contentMode: .fit)
             .cornerRadius(10)
-        
+            
 
+   
     }
 }
+
+

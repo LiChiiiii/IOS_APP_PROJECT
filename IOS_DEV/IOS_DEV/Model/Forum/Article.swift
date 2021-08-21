@@ -55,3 +55,9 @@ struct Board: Decodable, Identifiable{
 }
 
 
+
+let stubbedArticles:[Article] = [
+    Article(Title: "AAAA", Text: "bbb", LikeCount: "123", updatedOn: "123"),
+    Article(Title: "B123BB", Text: "bbb", LikeCount: "123", updatedOn: "123"),
+    Article(Title: "CCCC34234C", Text: "bbb", LikeCount: "123", updatedOn: "123")
+]

@@ -16,7 +16,7 @@ struct MovieDetailView: View {
     @Binding var navBarHidden:Bool
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
-
+    
     var body: some View {
         ZStack {
             LoadingView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
@@ -68,7 +68,10 @@ struct WebImages: View {
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
     var body: some View {
+        
+        
         ZStack(alignment:Alignment(horizontal: .center, vertical: .top)){
+            
             ScrollView(.vertical, showsIndicators: false){
                 GeometryReader{ proxy in
                     if proxy.frame(in:.global).minY > -480{
@@ -82,25 +85,28 @@ struct WebImages: View {
                             .blur(radius: CGFloat((Double(proxy.frame(in:.global).minY * 0.005 + 1)) < 0.45  ? (Double(proxy.frame(in:.global).minY) * -1 * 0.03) : 0))
                             .onChange(of: proxy.frame(in:.global).minY, perform: { value in
                                 
-                                let offset = value + UIScreen.main.bounds.height / 2.2
+                            //-----下滑顯示bar上的討論區按鈕和電影名稱-----//
+                                
+//                                let offset = value + UIScreen.main.bounds.height / 2.2
 //                                print(offset)
-                                if offset < 80{
-                                    
-                                    if offset > 0{
-                                        
-                                        let op_value = (80 - offset) / 80 * 5 * 1.2
-                                        self.opacity = Double(op_value)
-                                        self.showMovieName = true
-                                        
-                                        return
-                                    }
-                                    self.opacity = 1
-                                    
-                                }
-                                else{
-                                    self.opacity = 0
-                                    self.showMovieName = false
-                                }
+                                
+//
+//                                if offset < 80{
+//
+//                                if offset > 0{
+//
+//                                    let op_value = (80 - offset) / 80 * 5 * 1.2
+//                                    self.opacity = Double(op_value)
+//                                    self.showMovieName = true
+//
+//                                    return
+//                                }
+//                                self.opacity = 1
+//                                }
+//                                else{
+//                                    self.opacity = 0
+//                                    self.showMovieName = false
+//                                }
                             })
                         
                     }
@@ -110,9 +116,11 @@ struct WebImages: View {
                 .animation(.spring(),value:showAnimation)
                 //                        Detail Items
                 
+               
                 
                 MovieInfoDetail(movie: movie)
                     .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                    
                 //     .offset(y:10)
                 //   .background(Color.black.edgesIgnoringSafeArea(.all))
                 
@@ -201,6 +209,7 @@ struct WebImages: View {
 }
 
 struct MovieInfoDetail: View {
+    @ObservedObject private var navbarcontroller = ForumController()
     @State private var isMyList = false
     let movie: Movie
     
@@ -220,8 +229,12 @@ struct MovieInfoDetail: View {
                 Spacer()
                 smallNavButton(buttonColor: .blue, buttonTextColor: .white, text: "CHAT"){
                     print("MovieDetailView 220 chat")
+                    //navbarcontroller.GetAllArticle()
                 }
-             //   .unredacted()
+//                .fullScreenCover(isPresented: .constant(navbarcontroller.isPresented), content: {
+//                    TopicView(articles: navbarcontroller.articleData)
+//                })
+       
 
             }
             .padding(.horizontal,10)

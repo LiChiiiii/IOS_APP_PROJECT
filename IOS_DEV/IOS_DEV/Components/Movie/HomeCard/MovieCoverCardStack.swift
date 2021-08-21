@@ -33,7 +33,8 @@ struct MovieCoverCardStack: View {
                 }
             }
         
-            Text(movies[0].title)
+           
+            Text("CoverStack.swift-37")
                 .bold()
                 .font(.body)
                 .padding(.vertical)

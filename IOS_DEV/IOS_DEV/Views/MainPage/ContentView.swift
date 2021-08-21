@@ -96,9 +96,9 @@ struct tab:View{
         }
 //
 //        .onAppear{
-////            UITabBar.appearance().barTintColor = .black
-////            UINavigationBar.appearance().barTintColor = .black
-////            UINavigationBar.appearance().tintColor = .white
+//            UITabBar.appearance().barTintColor = .black
+//            UINavigationBar.appearance().barTintColor = .black
+//            UINavigationBar.appearance().tintColor = .white
 //        }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("Discovery")

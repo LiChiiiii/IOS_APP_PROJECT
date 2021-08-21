@@ -21,9 +21,8 @@ struct MovieOTT: View {
                 self.movieResourceState.fetchMovieResource(query:movieTitle )
             }
 
-            if movieResourceState.resource != nil {
-                MovieOTTView(OTT: self.movieResourceState.resource)
-            }
+            MovieOTTView(OTT: self.movieResourceState.resource)
+            
         }
         .onAppear {
             self.movieResourceState.fetchMovieResource(query: movieTitle)
@@ -45,27 +44,29 @@ struct MovieOTTView:View {
 
            
             Text("OTT").font(.headline)
-
-                Spacer()
-                
-                ForEach(OTT, id:\.ott) { resource in
-                    Button(action: {
-                        self.selected = resource
-                    }) {
-                        HStack {
+            Spacer()
+            
+            ForEach(OTT, id:\.ott) { resource in
+                Button(action: {
+                    self.selected = resource
+                }) {
+                    HStack {
+                        Link(destination: URL(string: resource.result[0].href)!){
                             Text(resource.ott)
                             Spacer()
-                            Link(destination: URL(string: resource.result[0].href)!){
                             Image(systemName: "play.circle.fill")
                                 .foregroundColor(Color(UIColor.systemBlue))
-                            }
                         }
-                        Spacer()
-
-                        Divider()
-                            .background(Color.gray)
                     }
+                    Spacer()
+
+                    Divider()
+                        .background(Color.gray)
                 }
+            }
+  
+            
+            Spacer(minLength: 80)
     
         }
 //        .sheet(item: self.$selected) { resource in
@@ -76,6 +77,8 @@ struct MovieOTTView:View {
         
     }
 }
+
+
 
 struct MovieResource_Previews: PreviewProvider {
     static var previews: some View {

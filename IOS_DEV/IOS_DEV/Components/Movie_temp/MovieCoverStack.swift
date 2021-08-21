@@ -58,7 +58,7 @@ struct CoverCard:View{
     var url:String
     var body: some View{
         
-        WebImage(url:URL(string: url))
+        WebImage(url:URL(string: "https://image.tmdb.org/t/p/w500\(url)")!)
             .resizable()
             .aspectRatio(0.66,contentMode: .fit)
             .cornerRadius(10)

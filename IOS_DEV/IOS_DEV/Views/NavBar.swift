@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-let controller = NavBarController()
+let controller = ListController()
 //Working Process
 struct NavBar: View {
 //    @Binding var selectedIndex:Int
@@ -23,7 +23,7 @@ struct NavBar: View {
                     
                 }
                 if self.index == 1 && GroupSelect == true{
-                    ListView(articles: controller.articleData, index: 0)
+                    ListView(lists: controller.listData)
                    
                 }
                 if self.index == 2 {
@@ -119,7 +119,7 @@ struct NavItemButton:View{
             //list
             Button(action:{
                 self.index = 1
-                controller.GetAllArticle()
+                controller.GetAllList()
  
             }){
                 VStack(alignment:.center,spacing:10){

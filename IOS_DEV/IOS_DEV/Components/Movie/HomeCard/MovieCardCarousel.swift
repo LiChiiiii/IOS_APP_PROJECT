@@ -50,7 +50,7 @@ struct MovieCardCarousel: View{
                             }
                         }
                     .fullScreenCover(isPresented: $isCardSelectedMovie, content: {
-                        MovieCardGesture(movies: movies, backHomePage: $isCardSelectedMovie)
+                        MovieCardGesture(movies: movies,currentMovie: movies.last, backHomePage: $isCardSelectedMovie)
                     })
                     
 

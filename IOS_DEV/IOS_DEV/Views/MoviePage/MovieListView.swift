@@ -37,6 +37,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState.movies!)
+                
                             } else {
                                 LoadingView(isLoading: self.genreTypeState.isLoading, error: self.genreTypeState.error) {
                                     self.genreTypeState.genreType(

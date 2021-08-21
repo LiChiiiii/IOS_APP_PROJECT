@@ -11,10 +11,9 @@ import SwiftUI
 
 struct ListView: View
 {
-    var articles:[Article]
+    var lists:[List]
     let FullSize = UIScreen.main.bounds.size
     var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 2)
-    @State var index : Int
     
     var body: some View
     {
@@ -41,16 +40,17 @@ struct ListView: View
             }
             
                 
-            ScrollView(.vertical, showsIndicators: true)
+            ScrollView(.vertical, showsIndicators: false)
             {
                 Spacer()
                 
                     //TODO
                     //two 'TractateFrame' in a Row
                 LazyVGrid(columns: columns, spacing: 20){
-                    ForEach(self.articles ,id: \.id) { article in
+                    ForEach(self.lists ,id: \.id) { list in
+                        
                       
-                        ListButton(article: article,index: self.$index)
+                        ListButton(list: list)
                     }
                 }
          
@@ -64,9 +64,7 @@ struct ListView: View
         .ignoresSafeArea(edges: .top)
 //        .frame(width: FullSize.width, height: FullSize.height)
         
-        if self.index == 1 {    // if click the button
-//            MovieCoverStackRemovablePreview(movies: coverList, backHomePage: .constant(false)).transition(.slide)
-        }
+
         
        
     
@@ -76,33 +74,28 @@ struct ListView: View
 
 
 struct ListButton:View{
-    let controller = ArticleController()
-    @State var article:Article
+    @ObservedObject private var listController = ListController()
+    @State var list:List
     @State private var todo : Bool = false
-    @Binding var index:Int
 
     var body:some View{
         
         HStack{
             
             Button(action:{
-                controller.articleDetails(articleID: article.id!)
-                self.index = 1
-       
+                listController.GetListDetail(listID: list.id!)  //取得片單內容
+                
             }){
                
                
                 VStack(){
-                    Text("2020必追韓劇")
+                    Text(list.Title)
                         .bold()
                         .font(.system(size: 22))
                 }
                 .frame(width:170,height: 170)
-//                .background(Rectangle().fill(Color(hue: 0.122, saturation: 0.678, brightness: 0.721, opacity: 0.805)).blur(radius: 20))
-                .background(
-                    Image("ta")
-                        .resizable()
-                        .blur(radius: 20))
+                .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
+                .shadow(color: .gray, radius: 0.5)
                 .foregroundColor(.white)
                 .cornerRadius(20)
                 .padding(8)
@@ -113,12 +106,17 @@ struct ListButton:View{
             .simultaneousGesture(TapGesture().onEnded{
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                     self.todo = true
+                    
+//                    ForEach(listController.listDetails, id:\.id) { movie in
+//                    }
+                    
                 })
             })
-//            .fullScreenCover(isPresented: $todo, content: {
-//                MovieCoverStackRemovablePreview(movies: coverList, backHomePage: .constant(false))
-//
-//            })
+            .fullScreenCover(isPresented: $todo, content: {
+               // ListDetailView(todo: $todo)
+                
+                //ListDetailView不能一次抓所有的照片
+            })
           
             
       
@@ -129,10 +127,10 @@ struct ListButton:View{
 }
 
 
-//struct TractateView_Previews: PreviewProvider
+//struct ListView_Previews: PreviewProvider
 //{
 //    static var previews: some View
 //    {
-//        TractateView()
+//        ListView(articles: stubbedArticles, index: 0)
 //    }
 //}

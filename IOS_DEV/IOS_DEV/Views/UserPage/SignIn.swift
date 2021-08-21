@@ -159,6 +159,7 @@ struct SignInCell : View{
             }.padding(.horizontal,50)
             .fullScreenCover(isPresented: $isPresented, content: {
                 NavBar(index: 0)
+                    .preferredColorScheme(.dark)
                 //TopicView(articles: self.articleData)
             })
             .alert(isPresented: $ErrorAlert, content: {

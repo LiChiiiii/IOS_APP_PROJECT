@@ -180,5 +180,6 @@ struct Avatar:View{
                     .frame(width:120)
             }
         }
+        
     }
 }

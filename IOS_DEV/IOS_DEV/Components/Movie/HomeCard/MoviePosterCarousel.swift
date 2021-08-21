@@ -12,6 +12,7 @@ struct MoviePosterCarousel: View {
     
     let title: String
     let movies: [Movie]
+    @State private var isCardSelectedMovie:Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -30,6 +31,10 @@ struct MoviePosterCarousel: View {
                         }.buttonStyle(PlainButtonStyle())
                             .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)
                             .padding(.trailing, movie.id == self.movies.last!.id ? 16 : 0)
+                        
+  
+                        
+                        
                     }
                 }
             }

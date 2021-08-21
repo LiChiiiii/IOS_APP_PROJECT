@@ -81,6 +81,9 @@ class NetworkingService: ObservableObject {
     func getToken() -> String{
         return token
     }
+    func getBaseURL() -> String{
+        return baseUrl
+    }
     
     
     func handleResponse(for request: URLRequest,
@@ -167,4 +170,35 @@ class NetworkingService: ObservableObject {
         case badResponse
         case badEncoding
     }
+}
+
+
+
+protocol SocialService {
+
+    func fetchList(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
+}
+
+enum SocialError: Error, CustomNSError {
+
+    case apiError
+    case invalidEndpoint
+    case invalidResponse
+    case noData
+    case serializationError
+
+    var localizedDescription: String {
+        switch self {
+        case .apiError: return "Failed to fetch data"
+        case .invalidEndpoint: return "Invalid endpoint"
+        case .invalidResponse: return "Invalid response"
+        case .noData: return "No data"
+        case .serializationError: return "Failed to decode data"
+        }
+    }
+
+    var errorUserInfo: [String : Any] {
+        [NSLocalizedDescriptionKey: localizedDescription]
+    }
+
 }

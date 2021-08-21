@@ -58,7 +58,7 @@ struct TopicView: View
 
 
 struct TopicViewButton:View{
-    let controller = ArticleController()
+    let controller = ForumController()
     @State var article:Article
 
     @State private var todo : Bool = false
@@ -90,17 +90,17 @@ struct TopicViewButton:View{
 }
 
 
-//struct TopicView_Previews: PreviewProvider
-//{
-//    static var previews: some View
-//    {
-//        NavigationView
-//        {
-//            TopicView()
-//        }
-//        .navigationBarHidden(true)
-//        .navigationBarTitle(Text("Home"))
-//        .edgesIgnoringSafeArea([.top, .bottom])
-//
-//    }
-//}
+struct TopicView_Previews: PreviewProvider
+{
+    static var previews: some View
+    {
+        NavigationView
+        {
+            TopicView(articles: stubbedArticles)
+        }
+        .navigationBarHidden(true)
+        .navigationBarTitle(Text("Home"))
+        .edgesIgnoringSafeArea([.top, .bottom])
+
+    }
+}

@@ -120,7 +120,8 @@ struct MovieOverviews:View {
 
                 }
 
-                Spacer()
+                Spacer(minLength: 80)
+             
                 
             }
            

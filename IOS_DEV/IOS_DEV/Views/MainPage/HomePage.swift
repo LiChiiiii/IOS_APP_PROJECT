@@ -245,10 +245,15 @@ struct MovieIntrol: View {
                 
                 
                 //click icon enter to moviedetail page
-                NavigationLink(destination: MovieDetailView(movieId:399566,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading))
-                {
-                    SmallCoverIcon()
-                }
+//                NavigationLink(destination: MovieDetailView(movieId:399566,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading))
+//                {
+//                    SmallCoverIcon()
+//                }
+                    
+                    
+                    
+                    
+                    
 //                NavigationLink(
 //                    destination: WebImages(
 //                        navBarHidden: $navBarHidden,

@@ -65,7 +65,7 @@ struct MovieDetailList: View {
                 case .trailer:
                     GetMovieTrailer(movieId: movie.id)
                 case .more:
-                    GetMoreMovie(movieID: movie.id)
+                    MoreMovieView() //in progress
                 case .resources:
                     MovieOTT(movieTitle: movie.title)
              //   case .info:
