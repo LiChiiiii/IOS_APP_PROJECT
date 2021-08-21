@@ -66,6 +66,7 @@ struct tab:View{
                         
                         CardScroll(isCardSelectedMovie: $isCardSelectedMovie)
                             .padding(.top)
+                 
                     }
                     .padding(.top,20)
                     

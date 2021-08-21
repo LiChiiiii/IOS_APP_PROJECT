@@ -13,7 +13,6 @@ class ForumController: ObservableObject {
     let networkingService = NetworkingService() //get
     @Published var commentData:[Comment] = []
     @Published var articleData:[Article] = []
-    @Published var isPresented = false
     
    
         
@@ -24,7 +23,6 @@ class ForumController: ObservableObject {
             case .success(let article):
                 print("article success")
                 self.articleData = article
-                self.isPresented = true
 
             case .failure: print("article failed")
             }

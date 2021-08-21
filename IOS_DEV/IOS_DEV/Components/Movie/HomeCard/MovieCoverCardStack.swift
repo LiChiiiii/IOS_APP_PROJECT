@@ -58,3 +58,5 @@ struct MovieCoverCardStack_Previews: PreviewProvider {
         }
     }
 }
+
+

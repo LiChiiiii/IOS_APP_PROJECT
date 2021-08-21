@@ -8,11 +8,34 @@
 import SwiftUI
 import UIKit
 
+struct GetMessageBoardView: View{
+    @State var article:Article
+    @ObservedObject private var forumController = ForumController()
+    @State private var todo : Bool = false
+ 
+    var body: some View {
+        ZStack {
+
+            if self.todo == true {
+                MessageBoardView(article: article ,comments: forumController.commentData)
+            }
+            
+        }
+        .onAppear {
+            self.forumController.articleDetails(articleID: article.id!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                self.todo = true
+            })
+       
+        }
+    }
+}
+
 struct MessageBoardView: View
 {
     var article:Article
-    var comment:[Comment]
-    @Binding var todo:Bool
+    var comments:[Comment]
+//    @Binding var todo:Bool
     
     var body: some View
     {
@@ -20,30 +43,14 @@ struct MessageBoardView: View
         
         Spacer()
     
-        Button(action:{
-            withAnimation(){
-                todo.toggle()
-
-            }
-        }){
-            HStack {
-                Image(systemName: "arrow.backward")
-                    .font(.title)
-                    .foregroundColor(Color.black.opacity(0.5))
-                    .padding(.bottom,20)
-                    .padding(.leading)
-                Spacer()
-
-            }
-        }
-    
         
         ScrollView
         {
            
             HStack(spacing: 0)
             {
-                MessageBoard(article: article,comments: comment)
+            
+                MessageBoard(article: article,comments: comments)
             }
             
         }

@@ -6,49 +6,80 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
+
+struct GetTopicView: View{
+    let movie: Movie
+    @ObservedObject private var forumController = ForumController()
+ 
+    var body: some View {
+        ZStack {
+
+            TopicView(articles: forumController.articleData, movie: movie)
+            
+            
+        }
+        .onAppear {
+            self.forumController.GetAllArticle()
+            
+        }
+    }
+}
 
 struct TopicView: View
 {
-    var articles:[Article]
+    let articles:[Article]
+    let movie: Movie
     let FullSize = UIScreen.main.bounds.size
 
     
     var body: some View
     {
-            VStack {
-//                SearchBar(text: .constant(""))
-//                    .position(x: 195, y: 50)
-//                    .padding(.top, 70)
-//                    .clipped()
-//                    .ignoresSafeArea(edges: .top)
-                Spacer()
+
         
+        VStack {
+
+            ZStack()
+            {
+                WebImage(url: movie.backdropURL)
+                    .resizable()
+                    .ignoresSafeArea(edges: .top)
+                    .frame(width: FullSize.width, height: 100)
                 
-                ScrollView(.vertical, showsIndicators: true)
-                {
-                    Spacer()
-                    
-                    //TODO
-                    //two 'TopicFrame' in a Row
-                    //self.articleDetails(articleID: article.id!)
-         
-                    ForEach(self.articles ,id: \.id) { article in
-                      
-                        HStack{
-                         
-                            TopicViewButton(article: article)
+                Text(movie.title)
+                    .bold()
+                    .font(.system(size: 30))
+                    .padding(25)
+                    .foregroundColor(.white)
+
+            }
+            
+            
+            ScrollView(.vertical, showsIndicators: true)
+            {
+                Spacer()
+                
+                ForEach(self.articles ,id: \.id) { article in
+                  
+                    HStack{
                         
-                
+                        NavigationLink(destination:   GetMessageBoardView(article: article))
+                        {
+                            TopicFrame(article:article)
                         }
 
-
+                     
+//                        TopicViewButton(article: article)
+                            
                     }
-                    
+
                 }
+                
+            }
 //                .ignoresSafeArea(edges: .top)
 //                .frame(width: FullSize.width,height:FullSize.height)
-            }
+        }
            
                 
             
@@ -71,6 +102,7 @@ struct TopicViewButton:View{
        
             }){
                 TopicFrame(article:article)
+                
             }
             .simultaneousGesture(TapGesture().onEnded{
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
@@ -78,7 +110,7 @@ struct TopicViewButton:View{
                 })
             })
             .fullScreenCover(isPresented: $todo, content: {
-                MessageBoardView(article: article ,comment: controller.commentData, todo:$todo)
+//                MessageBoardView(article: article ,comment: controller.commentData, todo:$todo)
 
             })
             
@@ -96,7 +128,7 @@ struct TopicView_Previews: PreviewProvider
     {
         NavigationView
         {
-            TopicView(articles: stubbedArticles)
+            TopicView(articles: stubbedArticles, movie: stubbedMovie[0])
         }
         .navigationBarHidden(true)
         .navigationBarTitle(Text("Home"))

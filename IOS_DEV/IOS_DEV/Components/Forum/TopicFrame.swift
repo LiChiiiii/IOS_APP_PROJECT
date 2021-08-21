@@ -71,11 +71,11 @@ struct TopicFrame: View
 //                }
         }
         .frame(width: UIScreen.main.bounds.size.width-25, height: 160, alignment: .leading)
-        .background(Color.white)
-        .cornerRadius(25)
-        .shadow(color: .gray, radius: 2, x: 1.0, y: 1.0)
+        .foregroundColor(.white).background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
+        .shadow(color: .gray, radius: 0.5)
+        .cornerRadius(20)
         .padding([.leading, .bottom, .trailing], 20)
-        .foregroundColor(.black)
+   
         
             
         }

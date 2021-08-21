@@ -15,33 +15,6 @@ struct MessageBoard: View
     @State var comments:[Comment]
     let commentService = CommentService()
 
-    func PostComment(){
-        
-        let com = CommentTodo(Text: self.texts, UserName: NowUser, ArticleID: article.id!.uuidString , LikeCount: "0")
-       
-        print(com)
-        commentService.POSTrequest(endpoint: "/comment", RegisterObject: com){(result) in
-            //print(result)
-            switch result {
-           
-            case .success: print("PostComment success")
-                commentService.GETrequest(endpoint: "/comment/\(article.id!)"){(result) in
-                    //print(result)
-                    switch result {
-                    case .success(let comments):
-                        print("updated comment")
-                        self.comments = comments
-                        self.texts=""   //  clear textfield
-
-                    case .failure: print("comment failed")
-                    }
-                }
-
-            case .failure: print("PostComment failed")
-            }
-        }
-        
-    }
     
     var body: some View
     {
@@ -85,6 +58,7 @@ struct MessageBoard: View
                     
                     VStack
                     {
+                      
                         ForEach(self.comments ,id: \.id) { comment in
                             HStack
                             {
@@ -117,6 +91,35 @@ struct MessageBoard: View
                 }
             }
     }
+    
+    func PostComment(){
+        
+        let com = CommentTodo(Text: self.texts, UserName: NowUser, ArticleID: article.id!.uuidString , LikeCount: "0")
+       
+        print(com)
+        commentService.POSTrequest(endpoint: "/comment", RegisterObject: com){(result) in
+            //print(result)
+            switch result {
+           
+            case .success: print("PostComment success")
+                commentService.GETrequest(endpoint: "/comment/\(article.id!)"){(result) in
+                    //print(result)
+                    switch result {
+                    case .success(let comments):
+                        print("updated comment")
+                        self.comments = comments
+                        self.texts=""   //  clear textfield
+
+                    case .failure: print("comment failed")
+                    }
+                }
+
+            case .failure: print("PostComment failed")
+            }
+        }
+        
+    }
+    
 }
 
 //struct MessageBoard_Previews: PreviewProvider

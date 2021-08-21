@@ -92,7 +92,7 @@ struct TractateButton:View{
                 })
             })
             .fullScreenCover(isPresented: $todo, content: {
-                MessageBoardView(article: article ,comment: controller.commentData, todo:$todo)
+//                MessageBoardView(article: article ,comment: controller.commentData, todo:$todo)
 
             })
           

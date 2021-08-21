@@ -209,8 +209,8 @@ struct WebImages: View {
 }
 
 struct MovieInfoDetail: View {
-    @ObservedObject private var navbarcontroller = ForumController()
     @State private var isMyList = false
+    @State private var gotoChat : Bool = false
     let movie: Movie
     
     var body: some View {
@@ -227,13 +227,48 @@ struct MovieInfoDetail: View {
 
             
                 Spacer()
-                smallNavButton(buttonColor: .blue, buttonTextColor: .white, text: "CHAT"){
-                    print("MovieDetailView 220 chat")
-                    //navbarcontroller.GetAllArticle()
-                }
-//                .fullScreenCover(isPresented: .constant(navbarcontroller.isPresented), content: {
-//                    TopicView(articles: navbarcontroller.articleData)
+                
+                
+                
+//                Button(action:{
+//                    print("MovieDetailView 220 chat")
+//                   forumController.GetAllArticle()
+//                }){
+//                    HStack(spacing:0){
+//                        Text("CHAT")
+//                            .bold()
+//                            .foregroundColor(.white)
+//                    }
+//                    .frame(width: 60, height: 30  )
+//                    .background(Color.blue)
+//                    .cornerRadius(20)
+//                    .font(.system(size: 15))
+//                }
+//                .simultaneousGesture(TapGesture().onEnded{
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+//                        self.gotoChat = true
+//
+//                    })
+//
 //                })
+//                .fullScreenCover(isPresented: self.$gotoChat, content: {
+//                    TopicView(articles: forumController.articleData, isPresented: self.$gotoChat)
+//
+//                })
+                
+                NavigationLink(destination: GetTopicView(movie:movie))
+                {
+                    Text("討論區")
+                        .bold()
+                        .frame(width: 60, height: 30  )
+                        .background(Color.blue)
+                        .cornerRadius(20)
+                        .font(.system(size: 15))
+                }
+
+                
+
+
        
 
             }

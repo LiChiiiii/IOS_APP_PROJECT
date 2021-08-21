@@ -128,7 +128,6 @@ struct ListButton:View{
             .fullScreenCover(isPresented: self.$todo, content: {
                 GetListDetailView(todo: self.$todo, count :listController.listDetails.count, listDetail: listController.listDetails)
                 
-                //ListDetailView不能一次抓所有的照片
             })
           
             

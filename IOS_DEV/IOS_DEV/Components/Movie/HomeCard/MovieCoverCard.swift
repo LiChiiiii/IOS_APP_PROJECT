@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import SDWebImageSwiftUI
 
 struct MovieCoverCard: View {
     let movie: Movie
@@ -14,13 +14,15 @@ struct MovieCoverCard: View {
     
     var body: some View {
         ZStack {
-            if self.imageLoader.image != nil {
-                let card = resizeImage(image: self.imageLoader.image!, width: 250)
-                
-                Image(uiImage: card)
+            if movie.posterURL.description != "" {
+         
+                WebImage(url: movie.posterURL)
+                    .resizable()
+                    .frame(width: 250, height: 340)
                     .aspectRatio(contentMode: .fill)
                     .cornerRadius(8)
                     .shadow(radius: 4)
+            
                 
             } else {
                 Rectangle()
@@ -44,3 +46,5 @@ struct MovieCoverCard_Previews: PreviewProvider {
         MovieCoverCard(movie: stubbedMovie[0])
     }
 }
+
+

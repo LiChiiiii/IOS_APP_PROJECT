@@ -20,7 +20,6 @@ struct ActorAvatarList: View {
     @ObservedObject private var personSearchState6 = PersonSearchState()
     @ObservedObject private var personSearchState7 = PersonSearchState()
     @ObservedObject private var personSearchState8 = PersonSearchState()
-    @ObservedObject private var personSearchState9 = PersonSearchState()
     
     var body:some View{
         
@@ -33,7 +32,12 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState0.person != nil {
-                            Avatar(character: cast[0].character, actorList: personSearchState0.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState0.person!)
+                                ){
+                                Avatar(character: cast[0].character, actorList: personSearchState0.person!.first!)
+                            }
+                            
                         }
                     }
                     
@@ -43,7 +47,12 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState1.person != nil {
-                            Avatar(character: cast[1].character, actorList: personSearchState1.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState1.person!)
+                            ){
+                                Avatar(character: cast[1].character, actorList: personSearchState1.person!.first!)
+                            }
+                           
                         }
                     }
                     
@@ -53,7 +62,12 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState2.person != nil {
-                            Avatar(character: cast[2].character, actorList: personSearchState2.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState2.person!)
+                            ){
+                                Avatar(character: cast[2].character, actorList: personSearchState2.person!.first!)
+                            }
+            
                         }
                     }
                     
@@ -63,7 +77,12 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState3.person != nil {
-                            Avatar(character: cast[3].character, actorList: personSearchState3.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState3.person!)
+                            ){
+                                Avatar(character: cast[3].character, actorList: personSearchState3.person!.first!)
+                            }
+                            
                         }
                     }
                     
@@ -73,7 +92,11 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState4.person != nil {
-                            Avatar(character: cast[4].character, actorList: personSearchState4.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState4.person!)
+                            ){
+                                Avatar(character: cast[4].character, actorList: personSearchState4.person!.first!)
+                            }
                         }
                     }
                     
@@ -83,7 +106,11 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState5.person != nil {
-                            Avatar(character: cast[5].character, actorList: personSearchState5.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState5.person!)
+                            ){
+                                Avatar(character: cast[5].character, actorList: personSearchState5.person!.first!)
+                            }
                         }
                     }
                     
@@ -93,7 +120,11 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState6.person != nil {
-                            Avatar(character: cast[6].character, actorList: personSearchState6.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState6.person!)
+                            ){
+                                Avatar(character: cast[6].character, actorList: personSearchState6.person!.first!)
+                            }
                         }
                     }
                     
@@ -103,7 +134,11 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState7.person != nil {
-                            Avatar(character: cast[7].character, actorList: personSearchState7.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState7.person!)
+                            ){
+                                Avatar(character: cast[7].character, actorList: personSearchState7.person!.first!)
+                            }
                         }
                     }
                     
@@ -113,9 +148,15 @@ struct ActorAvatarList: View {
                         }
                         
                         if personSearchState8.person != nil {
-                            Avatar(character: cast[8].character, actorList: personSearchState8.person!.first!)
+                            NavigationLink(
+                                destination: ActorMovieView(actor: personSearchState8.person!)
+                            ){
+                                Avatar(character: cast[8].character, actorList: personSearchState8.person!.first!)
+                            }
                         }
                     }
+                    
+ 
                     
                     
                             

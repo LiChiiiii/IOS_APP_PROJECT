@@ -12,6 +12,7 @@
 		010C6B5A2660E0D8003ECC0D /* ForumBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B592660E0D8003ECC0D /* ForumBar.swift */; };
 		01571B88263F99FD00C97164 /* MessageBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01571B87263F99FD00C97164 /* MessageBoardView.swift */; };
 		0168857826D0CEB6005589BC /* GestureDetailVeiw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0168857726D0CEB6005589BC /* GestureDetailVeiw.swift */; };
+		0168857A26D14B42005589BC /* ActorMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0168857926D14B42005589BC /* ActorMovieView.swift */; };
 		0170180826969D0100E51209 /* MoviePosterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170180726969D0100E51209 /* MoviePosterCard.swift */; };
 		0170180A26969EEF00E51209 /* MoviePosterCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170180926969EEF00E51209 /* MoviePosterCarousel.swift */; };
 		0170180C2696A33C00E51209 /* MovieListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170180B2696A33C00E51209 /* MovieListView.swift */; };
@@ -26,7 +27,7 @@
 		0175AAE32658BA30001BCD2E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAE22658BA30001BCD2E /* Me.swift */; };
 		0175AAEA2658D4C8001BCD2E /* UserRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAE92658D4C8001BCD2E /* UserRegister.swift */; };
 		0175AAF22658DE05001BCD2E /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAF12658DE05001BCD2E /* Article.swift */; };
-		0175AAFD265A7EEA001BCD2E /* TractateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAFC265A7EEA001BCD2E /* TractateView.swift */; };
+		0175AAFD265A7EEA001BCD2E /* TractateView(square).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAFC265A7EEA001BCD2E /* TractateView(square).swift */; };
 		0175AB00265A7F3E001BCD2E /* TractateFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAFF265A7F3E001BCD2E /* TractateFrame.swift */; };
 		018DD31B26B675A8001A1345 /* ListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31A26B675A8001A1345 /* ListService.swift */; };
 		018DD32026B67B73001A1345 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31F26B67B73001A1345 /* List.swift */; };
@@ -136,6 +137,7 @@
 		010C6B592660E0D8003ECC0D /* ForumBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumBar.swift; sourceTree = "<group>"; };
 		01571B87263F99FD00C97164 /* MessageBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBoardView.swift; sourceTree = "<group>"; };
 		0168857726D0CEB6005589BC /* GestureDetailVeiw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureDetailVeiw.swift; sourceTree = "<group>"; };
+		0168857926D14B42005589BC /* ActorMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorMovieView.swift; sourceTree = "<group>"; };
 		0170180726969D0100E51209 /* MoviePosterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePosterCard.swift; sourceTree = "<group>"; };
 		0170180926969EEF00E51209 /* MoviePosterCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePosterCarousel.swift; sourceTree = "<group>"; };
 		0170180B2696A33C00E51209 /* MovieListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListView.swift; sourceTree = "<group>"; };
@@ -150,7 +152,7 @@
 		0175AAE22658BA30001BCD2E /* Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		0175AAE92658D4C8001BCD2E /* UserRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegister.swift; sourceTree = "<group>"; };
 		0175AAF12658DE05001BCD2E /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
-		0175AAFC265A7EEA001BCD2E /* TractateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TractateView.swift; sourceTree = "<group>"; };
+		0175AAFC265A7EEA001BCD2E /* TractateView(square).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TractateView(square).swift"; sourceTree = "<group>"; };
 		0175AAFF265A7F3E001BCD2E /* TractateFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TractateFrame.swift; sourceTree = "<group>"; };
 		018DD31A26B675A8001A1345 /* ListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListService.swift; sourceTree = "<group>"; };
 		018DD31F26B67B73001A1345 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -295,6 +297,14 @@
 			path = Forum;
 			sourceTree = "<group>";
 		};
+		0168857B26D15D10005589BC /* SearchPage */ = {
+			isa = PBXGroup;
+			children = (
+				0194A5F32695E4E700E24598 /* MovieSearchView.swift */,
+			);
+			path = SearchPage;
+			sourceTree = "<group>";
+		};
 		017018112696B69500E51209 /* HomeCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,7 +313,6 @@
 				0170180D2696B1E100E51209 /* MovieCoverCard.swift */,
 				0170180F2696B5CC00E51209 /* MovieCoverCardStack.swift */,
 				017018122696B71F00E51209 /* MovieCardCarousel.swift */,
-				017018172699485D00E51209 /* MovieCardGesture.swift */,
 			);
 			path = HomeCard;
 			sourceTree = "<group>";
@@ -336,7 +345,7 @@
 		0189E14E263F9D8D004D9791 /* ForumPage */ = {
 			isa = PBXGroup;
 			children = (
-				0175AAFC265A7EEA001BCD2E /* TractateView.swift */,
+				0175AAFC265A7EEA001BCD2E /* TractateView(square).swift */,
 				7ADA5A8326104396000A84D9 /* TopicView.swift */,
 				01571B87263F99FD00C97164 /* MessageBoardView.swift */,
 			);
@@ -392,9 +401,9 @@
 			isa = PBXGroup;
 			children = (
 				7A675A94262BF78B00542DB2 /* MovieDetailView.swift */,
-				0194A5F32695E4E700E24598 /* MovieSearchView.swift */,
-				0170180B2696A33C00E51209 /* MovieListView.swift */,
 				0168857726D0CEB6005589BC /* GestureDetailVeiw.swift */,
+				0170180B2696A33C00E51209 /* MovieListView.swift */,
+				017018172699485D00E51209 /* MovieCardGesture.swift */,
 			);
 			path = MoviePage;
 			sourceTree = "<group>";
@@ -438,6 +447,7 @@
 			children = (
 				7A0EE931261041690056BC8C /* IOS_DEVApp.swift */,
 				01CF139C266B307D00066FC2 /* NavBar.swift */,
+				0168857B26D15D10005589BC /* SearchPage */,
 				0194A5E62695DB8600E24598 /* MoviePage */,
 				01C0219C263E88510090846D /* UKIitViews */,
 				01ED4F372671F3F5009E2FD5 /* ListPage */,
@@ -496,6 +506,7 @@
 			children = (
 				0194A5F626961A8B00E24598 /* MovieOverviews.swift */,
 				01CF13B1266B39DA00066FC2 /* ActorAvatarList.swift */,
+				0168857926D14B42005589BC /* ActorMovieView.swift */,
 				01CF13AE266B396000066FC2 /* MovieInfoView.swift */,
 				01CF13B3266B39F500066FC2 /* MovieCaptureList.swift */,
 			);
@@ -607,6 +618,7 @@
 			isa = PBXGroup;
 			children = (
 				7ADA5A8226104396000A84D9 /* Cards.swift */,
+				7A0EE933261041690056BC8C /* ContentView.swift */,
 				01CF1394266B2AEC00066FC2 /* MovieCoverGesture.swift */,
 				01CF1396266B2B4900066FC2 /* MovieCoverStack.swift */,
 				01CF1398266B2E0B00066FC2 /* MovieScrollList.swift */,
@@ -668,7 +680,6 @@
 		7ADA5A7F26104396000A84D9 /* MainPage */ = {
 			isa = PBXGroup;
 			children = (
-				7A0EE933261041690056BC8C /* ContentView.swift */,
 				7ADA5A8026104396000A84D9 /* WelcomePage.swift */,
 				7A74EECC2611A8A000B722CF /* HomePage.swift */,
 				01C378C4266E65B800E75118 /* AutoScroll_V.swift */,
@@ -856,6 +867,7 @@
 				01CF1395266B2AEC00066FC2 /* MovieCoverGesture.swift in Sources */,
 				01CF13AB266B38C200066FC2 /* MovieDetailScrollView.swift in Sources */,
 				0194A5EF2695DFE600E24598 /* MovieListState.swift in Sources */,
+				0168857A26D14B42005589BC /* ActorMovieView.swift in Sources */,
 				0194A5E52695AB9700E24598 /* MovieDetailState.swift in Sources */,
 				018DD31B26B675A8001A1345 /* ListService.swift in Sources */,
 				0194A5F12695E04000E24598 /* MovieSearchState.swift in Sources */,
@@ -921,7 +933,7 @@
 				010C6B4E2660DFFD003ECC0D /* TopicFrame.swift in Sources */,
 				01B7322C26687CC7004A17BE /* CommentService.swift in Sources */,
 				01EBF58D266BAA6A0059B196 /* ListController.swift in Sources */,
-				0175AAFD265A7EEA001BCD2E /* TractateView.swift in Sources */,
+				0175AAFD265A7EEA001BCD2E /* TractateView(square).swift in Sources */,
 				01CF13A9266B386000066FC2 /* FloatingButton.swift in Sources */,
 				01B7322F26687CF1004A17BE /* Comment.swift in Sources */,
 				7ADA5A7626104355000A84D9 /* Square.swift in Sources */,
