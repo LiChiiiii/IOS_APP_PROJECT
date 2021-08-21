@@ -81,7 +81,7 @@ struct MovieCardGesture :View{
 
 
         }
-        .background(FullMovieCoverBackground(urlPath: self.currentMovie?.posterPath ?? "").blur(radius: 50))
+        .background(FullMovieCoverBackground(urlPath: self.currentMovie?.posterPath ?? "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg").blur(radius: 50))
 
     }
 

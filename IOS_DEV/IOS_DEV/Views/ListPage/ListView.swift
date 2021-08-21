@@ -48,8 +48,6 @@ struct ListView: View
                     //two 'TractateFrame' in a Row
                 LazyVGrid(columns: columns, spacing: 20){
                     ForEach(self.lists ,id: \.id) { list in
-                        
-                      
                         ListButton(list: list)
                     }
                 }
@@ -87,11 +85,30 @@ struct ListButton:View{
                 
             }){
                
-               
-                VStack(){
+                
+                VStack(alignment:.leading){
+                    
+                
+                    HStack(){
+                        Image("ka")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .cornerRadius(30)
+                        Text(list.user!.UserName)
+                    }
+                    .padding(.top,15)
+                    
+                    
+                    
                     Text(list.Title)
                         .bold()
                         .font(.system(size: 22))
+                        .padding(.top,25)
+                            
+                    
+                    Spacer()
+                    
+                    
                 }
                 .frame(width:170,height: 170)
                 .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
@@ -99,21 +116,17 @@ struct ListButton:View{
                 .foregroundColor(.white)
                 .cornerRadius(20)
                 .padding(8)
-                 
+        
 
             
             }
             .simultaneousGesture(TapGesture().onEnded{
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                     self.todo = true
-                    
-//                    ForEach(listController.listDetails, id:\.id) { movie in
-//                    }
-                    
                 })
             })
-            .fullScreenCover(isPresented: $todo, content: {
-               // ListDetailView(todo: $todo)
+            .fullScreenCover(isPresented: self.$todo, content: {
+                GetListDetailView(todo: self.$todo, count :listController.listDetails.count, listDetail: listController.listDetails)
                 
                 //ListDetailView不能一次抓所有的照片
             })

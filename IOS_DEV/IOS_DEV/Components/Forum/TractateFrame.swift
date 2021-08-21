@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TractateFrame: View
 {
-    var article:Article
+    //var article:Article
 
     
     var body: some View
@@ -31,19 +31,19 @@ struct TractateFrame: View
                             .frame(width: 40, height: 40)
                             .cornerRadius(30)
                             .padding(.leading,8)
-                        Text(article.user!.UserName)
+                        Text("article.user!.UserName")
                         Spacer()
                     }
                     
-                    Text(article.Title)
+                    Text("article.Title")
                         .font(.system(.title, design: .rounded))
                         .padding(.leading,8)
                     Spacer()
-                    Text(article.Text)
+                    Text("article.Text")
                         .padding(.leading,8)
                     Spacer()
 
-                    Text(article.updatedOn)
+                    Text("article.updatedOn")
                         .padding(.leading,8)
                     
                     
@@ -58,7 +58,7 @@ struct TractateFrame: View
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundColor(.pink)
-                        Text(article.LikeCount)
+                        Text("article.LikeCount")
 
                     }
                     .padding([.trailing,.bottom],20)
@@ -84,10 +84,3 @@ struct TractateFrame: View
 }
 
 
-//struct TractateFrame_Previews: PreviewProvider
-//{
-//    static var previews: some View
-//    {
-//        TractateFrame(article: ArticleList.first!)
-//    }
-//}
