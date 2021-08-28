@@ -11,6 +11,7 @@ import SwiftUI
 struct MovieCardCarousel: View{
     @ObservedObject var genreTypeState = GenreTypeState()
     var movies:[Movie]
+    let genreID : Int
     @State private var isCardSelectedMovie:Bool = false
     private func getScale(geo : GeometryProxy)->CGFloat{
        var scale:CGFloat = 1.0
@@ -41,7 +42,7 @@ struct MovieCardCarousel: View{
                     let scaleValue = getScale(geo: proxy)
                     
 
-                 MovieCoverCardStack(isCardSelectedMovie: $isCardSelectedMovie, movies: movies)
+                    MovieCoverCardStack(isCardSelectedMovie: $isCardSelectedMovie, movies: movies, genreID: genreID)
                             .rotation3DEffect(Angle(degrees:Double(proxy.frame(in: .global).minX - 30)  / -20), axis: (x: 0, y: 20.0, z: 0))
                             .scaleEffect(CGSize(width: scaleValue, height: scaleValue))
                     .onTapGesture {
@@ -94,7 +95,7 @@ struct MovieCardCarousel_Previews: PreviewProvider
 {
    static var previews: some View
    {
-        MovieCardCarousel(movies: stubbedMovie)
+    MovieCardCarousel(movies: stubbedMovie, genreID: 28)
               .preferredColorScheme(.dark)
     
    }

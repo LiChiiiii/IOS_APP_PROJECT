@@ -16,7 +16,7 @@ protocol MovieService {
     func MovieReccomend(id: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func searchMovie(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func searchPerson(query: String, completion: @escaping (Result<PersonResponse, MovieError>) -> ())
-    func GenreType(genreID: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
+    func GenreType(genreID: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ())
     func fetchMovieResource(query: String, completion: @escaping (Result<[ResourceResponse], MovieError>) -> ())
 }

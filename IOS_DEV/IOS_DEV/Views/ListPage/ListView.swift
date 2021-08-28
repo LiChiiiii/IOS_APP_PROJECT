@@ -95,6 +95,8 @@ struct ListButton:View{
                             .frame(width: 40, height: 40)
                             .cornerRadius(30)
                         Text(list.user!.UserName)
+                            .foregroundColor(.gray)
+                            .font(.system(size: 15))
                     }
                     .padding(.top,15)
                     
@@ -102,7 +104,7 @@ struct ListButton:View{
                     
                     Text(list.Title)
                         .bold()
-                        .font(.system(size: 22))
+                        .font(.system(size: 20))
                         .padding(.top,25)
                             
                     
@@ -111,7 +113,8 @@ struct ListButton:View{
                     
                 }
                 .frame(width:170,height: 170)
-                .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
+                .background(BlurView().cornerRadius(25))
+                //.background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
                 .shadow(color: .gray, radius: 0.5)
                 .foregroundColor(.white)
                 .cornerRadius(20)

@@ -13,7 +13,9 @@ struct MovieCoverCardStack: View {
     
     @Binding var isCardSelectedMovie:Bool
     @State var isPress = false
-    var movies : [Movie]
+    let movies : [Movie]
+    let genreData = DataLoader().genreData
+    let genreID : Int
     var body: some View {
         VStack{
             ZStack{
@@ -33,13 +35,16 @@ struct MovieCoverCardStack: View {
                 }
             }
         
-           
-            Text("CoverStack.swift-37")
-                .bold()
-                .font(.body)
-                .padding(.vertical)
-          
-                
+            ForEach(genreData, id:\.id){ genre in
+
+                if genre.id == self.genreID {
+                    Text(genre.name)
+                        .bold()
+                        .font(.body)
+                        .padding(.vertical)
+                }
+
+            }
                 
         }
         .onTapGesture {
@@ -54,7 +59,7 @@ struct MovieCoverCardStack_Previews: PreviewProvider {
     static var previews: some View {
         ZStack{
             Color.black.edgesIgnoringSafeArea(.all)
-            MovieCoverCardStack(isCardSelectedMovie: .constant(false), movies: stubbedMovie)
+            MovieCoverCardStack(isCardSelectedMovie: .constant(false), movies: stubbedMovie, genreID: 28)
         }
     }
 }

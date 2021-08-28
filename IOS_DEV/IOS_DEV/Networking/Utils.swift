@@ -22,4 +22,14 @@ class Utils {
         dateFormatter.dateFormat = "yyyy-mm-dd"
         return dateFormatter
     }()
+    
+    static let Formatter: DateFormatter = {
+        let Formatter = DateFormatter()
+        Formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        return Formatter
+    }()
+
+
+
 }
+

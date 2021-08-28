@@ -18,17 +18,15 @@ struct TopicFrame: View
             HStack(spacing: 0)
             {
             
-//                NavigationLink(destination: MessageBoardView(article: article,comment: commentData ))
-//                {
-                    Image("ka")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 140, height: 160)
-                    .clipped()
-                    //.overlay(Circle().stroke(Color.white, lineWidth: 4))
-                    .shadow(radius: 7)
-                    //.cornerRadius(30.0)
-                    Spacer()
+//                    Image("ka")
+//                    .resizable()
+//                    .scaledToFill()
+//                    .frame(width: 140, height: 160)
+//                    .clipped()
+//                    //.overlay(Circle().stroke(Color.white, lineWidth: 4))
+//                    .shadow(radius: 7)
+//                    //.cornerRadius(30.0)
+//                    Spacer()
                     Spacer()
                     VStack(alignment:.leading)
                     {
@@ -42,14 +40,18 @@ struct TopicFrame: View
                             Text(article.user!.UserName)
                             Spacer()
                         }
-                        .padding(.top,15)
+              
                     
                         Text(article.Title)
-                        .font(.system(.title, design: .rounded))
+                            .font(.system(size:20, design: .rounded))
+                            .bold()
+                        
                         //Spacer()
                         Text(article.Text)
-                        //Spacer()
-                        Text(article.updatedOn)
+                            .font(.system(size:17))
+                            .foregroundColor(.gray)
+                           
+                        
                         Spacer()
                         HStack()
                         {
@@ -58,23 +60,29 @@ struct TopicFrame: View
 //                            .resizable()
 //                            .frame(width: 25, height: 25)
 //                            Text("65")
+                            Text(article.dateText)
+                                .foregroundColor(.gray)
+                            
                             Image(systemName:"heart")
                             .resizable()
-                            .frame(width: 25, height: 25)
+                            .frame(width: 15, height: 15)
                             .foregroundColor(.pink)
                             
                             Text(article.LikeCount)
                         
                         }
-                        .padding(.bottom,25)
+                        .padding(.bottom,10)
+                        .font(.footnote)
                     }
-//                }
+                    .padding(10)
+
         }
         .frame(width: UIScreen.main.bounds.size.width-25, height: 160, alignment: .leading)
         .foregroundColor(.white).background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
         .shadow(color: .gray, radius: 0.5)
         .cornerRadius(20)
-        .padding([.leading, .bottom, .trailing], 20)
+        .padding([.leading, .trailing], 20)
+        .padding([.bottom], 5)
    
         
             

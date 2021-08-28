@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TractateFrame: View
 {
-    //var article:Article
+    var article:Article
 
     
     var body: some View
@@ -31,37 +31,39 @@ struct TractateFrame: View
                             .frame(width: 40, height: 40)
                             .cornerRadius(30)
                             .padding(.leading,8)
-                        Text("article.user!.UserName")
+                        Text(article.user!.UserName)
                         Spacer()
                     }
                     
-                    Text("article.Title")
-                        .font(.system(.title, design: .rounded))
+                    Text(article.Title)
+                        .font(.system(size:20, design: .rounded))
                         .padding(.leading,8)
+                    
                     Spacer()
-                    Text("article.Text")
+                    Text(article.Text)
                         .padding(.leading,8)
+                        .font(.system(size:17))
+                        .foregroundColor(.gray)
                     Spacer()
 
-                    Text("article.updatedOn")
+                    Text(article.dateText)
                         .padding(.leading,8)
+                        .font(.footnote)
+                        .foregroundColor(.gray)
                     
                     
-                    HStack()
-                    {
-//                        Image(systemName:"text.bubble")
+//                    HStack()
+//                    {
+//
+//                        Spacer()
+//                        Image(systemName:"heart")
 //                            .resizable()
 //                            .frame(width: 25, height: 25)
-//                        Text("20")
-                        Spacer()
-                        Image(systemName:"heart")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .foregroundColor(.pink)
-                        Text("article.LikeCount")
-
-                    }
-                    .padding([.trailing,.bottom],20)
+//                            .foregroundColor(.pink)
+//                        Text("article.LikeCount")
+//
+//                    }
+//                    .padding([.trailing,.bottom],20)
                     
                     Spacer()
                     

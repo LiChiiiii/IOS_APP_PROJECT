@@ -29,26 +29,26 @@ struct WelcomePage: View {
             
             VStack(spacing:20){
                 
-                HStack(spacing:10) {
-                    Text("Welcome!")
-                        .foregroundColor(.black)
-                        .bold()
-                        .font(.system(size:40))
-                        .offset(x: animateImagge ? 0: -350)
-                        .animation(.easeInOut(duration: 1.5))
-                    Spacer()
-                }
-                .frame(width:screen.width - 50)
-                .padding(.horizontal,5)
-                .padding(.top,100)
+//                HStack(spacing:10) {
+//                    Text("Welcome")
+//                        .foregroundColor(.black)
+//                        .bold()
+//                        .font(.system(size:40))
+//                        .offset(x: animateImagge ? 0: -350)
+//                        .animation(.easeInOut(duration: 1.5))
+//                    Spacer()
+//                }
+//                .frame(width:screen.width - 50)
+//                .padding(.horizontal,5)
+//                .padding(.top,100)
                 
             
                 
                 Spacer()
                 HStack(spacing:10) {
-                    Text("C.S.I.E")
+                    Text("Adam's apple")
                         .foregroundColor(Color.white)
-                        .font(.system(size:75,weight: .regular, design: .rounded))
+                        .font(.system(size:50,weight: .regular, design: .serif))
                         .offset(x:animateImagge ? 0 : -350)
                         .animation(.easeInOut(duration: 1.5))
                 }

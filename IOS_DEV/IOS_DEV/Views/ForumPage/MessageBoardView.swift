@@ -44,7 +44,7 @@ struct MessageBoardView: View
         Spacer()
     
         
-        ScrollView
+        ScrollView(.vertical, showsIndicators: false)
         {
            
             HStack(spacing: 0)

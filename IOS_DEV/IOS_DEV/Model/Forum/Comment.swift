@@ -13,7 +13,21 @@ struct Comment: Decodable, Identifiable{
     var user: CommentOwner?
     var article: article?
     var LikeCount: String
-    var updatedOn: String   //db is 'DATE', but here is 'STRING'
+    var updatedOn: String?   //db is 'DATE', but here is 'STRING'
+    
+    static private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        return formatter
+    }()
+    
+    var dateText: String {
+        guard let updatedOn = self.updatedOn, let date = Utils.Formatter.date(from: updatedOn) else {
+            return "n/a"
+        }
+        return Comment.dateFormatter.string(from: date)
+    }
+    
 
 }
 

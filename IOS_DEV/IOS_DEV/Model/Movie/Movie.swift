@@ -120,7 +120,7 @@ struct Movie: Decodable, Identifiable, Hashable {
 
 struct MovieGenreID: Decodable {    //抓特定類別用的
     
-    let id: String
+    let id: Int
 }
 
 struct MovieGenre: Decodable {
@@ -128,6 +128,7 @@ struct MovieGenre: Decodable {
     let id: Int
     let name: String
 }
+
 
 struct MovieCredit: Decodable {
     
@@ -171,16 +172,16 @@ struct MovieVideo: Decodable, Identifiable {
 
 let stubbedMovie:[Movie] = [
     Movie(id: 338762, title: "Bloodshot", backdropPath: "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", posterPath: "/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", overview: "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.", voteAverage: 7.1, voteCount: 2324, runtime: 250, releaseDate: "2020-03-05", originalLanguage: "en", genres: [], credits: nil, videos: nil),
-    Movie(id: 338763, title: "test1", backdropPath: "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", posterPath: "/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", overview: "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.", voteAverage: 7.1, voteCount: 2324, runtime: 250, releaseDate: "2020-03-05", originalLanguage: "en", genres: [], credits: nil, videos: nil),
-    Movie(id: 338764, title: "test2", backdropPath: "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", posterPath: "/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", overview: "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.", voteAverage: 7.1, voteCount: 2324, runtime: 250, releaseDate: "2020-03-05", originalLanguage: "en", genres: [], credits: nil, videos: nil)
+    Movie(id: 338763, title: "test1", backdropPath: "/ic0intvXZSfBlYPIvWXpU1ivUCO.jpg", posterPath: "/ic0intvXZSfBlYPIvWXpU1ivUCO.jpg", overview: "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.", voteAverage: 7.1, voteCount: 2324, runtime: 250, releaseDate: "2020-03-05", originalLanguage: "en", genres: [], credits: nil, videos: nil),
+    Movie(id: 338764, title: "test2", backdropPath: "/xing0YOUsHS4qKFu7BtFSnZfAgJ.jpg", posterPath: "/xing0YOUsHS4qKFu7BtFSnZfAgJ.jpg", overview: "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.", voteAverage: 7.1, voteCount: 2324, runtime: 250, releaseDate: "2020-03-05", originalLanguage: "en", genres: [], credits: nil, videos: nil)
     
 ]
 
 let GenreID:[MovieGenreID] = [
-    MovieGenreID(id:"28"),
-    MovieGenreID(id:"12"),
-    MovieGenreID(id:"16"),
-    MovieGenreID(id:"35"),
+    MovieGenreID(id:28),
+    MovieGenreID(id:12),
+    MovieGenreID(id:16),
+    MovieGenreID(id:35),
 
 ]
 

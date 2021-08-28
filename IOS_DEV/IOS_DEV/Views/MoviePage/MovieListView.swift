@@ -36,12 +36,12 @@ struct MovieListView: View {
                         //one
                         Group {
                             if genreTypeState.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState.movies!)
+                                MovieCardCarousel(movies: genreTypeState.movies!,genreID:28)
                 
                             } else {
                                 LoadingView(isLoading: self.genreTypeState.isLoading, error: self.genreTypeState.error) {
                                     self.genreTypeState.genreType(
-                                        genreID:"28")
+                                        genreID:28)
                                 }
                             }
                         }
@@ -50,11 +50,11 @@ struct MovieListView: View {
                         //two
                         Group {
                             if genreTypeState2.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState2.movies!)
+                                MovieCardCarousel(movies: genreTypeState2.movies!,genreID:16)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState2.isLoading, error: self.genreTypeState2.error) {
                                     self.genreTypeState2.genreType(
-                                        genreID:"16")
+                                        genreID:16)
                                 }
                             }
                         }
@@ -63,11 +63,11 @@ struct MovieListView: View {
                         //three
                         Group {
                             if genreTypeState3.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState3.movies!)
+                                MovieCardCarousel(movies: genreTypeState3.movies!,genreID:12)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState3.isLoading, error: self.genreTypeState3.error) {
                                     self.genreTypeState3.genreType(
-                                        genreID:"12")
+                                        genreID:12)
                                 }
                             }
                         }
@@ -76,11 +76,11 @@ struct MovieListView: View {
                         //four
                         Group {
                             if genreTypeState4.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState4.movies!)
+                                MovieCardCarousel(movies: genreTypeState4.movies!,genreID:35)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState4.isLoading, error: self.genreTypeState4.error) {
                                     self.genreTypeState4.genreType(
-                                        genreID:"35")
+                                        genreID:35)
                                 }
                             }
                         }
@@ -89,11 +89,11 @@ struct MovieListView: View {
                         //five
                         Group {
                             if genreTypeState5.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState5.movies!)
+                                MovieCardCarousel(movies: genreTypeState5.movies!,genreID:80)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState5.isLoading, error: self.genreTypeState5.error) {
                                     self.genreTypeState5.genreType(
-                                        genreID:"80")
+                                        genreID:80)
                                 }
                             }
                         }
@@ -109,11 +109,11 @@ struct MovieListView: View {
                 .frame(height:600)
                 
             }.onAppear{
-                self.genreTypeState.genreType(genreID:"28")
-                self.genreTypeState2.genreType(genreID:"16")
-                self.genreTypeState3.genreType(genreID:"12")
-                self.genreTypeState4.genreType(genreID:"35")
-                self.genreTypeState5.genreType(genreID:"80")
+                self.genreTypeState.genreType(genreID:28)
+                self.genreTypeState2.genreType(genreID:16)
+                self.genreTypeState3.genreType(genreID:12)
+                self.genreTypeState4.genreType(genreID:35)
+                self.genreTypeState5.genreType(genreID:80)
 
             }
             

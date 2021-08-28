@@ -83,7 +83,7 @@ struct TractateButton:View{
                 controller.articleDetails(articleID: article.id!)
        
             }){
-                TractateFrame()
+                TractateFrame(article: article)
             
             }
             .simultaneousGesture(TapGesture().onEnded{

@@ -56,7 +56,7 @@ struct TopicView: View
             }
             
             
-            ScrollView(.vertical, showsIndicators: true)
+            ScrollView(.vertical, showsIndicators: false)
             {
                 Spacer()
                 
@@ -64,7 +64,7 @@ struct TopicView: View
                   
                     HStack{
                         
-                        NavigationLink(destination:   GetMessageBoardView(article: article))
+                        NavigationLink(destination:GetMessageBoardView(article: article))
                         {
                             TopicFrame(article:article)
                         }

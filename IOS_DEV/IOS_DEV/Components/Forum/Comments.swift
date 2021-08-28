@@ -21,35 +21,53 @@ struct Comments: View
                     HStack()
                     {
                         
-                        Image("ja")
+                        Image("ka")
                             .resizable()
-                            .frame(width: 45, height: 45)
+                            .frame(width: 30, height: 30)
                             .cornerRadius(30)
                             .padding(.leading,15)
                         Text(comment.user!.UserName)
                         Spacer()
+                        
+                        VStack(alignment: .trailing,spacing:5)
+                        {
+                            HStack(){
+                                Text(comment.dateText)
+                                    .padding(5)
+                                    .foregroundColor(.gray)
+                                
+                                Image(systemName:"heart")
+                                    .resizable()
+                                    .frame(width: 15, height: 15)
+                                    .foregroundColor(.pink)
+                                
+                                Text(comment.LikeCount)
+                            }
+                            .font(.footnote)
+                            
+                        }
+                        
+                        
                     }
+  
                     Text(comment.Text)
-                        .padding(5)
-                    
-                    HStack(){
-                        Text(comment.updatedOn)
-                            .padding(5)
+                        .font(.body)
+                        .padding(20)
                         
-                        Image(systemName:"heart")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .foregroundColor(.pink)
                         
-                        Text(comment.LikeCount)
-                    }
+                        
+                        
+                 
                     
                     
                     Divider()//分隔線
+                        .background(Color.gray)
+                       
                     
                     
                     
                 }
+                
             }
     }
 }

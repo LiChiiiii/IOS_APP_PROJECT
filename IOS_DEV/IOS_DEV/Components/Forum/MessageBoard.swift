@@ -18,78 +18,84 @@ struct MessageBoard: View
     
     var body: some View
     {
-        
-            HStack(spacing:0)
+
+   
+        VStack(alignment:.leading)
+        {
+            //Spacer()
+            HStack()
             {
-                VStack(alignment:.leading)
+                
+                Image("ka")
+                    .resizable()
+                    .frame(width: 45, height: 45)
+                    .cornerRadius(30)
+                    .padding(.leading,15)
+                Text(article.user!.UserName)
+                Spacer()
+            }
+         
+    
+            Text(article.Title)
+                .font(.system(.title, design: .rounded))
+                .bold()
+                .padding(25)
+             
+         
+        
+            Text(article.Text)
+                .font(.body)
+                .padding(25)
+                
+
+            
+            HStack()
+            {
+                Text(article.timeText)
+                    .padding(25)
+                    .foregroundColor(.gray)
+
+                Image(systemName:"heart")
+                .resizable()
+                .frame(width: 15, height: 15)
+                .foregroundColor(.pink)
+
+                Text(article.LikeCount)
+            }
+            .font(.footnote)
+           
+            Divider()//分隔線
+                .background(Color.gray)
+
+
+            
+            ForEach(self.comments ,id: \.id) { comment in
+                Comments(comment: comment)
+            }
+            
+            
+            
+            
+            HStack
+            {
+                TextField("your contents...", text: $texts)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+
+                Button(action: { PostComment() })
                 {
-                    //Spacer()
-                    HStack()
-                    {
-                        
-                        Image("ka")
-                            .resizable()
-                            .frame(width: 45, height: 45)
-                            .cornerRadius(30)
-                            .padding(.leading,15)
-                        Text(article.user!.UserName)
-                        Spacer()
-                    }
-                 
-                    Text(article.Title)
-                        .font(.system(.title, design: .rounded))
-                        .padding(25)
-                    Text(article.Text)
-                        .padding(25)
-                    HStack{
-                        Text(article.updatedOn)
-                            .padding(25)
-                        
-                        Image(systemName:"heart")
+                    Image(systemName: "paperplane")
                         .resizable()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.pink)
-                        
-                        Text(article.LikeCount)
-                    }
-                   
-                    Divider()//分隔線
-                    
-                    
-                    VStack
-                    {
-                      
-                        ForEach(self.comments ,id: \.id) { comment in
-                            HStack
-                            {
-                                Comments(comment: comment)
-                            }.padding(.bottom)
-
-                        }
-                    }
-                    
-                    
-                    
-                    HStack
-                    {
-                        TextField("your contents...", text: $texts)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding()
-                        
-                        Button(action: { PostComment() })
-                        {
-                            Image(systemName: "paperplane")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                                .foregroundColor(.gray)
-                                .offset(x: -10)
-                        }
-                        
-                    }
-                   // .offset(y:20)
-                    
+                        .foregroundColor(.gray)
+                        .offset(x: -10)
                 }
+
             }
+  
+            
+        }
+            
     }
     
     func PostComment(){

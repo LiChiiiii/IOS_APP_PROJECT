@@ -86,7 +86,7 @@ class MovieStore: MovieService {
     }
     
     
-    func GenreType(genreID: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
+    func GenreType(genreID: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/discover/movie") else {
             completion(.failure(.invalidEndpoint))
             return
@@ -94,7 +94,7 @@ class MovieStore: MovieService {
         self.loadURLAndDecode(url: url, params: [
             "language": "zh-TW",
             "include_adult": "false",
-            "with_genres": genreID
+            "with_genres": "\(genreID)"
         ], completion: completion)
         
     }

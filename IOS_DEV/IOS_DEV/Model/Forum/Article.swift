@@ -14,7 +14,7 @@ struct Article: Decodable, Identifiable{
     var user: ArticleOwner?
     var movie: Board?
     var LikeCount: String
-    var updatedOn: String   //db is 'DATE', but here is 'STRING'
+    var updatedOn: String?   //db is 'DATE', but here is 'STRING'
     
     init(id: UUID? = nil, Title:String, Text:String, LikeCount:String, updatedOn: String){
         self.id = id
@@ -24,6 +24,32 @@ struct Article: Decodable, Identifiable{
         self.movie = Board(id:0, title: "")
         self.LikeCount = LikeCount
         self.updatedOn = updatedOn
+    }
+    
+    static private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+    
+    static private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        return formatter
+    }()
+    
+    var dateText: String {
+        guard let updatedOn = self.updatedOn, let date = Utils.Formatter.date(from: updatedOn) else {
+            return "n/a"
+        }
+        return Article.dateFormatter.string(from: date)
+    }
+    
+    var timeText: String {
+        guard let updatedOn = self.updatedOn, let date = Utils.Formatter.date(from: updatedOn) else {
+            return "n/a"
+        }
+        return Article.timeFormatter.string(from: date)
     }
     
 }

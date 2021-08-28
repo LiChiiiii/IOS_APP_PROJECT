@@ -11,7 +11,7 @@ import Foundation
 
 class NetworkingService: ObservableObject {
     
-    let baseUrl="http://127.0.0.1:8080"
+    let baseUrl="http://192.168.0.11:8080"
     var token = ""
         
     //login
