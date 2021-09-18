@@ -16,13 +16,16 @@ enum SideOfState: String, CaseIterable {
 
 struct ProfileView: View {
     
-    init(){
-        UISegmentedControl.appearance().selectedSegmentTintColor = .systemRed
-    }
+//    init(){
+//        UISegmentedControl.appearance().selectedSegmentTintColor = .systemRed
+//    }
+    
     @State private var userID = "Justin Bieber" //UserID
     @State private var likedMovie = 30
     @State private var notification = true
     @State private var select: SideOfState = .movie
+    @ObservedObject private var listController = ListController()
+    @State var NowUser:Me?
     
     var body: some View{
         NavigationView{
@@ -32,7 +35,7 @@ struct ProfileView: View {
                         .resizable()
                         .frame(width: 150, height: 150)
                         .clipShape(Circle())
-                    Text(NowUser)
+                    Text(NowUserName)
                         .bold()
                     HStack{
                         Image(systemName: "heart.fill")
@@ -48,7 +51,7 @@ struct ProfileView: View {
                             Text("Account Setting")
                                 .bold()
                                 .frame(width: 350, height: 45, alignment: .center)
-                                .background(Color.red)
+                                .background(Color("ButtonRed"))
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
                         })
@@ -59,18 +62,18 @@ struct ProfileView: View {
                             Text("Movie Setting")
                                 .bold()
                                 .frame(width: 350, height: 45, alignment: .center)
-                                .background(Color.red)
+                                .background(Color("ButtonRed"))
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
                         })
                         .padding(5)
                     NavigationLink(
-                        destination: MyListView(),
+                        destination: MyListView(lists: listController.mylistData),
                         label: {
                             Text("My List")
                                 .bold()
                                 .frame(width: 350, height: 45, alignment: .center)
-                                .background(Color.red)
+                                .background(Color("ButtonRed"))
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
                         })
@@ -110,7 +113,11 @@ struct ProfileView: View {
             }
         }
         .accentColor(.red)
+        .onAppear{
+            self.listController.GetMyList(userID: NowUserID!)
+        }
     }
+    
 }
 
 struct AccountSettingView: View {
@@ -128,7 +135,7 @@ struct AccountSettingView: View {
                 .resizable()
                 .frame(width: 150, height: 150)
                 .clipShape(Circle())
-            Text(NowUser)
+            Text(NowUserName)
                 .bold()
             Form{
                 Section(header: Text("Name")){
@@ -188,28 +195,10 @@ struct MovieSettingView: View {
     }
 }
 
-struct MyListView: View {
-    
-    var body: some View{
-        
-        Spacer()
-        
-        ScrollView(.vertical, showsIndicators: false){
-            Text("My List")
-            
-        }
-        .navigationTitle("My List")
-        .toolbar{
-            Button("Save"){}
-        }
-        
-    }
-}
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView()
-            
             
     }
 }
@@ -235,7 +224,7 @@ struct genrebutton: View {
             }
             .padding()
             .foregroundColor(self.choose == true ? Color.white : Color.black)
-            .background(self.choose == true ? Color.red : Color.gray)
+            .background(self.choose == true ? Color("CustomRed") : Color.gray)
             .cornerRadius(40)
         }
     }

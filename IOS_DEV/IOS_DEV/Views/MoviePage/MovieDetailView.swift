@@ -13,6 +13,7 @@ struct MovieDetailView: View {
 
     let movieId: Int
     @ObservedObject private var movieDetailState = MovieDetailState()
+    @ObservedObject private var listController = ListController()
     @Binding var navBarHidden:Bool
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
@@ -25,15 +26,39 @@ struct MovieDetailView: View {
 
             if movieDetailState.movie != nil {
                 
-                WebImages(movie: self.movieDetailState.movie!, navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading)
+                WebImages(movie: movieDetailState.movie! , navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading,myMovieList:listController.mylistData)
 
             }
         }
         .onAppear {
             self.movieDetailState.loadMovie(id: self.movieId)
+            self.listController.GetMyList(userID: NowUserID!)
+            
         }
     }
 }
+
+//struct GetMyMovieList: View {
+//    @ObservedObject private var listController = ListController()
+//    @State var NowUser:Me?
+//    @Binding var navBarHidden:Bool
+//    @Binding var isAction : Bool
+//    @Binding var isLoading : Bool
+//    @State var movie : Movie
+//
+//    var body: some View {
+//        ZStack {
+//
+//
+//
+//
+//        }
+//        .onAppear {
+//            self.listController.GetMyList(userID: (NowUser?.id)!)
+//
+//        }
+//    }
+//}
 
 
 
@@ -55,7 +80,7 @@ struct movieImage:View{
 
 struct WebImages: View {
    
-    let movie: Movie
+    @State var movie : Movie
     //MOVIE URL
     @State private var size = 0.0
     @State private var opacity = 0.0
@@ -65,6 +90,8 @@ struct WebImages: View {
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
     @State private var isAppear:Bool = false
+    @State var myMovieList : [List]
+
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
     var body: some View {
@@ -117,8 +144,8 @@ struct WebImages: View {
                 //                        Detail Items
                 
                
-                
-                MovieInfoDetail(movie: movie)
+               
+                MovieInfoDetail(myMovieList:myMovieList , movie: movie)
                     .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
                     
                 //     .offset(y:10)
@@ -211,7 +238,8 @@ struct WebImages: View {
 struct MovieInfoDetail: View {
     @State private var isMyList = false
     @State private var gotoChat : Bool = false
-    let movie: Movie
+    @State var myMovieList : [List]
+    @State var movie : Movie
     
     var body: some View {
         VStack(spacing:5){
@@ -300,10 +328,25 @@ struct MovieInfoDetail: View {
                         print("test")
                     }
 
-                    SmallBorderOnlyButton(title: "My List", icon: "plus", onChangeIcon: "checkmark",isMylist: $isMyList){
-                        //To Add this movie to my List
-                        isMyList.toggle()
-                    }
+                    //------------------------  + MY List ----------------------- -//
+                    Menu {
+                        ForEach(myMovieList, id:\.id){list in
+                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                                Text(list.Title)
+                            })
+                        }
+                    
+
+                   } label: {
+                        SmallBorderOnlyButton(title: "My List", icon: "plus", onChangeIcon: "checkmark",isMylist: $isMyList){
+                            //To Add this movie to my List
+                            isMyList.toggle()
+                        }
+                   }
+                    
+
+                    
+                    
                     Spacer()
                     
                     
@@ -337,9 +380,8 @@ struct MovieInfoDetail: View {
         }
         .font(.system(.title3))
         .foregroundColor(.white)
-        //.padding(.horizontal,10)
         .padding(.top)
-        //    .background(Color.black.edgesIgnoringSafeArea(.all))
+//        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 

@@ -132,7 +132,7 @@ struct GestureDetail: View {
                     
                    
                     
-                    MovieInfoDetail(movie: movie)
+//                    MovieInfoDetail(myMovieList: <#[List]#>, movie: movie)
                         .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
                         
                     //     .offset(y:10)

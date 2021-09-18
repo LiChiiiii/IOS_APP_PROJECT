@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MovieListView: View {
     
+    
+//    @StateObject
     @ObservedObject private var nowPlayingState = MovieListState()
     @ObservedObject private var upcomingState = MovieListState()
     @ObservedObject private var topRatedState = MovieListState()

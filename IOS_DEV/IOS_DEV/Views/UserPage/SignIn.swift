@@ -10,7 +10,7 @@ import Firebase
 import GoogleSignIn
 import AuthenticationServices
 import CryptoKit
-var NowUser:String = "" // user who login
+var NowUserName:String = "" // user who login
 
 
 struct SignIn: View {
@@ -81,7 +81,7 @@ struct SignInCell : View{
             case .success: print("login success")
                 self.isPresented.toggle()
                 ErrorAlert = false
-                NowUser = self.username
+                NowUserName = self.username
                 
             case .failure:
                 print("login failed")

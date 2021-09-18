@@ -10,7 +10,7 @@ import Foundation
 
 class ListService: ObservableObject {
     
-    let baseUrl="http://192.168.0.11:8080"
+    let baseUrl="http://127.0.0.1:8080"
     let networkingService = NetworkingService()
     
     //get all lists
@@ -45,6 +45,33 @@ class ListService: ObservableObject {
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     
         ListDetailsResponse(for: request, completion: completion)
+        
+    }
+    
+    //-----新增片單-----//
+    func POST_Lists(endpoint: String,
+                    RegisterObject: NewList,
+                 completion: @escaping (Result<NewListRes, Error>) -> Void) {
+        
+        guard let url = URL(string: baseUrl + endpoint) else {
+            completion(.failure(NetworkingError.badUrl))
+            return
+        }
+        let token =  networkingService.getToken()
+        var request = URLRequest(url: url)
+        do {
+            let newData = try JSONEncoder().encode(RegisterObject)
+            request.httpBody = newData
+
+        } catch {
+            completion(.failure(NetworkingError.badEncoding))
+        }
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        PostListsResponse(for: request, completion: completion)
         
     }
     
@@ -93,12 +120,12 @@ class ListService: ObservableObject {
 //                }
 //
 //                print(unwrappedResponse.statusCode)
-////                switch unwrappedResponse.statusCode {
-////                case 200 ..< 300:   //200~300 ,NOT INCLUDE 300
-////                    print("success")
-////                default:
-////                    print("failure")
-////                }
+//                switch unwrappedResponse.statusCode {
+//                case 200 ..< 300:   //200~300 ,NOT INCLUDE 300
+//                    print("success")
+//                default:
+//                    print("failure")
+//                }
 //
 //                //伺服器回傳的error （事實上錯誤訊息會由data回傳）
 //                if let unwrappedError = error {
@@ -206,6 +233,38 @@ class ListService: ObservableObject {
         task.resume()
     }
     
+    func PostListsResponse(for request: URLRequest,
+                        completion: @escaping (Result<NewListRes, Error>) -> Void){
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { (data, response, error) in
+            //check the response status
+            DispatchQueue.main.async {
+                guard (response as? HTTPURLResponse) != nil else {
+                    completion(.failure(NetworkingError.badResponse))   //badResponse : 連不上伺服器
+                    return
+                }
+                //伺服器回傳的error （事實上錯誤訊息會由data回傳）
+                if let unwrappedError = error {
+                    completion(.failure(unwrappedError))
+                    return
+                }
+                //伺服器回傳的data （含錯誤訊息）
+                if let unwrappedData = data {
+                    do {
+                        if let listDetail = try? JSONDecoder().decode(NewListRes.self, from: unwrappedData) {
+                            completion(.success(listDetail))
+                        } else {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
+                            completion(.failure(errorResponse))
+                        }
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
     
     enum NetworkingError: Error{
         case badUrl

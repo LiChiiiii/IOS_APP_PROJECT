@@ -100,7 +100,7 @@ struct MessageBoard: View
     
     func PostComment(){
         
-        let com = CommentTodo(Text: self.texts, UserName: NowUser, ArticleID: article.id!.uuidString , LikeCount: "0")
+        let com = CommentTodo(Text: self.texts, UserName: NowUserName, ArticleID: article.id!.uuidString , LikeCount: "0")
        
         print(com)
         commentService.POSTrequest(endpoint: "/comment", RegisterObject: com){(result) in

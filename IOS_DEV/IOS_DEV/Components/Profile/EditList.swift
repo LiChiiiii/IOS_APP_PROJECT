@@ -1,0 +1,219 @@
+//
+//  EditList.swift
+//  IOS_DEV
+//
+//  Created by Kao Li Chi on 2021/9/5.
+//
+
+import Foundation
+import SwiftUI
+import SDWebImageSwiftUI
+
+struct EditMyListButton:View{
+
+    @State var list:List
+    @State var cardShown : Bool = false
+
+    var body:some View{
+        
+        ZStack{
+            Button(action:{
+                withAnimation(){
+                    self.cardShown.toggle()
+                }
+            }){
+               
+                
+                VStack(alignment:.leading){
+            
+                
+                    HStack(){
+                        Image("ka")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .cornerRadius(30)
+                        Text(list.user!.UserName)
+                            .foregroundColor(.gray)
+                            .font(.system(size: 15))
+                    }
+                    .padding(.top,15)
+                    
+                    
+                    
+                    Text(list.Title)
+                        .bold()
+                        .font(.system(size: 20))
+                        .padding(.top,25)
+                            
+                    
+                    Spacer()
+                    
+                    
+                }
+                .frame(width:170,height: 170)
+//                .background(BlurView().cornerRadius(25))
+                .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
+                .shadow(color: .white, radius: 20)
+                .foregroundColor(.white)
+                .cornerRadius(20)
+                .padding(8)
+        
+
+            
+            }
+            
+            HalfModalView(isShown: $cardShown, modalHeight: 600){
+                Text("hello world")
+            }
+            
+        }
+
+    }
+
+}
+
+//struct EditListCard : View{
+//    @EnvironmentObject var previewModel : PreviewModel //Using previeModle
+//    @Binding var cardShown : Bool
+//    @State private var cardOffset:CGFloat = 0
+//    var body : some View{
+//        VStack{
+//            Spacer()
+//            VStack(spacing:12){
+//
+//                Capsule()
+//                    .fill(Color.gray)
+//                    .frame(width: 60, height: 4)
+//
+//                Text("PREVIEW RESULT")
+//                    .bold()
+//                    .foregroundColor(.gray)
+//                VStack{
+//                    HStack(){
+//                        //Movie Image Cover Here
+//                        HStack(alignment:.top){
+//                            WebImage(url: URL(string: "https://www.themoviedb.org/t/p/original/4q2hz2m8hubgvijz8Ez0T2Os2Yv.jpg"))
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: 135)
+//                                .cornerRadius(10)
+//                                .clipped()
+//                            //Movie Deatil
+//
+//                            //OR MORE...
+//                            //Name,Genre,Actor,ReleaseDate,Time, Langauge etc
+//                            VStack(alignment:.leading,spacing:10){
+//                                Text("Name:A Quiet Place Part II")
+//                                    .bold()
+//                                    .font(.headline)
+//                                    .lineLimit(1)
+//                                Text("Genre:Science Fiction, Thriller")
+//                                    .font(.system(size: 14))
+//                                    .foregroundColor(.gray)
+//                                    .lineLimit(1)
+//                                Text("Actor:Evelyn Abbott,Cillian Murphy")
+//                                    .font(.system(size: 14))
+//                                    .foregroundColor(.gray)
+//                                    .lineLimit(1)
+//                                Text("Release:05/28/2021")
+//                                    .font(.system(size: 14))
+//                                    .foregroundColor(.gray)
+//                                    .lineLimit(1)
+//                                Text("Time:1h37m")
+//                                    .font(.system(size: 14))
+//                                    .foregroundColor(.gray)
+//                                    .lineLimit(1)
+//                            }
+//                            .padding(.top)
+//
+//
+//                        }
+//                        .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
+//                    }
+//                    VStack(alignment:.leading){
+//                        Text("Overview:")
+//                            .bold()
+//                            .font(.subheadline)
+//                            .lineLimit(1)
+//
+//                        Text("Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize that the creatures that hunt by sound are not the only threats that lurk beyond the sand path.")
+//                            .font(.footnote)
+//                            .lineLimit(3)
+//
+//                    }
+//                    .padding(.horizontal)
+//                    HStack(spacing:45){
+//
+//                        SmallRectButton(title: "Detail", icon: "ellipsis.circle"){
+//                            withAnimation(){
+//                                self.previewModel.isShowPreview.toggle()
+//                            }
+//                        }
+//
+//                        SmallRectButton(title: "More", icon: "magnifyingglass", textColor: .white, buttonColor: Color("BluttonBulue2")){
+//                            withAnimation(){
+//                                self.previewModel.isShowPreview.toggle()
+//                            }
+//                        }
+//
+//                    }
+//                    .padding(.horizontal)
+//                }
+//                .padding(.horizontal,5)
+//                .padding(.top,10)
+//                .padding(.bottom)
+//                .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+//                //The preview result here
+//            }
+//            .padding(.top)
+//            .background(BlurView().clipShape(CustomeConer(coners: [.topLeft,.topRight])))
+//            .offset(y:cardOffset)
+//            .gesture(
+//                DragGesture()
+//                    .onChanged(self.onChage(value:))
+//                    .onEnded(self.onEnded(value:))
+//            )
+//            .offset(y:self.previewModel.isShowPreview ? 0 : UIScreen.main.bounds.height)
+//        }
+//        .ignoresSafeArea()
+//        .background(Color
+//                        .black
+//                        .opacity(self.previewModel.isShowPreview ? 0.3 : 0)
+//                        .onTapGesture {
+//                            withAnimation(){
+//                                self.previewModel.isShowPreview.toggle()
+//                            }
+//                        }
+//                        .ignoresSafeArea().clipShape(CustomeConer(coners: [.topLeft,.topRight])))
+//
+//    }
+//
+//    private func onChage(value : DragGesture.Value){
+//        print(value.translation.height)
+//        if value.translation.height > 0 {
+//            self.cardOffset = value.translation.height
+//        }
+//    }
+//
+//    private func onEnded(value : DragGesture.Value){
+//        if value.translation.height > 0 {
+//            withAnimation(){
+//                let cardHeight = UIScreen.main.bounds.height / 4
+//
+//                if value.translation.height > cardHeight / 2.8 {
+//                    self.previewModel.isShowPreview.toggle()
+//                }
+//                self.cardOffset = 0
+//            }
+//        }
+//    }
+//
+//}
+//
+//class PreviewModel : ObservableObject {
+//    @Published var isShowPreview : Bool = false
+//
+//    func getPreviewMovie(){
+//        //TO send request and get movie
+//    }
+//}

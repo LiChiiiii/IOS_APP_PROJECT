@@ -129,7 +129,7 @@ struct ListButton:View{
                 })
             })
             .fullScreenCover(isPresented: self.$todo, content: {
-                GetListDetailView(todo: self.$todo, count :listController.listDetails.count, listDetail: listController.listDetails)
+                ListDetailView(todo: self.$todo,listDetails: listController.listDetails,listOwner:list.user!.UserName,listTitle:list.Title)
                 
             })
           

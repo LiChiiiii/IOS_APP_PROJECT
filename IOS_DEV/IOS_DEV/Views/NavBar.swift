@@ -12,14 +12,14 @@ struct NavBar: View {
 //    @Binding var selectedIndex:Int
     @State var index : Int
     @State var GroupSelect : Bool = false
-    
+    @ObservedObject private var userController = UserController()
     var body: some View {
         
         VStack{
 
             ZStack{
                 if self.index == 0 {
-                   HomePage()
+                    HomePage()
                     
                 }
                 if self.index == 1 && GroupSelect == true{
@@ -31,44 +31,15 @@ struct NavBar: View {
 
                 }
                 if self.index == 3 {
-                    ProfileView()
-                        .preferredColorScheme(.dark)
+                    ProfileView(NowUser: userController.NowUser)
                 }
              
 
             }
             NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
+        }.onAppear{
+            self.userController.GetNowUser(UserName: NowUserName)
         }
-        
-//        HStack(alignment:.bottom,spacing:0){
-//                Spacer()
-//                NavItemButton(buttonIndex: 0, itemIcon: "film", itemText: "Home", isSelectedInt: $selectedIndex){
-//                    selectedIndex = 0
-//                }
-//            Spacer()
-//                NavItemButton(buttonIndex: 1, itemIcon: "message", itemText: "Group", isSelectedInt: $selectedIndex){
-//                    selectedIndex = 1
-//                }
-//                NavItemButton(buttonIndex: 2, itemIcon: "magnifyingglass", itemText: "Search", isSelectedInt: $selectedIndex){
-//                    selectedIndex = 2
-//                }
-//            Spacer()
-//                NavItemButton(buttonIndex: 3, itemIcon: "list.and.film", itemText: "My List", isSelectedInt: $selectedIndex){
-//                    selectedIndex = 3
-//                }
-//            Spacer()
-//                NavItemButton(buttonIndex: 4, itemIcon: "person", itemText: "Profile", isSelectedInt: $selectedIndex){
-//                    selectedIndex = 4
-//                }
-//            Spacer()
-//            }
-//            .padding(.top)
-//            .padding(.horizontal,10)
-//            .background(Color.init("navBarBlack"))
-//            .edgesIgnoringSafeArea(.all)
-//            .frame(width:UIScreen.main.bounds.width,height: 65)
-        
-        
             
         
     }
@@ -155,22 +126,6 @@ struct NavItemButton:View{
             
             Spacer(minLength: 0)
             
-//            Button(action:{
-//                self.index = 3
-//            }){
-//                VStack(alignment:.center,spacing:10){
-//                    Image(systemName:"message")
-//                        .shadow(radius: 10)
-//                    Text("Group")
-//                        .frame(width: 50)
-//                        .font(.caption)
-//
-//                }
-//            }
-//            .foregroundColor(self.index == 3 ? selectColor : unselectColor)
-//
-//            Spacer(minLength: 0)
-            
             //profile
             Button(action:{
                 self.index = 3
@@ -183,7 +138,7 @@ struct NavItemButton:View{
                         .font(.caption)
                 }
             }
-            .foregroundColor(self.index == 4 ? selectColor : unselectColor)
+            .foregroundColor(self.index == 3 ? selectColor : unselectColor)
             
             
         }

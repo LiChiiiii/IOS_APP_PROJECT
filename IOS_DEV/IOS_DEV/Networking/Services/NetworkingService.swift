@@ -11,7 +11,7 @@ import Foundation
 
 class NetworkingService: ObservableObject {
     
-    let baseUrl="http://192.168.0.11:8080"
+    let baseUrl="http://127.0.0.1:8080"
     var token = ""
         
     //login
@@ -85,7 +85,83 @@ class NetworkingService: ObservableObject {
         return baseUrl
     }
     
+    //----------------------------------nowUser-------------------------------------//
     
+    func Get_nowUser(endpoint: String,
+                 completion: @escaping (Result<Me, Error>) -> Void) {
+        
+        guard let url = URL(string: baseUrl + endpoint) else {
+            completion(.failure(NetworkingError.badUrl))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        nowUserResponse(for: request, completion: completion)
+        
+    }
+    
+
+    func nowUserResponse(for request: URLRequest,
+                        completion: @escaping (Result<Me, Error>) -> Void){
+        
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request) { (data, response, error) in
+            
+            //check the response status
+            DispatchQueue.main.async {
+//                guard let unwrappedResponse = response as? HTTPURLResponse else {
+//                    completion(.failure(NetworkingError.badResponse))   //badResponse : 連不上伺服器
+//                    return
+//                }
+//                print(unwrappedResponse.statusCode)
+//                switch unwrappedResponse.statusCode {
+//                case 200 ..< 300:   //200~300 ,NOT INCLUDE 300
+//                    print("success")
+//                default:
+//                    print("failure")
+//                }
+                
+                //伺服器回傳的error （事實上錯誤訊息會由data回傳）
+                if let unwrappedError = error {
+                    completion(.failure(unwrappedError))
+                    return
+                }
+                
+                //伺服器回傳的data （含錯誤訊息）
+                if let unwrappedData = data {
+                    do {
+//                        // turn data into json
+//                        let json = try JSONSerialization.jsonObject(with: unwrappedData, options: [])
+//                        print(json)
+                        
+                        // decode data
+                        if let me = try? JSONDecoder().decode(Me.self, from: unwrappedData) {
+                            completion(.success(me))
+                        } else {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
+                            completion(.failure(errorResponse))
+
+                        }
+                        
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                
+            }
+           
+        }
+        
+        task.resume()
+        
+    }
+    
+    //----------------------------------article-------------------------------------//
     func handleResponse(for request: URLRequest,
                         completion: @escaping (Result<[Article], Error>) -> Void){
         
@@ -163,7 +239,7 @@ class NetworkingService: ObservableObject {
         
     }
     
-    
+    //----------------------------------article-------------------------------------//
     
     enum NetworkingError: Error{
         case badUrl
@@ -173,32 +249,32 @@ class NetworkingService: ObservableObject {
 }
 
 
-
-protocol SocialService {
-
-    func fetchList(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
-}
-
-enum SocialError: Error, CustomNSError {
-
-    case apiError
-    case invalidEndpoint
-    case invalidResponse
-    case noData
-    case serializationError
-
-    var localizedDescription: String {
-        switch self {
-        case .apiError: return "Failed to fetch data"
-        case .invalidEndpoint: return "Invalid endpoint"
-        case .invalidResponse: return "Invalid response"
-        case .noData: return "No data"
-        case .serializationError: return "Failed to decode data"
-        }
-    }
-
-    var errorUserInfo: [String : Any] {
-        [NSLocalizedDescriptionKey: localizedDescription]
-    }
-
-}
+//
+//protocol SocialService {
+//
+//    func fetchList(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
+//}
+//
+//enum SocialError: Error, CustomNSError {
+//
+//    case apiError
+//    case invalidEndpoint
+//    case invalidResponse
+//    case noData
+//    case serializationError
+//
+//    var localizedDescription: String {
+//        switch self {
+//        case .apiError: return "Failed to fetch data"
+//        case .invalidEndpoint: return "Invalid endpoint"
+//        case .invalidResponse: return "Invalid response"
+//        case .noData: return "No data"
+//        case .serializationError: return "Failed to decode data"
+//        }
+//    }
+//
+//    var errorUserInfo: [String : Any] {
+//        [NSLocalizedDescriptionKey: localizedDescription]
+//    }
+//
+//}

@@ -60,25 +60,45 @@ struct TopicView: View
             {
                 Spacer()
                 
-                ForEach(self.articles ,id: \.id) { article in
-                  
-                    HStack{
-                        
-                        NavigationLink(destination:GetMessageBoardView(article: article))
-                        {
-                            TopicFrame(article:article)
+
+             
+                ZStack(){
+                    
+                    VStack()
+                    {
+                    
+            
+                        ForEach(self.articles ,id: \.id) { article in
+                          
+                            HStack{
+                                
+                                NavigationLink(destination:GetMessageBoardView(article: article))
+                                {
+                                    TopicFrame(article:article)
+                                }
+                                    
+                            }
+
                         }
-
-                     
-//                        TopicViewButton(article: article)
-                            
+            
+                        
                     }
-
+                    .ignoresSafeArea(edges: .top)
+                    
+                    GeometryReader{ proxy in
+                        if proxy.frame(in:.global).minY > 200{
+                            ButtonTool()
+                                .offset(x:140,y:-proxy.frame(in:.global).minY+300)
+                                .frame(width: proxy.frame(in:.global).maxX, height:
+                                       proxy.frame(in:.global).minY  > 0 ?
+                                        proxy.frame(in:.global).minY + 480 : 480   )
+                        }
+                    }
+                    .frame(height: 480)
+                   
                 }
-                
+               
             }
-//                .ignoresSafeArea(edges: .top)
-//                .frame(width: FullSize.width,height:FullSize.height)
         }
            
                 

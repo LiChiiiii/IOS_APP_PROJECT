@@ -7,15 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "30BE7AF5-9DA4-4FD8-BF22-44D27078FF24"
-            shouldBeEnabled = "No"
+            uuid = "C6933117-5F38-4555-A59D-8D85F2D0523E"
+            shouldBeEnabled = "Yes"
+            nameForDebugger = "GestureDetail&#x7684;geymylist"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "IOS_DEV/Views/Content.swift"
+            filePath = "IOS_DEV/Views/MoviePage/GestureDetailVeiw.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "7"
-            endingLineNumber = "7"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>

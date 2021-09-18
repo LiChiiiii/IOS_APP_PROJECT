@@ -9,7 +9,6 @@ import SwiftUI
 
 
 struct MovieCardCarousel: View{
-    @ObservedObject var genreTypeState = GenreTypeState()
     var movies:[Movie]
     let genreID : Int
     @State private var isCardSelectedMovie:Bool = false
