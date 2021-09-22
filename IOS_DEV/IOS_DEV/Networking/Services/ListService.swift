@@ -75,6 +75,95 @@ class ListService: ObservableObject {
         
     }
     
+    //-----新增片單內容-----//
+    func POST_ListDetails(endpoint: String,
+                    RegisterObject: NewListMovie,
+                 completion: @escaping (Result<ListDetail, Error>) -> Void) {
+        
+        guard let url = URL(string: baseUrl + endpoint) else {
+            completion(.failure(NetworkingError.badUrl))
+            return
+        }
+        let token =  networkingService.getToken()
+        var request = URLRequest(url: url)
+        do {
+            let newData = try JSONEncoder().encode(RegisterObject)
+            request.httpBody = newData
+
+        } catch {
+            completion(.failure(NetworkingError.badEncoding))
+        }
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        PostListMovieResponse(for: request, completion: completion)
+        
+    }
+    
+    
+    //-----編輯片單內容-----//
+    func PUT_ListDetails(endpoint: String,
+                    RegisterObject: UpdateListMovie,
+                 completion: @escaping(Int)->()) {
+        
+        let url = URL(string: baseUrl + endpoint)
+        let token =  networkingService.getToken()
+        
+        var request = URLRequest(url: url!)
+        do {
+            let newData = try JSONEncoder().encode(RegisterObject)
+            request.httpBody = newData
+
+        } catch {
+            print("encode error")
+        }
+        
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        //response
+        let session = URLSession.shared
+          session.dataTask(with: request) { (data, response, error) in
+              if error == nil, let data = data, let response = response as? HTTPURLResponse {
+//                  print("statusCode: \(response.statusCode)")
+                  completion(response.statusCode)
+                  print(String(data: data, encoding: .utf8) ?? "")
+              } else {
+                  completion(404)
+              }
+          }.resume()
+        
+    }
+    
+    //-----刪除單內容-----//
+    func DELETE_ListDetails(endpoint: String,
+                 completion: @escaping(Int)->()) {
+        
+        let url = URL(string: baseUrl + endpoint)
+        let token =  networkingService.getToken()
+        
+        var request = URLRequest(url: url!)
+        
+        request.httpMethod = "DELETE"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        //response
+        let session = URLSession.shared
+          session.dataTask(with: request) { (data, response, error) in
+              if error == nil, let data = data, let response = response as? HTTPURLResponse {
+//                  print("statusCode: \(response.statusCode)")
+                  completion(response.statusCode)
+                  print(String(data: data, encoding: .utf8) ?? "")
+              } else {
+                  completion(404)
+              }
+          }.resume()
+        
+    }
     
 
 //    //post comment
@@ -265,6 +354,40 @@ class ListService: ObservableObject {
         }
         task.resume()
     }
+    
+    func PostListMovieResponse(for request: URLRequest,
+                        completion: @escaping (Result<ListDetail, Error>) -> Void){
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { (data, response, error) in
+            //check the response status
+            DispatchQueue.main.async {
+                guard (response as? HTTPURLResponse) != nil else {
+                    completion(.failure(NetworkingError.badResponse))   //badResponse : 連不上伺服器
+                    return
+                }
+                //伺服器回傳的error （事實上錯誤訊息會由data回傳）
+                if let unwrappedError = error {
+                    completion(.failure(unwrappedError))
+                    return
+                }
+                //伺服器回傳的data （含錯誤訊息）
+                if let unwrappedData = data {
+                    do {
+                        if let listDetail = try? JSONDecoder().decode(ListDetail.self, from: unwrappedData) {
+                            completion(.success(listDetail))
+                        } else {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
+                            completion(.failure(errorResponse))
+                        }
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+    
     
     enum NetworkingError: Error{
         case badUrl

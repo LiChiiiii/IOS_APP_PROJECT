@@ -9,115 +9,99 @@ import SwiftUI
 import UIKit
 import SDWebImageSwiftUI
 
-//struct GetListDetailView: View {
-//
-//    @ObservedObject private var movieDetailState = MovieDetailState()
-//    @Binding var todo:Bool
-//    @State private var showView:Bool = false
-//    var count:Int
-//    var listDetail:[ListDetail]
-//    @State var movies:[Movie] = [Movie]()
-//
-//    var body: some View {
-//        ZStack {
-//            LoadingView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
-//                self.movieDetailState.loadMovie(id: listDetail[0].movie!.id)
-//            }
-//
-//            if self.showView == true {
-//                ListDetailView(todo: self.$todo, listDetail: listDetail, movies: movies)
-//
-//            }
-//        }
-//        .onAppear {
-//
-//
-//            //-----用迴圈傳好幾次的request（為了給他時間request所以要加上delay)-----//
-//            for index in 0...(count-1) {
-//                self.movieDetailState.loadMovie(id: listDetail[index].movie!.id)
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-//                    if movieDetailState.movie != nil {
-//                        movies.append(self.movieDetailState.movie!)
-//                        self.showView = true
-//                    }
-//                })
-//
-//                sleep(1)
-//
-//            }
-//
-//
-//
-//        }
-//    }
-//}
 
 struct ListDetailView: View
 {
+//    @ObservedObject private var listController = ListController()
     @State private var currentPage = 0
     @Binding var todo:Bool  //go back ListView
     @State var listDetails:[ListDetail] //片單資訊
     @State var listOwner:String //片單創建者
     @State var listTitle:String //片單名稱
+    @State var listID:UUID? //片單ID
+    @State var CreateAction : Bool = false
+    @State var EditAction : Bool = false
+    @State var DeleteAction : Bool = false
     
     var body: some View {
         
         ZStack{
-            GeometryReader{ proxy in
-                let size = proxy.size
-                //---------背景圖----------//
-                if !(listDetails).isEmpty {
-                    WebImage(url: listDetails[currentPage].posterURL)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: size.width, height: size.height)
-                        .blur(radius: 50)
-                        .edgesIgnoringSafeArea(.all)
-                }
-                   
-            }
-            .ignoresSafeArea()
-            .colorScheme(.dark)
-            
-            
-            VStack{
-                VStack{
-                    HStack {
-                        Spacer()
-                        //---------返回鍵----------//
-                        Button(action:{
-                            withAnimation(){
-                                self.todo.toggle()
-                            }
-                        }){
-                            ZStack{
-                                Circle()
-                                    .frame(width:30,height:30)
-                                    .opacity(0.5)
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.white)
-                            }
-                            .foregroundColor(.black)
-
-                        }
+                
+                GeometryReader{ proxy in
+                    let size = proxy.size
+                    //---------背景圖----------//
+                    if !(listDetails).isEmpty {
+                        WebImage(url: listDetails[currentPage].posterURL)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: size.width, height: size.height)
+                            .blur(radius: 50)
+                            .edgesIgnoringSafeArea(.all)
                     }
-          
+                       
                 }
-                .padding([.top,.trailing],20)
+                .ignoresSafeArea()
+                .colorScheme(.dark)
                 
                 
-                VStack {
-                        TabView(selection: $currentPage) {
-                            ForEach(0..<listDetails.count) { (index) in
-                                CarouselBodyView(listTitle: listTitle, listOwner:listOwner, listDetail: listDetails[index])
+                VStack{
+                        
+                    VStack{
+                        HStack {
+                            
+                            if listOwner == NowUserName {
+                                UpdateButton(CreateAction: self.$CreateAction, EditAction: self.$EditAction, DeleteAction: self.$DeleteAction)
+                                    .padding()
+                            }
+                                
+                            
+                            Spacer()
+                            //---------返回鍵----------//
+                            Button(action:{
+                                withAnimation(){
+                                    self.todo.toggle()
+                                }
+                            }){
+                                ZStack{
+                                    Circle()
+                                        .frame(width:30,height:30)
+                                        .opacity(0.5)
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(.white)
+                                }
+                                .foregroundColor(.black)
+
                             }
                         }
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+              
+                    }
+                    .padding([.top,.trailing],20)
+                    
+                  
+                    VStack {
+                            TabView(selection: $currentPage) {
+                                ForEach(0..<listDetails.count) { (index) in
+                                    CarouselBodyView(listTitle: listTitle, listOwner:listOwner, listDetail: listDetails[index], EditAction: self.$EditAction, DeleteAction: self.$DeleteAction)
+                                        
+                                    
+                                }
+                            }
+                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    }
+                    
                 }
+                .sheet(isPresented: self.$CreateAction, content: {
+                    CreateListMovie(CreateAction: self.$CreateAction,listOwner: self.listOwner,listTitle: self.listTitle)
+                })
+               
                 
-                
-            }
+            
+            
+            
+
         }
+        
+   
  
 
     }
@@ -130,7 +114,7 @@ struct ListDetailView_Previews: PreviewProvider
 {
     static var previews: some View
     {
-        ListDetailView(todo: .constant(true), listDetails: stubbedListDetail,listOwner: "Chichi", listTitle: "你一定要看")
+        ListDetailView(todo: .constant(true), listDetails: stubbedListDetail, listOwner: "Chichi", listTitle: "你一定要看")
     }
 }
 
@@ -138,9 +122,12 @@ struct ListDetailView_Previews: PreviewProvider
 
 struct CarouselBodyView: View
 {
+    @ObservedObject private var controller = ListDetailController()
     @State var listTitle:String //片單名稱
     @State var listOwner:String //片單創建者
     @State var listDetail:ListDetail //片單資訊
+    @Binding var EditAction : Bool
+    @Binding var DeleteAction : Bool
     var body: some View {
         
         
@@ -187,12 +174,12 @@ struct CarouselBodyView: View
                                 .foregroundColor(.black)
                             
                             HStack(spacing:0){
-                                Text(listDetail.ratingText)
-                                    .foregroundColor(.yellow)
-                                    .kerning(1.5)
-                                Text(listDetail.unratingText)
-                                    .foregroundColor(.gray)
-                                    .kerning(1.5)
+                                ForEach(1..<6){ index in
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(listDetail.ratetext >= index ? .yellow : .gray)
+                                        
+                                }
+
                                     
                             }
                             
@@ -234,7 +221,19 @@ struct CarouselBodyView: View
                     
                
                
-            }.padding(20)
+            }
+            .padding(20)
+            .sheet(isPresented: self.$EditAction ,content: {
+                EditListMovie(EditAction: self.$EditAction, current:listDetail,listTitle: listTitle)
+            })
+            .alert(isPresented: self.$DeleteAction, content: {
+                Alert(title: Text("刪除此電影？"),
+                      primaryButton: .default(Text("確定"),
+                                              action: {controller.deleteListMovie(ListDetailID: listDetail.id!)} ),
+                      secondaryButton: .destructive(Text("取消")))
+
+            })
+      
            
 
 

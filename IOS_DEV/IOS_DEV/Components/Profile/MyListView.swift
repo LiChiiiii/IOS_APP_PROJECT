@@ -16,6 +16,7 @@ struct MyListView: View {
     @State private var showAnimation = false
     let FullSize = UIScreen.main.bounds.size
     var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 2)
+    @State private var title:String = ""
     
     var body: some View{
         
@@ -24,7 +25,7 @@ struct MyListView: View {
         
         ScrollView(.vertical, showsIndicators: false){
      
-            ZStack(alignment: Alignment(horizontal: .trailing, vertical: .top), content: {
+            ZStack(alignment: .center , content: {
   
                 
                 VStack()
@@ -44,15 +45,9 @@ struct MyListView: View {
                 .ignoresSafeArea(edges: .top)
                 
 
-                
+                NewListCard(cardShown: self.$cardShown, title: self.$title) //新增片單
                 
             })
-            .sheet(isPresented: $cardShown, content: {
-                NewListCard()
-            })
-            
-        
-                
             
             
         }
@@ -69,7 +64,7 @@ struct MyListView: View {
             }
          
         }
-        
+      
     
     }
 
@@ -165,8 +160,6 @@ struct MyListButton:View{
     }
 
 }
-
-
 
 
 

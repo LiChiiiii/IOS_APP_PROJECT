@@ -34,6 +34,8 @@
 		018DD31B26B675A8001A1345 /* ListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31A26B675A8001A1345 /* ListService.swift */; };
 		018DD32026B67B73001A1345 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31F26B67B73001A1345 /* List.swift */; };
 		018DD32226B69599001A1345 /* RecommendState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD32126B69599001A1345 /* RecommendState.swift */; };
+		019017D626F63DF6007F1FE8 /* UpdateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019017D526F63DF6007F1FE8 /* UpdateButton.swift */; };
+		019017D826F651E1007F1FE8 /* ListMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019017D726F651E1007F1FE8 /* ListMovie.swift */; };
 		0194A5E02695A1A400E24598 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194A5DF2695A1A400E24598 /* Utils.swift */; };
 		0194A5E32695A8FE00E24598 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194A5E22695A8FE00E24598 /* ImageLoader.swift */; };
 		0194A5E52695AB9700E24598 /* MovieDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194A5E42695AB9700E24598 /* MovieDetailState.swift */; };
@@ -72,8 +74,6 @@
 		01CCDF3D263E945E005E2424 /* RegisterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CCDF3C263E945E005E2424 /* RegisterService.swift */; };
 		01CE9F3B26E46D5600A307E3 /* MyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE9F3A26E46D5600A307E3 /* MyListView.swift */; };
 		01CE9F3D26E480CF00A307E3 /* ButtonTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE9F3C26E480CF00A307E3 /* ButtonTool.swift */; };
-		01CE9F3F26E4F91200A307E3 /* PostList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE9F3E26E4F91200A307E3 /* PostList.swift */; };
-		01CE9F4126E505D100A307E3 /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE9F4026E505D100A307E3 /* EditList.swift */; };
 		01CE9F4326E50B6900A307E3 /* HalfModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE9F4226E50B6900A307E3 /* HalfModalView.swift */; };
 		01CF1395266B2AEC00066FC2 /* MovieCoverGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CF1394266B2AEC00066FC2 /* MovieCoverGesture.swift */; };
 		01CF1397266B2B4900066FC2 /* MovieCoverStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CF1396266B2B4900066FC2 /* MovieCoverStack.swift */; };
@@ -96,6 +96,7 @@
 		01EBF589266B9D960059B196 /* ForumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF588266B9D960059B196 /* ForumController.swift */; };
 		01EBF58D266BAA6A0059B196 /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF58C266BAA6A0059B196 /* ListController.swift */; };
 		01EBF590266BD80C0059B196 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF58F266BD80C0059B196 /* ProfileView.swift */; };
+		01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED279826FAE004007C0C00 /* ListDetailController.swift */; };
 		01ED4F39267207E0009E2FD5 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED4F38267207E0009E2FD5 /* ListView.swift */; };
 		0EFBEEB402995C63C993EF15 /* Pods_IOS_DEV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */; };
 		7A0EE932261041690056BC8C /* IOS_DEVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0EE931261041690056BC8C /* IOS_DEVApp.swift */; };
@@ -170,6 +171,8 @@
 		018DD31A26B675A8001A1345 /* ListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListService.swift; sourceTree = "<group>"; };
 		018DD31F26B67B73001A1345 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		018DD32126B69599001A1345 /* RecommendState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendState.swift; sourceTree = "<group>"; };
+		019017D526F63DF6007F1FE8 /* UpdateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateButton.swift; sourceTree = "<group>"; };
+		019017D726F651E1007F1FE8 /* ListMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMovie.swift; sourceTree = "<group>"; };
 		0194A5DF2695A1A400E24598 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0194A5E22695A8FE00E24598 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		0194A5E42695AB9700E24598 /* MovieDetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailState.swift; sourceTree = "<group>"; };
@@ -209,8 +212,6 @@
 		01CCDF3C263E945E005E2424 /* RegisterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterService.swift; sourceTree = "<group>"; };
 		01CE9F3A26E46D5600A307E3 /* MyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListView.swift; sourceTree = "<group>"; };
 		01CE9F3C26E480CF00A307E3 /* ButtonTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTool.swift; sourceTree = "<group>"; };
-		01CE9F3E26E4F91200A307E3 /* PostList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostList.swift; sourceTree = "<group>"; };
-		01CE9F4026E505D100A307E3 /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
 		01CE9F4226E50B6900A307E3 /* HalfModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfModalView.swift; sourceTree = "<group>"; };
 		01CF1394266B2AEC00066FC2 /* MovieCoverGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCoverGesture.swift; sourceTree = "<group>"; };
 		01CF1396266B2B4900066FC2 /* MovieCoverStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCoverStack.swift; sourceTree = "<group>"; };
@@ -233,6 +234,7 @@
 		01EBF588266B9D960059B196 /* ForumController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumController.swift; sourceTree = "<group>"; };
 		01EBF58C266BAA6A0059B196 /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
 		01EBF58F266BD80C0059B196 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		01ED279826FAE004007C0C00 /* ListDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailController.swift; sourceTree = "<group>"; };
 		01ED4F38267207E0009E2FD5 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_DEV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A0EE92E261041690056BC8C /* IOS_DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOS_DEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				018DD31F26B67B73001A1345 /* List.swift */,
+				019017D726F651E1007F1FE8 /* ListMovie.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -527,10 +530,8 @@
 			isa = PBXGroup;
 			children = (
 				01CE9F3A26E46D5600A307E3 /* MyListView.swift */,
-				010C2C1826E67F44000E25BC /* NewListCard.swift */,
 				0199151C26E70675006E499D /* ListDetailScroll.swift */,
-				01CE9F3E26E4F91200A307E3 /* PostList.swift */,
-				01CE9F4026E505D100A307E3 /* EditList.swift */,
+				010C2C1826E67F44000E25BC /* NewListCard.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -559,6 +560,7 @@
 				7ADA5A7426104355000A84D9 /* LargeButton.swift */,
 				7ADA5A7026104355000A84D9 /* CircleButton.swift */,
 				01CF13B6266B3A4000066FC2 /* SmallVerticalButton.swift */,
+				019017D526F63DF6007F1FE8 /* UpdateButton.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -569,6 +571,7 @@
 				01EBF588266B9D960059B196 /* ForumController.swift */,
 				01EBF58C266BAA6A0059B196 /* ListController.swift */,
 				016DE80C26F1A1BF0046DDEA /* UserController.swift */,
+				01ED279826FAE004007C0C00 /* ListDetailController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -887,13 +890,11 @@
 				7A74EECD2611A8A000B722CF /* HomePage.swift in Sources */,
 				0175AAEA2658D4C8001BCD2E /* UserRegister.swift in Sources */,
 				7ADA5A7C26104355000A84D9 /* smallButton.swift in Sources */,
-				01CE9F4126E505D100A307E3 /* EditList.swift in Sources */,
 				01C0219E263E886C0090846D /* ActivityIndicatorView.swift in Sources */,
 				01C0219A263E87F90090846D /* LoadingView.swift in Sources */,
 				7A2F7307261E099200C0A2FF /* MovieTrailerModel.swift in Sources */,
 				01C02182263E7EF70090846D /* MovieService.swift in Sources */,
 				018DD32226B69599001A1345 /* RecommendState.swift in Sources */,
-				01CE9F3F26E4F91200A307E3 /* PostList.swift in Sources */,
 				7ADA5A8626104396000A84D9 /* Cards.swift in Sources */,
 				0194A5F726961A8B00E24598 /* MovieOverviews.swift in Sources */,
 				0194A5E02695A1A400E24598 /* Utils.swift in Sources */,
@@ -916,6 +917,7 @@
 				0194A5E52695AB9700E24598 /* MovieDetailState.swift in Sources */,
 				018DD31B26B675A8001A1345 /* ListService.swift in Sources */,
 				0194A5F12695E04000E24598 /* MovieSearchState.swift in Sources */,
+				019017D626F63DF6007F1FE8 /* UpdateButton.swift in Sources */,
 				0194A5E32695A8FE00E24598 /* ImageLoader.swift in Sources */,
 				01CE9F4326E50B6900A307E3 /* HalfModalView.swift in Sources */,
 				01CE9F3D26E480CF00A307E3 /* ButtonTool.swift in Sources */,
@@ -926,6 +928,7 @@
 				01CF13A5266B381400066FC2 /* Genre.swift in Sources */,
 				7ADA5A8726104396000A84D9 /* TopicView.swift in Sources */,
 				01C0E26326AC0A470027B9A9 /* MovieImages.swift in Sources */,
+				01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */,
 				7ADA5A7926104355000A84D9 /* CircleButton.swift in Sources */,
 				01CF13A3266B37E200066FC2 /* SmallBorderOnlyButton.swift in Sources */,
 				01CF13A7266B384300066FC2 /* smallNavButton.swift in Sources */,
@@ -962,6 +965,7 @@
 				01CF139D266B307D00066FC2 /* NavBar.swift in Sources */,
 				0168857826D0CEB6005589BC /* GestureDetailVeiw.swift in Sources */,
 				01CF139B266B2F0C00066FC2 /* SmallCoverIcon.swift in Sources */,
+				019017D826F651E1007F1FE8 /* ListMovie.swift in Sources */,
 				01EBF590266BD80C0059B196 /* ProfileView.swift in Sources */,
 				7A675A7E262BE22B00542DB2 /* MovieVM.swift in Sources */,
 				01AA7CAC269B61BE00F80796 /* MovieTrailer.swift in Sources */,

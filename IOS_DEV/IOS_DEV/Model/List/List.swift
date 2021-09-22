@@ -21,7 +21,7 @@ struct ListOwner: Decodable, Identifiable{      //取片單的user
     var UserName: String
 }
 
-//--------------------------------某片單的內容(GET)-----------------------------------------//
+//--------------------------------特定片單的內容(GET)-----------------------------------------//
 struct ListDetail:Decodable, Identifiable {         //取片單裡內容
     var id: UUID?
     var movie: Int
@@ -35,43 +35,11 @@ struct ListDetail:Decodable, Identifiable {         //取片單裡內容
         return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath ?? "")")!
     }
     
-    var ratingText: String {
-        let rating = Int(ratetext)
-        let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
-            return acc + "★"
-        }
-        
-        return ratingText
-    }
-    
-    var unratingText: String {
-        let unrating = 5 - Int(ratetext)
-        let unratingText = (0..<unrating).reduce("") { (acc, _) -> String in
-            return acc + "★"
-        }
-        
-        return unratingText
-    }
     
 }
 
 struct thisListID: Decodable, Identifiable{      //片單id
-    var id: UUID?
-}
-
-//-------------------------------GET------------------------------------------//
-struct ListDetail_Image:Decodable, Identifiable {   //用片單裡的電影id去tmdb抓照片
-    let id: Int
-    let title: String
-    let posterPath: String?
-    
-    var posterURL: URL {
-        return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath ?? "")")!
-    }
-    
-    var posterHTTP: String {
-        return "https://image.tmdb.org/t/p/w500\(posterPath ?? "")"
-    }
+    var id: UUID
 }
 
 //--------------------------------新增片單(POST)--------------------------------------//

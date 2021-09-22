@@ -240,6 +240,7 @@ struct MovieInfoDetail: View {
     @State private var gotoChat : Bool = false
     @State var myMovieList : [List]
     @State var movie : Movie
+    @ObservedObject private var controller = ListDetailController()
     
     var body: some View {
         VStack(spacing:5){
@@ -331,7 +332,9 @@ struct MovieInfoDetail: View {
                     //------------------------  + MY List ----------------------- -//
                     Menu {
                         ForEach(myMovieList, id:\.id){list in
-                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                            Button(action: {
+                                controller.postListMovie(listTitle: list.Title, UserName: list.user!.UserName , movieID: movie.id, movietitle: movie.title, posterPath: movie.posterPath!, feeling: " ", ratetext: 0)
+                            }, label: {
                                 Text(list.Title)
                             })
                         }
@@ -344,7 +347,7 @@ struct MovieInfoDetail: View {
                         }
                    }
                     
-
+                    //------------------------  + MY List ----------------------- -//
                     
                     
                     Spacer()

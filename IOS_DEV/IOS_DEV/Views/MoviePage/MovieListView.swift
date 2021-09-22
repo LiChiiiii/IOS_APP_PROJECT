@@ -108,7 +108,7 @@ struct MovieListView: View {
 
 
                 }//scrollview
-                .frame(height:600)
+                .frame(height:535)
                 
             }.onAppear{
                 self.genreTypeState.genreType(genreID:28)
@@ -136,7 +136,7 @@ struct MovieListView: View {
                     }
                     
                 }
-                .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
+                .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
                 
                 Group {
                     if upcomingState.movies != nil {

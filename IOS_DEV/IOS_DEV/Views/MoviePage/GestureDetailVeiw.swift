@@ -14,6 +14,7 @@ struct GestureDetailVeiw: View {
 
     let movieId: Int
     @ObservedObject private var movieDetailState = MovieDetailState()
+    @ObservedObject private var listController = ListController()
     @Binding var navBarHidden:Bool
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
@@ -27,12 +28,13 @@ struct GestureDetailVeiw: View {
 
             if movieDetailState.movie != nil {
                 
-                GestureDetail(movie: self.movieDetailState.movie!, navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading, isPresented:$isPresented)
+                GestureDetail(movie: self.movieDetailState.movie!, navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading, isPresented:$isPresented,myMovieList:listController.mylistData)
 
             }
         }
         .onAppear {
             self.movieDetailState.loadMovie(id: self.movieId)
+            self.listController.GetMyList(userID: NowUserID!)
         }
     }
 }
@@ -51,6 +53,7 @@ struct GestureDetail: View {
     @Binding var isLoading : Bool
     @Binding var isPresented : Bool
     @State private var isAppear:Bool = false
+    @State var myMovieList : [List]
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
     var body: some View {
@@ -60,7 +63,7 @@ struct GestureDetail: View {
                 
                 ScrollView(.vertical, showsIndicators: false){
                     
-                   
+
                     
                     GeometryReader{ proxy in
                         if proxy.frame(in:.global).minY > -480{
@@ -74,33 +77,12 @@ struct GestureDetail: View {
                                 .blur(radius: CGFloat((Double(proxy.frame(in:.global).minY * 0.005 + 1)) < 0.45  ? (Double(proxy.frame(in:.global).minY) * -1 * 0.03) : 0))
                                 .onChange(of: proxy.frame(in:.global).minY, perform: { value in
                                     
-                                //-----下滑顯示bar上的討論區按鈕和電影名稱-----//
-                                    
-    //                                let offset = value + UIScreen.main.bounds.height / 2.2
-    //                                print(offset)
-                                    
-    //
-    //                                if offset < 80{
-    //
-    //                                if offset > 0{
-    //
-    //                                    let op_value = (80 - offset) / 80 * 5 * 1.2
-    //                                    self.opacity = Double(op_value)
-    //                                    self.showMovieName = true
-    //
-    //                                    return
-    //                                }
-    //                                self.opacity = 1
-    //                                }
-    //                                else{
-    //                                    self.opacity = 0
-    //                                    self.showMovieName = false
-    //                                }
+
                                 })
                             
                         }
                         
-                      
+                      //--------------返回鍵-------------//
                         Button(action:{
                             withAnimation(){
                                 self.isPresented.toggle()
@@ -132,11 +114,11 @@ struct GestureDetail: View {
                     
                    
                     
-//                    MovieInfoDetail(myMovieList: <#[List]#>, movie: movie)
+                    MovieInfoDetail(myMovieList:myMovieList , movie: movie)
                         .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
                         
-                    //     .offset(y:10)
-                    //   .background(Color.black.edgesIgnoringSafeArea(.all))
+//                         .offset(y:10)
+//                       .background(Color.black.edgesIgnoringSafeArea(.all))
                     
                     
                 }
