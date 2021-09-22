@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct MyListView: View {
-    var lists:[List]
+    var lists:[CustomList]
     @State var cardShown : Bool = false
     @State private var isAppear:Bool = false
     @State private var showAnimation = false
@@ -78,7 +78,7 @@ struct MyListView: View {
 
 struct MyListButton:View{
     @ObservedObject private var listController = ListController()
-    @State var list:List
+    @State var list:CustomList
     @State private var todo : Bool = false
 
     var body:some View{

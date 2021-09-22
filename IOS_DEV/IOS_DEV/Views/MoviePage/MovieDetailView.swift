@@ -31,8 +31,9 @@ struct MovieDetailView: View {
             }
         }
         .onAppear {
+            print(self.movieId)
             self.movieDetailState.loadMovie(id: self.movieId)
-            self.listController.GetMyList(userID: NowUserID!)
+//            self.listController.GetMyList(userID: NowUserID!)
             
         }
     }
@@ -70,8 +71,6 @@ struct movieImage:View{
             .aspectRatio(contentMode: .fill)
             .overlay(
                 LinearGradient(gradient: Gradient(colors: [Color.init("navBarBlack").opacity(0.0),Color.init("navBarBlack").opacity(0.95)]), startPoint:.top, endPoint: .bottom)
-
-
             )
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
@@ -90,7 +89,7 @@ struct WebImages: View {
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
     @State private var isAppear:Bool = false
-    @State var myMovieList : [List]
+    @State var myMovieList : [CustomList]
 
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
@@ -221,7 +220,6 @@ struct WebImages: View {
 //                self.navBarHidden = true
 //            }
             self.isLoading = true
-            print("XD")
 //            UIScrollView.appearance().bounces = false
         }
         
@@ -238,7 +236,7 @@ struct WebImages: View {
 struct MovieInfoDetail: View {
     @State private var isMyList = false
     @State private var gotoChat : Bool = false
-    @State var myMovieList : [List]
+    @State var myMovieList : [CustomList]
     @State var movie : Movie
     
     var body: some View {

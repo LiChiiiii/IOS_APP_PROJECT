@@ -25,21 +25,10 @@ struct MovieCardCarousel: View{
    }
    
     
-   var body: some View
-   {
-    
-//       ScrollView(.horizontal, showsIndicators: false)
-//       {
-//           
-//        
-//           HStack(spacing: 30)
-//           {
-            
+   var body: some View{
             VStack{
-               
                 GeometryReader { proxy in
                     let scaleValue = getScale(geo: proxy)
-                    
 
                     MovieCoverCardStack(isCardSelectedMovie: $isCardSelectedMovie, movies: movies, genreID: genreID)
                             .rotation3DEffect(Angle(degrees:Double(proxy.frame(in: .global).minX - 30)  / -20), axis: (x: 0, y: 20.0, z: 0))
@@ -52,41 +41,10 @@ struct MovieCardCarousel: View{
                     .fullScreenCover(isPresented: $isCardSelectedMovie, content: {
                         MovieCardGesture( movies: movies,currentMovie: movies.last, backHomePage: $isCardSelectedMovie)
                     })
-                    
-
-                 
-                    
-                    
                }
                 .frame(width: 275)
-                
-              
-                
-                
-    
-             
-                
-                
             }
-            
-
-
-
-
-//           } //hstack
-//           .padding(.vertical,50)
-//           .padding(.horizontal,28)
-//           .padding(.top,50)
-//
-//
-//           }//scrollview
-//           .frame(height:600)
-       
    }
-    
-
-    
-    
 }
 
 

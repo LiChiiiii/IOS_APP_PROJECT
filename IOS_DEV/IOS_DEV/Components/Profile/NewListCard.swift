@@ -33,7 +33,8 @@ struct NewListCard:View{
             VStack(alignment: .center, spacing: 15) {
                 Text("List Title ")
                     .foregroundColor(.black)
-                    .font(.system(size: 20).bold())
+                    .font(.system(size: 20))
+                    .bold()
 
                 TextField("your title", text: $title )
                     .font(.system(size: 22))
@@ -51,7 +52,8 @@ struct NewListCard:View{
             VStack(alignment: .center){
                 Text("Card Color")
                     .foregroundColor(.black)
-                    .font(.system(size: 20).bold())
+                    .font(.system(size: 20))
+                    .bold()
                 
                 let colors = [Color("CustomBlue"),Color("CustomYellow"),Color("CustomPurple"),Color("CustomRed"),Color("CustomOrange"),Color("Gray")]
                 

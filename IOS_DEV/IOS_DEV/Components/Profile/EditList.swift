@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 
 struct EditMyListButton:View{
 
-    @State var list:List
+    @State var list:CustomList
     @State var cardShown : Bool = false
 
     var body:some View{

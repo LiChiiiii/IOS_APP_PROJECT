@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct MovieListView: View {
-    
-    
-//    @StateObject
     @ObservedObject private var nowPlayingState = MovieListState()
     @ObservedObject private var upcomingState = MovieListState()
     @ObservedObject private var topRatedState = MovieListState()
@@ -26,14 +23,10 @@ struct MovieListView: View {
         
         
         ScrollView(.vertical, showsIndicators: false){
-            
-         
             VStack{
                 ScrollView(.horizontal, showsIndicators: false)
                 {
-                    
-                 
-                    HStack(spacing: 30)
+                    LazyHStack(spacing: 30)
                     {
                         //one
                         Group {
@@ -116,14 +109,9 @@ struct MovieListView: View {
                 self.genreTypeState3.genreType(genreID:12)
                 self.genreTypeState4.genreType(genreID:35)
                 self.genreTypeState5.genreType(genreID:80)
-
             }
-            
-        
-            
-            
-                
-            VStack{
+
+            LazyVStack{
               
                 Group {
                     if nowPlayingState.movies != nil {
@@ -191,16 +179,6 @@ struct MovieListView: View {
         .navigationBarTitleDisplayMode(.large)
         .navigationBarTitle("Discovery")
         .toolbar{
-            ToolbarItemGroup(placement:.navigationBarLeading){
-                HStack{
-                    Image("LogoIconsBlack")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width:100)
-                        .offset(x:-15)
-                    
-                }
-            }
             
             ToolbarItemGroup(placement:.navigationBarTrailing){
                 Button(action:{
@@ -214,9 +192,11 @@ struct MovieListView: View {
                         Image(systemName: "arrowtriangle.forward.square.fill")
                             .resizable()
                             .frame(width: 15, height: 15, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .foregroundColor(.white)
                         
-                        Text("Tariler")
+                        Text("Trailer")
                             .bold()
+                            .foregroundColor(.white)
                             .font(.footnote)
                         
                     }
@@ -225,8 +205,8 @@ struct MovieListView: View {
                         
                 }
             }
-        }//toolbar
-
+        }
+        .padding(.bottom,5)
        
     }
 }

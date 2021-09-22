@@ -24,7 +24,7 @@ struct MoviePosterCarousel: View {
                 .foregroundColor(.red)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .top, spacing: 16) {
+                LazyHStack(alignment: .top, spacing: 16) {
                     ForEach(self.movies) { movie in
                         NavigationLink(destination: MovieDetailView(movieId: movie.id, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true))) {
                             MoviePosterCard(movie: movie)

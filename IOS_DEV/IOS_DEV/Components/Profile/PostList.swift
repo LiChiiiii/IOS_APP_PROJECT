@@ -186,14 +186,14 @@ struct PostListCard : View{
 
 }
 
-struct CustomeConer : Shape {
-
-    var coners : UIRectCorner
-
-    func path(in rect: CGRect) -> Path {
-        //set coner and coner radius
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: coners, cornerRadii: CGSize(width: 30, height: 30))
-        return Path(path.cgPath)
-    }
-}
+//struct CustomeConer : Shape {
+//
+//    var coners : UIRectCorner
+//
+//    func path(in rect: CGRect) -> Path {
+//        //set coner and coner radius
+//        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: coners, cornerRadii: CGSize(width: 30, height: 30))
+//        return Path(path.cgPath)
+//    }
+//}
 

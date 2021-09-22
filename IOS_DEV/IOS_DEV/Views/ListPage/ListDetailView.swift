@@ -154,7 +154,7 @@ struct CarouselBodyView: View
                 VStack(alignment: .leading,spacing:10){
 
                     Text(listDetail.title)
-                        .font(.title.bold())
+                        .font(.title).bold()
                         .kerning(1.5)
 
                     Text(listTitle)
@@ -182,7 +182,7 @@ struct CarouselBodyView: View
 
                         HStack{
                             Text("\(listOwner)的評分")
-                                .font(.title2.bold())
+                                .font(.title2).bold()
                                 .kerning(1.5)
                                 .foregroundColor(.black)
                             
@@ -514,17 +514,17 @@ struct CarouselBodyView: View
 //}
 //
 //
-struct BlurView : UIViewRepresentable {
-    func makeUIView(context: Context) -> UIVisualEffectView{
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterialDark))
-        return view
-    }
-
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        //TO UPDATE
-    }
-}
-
+//struct BlurView : UIViewRepresentable {
+//    func makeUIView(context: Context) -> UIVisualEffectView{
+//        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterialDark))
+//        return view
+//    }
+//
+//    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+//        //TO UPDATE
+//    }
+//}
+//
 
 
 //            GeometryReader{ proxy in

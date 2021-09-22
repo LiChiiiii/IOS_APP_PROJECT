@@ -8,60 +8,114 @@
 import SwiftUI
 let controller = ListController()
 //Working Process
+//struct NavBar: View {
+////    @Binding var selectedIndex:Int
+//    @State var index : Int
+//    @State var GroupSelect : Bool = false
+//    @ObservedObject private var userController = UserController()
+//    var body: some View {
+//
+//        VStack{
+//
+//            ZStack{
+//                if self.index == 0 {
+//                    HomePage()
+//
+//                }
+//                if self.index == 1 && GroupSelect == true{
+//                    ListView(lists: controller.listData)
+//
+//                }
+//                if self.index == 2 {
+//                    AutoScroll_V().preferredColorScheme(.dark)
+//
+//                }
+//                if self.index == 3 {
+//                    ProfileView(NowUser: userController.NowUser)
+//                }
+//
+//
+//            }
+//            NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
+//        }.onAppear{
+//            self.userController.GetNowUser(UserName: NowUserName)
+//        }
+//
+//
+//    }
+//}
+
+//Working Process
 struct NavBar: View {
 //    @Binding var selectedIndex:Int
+//    @Binding var selectedIndex:Int
+    @StateObject var previewModle = PreviewModle()
+    @StateObject var StateManager  = SeachingViewStateManager()
     @State var index : Int
-    @State var GroupSelect : Bool = false
+    @State private var GroupSelect : Bool = false
+    @State private var isPriview = false
     @ObservedObject private var userController = UserController()
     var body: some View {
-        
-        VStack{
+        ZStack(alignment:.top){
+            VStack(spacing:0){
+                ZStack(alignment:.top){
+                    if self.index == 0 {
+                        HomePage()
+                        
+                    }
+                    if self.index == 1 && GroupSelect == true{
+                        ListView(lists: controller.listData)
 
-            ZStack{
-                if self.index == 0 {
-                    HomePage()
-                    
+                    }
+                    if self.index == 2 {
+                        AutoScroll_V()                    }
+                    if self.index == 3 {
+                        ProfileView(NowUser: userController.NowUser)
+                    }
                 }
-                if self.index == 1 && GroupSelect == true{
-                    ListView(lists: controller.listData)
-                   
-                }
-                if self.index == 2 {
-                    AutoScroll_V().preferredColorScheme(.dark)
-
-                }
-                if self.index == 3 {
-                    ProfileView(NowUser: userController.NowUser)
-                }
-             
-
+                NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
             }
-            NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
-        }.onAppear{
-            self.userController.GetNowUser(UserName: NowUserName)
-        }
+            .onAppear{
+                self.userController.GetNowUser(UserName: NowUserName)
+            }
+              
+            .edgesIgnoringSafeArea(.all)
+            //thse all padding is to adding back the padding of ignoresSafeArea()
+            //ignoresSafeArea() just for keyboard
+            .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+            .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
+            .padding(.leading,UIApplication.shared.windows.first?.safeAreaInsets.left)
+            .padding(.trailing,UIApplication.shared.windows.first?.safeAreaInsets.right)
             
-        
+            BottomSheet()
+                .animation(.spring())
+            
+        }
+        .environmentObject(previewModle)
+        .environmentObject(StateManager) //here due to bottomSheet need to use to update some state
+        .ignoresSafeArea()
+
     }
 }
 
+
 struct NavBar_Previews: PreviewProvider {
     static var previews: some View {
-       
+
         Group {
             ZStack{
                 Color.black.ignoresSafeArea(.all)
                 NavBar(index: 0)
             }
         }
-        
-     
+
+
     }
 }
 
 struct NavItemButton:View{
     var unselectColor:Color = Color.gray
-    var selectColor:Color = Color.blue
+    var selectColor:Color = Color.white
     @Binding var index:Int
     @Binding var GroupSelect:Bool
     var body:some View{
@@ -144,10 +198,10 @@ struct NavItemButton:View{
         }
         .padding(.horizontal,25)
         .padding(.top,10)
-       
-      
+        .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+        .background(Color("DarkMode2"))
     }
-    
+
     
 //    var buttonIndex:Int
 //    var unselectColor:Color = Color.gray
