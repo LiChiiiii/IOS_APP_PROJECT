@@ -16,7 +16,7 @@ struct EditArticleCard:View{
     @Binding var editAction : Bool
     @State var title : String
     @State var text : String
-    @State var articleID : UUID
+    @State var article : Article
 
     var body:some View{
 
@@ -70,7 +70,7 @@ struct EditArticleCard:View{
 
             HStack(spacing: 15) {
                 Button(action: {
-                    self.forumController.PutArticle(articleID: self.articleID, Title: self.title, Text: self.text)
+                    self.forumController.PutArticle(articleID: article.id!, Title: self.title, Text: self.text, LikeCount: article.LikeCount)
                     self.editAction.toggle()
                 })
                 {

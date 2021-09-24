@@ -89,7 +89,7 @@ struct MessageBoardView: View
                   secondaryButton: .destructive(Text("取消")))
         })
         .sheet(isPresented: self.$editAction,
-               content: {EditArticleCard(editAction: self.$editAction , title: article.Title, text: article.Text,articleID:article.id! ) })
+               content: {EditArticleCard(editAction: self.$editAction , title: article.Title, text: article.Text,article:article) })
      
         
     }
