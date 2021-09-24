@@ -68,7 +68,7 @@ struct TopicFrame: View
                             .frame(width: 15, height: 15)
                             .foregroundColor(.pink)
                             
-                            Text(article.LikeCount)
+                            Text("\(article.LikeCount)")
                         
                         }
                         .padding(.bottom,10)

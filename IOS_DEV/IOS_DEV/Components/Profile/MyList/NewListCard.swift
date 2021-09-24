@@ -23,7 +23,7 @@ struct NewListCard: View {
                     .font(.system(size: 20).bold())
 
                 TextField("list title", text: $title )
-                    .font(.system(size: 18))
+                    .font(.system(size: 20))
                     .background(Color(.gray).opacity(0.1))
                     .foregroundColor(.black)
                     

@@ -21,7 +21,7 @@ struct GetTopicView: View{
             
         }
         .onAppear {
-            self.forumController.GetAllArticle()
+            self.forumController.GetAllArticle(movieID: movie.id)
             
         }
     }
@@ -62,7 +62,7 @@ struct TopicView: View
                 
 
              
-                ZStack(){
+                ZStack(alignment:.top){
                     
                     VStack()
                     {
@@ -108,38 +108,38 @@ struct TopicView: View
 
 
 
-struct TopicViewButton:View{
-    let controller = ForumController()
-    @State var article:Article
-
-    @State private var todo : Bool = false
-    var body:some View{
-        
-        HStack{
-            
-            Button(action:{
-                controller.articleDetails(articleID: article.id!)
-       
-            }){
-                TopicFrame(article:article)
-                
-            }
-            .simultaneousGesture(TapGesture().onEnded{
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                    self.todo = true
-                })
-            })
-            .fullScreenCover(isPresented: $todo, content: {
+//struct TopicViewButton:View{
+//    let controller = ForumController()
+//    @State var article:Article
+//
+//    @State private var todo : Bool = false
+//    var body:some View{
+//
+//        HStack{
+//
+//            Button(action:{
+//                controller.articleDetails(articleID: article.id!)
+//
+//            }){
+//                TopicFrame(article:article)
+//
+//            }
+//            .simultaneousGesture(TapGesture().onEnded{
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+//                    self.todo = true
+//                })
+//            })
+//            .fullScreenCover(isPresented: $todo, content: {
 //                MessageBoardView(article: article ,comment: controller.commentData, todo:$todo)
-
-            })
-            
-      
-        }
-
-    }
-
-}
+//
+//            })
+//
+//
+//        }
+//
+//    }
+//
+//}
 
 
 struct TopicView_Previews: PreviewProvider

@@ -55,7 +55,7 @@ struct MyListView: View {
             
             
         }
-        .navigationTitle("My List")
+        .navigationTitle("我的片單")
         .toolbar{
             Button(action:{
                 self.cardShown.toggle()

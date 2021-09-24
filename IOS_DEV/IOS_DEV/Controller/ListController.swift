@@ -99,7 +99,6 @@ class ListController: ObservableObject {
             }
             
         }
-
     }
 
 

@@ -17,7 +17,7 @@ enum SideOfState: String, CaseIterable {
 struct ProfileView: View {
     
 //    init(){
-//        UISegmentedControl.appearance().selectedSegmentTintColor = .systemRed
+//        UISegmentedControl.appearance().selectedSegmentTintColor = .systemYellow
 //    }
     
     @State private var userID = "Justin Bieber" //UserID
@@ -25,6 +25,7 @@ struct ProfileView: View {
     @State private var notification = true
     @State private var select: SideOfState = .movie
     @ObservedObject private var listController = ListController()
+    @ObservedObject private var forumController = ForumController()
     @State var NowUser:Me?
     
     var body: some View{
@@ -45,52 +46,67 @@ struct ProfileView: View {
                         Text("\(likedMovie) movies")
                             .font(.system(size: 12))
                     }
-                    NavigationLink(
-                        destination: AccountSettingView(userID: $userID),
-                        label: {
-                            Text("Account Setting")
-                                .bold()
-                                .frame(width: 350, height: 45, alignment: .center)
-                                .background(Color("ButtonRed"))
-                                .foregroundColor(.white)
-                                .cornerRadius(15)
-                        })
-                        .padding(5)
-                    NavigationLink(
-                        destination: MovieSettingView(userID: $userID, likedMovie: $likedMovie),
-                        label: {
-                            Text("Movie Setting")
-                                .bold()
-                                .frame(width: 350, height: 45, alignment: .center)
-                                .background(Color("ButtonRed"))
-                                .foregroundColor(.white)
-                                .cornerRadius(15)
-                        })
-                        .padding(5)
-                    NavigationLink(
-                        destination: MyListView(lists: listController.mylistData),
-                        label: {
-                            Text("My List")
-                                .bold()
-                                .frame(width: 350, height: 45, alignment: .center)
-                                .background(Color("ButtonRed"))
-                                .foregroundColor(.white)
-                                .cornerRadius(15)
-                        })
-                        .padding(5)
                     
-    //                ZStack{
-    //                    Text("Notification")
-    //                        .bold()
-    //                        .frame(width: 350, height: 45, alignment: .center)
-    //                        .background(Color.red)
-    //                        .foregroundColor(.white)
-    //                        .cornerRadius(15)
-    //                    Toggle(" ", isOn: $notification)
-    //                        .toggleStyle(SwitchToggleStyle(tint: .clear))
-    //                        .frame(width: 330, height: 45, alignment: .center)
-    //                }
-    //                .padding(5)
+                    Group{
+                        NavigationLink(
+                            destination: AccountSettingView(userID: $userID),
+                            label: {
+                                Text("帳號設定")
+                                    .bold()
+                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .background(Color("CustomRed"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(15)
+                            })
+                            .padding(5)
+                        NavigationLink(
+                            destination: MovieSettingView(userID: $userID, likedMovie: $likedMovie),
+                            label: {
+                                Text("電影喜好設定")
+                                    .bold()
+                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .background(Color("CustomRed"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(15)
+                            })
+                            .padding(5)
+                        NavigationLink(
+                            destination: MyListView(lists: listController.mylistData),
+                            label: {
+                                Text("我的片單")
+                                    .bold()
+                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .background(Color("CustomRed"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(15)
+                            })
+                            .padding(5)
+                        NavigationLink(
+                            destination: MyArticleView(articles:forumController.articleData),
+                            label: {
+                                Text("我發表過的文章")
+                                    .bold()
+                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .background(Color("CustomRed"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(15)
+                            })
+                            .padding(5)
+                        
+        //                ZStack{
+        //                    Text("Notification")
+        //                        .bold()
+        //                        .frame(width: 350, height: 45, alignment: .center)
+        //                        .background(Color.red)
+        //                        .foregroundColor(.white)
+        //                        .cornerRadius(15)
+        //                    Toggle(" ", isOn: $notification)
+        //                        .toggleStyle(SwitchToggleStyle(tint: .clear))
+        //                        .frame(width: 330, height: 45, alignment: .center)
+        //                }
+        //                .padding(5)
+                    }
+                   
                     Text("喜愛項目")
                         .bold()
                     Picker("123", selection: $select){
@@ -115,6 +131,7 @@ struct ProfileView: View {
         .accentColor(.red)
         .onAppear{
             self.listController.GetMyList(userID: (NowUser?.id)!)
+            self.forumController.GetMyArticle(userID: (NowUser?.id)!)
         }
     }
     

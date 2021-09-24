@@ -12,6 +12,7 @@ struct GetMessageBoardView: View{
     @State var article:Article
     @ObservedObject private var forumController = ForumController()
     @State private var todo : Bool = false
+   
  
     var body: some View {
         ZStack {
@@ -36,6 +37,7 @@ struct MessageBoardView: View
     var article:Article
     var comments:[Comment]
 //    @Binding var todo:Bool
+    @State var cardShown : Bool = false
     
     var body: some View
     {
@@ -54,7 +56,19 @@ struct MessageBoardView: View
             }
             
         }
-       
+        .toolbar{
+            if NowUserName == article.user?.UserName {
+                Button(action:{
+                    self.cardShown.toggle()
+                }){
+                    HStack{
+                        Image(systemName: "square.and.pencil")
+                    }
+                }
+            }
+            
+        }
+     
         
     }
 }

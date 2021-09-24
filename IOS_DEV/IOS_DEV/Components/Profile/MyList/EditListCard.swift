@@ -22,7 +22,7 @@ struct EditListCard:View{
                     .font(.system(size: 20).bold())
 
                 TextField(" ", text: $title)
-                    .font(.system(size: 18))
+                    .font(.system(size: 20))
                     .background(Color(.gray).opacity(0.1))
                     .foregroundColor(.black)
                     
