@@ -23,7 +23,7 @@ struct NewListCard: View {
                     .font(.system(size: 20).bold())
 
                 TextField("list title", text: $title )
-                    .font(.system(size: 22))
+                    .font(.system(size: 18))
                     .background(Color(.gray).opacity(0.1))
                     .foregroundColor(.black)
                     
@@ -45,8 +45,8 @@ struct NewListCard: View {
                         .padding()
                     
                 }
-                .disabled(self.title == " " ? true : false)
-                .opacity(self.title == " " ? 0.5 : 1)
+                .disabled(self.title == "" ? true : false)
+                .opacity(self.title == "" ? 0.5 : 1)
             
                 
            

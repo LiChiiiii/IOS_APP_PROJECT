@@ -56,6 +56,13 @@ struct NewListRes: Decodable, Identifiable{       //取片單
 struct NewListUser: Decodable, Identifiable{
     var id: UUID?
 }
+//--------------------------------編輯片單（PUT)----------------------------------------//
+
+struct UpdateList: Decodable,Encodable{
+    var listID : UUID
+    var listTitle : String
+}
+
 
 
 

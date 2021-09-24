@@ -16,7 +16,10 @@ struct MyListView: View {
     @State private var showAnimation = false
     let FullSize = UIScreen.main.bounds.size
     var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 2)
-    @State private var title:String = ""
+    @State var title:String = ""
+    @State var editID: UUID?
+    @State var editTitle:String = ""
+    @State var editAction : Bool = false
     
     var body: some View{
         
@@ -35,7 +38,7 @@ struct MyListView: View {
                     LazyVGrid(columns: columns, spacing: 20){
                         ForEach(self.lists ,id: \.id) { list in
                            
-                            MyListButton(list: list)
+                            MyListButton(list: list, editID: self.$editID, editTitle:self.$editTitle , editAction: self.$editAction)
   
                         }
                     }
@@ -46,6 +49,7 @@ struct MyListView: View {
                 
 
                 NewListCard(cardShown: self.$cardShown, title: self.$title) //新增片單
+                EditListCard(editAction: self.$editAction, title: self.$editTitle, listID: self.$editID) //編輯片單
                 
             })
             
@@ -74,7 +78,12 @@ struct MyListView: View {
 struct MyListButton:View{
     @ObservedObject private var listController = ListController()
     @State var list:List
-    @State private var todo : Bool = false
+    @State var todo : Bool = false
+    @Binding var editID: UUID?
+    @Binding var editTitle: String
+    @Binding var editAction : Bool
+    @State var deleteAction : Bool = false
+    
 
     var body:some View{
         
@@ -127,13 +136,17 @@ struct MyListButton:View{
                     self.todo = true
                 })
             })
+            //點擊button進入detailView
             .fullScreenCover(isPresented: self.$todo, content: {
                 ListDetailView(todo: self.$todo, listDetails: listController.listDetails, listOwner: NowUserName, listTitle: list.Title)
                 
             })
+            //長按動作
             .contextMenu{
                 Button(action: {
-                    // edit
+                    self.editID = list.id
+                    self.editTitle = list.Title
+                    self.editAction.toggle()
                 }) {
                     HStack {
                         Text("Edit")
@@ -142,7 +155,7 @@ struct MyListButton:View{
                 }
 
                 Button(action: {
-                     // delete the selected restaurant
+                    self.deleteAction.toggle()
                  }) {
                      HStack {
                          Text("Delete")
@@ -150,8 +163,15 @@ struct MyListButton:View{
                      }
                  }
 
-
             }
+            //刪除的alert
+            .alert(isPresented: self.$deleteAction, content: {
+                Alert(title: Text("刪除此片單？"),
+                      primaryButton: .default(Text("確定"),
+                                              action: {listController.deleteList(ListID: list.id!)} ),
+                      secondaryButton: .destructive(Text("取消")))
+
+            })
             
             
       

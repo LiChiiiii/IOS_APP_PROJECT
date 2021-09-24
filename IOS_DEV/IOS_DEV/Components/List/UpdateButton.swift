@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 import SDWebImageSwiftUI
 
+//控制在ListDetailView的動作（新增,編輯,刪除）
+
 struct UpdateButton:View{
     @State var open = false
     @Binding var CreateAction : Bool
@@ -22,10 +24,6 @@ struct UpdateButton:View{
             CreateListMovieButton(open: $open, CreateAction: self.$CreateAction)
             EditListMovieButton(open: $open, EditAction: self.$EditAction)
             DeleteListMovieButton(open: $open, DeleteAction: self.$DeleteAction)
-//            EditSecondaryButton(open: $open, action: self.action, index: 1 ,icon: "plus", color: "CustomBlue",offsetX: 70)
-//            EditSecondaryButton(open: $open, action:self.action, index: 2 , icon: "pencil", color: "CustomPurple",offsetX: 140)
-//            EditSecondaryButton(open: $open, action:self.action, index: 3 , icon: "trash", color: "CustomRed",offsetX: 210)
-//
             
             smallNavButton(buttonColor: .gray, buttonTextColor: .white, text: "action"){
                 self.open.toggle()

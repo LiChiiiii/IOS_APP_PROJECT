@@ -75,6 +75,41 @@ class ListService: ObservableObject {
         
     }
     
+    //-----編輯片單-----//
+    func PUT_Lists(endpoint: String,
+                    RegisterObject: UpdateList,
+                 completion: @escaping(Int)->()) {
+        
+        let url = URL(string: baseUrl + endpoint)
+        let token =  networkingService.getToken()
+        
+        var request = URLRequest(url: url!)
+        do {
+            let newData = try JSONEncoder().encode(RegisterObject)
+            request.httpBody = newData
+
+        } catch {
+            print("encode error")
+        }
+        
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        //response
+        let session = URLSession.shared
+          session.dataTask(with: request) { (data, response, error) in
+              if error == nil, let data = data, let response = response as? HTTPURLResponse {
+//                  print("statusCode: \(response.statusCode)")
+                  completion(response.statusCode)
+                  print(String(data: data, encoding: .utf8) ?? "")
+              } else {
+                  completion(404)
+              }
+          }.resume()
+        
+    }
+    
     //-----新增片單內容-----//
     func POST_ListDetails(endpoint: String,
                     RegisterObject: NewListMovie,
@@ -138,7 +173,7 @@ class ListService: ObservableObject {
         
     }
     
-    //-----刪除單內容-----//
+    //-----刪除片單內容-----////-----刪除片單內容-----//
     func DELETE_ListDetails(endpoint: String,
                  completion: @escaping(Int)->()) {
         

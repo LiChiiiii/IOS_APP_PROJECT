@@ -114,7 +114,7 @@ struct ProfileView: View {
         }
         .accentColor(.red)
         .onAppear{
-            self.listController.GetMyList(userID: NowUserID!)
+            self.listController.GetMyList(userID: (NowUser?.id)!)
         }
     }
     
