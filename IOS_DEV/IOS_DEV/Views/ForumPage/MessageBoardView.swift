@@ -34,10 +34,11 @@ struct GetMessageBoardView: View{
 
 struct MessageBoardView: View
 {
-    var article:Article
-    var comments:[Comment]
-//    @Binding var todo:Bool
-    @State var cardShown : Bool = false
+    @State var article:Article
+    @State var comments:[Comment]
+    @ObservedObject private var forumController = ForumController()
+    @State var editAction : Bool = false
+    @State var deleteAction : Bool = false
     
     var body: some View
     {
@@ -58,16 +59,37 @@ struct MessageBoardView: View
         }
         .toolbar{
             if NowUserName == article.user?.UserName {
-                Button(action:{
-                    self.cardShown.toggle()
-                }){
-                    HStack{
-                        Image(systemName: "square.and.pencil")
+                Menu {
+                    Button(action:{
+                        self.editAction.toggle()
+                    }){
+                        HStack {
+                            Text("Edit")
+                            Image(systemName: "pencil")
+                        }
                     }
-                }
+                    Button(action:{
+                        self.deleteAction.toggle()
+                    }){
+                        HStack {
+                            Text("Delete")
+                            Image(systemName: "trash")
+                        }
+                    }
+                    
+               } label: {
+                   Image(systemName: "square.and.pencil")
+               }
             }
-            
         }
+        .alert(isPresented: self.$deleteAction, content: {
+            Alert(title: Text("刪除此文章？"),
+                  primaryButton: .default(Text("確定"),
+                                          action: { forumController.DeleteArticle(articleID: article.id!)} ),
+                  secondaryButton: .destructive(Text("取消")))
+        })
+        .sheet(isPresented: self.$editAction,
+               content: {EditArticleCard(editAction: self.$editAction , title: article.Title, text: article.Text,articleID:article.id! ) })
      
         
     }

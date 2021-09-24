@@ -85,7 +85,7 @@ struct NewListCard: View {
 //}
 
 
-
+//
 //struct NewListCard:View{
 //    @ObservedObject private var listController = ListController()
 //    @State var cardShown : Bool = false

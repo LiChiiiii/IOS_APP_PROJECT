@@ -16,64 +16,6 @@ class CommentService: ObservableObject {
     let networkingService = NetworkingService()
     
     
-    func handleResponse(for request: URLRequest,
-                        completion: @escaping (Result<[Comment], Error>) -> Void){
-        
-        let session = URLSession.shared
-        
-        let task = session.dataTask(with: request) { (data, response, error) in
-            
-            //check the response status
-            DispatchQueue.main.async {
-                guard let unwrappedResponse = response as? HTTPURLResponse else {
-                    completion(.failure(NetworkingError.badResponse))   //badResponse : 連不上伺服器
-                    return
-                }
-            
-                print(unwrappedResponse.statusCode)
-//                switch unwrappedResponse.statusCode {
-//                case 200 ..< 300:   //200~300 ,NOT INCLUDE 300
-//                    print("success")
-//                default:
-//                    print("failure")
-//                }
-                
-                //伺服器回傳的error （事實上錯誤訊息會由data回傳）
-                if let unwrappedError = error {
-                    completion(.failure(unwrappedError))
-                    return
-                }
-                
-                //伺服器回傳的data （含錯誤訊息）
-                if let unwrappedData = data {
-                    do {
-                        // turn data into json
-                        //let json = try JSONSerialization.jsonObject(with: unwrappedData, options: [])
-                       // print(json)
-
-                        
-                        // decode data
-                        if let comment = try? JSONDecoder().decode([Comment].self, from: unwrappedData) {
-                            completion(.success(comment))
-                        } else {
-                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
-                            completion(.failure(errorResponse))
-
-                        }
-                        
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-                
-            }
-           
-        }
-        
-        task.resume()
-        
-    }
-    
     //get comment
     func GETrequest(endpoint: String,
                  completion: @escaping (Result<[Comment], Error>) -> Void) {
@@ -88,7 +30,7 @@ class CommentService: ObservableObject {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     
-        handleResponse(for: request, completion: completion)
+        getCommentResponse(for: request, completion: completion)
         
     }
     
@@ -115,12 +57,112 @@ class CommentService: ObservableObject {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        Response(for: request, completion: completion)
+        postCommentResponse(for: request, completion: completion)
         
     }
     
+    //update comment
+    func PUT_Comments(endpoint: String,
+                    RegisterObject: UpdateComment,
+                 completion: @escaping(Int)->()) {
+        
+        let url = URL(string: baseUrl + endpoint)
+        let token =  networkingService.getToken()
+        
+        var request = URLRequest(url: url!)
+        do {
+            let newData = try JSONEncoder().encode(RegisterObject)
+            request.httpBody = newData
+
+        } catch {
+            print("encode error")
+        }
+        
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     
-    func Response(for request: URLRequest,
+        //response
+        let session = URLSession.shared
+          session.dataTask(with: request) { (data, response, error) in
+              if error == nil, let data = data, let response = response as? HTTPURLResponse {
+                  completion(response.statusCode)
+                  print(String(data: data, encoding: .utf8) ?? "")
+              } else {
+                  completion(404)
+              }
+          }.resume()
+        
+    }
+    //delete comment
+    func DELETE_Comments(endpoint: String,
+                 completion: @escaping(Int)->()) {
+        
+        let url = URL(string: baseUrl + endpoint)
+        let token =  networkingService.getToken()
+        
+        var request = URLRequest(url: url!)
+        
+        request.httpMethod = "DELETE"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    
+        //response
+        let session = URLSession.shared
+          session.dataTask(with: request) { (data, response, error) in
+              if error == nil, let data = data, let response = response as? HTTPURLResponse {
+//                  print("statusCode: \(response.statusCode)")
+                  completion(response.statusCode)
+                  print(String(data: data, encoding: .utf8) ?? "")
+              } else {
+                  completion(404)
+              }
+          }.resume()
+        
+    }
+    
+    //----------------------------------------RESPONSE-----------------------------------------//
+    func getCommentResponse(for request: URLRequest,
+                        completion: @escaping (Result<[Comment], Error>) -> Void){
+        
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request) { (data, response, error) in
+            
+            //check the response status
+            DispatchQueue.main.async {
+                //伺服器回傳的error （事實上錯誤訊息會由data回傳）
+                if let unwrappedError = error {
+                    completion(.failure(unwrappedError))
+                    return
+                }
+                
+                //伺服器回傳的data （含錯誤訊息）
+                if let unwrappedData = data {
+                    do {
+                        // decode data
+                        if let comment = try? JSONDecoder().decode([Comment].self, from: unwrappedData) {
+                            completion(.success(comment))
+                        } else {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
+                            completion(.failure(errorResponse))
+
+                        }
+                        
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                
+            }
+           
+        }
+        
+        task.resume()
+        
+    }
+    
+    func postCommentResponse(for request: URLRequest,
                         completion: @escaping (Result<CommentRes, Error>) -> Void){
         
         let session = URLSession.shared
@@ -129,18 +171,6 @@ class CommentService: ObservableObject {
             
             //check the response status
             DispatchQueue.main.async {
-                guard let unwrappedResponse = response as? HTTPURLResponse else {
-                    completion(.failure(NetworkingError.badResponse))   //badResponse : 連不上伺服器
-                    return
-                }
-            
-                print(unwrappedResponse.statusCode)
-//                switch unwrappedResponse.statusCode {
-//                case 200 ..< 300:   //200~300 ,NOT INCLUDE 300
-//                    print("success")
-//                default:
-//                    print("failure")
-//                }
                 
                 //伺服器回傳的error （事實上錯誤訊息會由data回傳）
                 if let unwrappedError = error {
@@ -151,10 +181,6 @@ class CommentService: ObservableObject {
                 //伺服器回傳的data （含錯誤訊息）
                 if let unwrappedData = data {
                     do {
-                        // turn data into json
-                        //let json = try JSONSerialization.jsonObject(with: unwrappedData, options: [])
-                       // print(json)
-
                         // decode data
                         if let comment = try? JSONDecoder().decode(CommentRes.self, from: unwrappedData) {
                             completion(.success(comment))

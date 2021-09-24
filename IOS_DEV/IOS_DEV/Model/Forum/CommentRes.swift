@@ -12,7 +12,7 @@ struct CommentRes: Decodable{
     var Text: String
     var user: usrID?
     var article: artID?
-    var LikeCount: String
+    var LikeCount: Int
     var updatedOn: String   //db is 'DATE', but here is 'STRING'
 }
 

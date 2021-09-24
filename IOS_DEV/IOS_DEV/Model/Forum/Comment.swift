@@ -12,7 +12,7 @@ struct Comment: Decodable, Identifiable{
     var Text: String
     var user: CommentOwner?
     var article: article?
-    var LikeCount: String
+    var LikeCount: Int
     var updatedOn: String?   //db is 'DATE', but here is 'STRING'
     
     static private let dateFormatter: DateFormatter = {

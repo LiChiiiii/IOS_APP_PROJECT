@@ -7,9 +7,15 @@
 
 import Foundation
 
-struct CommentTodo: Encodable{
+struct CommentTodo: Decodable,Encodable{
     var Text: String
     var UserName: String
     var ArticleID: String
-    var LikeCount: String
+    var LikeCount: Int
+}
+
+struct UpdateComment: Decodable,Encodable {
+    var CommentID: UUID
+    var Text: String
+    var LikeCount: Int
 }

@@ -41,7 +41,7 @@ struct Comments: View
                                     .frame(width: 15, height: 15)
                                     .foregroundColor(.pink)
                                 
-                                Text(comment.LikeCount)
+                                Text("\(comment.LikeCount)")
                             }
                             .font(.footnote)
                             
