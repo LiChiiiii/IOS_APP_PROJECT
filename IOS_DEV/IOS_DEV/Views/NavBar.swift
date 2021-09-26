@@ -47,10 +47,11 @@ let controller = ListController()
 
 //Working Process
 struct NavBar: View {
-//    @Binding var selectedIndex:Int
-//    @Binding var selectedIndex:Int
     @StateObject var previewModle = PreviewModle()
+    
     @StateObject var StateManager  = SeachingViewStateManager()
+    @StateObject var DragAndDropPreview = DragAndDropViewModel()
+    
     @State var index : Int
     @State private var GroupSelect : Bool = false
     @State private var isPriview = false
@@ -93,6 +94,7 @@ struct NavBar: View {
         }
         .environmentObject(previewModle)
         .environmentObject(StateManager) //here due to bottomSheet need to use to update some state
+        .environmentObject(DragAndDropPreview) //here due to bottomSheet need to use to update some state
         .ignoresSafeArea()
 
     }

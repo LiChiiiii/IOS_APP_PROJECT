@@ -39,6 +39,8 @@ class GenreTypeState: ObservableObject {
         }
     }
     
+    
+    
 //    private var subscriptionToken: AnyCancellable?
 //
 //    let movieService: MovieService

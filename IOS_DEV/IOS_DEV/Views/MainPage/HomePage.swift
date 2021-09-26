@@ -82,8 +82,7 @@ struct MainHomeView:View{
                         
                     }
                 }
-                
-                
+ 
             }
             .edgesIgnoringSafeArea(.all)
 
@@ -129,9 +128,6 @@ struct SubHomeView_Player:View{
                         //                print(trainerList[0].videoPlayer.currentTime().seconds)
                     }
                 })
-            
-//            TopBar(topbar: $topBarIndx)
-//             //   .offset(y:40)
 //
         }
     }
@@ -165,9 +161,9 @@ struct PlayerScrollList: View {
                             }
                             
                         }
-                        .onDisappear{
-                         //   data[i].videoPlayer.pause()
-                        }
+//                        .onDisappear{
+//                         //   data[i].videoPlayer.pause()
+//                        }
                     }
                 }
                 .edgesIgnoringSafeArea(.all)

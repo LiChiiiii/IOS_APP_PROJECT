@@ -160,6 +160,17 @@ struct DragItemData : Identifiable{
     let personData : Person? //only for actor and director
 }
 
+//struct SearchModel : Codable,Identifiable{
+//    var id : String = UUID().uuidString
+//    let keyWord : String
+//}
+
+enum Tab : String {
+    case Actor = "Actor"
+    case Director = "Director"
+    case Genre = "Genre"
+}
+
 class PreviewModle : ObservableObject {
     @Published var isShowPreview : Bool = false
     @Published var previewData : Movie? //get the movie
@@ -248,21 +259,196 @@ class PreviewModle : ObservableObject {
     
 }
 
-class CardProvider : ObservableObject,DropDelegate {
+//class CardProvider : ObservableObject,DropDelegate {
+//
+//    @Published var selectedPreviewDatas : [DragItemData] = [] //here we are getting all the movies info that user is selected
+//    @Published var dragActor : [DragItemData] = tempDragDataActor
+//    @Published var dragDirector : [DragItemData] = tempDragDataDirector
+//    @Published var dragGenre : [DragItemData] = tempDragDataGenre
+//    @Published var selectedTab : Tab = .Actor
+//
+//    @Published var fetchingError : NSError?
+//
+//    @Published var previewMoviesList : [Movie]?
+//    @Published var previewResult : Movie?
+//
+//    private let movieService: MovieService
+//
+//    init(movieService: MovieService = MovieStore.shared) {
+//        self.movieService = movieService
+//    }
+//
+//    func fetchData(type : CharacterRule) {
+//
+//        switch type {
+//        case .Actor:
+//            //update actor list
+//
+//            break
+//        case .Director:
+//            //update director list
+//            break
+//        case .Genre:
+//            //update genre list
+//            break
+//        }
+//    }
+//
+//    private var movieIds : [Int] = [
+//        497698,
+//        80752,
+//        774021,
+//        611489,
+//        547565
+//    ]
+//
+//    func getPreviewResult(movieID : Int){
+//        movieService.fetchMovie(id: movieID){ [weak self] result in
+//            guard let self = self else { return } //do it need here if it use weak self??
+//
+//            switch result{
+//            case .success(let result):
+//                // print(result)
+//                self.previewResult = result
+//            case .failure(let err):
+//                self.fetchingError = err as NSError
+//            }
+//
+//        }
+//    }
+//
+//    func getAllPreviewResultList() -> NSError? {
+//        return nil
+//    }
+//
+//    func getPreview(){
+//        let id = self.movieIds.randomElement()!
+//        getPreviewResult(movieID: id)
+//    }
+//
+//    func performDrop(info: DropInfo) -> Bool {
+//        // just allow to drop at most 10 Card
+//
+//        for imgProvider in info.itemProviders(for: [String(kUTTypeURL)]){
+//            if imgProvider.canLoadObject(ofClass: URL.self){
+//                print("URL loaded")
+//
+//                //for each drop item if can load and it will provide a CardID
+//                //And Seching from the list
+//
+//                let _ = imgProvider.loadObject(ofClass: URL.self){ (CardId,err) in
+//
+//                    print(CardId!)
+//                    //check current selected list is exist or not
+//                    let checkState = self.selectedPreviewDatas.contains{ (exist) -> Bool in
+//                        return exist.id == "\(CardId!)"
+//                    }
+//
+//                    //Get the item is exist in current list or not
+//                    //If not exist append to current list
+//                    if !checkState {
+//                        //We need to find the current data in provider lsit first
+//                        //and we can get is Actor? Director? Genre
+//                        //But we don't know the card in which list
+//                        // we need to figure our first
+//                        let actor = self.dragActor.filter{(item) -> Bool in
+//                            return item.id == "\(CardId!)"
+//                        }
+//
+//                        let director = self.dragDirector.filter{(item) -> Bool in
+//                            return item.id == "\(CardId!)"
+//                        }
+//
+//                        let genre = self.dragGenre.filter{(item) -> Bool in
+//                            return item.id == "\(CardId!)"
+//                        }
+//
+//                        //Either one is not empty
+//                        if !actor.isEmpty {
+//                            //Because we are using Uquie ID ,won't have same id
+//                            //There is one item only
+//                            //Append to the list
+//                            DispatchQueue.main.async {
+//                                withAnimation(.default){
+//                                    self.selectedPreviewDatas.insert(actor.first!, at: 0) //we have already check is not empty
+//                                }
+//
+//                                //fecth the preview result
+//                                //here just simulating
+//                                self.getPreview()
+//
+//                            }
+//                        }else if !director.isEmpty {
+//                            //Because we are using Uquie ID ,won't have same id
+//                            //There is one item only
+//                            DispatchQueue.main.async {
+//                                withAnimation(.default){
+//                                    self.selectedPreviewDatas.insert(director.first!, at: 0) //we have already check is not empty
+//                                }
+//
+//                                //fecth the preview result
+//                                //here just simulating
+//                                self.getPreview()
+//                            }
+//
+//                        }
+//                        else if !genre.isEmpty {
+//                            DispatchQueue.main.async {
+//                                withAnimation(.default){
+//                                    self.selectedPreviewDatas.insert(genre.first!, at: 0) //we have already check is not empty
+//                                }
+//
+//                                //fecth the preview result
+//                                //here just simulating
+//                                self.getPreview()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            else {
+//                print("URL can't load")
+//            }
+//
+//
+//        }
+//        return true
+//    }
+//
+//    func dropUpdated(info: DropInfo) -> DropProposal? {
+//        return DropProposal.init(operation: .move)
+//    }
+//
+//}
 
+class DragAndDropViewModel : ObservableObject,DropDelegate {
+    
+    //This Part is for dragAndDropCar
     @Published var selectedPreviewDatas : [DragItemData] = [] //here we are getting all the movies info that user is selected
     @Published var dragActor : [DragItemData] = tempDragDataActor
     @Published var dragDirector : [DragItemData] = tempDragDataDirector
     @Published var dragGenre : [DragItemData] = tempDragDataGenre
+    @Published var selectedTab : Tab = .Actor
     
-    @Published var selectedTab : String = "Actor"
-    
-    @Published var previewMoviesList : [Movie]?
-    @Published var previewResult : Movie?
-    
+    //This part is for preview and networking
+    @Published var isShowPreview : Bool = false
+    @Published var previewData : Movie? //get the movie
+    @Published var previewDataList : [Movie]?
     @Published var fetchingError : NSError?
+    @Published var fetchPreLoading : Bool = false
     
     private let movieService: MovieService
+    
+    private var movieIds : [Int] = [
+        497698,
+        482373,
+        774021,
+        611489,
+        547565,
+        848278,
+        597433,
+        580489
+    ]
     
     init(movieService: MovieService = MovieStore.shared) {
         self.movieService = movieService
@@ -273,6 +459,7 @@ class CardProvider : ObservableObject,DropDelegate {
         switch type {
         case .Actor:
             //update actor list
+            
             break
         case .Director:
             //update director list
@@ -282,25 +469,17 @@ class CardProvider : ObservableObject,DropDelegate {
             break
         }
     }
-    
-    func getPreviewResult(){
-        let movieIds : [Int] = [
-            497698,
-            80752,
-            774021,
-            611489,
-            547565
-        ]
-        
-        let id = movieIds.randomElement()
-        
-        movieService.fetchMovie(id: id!){ [weak self] result in
+
+    func getPreviewResult(movieID : Int){
+        movieService.fetchMovie(id: movieID){ [weak self] result in
             guard let self = self else { return } //do it need here if it use weak self??
             
             switch result{
             case .success(let result):
                 // print(result)
-                self.previewResult = result
+                self.previewData = result
+                self.fetchPreLoading = false
+                print("data got!")
             case .failure(let err):
                 self.fetchingError = err as NSError
             }
@@ -308,8 +487,24 @@ class CardProvider : ObservableObject,DropDelegate {
         }
     }
     
-    func getAllPreviewResultList() -> NSError? {
-        return nil
+    func loadMovies(with endpoint: MovieListEndpoint) {
+
+        self.movieService.fetchMovies(from: endpoint) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.previewDataList = response.results
+                
+            case .failure(let error):
+                self.fetchingError = error as NSError
+            }
+        }
+    }
+    
+    func getPreview(){
+        let id = self.movieIds.randomElement()!
+        print(id)
+        getPreviewResult(movieID: id)
     }
 
     func performDrop(info: DropInfo) -> Bool {
@@ -337,6 +532,13 @@ class CardProvider : ObservableObject,DropDelegate {
                         //and we can get is Actor? Director? Genre
                         //But we don't know the card in which list
                         // we need to figure our first
+                        
+                        if self.selectedPreviewDatas.count == 10{
+                            print("max!")
+                            return
+                        }
+                        
+                        
                         let actor = self.dragActor.filter{(item) -> Bool in
                             return item.id == "\(CardId!)"
                         }
@@ -358,6 +560,17 @@ class CardProvider : ObservableObject,DropDelegate {
                                 withAnimation(.default){
                                     self.selectedPreviewDatas.insert(actor.first!, at: 0) //we have already check is not empty
                                 }
+                                
+                                //fecth the preview result
+                                //here just simulating
+                                self.fetchPreLoading = true
+                                
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+                                self.getPreview()
+                                print("data fetching")
+                                
                             }
                         }else if !director.isEmpty {
                             //Because we are using Uquie ID ,won't have same id
@@ -366,6 +579,16 @@ class CardProvider : ObservableObject,DropDelegate {
                                 withAnimation(.default){
                                     self.selectedPreviewDatas.insert(director.first!, at: 0) //we have already check is not empty
                                 }
+                                
+                                //fecth the preview result
+                                //here just simulating
+                                self.fetchPreLoading = true
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+                                self.getPreview()
+                                print("data fetching")
+                                
                             }
 
                         }
@@ -374,8 +597,33 @@ class CardProvider : ObservableObject,DropDelegate {
                                 withAnimation(.default){
                                     self.selectedPreviewDatas.insert(genre.first!, at: 0) //we have already check is not empty
                                 }
+                                
+                                //fecth the preview result
+                                //here just simulating
+                                self.fetchPreLoading = true
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+                                self.getPreview()
+                                print("data fetching")
+                               
                             }
                         }
+                        let array  = [1,2,3,4]
+                        let type = array.randomElement()!
+                        switch type {
+                        case 1:
+                            self.loadMovies(with: .nowPlaying)
+                        case 2:
+                            self.loadMovies(with: .popular)
+                        case 3:
+                            self.loadMovies(with: .topRated)
+                        case 4:
+                            self.loadMovies(with: .upcoming)
+                        default:
+                            print("something wrong")
+                        }
+
                     }
                 }
             }
@@ -394,6 +642,43 @@ class CardProvider : ObservableObject,DropDelegate {
 
 }
 
+class SearchBarViewModel : ObservableObject{
+    @Published var searchingText : String = ""
+    @Published var searchResult : [Movie] = []
+    @Published var isLoading : Bool = false
+    @Published var fetchingError : NSError?
+    
+    private let movieService: MovieService
+    
+    init(movieService: MovieService = MovieStore.shared) {
+        self.movieService = movieService
+    }
+    
+    //fake ,just for testing
+    //when searchingText is change chall it
+    func getRecommandationList(){
+        //when the return button is press
+        movieService.searchMovie(query: searchingText){ [weak self] result in
+            guard let self = self else { return }
+            withAnimation(){
+                self.isLoading = true
+            }
+            switch result{
+            case.success(let response):
+               
+                self.searchResult = response.results
+                print(self.searchResult.count)
+                withAnimation(){
+                    self.isLoading = false
+                }
+            case .failure(let error):
+
+                self.fetchingError = error as NSError
+            }
+        }
+        
+    }
+}
 
 class SeachingViewStateManager : ObservableObject{
     //For all state in searching view
@@ -403,16 +688,11 @@ class SeachingViewStateManager : ObservableObject{
     @Published var isEditing : Bool = false
     
     //going to share the searching text between the view
-    @Published var searchingText : String = ""
+//    @Published var searchingText : String = ""
     @Published var getResult : Bool  = false
     
     @Published var previewResult : Bool = false
     @Published var previewMoreResult : Bool = false
-    
-   
-    
-    //just test??
-    @Published var isShowPreview : Bool = false
     
     //just for try!
     @Published var searchingLoading : Bool = true
@@ -421,7 +701,8 @@ class SeachingViewStateManager : ObservableObject{
 
 struct AutoScroll_V: View {
     @AppStorage("seachHistory") var history : [String] =  []
-    @EnvironmentObject var StateManager : SeachingViewStateManager
+    @EnvironmentObject  var StateManager : SeachingViewStateManager
+    @StateObject private var searchMV = SearchBarViewModel()
     //    @StateObject var StateManager  = SeachingViewStateManager()
     //current view state
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
@@ -429,6 +710,7 @@ struct AutoScroll_V: View {
     @State private var isCameraDisplay : Bool = false
     @State private var isShowActionSheet :Bool = false
     @EnvironmentObject var previewModel : PreviewModle
+    @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel
     
     //it might need to change in only this view
     init(){
@@ -441,25 +723,24 @@ struct AutoScroll_V: View {
                 NavigationView{
                     VStack(spacing:0){
                         if self.StateManager.previewResult{
-                            NavigationLink(destination:  MovieDetailView(movieId:self.previewModel.previewData!.id, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$StateManager.previewResult){
+                            NavigationLink(destination:  MovieDetailView(movieId:self.DragAndDropPreview.previewData!.id, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$StateManager.previewResult){
                                 EmptyView()
                                 
                             }
                         }
                         //this view , is simulating the naviagation link
-                        if self.StateManager.previewMoreResult && self.previewModel.previewDataList != nil{
+                        if self.StateManager.previewMoreResult && self.DragAndDropPreview.previewDataList != nil{
                             
-                            NavigationLink(destination: MorePreviewResultView(isNavLink: true, backPageName: "Search", isActive: self.$StateManager.previewMoreResult,movieList: self.previewModel.previewDataList!), isActive: self.$StateManager.previewMoreResult){EmptyView()}
+                            NavigationLink(destination: MorePreviewResultView(isNavLink: true, backPageName: "Search", isActive: self.$StateManager.previewMoreResult,movieList: self.DragAndDropPreview.previewDataList!), isActive: self.$StateManager.previewMoreResult){EmptyView()}
                             
                         }
                         if self.StateManager.getResult{
-                            NavigationLink(destination: pageView(movie: self.previewModel.Movies), isActive: self.$StateManager.getResult){EmptyView()}
+                            NavigationLink(destination: SearchResultView(movie: self.searchMV.searchResult), isActive: self.$StateManager.getResult){EmptyView()}
        
                         }
 
                         SearchingBar(isCameraDisplay: self.$isCameraDisplay)
                            
-                        Divider()
                         
                         if self.StateManager.isSeaching && !self.StateManager.isEditing{
                             searchingField(history: self.history)
@@ -503,17 +784,15 @@ struct AutoScroll_V: View {
                     .navigationBarHidden(true)
                 }
             }
-            .onAppear{
-                self.previewModel.getFullMovie()
-            }
+            .environmentObject(searchMV)
     }
     
 }
 
 struct searchingResultList :View{
     @EnvironmentObject var StateManager : SeachingViewStateManager
-    private let items : [SeachItem] = movieDB
     @EnvironmentObject var test : PreviewModle
+    @EnvironmentObject var searchMV : SearchBarViewModel
     var body: some View{
         List(){
             Button(action: {
@@ -527,45 +806,45 @@ struct searchingResultList :View{
                 HStack(spacing:2){
                     Text("Search:")
                         .foregroundColor(.blue)
-                    Text(StateManager.searchingText)
+                    Text(searchMV.searchingText)
                         .foregroundColor(.white)
                         .padding(.horizontal,5)
                     Spacer()
                 }
             }
-        
-            ForEach(self.items.filter{$0.itemName.lowercased().contains(self.StateManager.searchingText.lowercased())},id:\.self.id){ name in
-                Button(action: {
-                    self.StateManager.searchingText = name.itemName
-                    self.StateManager.isSeaching.toggle()
-                    self.StateManager.isFocuse = [false,false]
-                    self.StateManager.isEditing.toggle()
-                    withAnimation(.easeInOut(duration: 0.3)){
-                        self.StateManager.getResult = true
-                    }
-                }){
-                    HStack{
-                        Image(systemName: "film")
-                            .font(.body)
-                            .foregroundColor(.gray)
-                        Text(name.itemName)
-                            .bold()
-                        
-                        Spacer()
-                        
-                        Image(systemName: "arrowshape.turn.up.forward")
+            if self.searchMV.searchResult.count > 0{
+                ForEach(self.searchMV.searchResult,id:\.id){ searchData in
+                    Button(action: {
+                        self.searchMV.searchingText = searchData.title
+                        self.StateManager.isSeaching.toggle()
+                        self.StateManager.isFocuse = [false,false]
+                        self.StateManager.isEditing.toggle()
+                        withAnimation(.easeInOut(duration: 0.3)){
+                            self.StateManager.getResult = true
+                        }
+                    }){
+                        HStack{
+                            Image(systemName: "film")
+                                .font(.body)
+                                .foregroundColor(.gray)
+                            Text(searchData.title)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            Image(systemName: "arrowshape.turn.up.forward")
+                        }
                     }
                 }
             }
-            
         }
         .listStyle(PlainListStyle())
-        
     }
 }
 
 struct searchingField : View{
     @EnvironmentObject var StateManager : SeachingViewStateManager
+    @EnvironmentObject var searchMV : SearchBarViewModel
     var history : [String]
 
     var body :some View{
@@ -605,6 +884,7 @@ struct searchingField : View{
 
 struct HStackLayout: View {
     @EnvironmentObject var StateManager : SeachingViewStateManager
+    @EnvironmentObject var searchMV : SearchBarViewModel
     var list : [String]
     var body: some View {
         VStack{
@@ -622,7 +902,7 @@ struct HStackLayout: View {
             ForEach(self.list, id: \.self) { item in
                 searchFieldButton(searchingText: item){
                     self.StateManager.isSeaching.toggle()
-                    self.StateManager.searchingText = item
+                    self.searchMV.searchingText = item
                     self.StateManager.isEditing = false
                     withAnimation(.easeOut(duration:0.7)){
                         self.StateManager.isFocuse = [false,false]
@@ -683,6 +963,8 @@ struct searchFieldButton : View {
 
 struct SearchingMode: View {
     @EnvironmentObject var StateManager : SeachingViewStateManager
+    @EnvironmentObject var searchMV : SearchBarViewModel
+    
     @State private var isDelete:Bool = false
     var placeholder : String = "Movie Name,Actor..."
     var body: some View {
@@ -693,7 +975,7 @@ struct SearchingMode: View {
                 
                 UITextFieldView(keybooardType: .default, returnKeytype: .search, tag: 1, placeholder:placeholder)
                     .frame(height:22)
-                    .onChange(of: self.StateManager.searchingText, perform: { value in
+                    .onChange(of: self.searchMV.searchingText, perform: { value in
                         if self.StateManager.isSeaching {
                             self.StateManager.isEditing = value == "" ? false : true
                         }
@@ -702,7 +984,7 @@ struct SearchingMode: View {
                 if self.StateManager.isEditing {
                     Button(action:{
                         withAnimation{
-                            self.StateManager.searchingText = ""
+                            self.searchMV.searchingText = ""
                         }
                     }){
                         Image(systemName: "xmark.circle.fill")
@@ -748,6 +1030,8 @@ struct SeachingButton: View {
 
 struct SearchingBar: View {
     @EnvironmentObject var StateManager : SeachingViewStateManager
+    @EnvironmentObject var searchMV : SearchBarViewModel
+    
     @Binding var isCameraDisplay :Bool
     var body: some View {
         HStack(spacing:0){
@@ -766,7 +1050,8 @@ struct SearchingBar: View {
                         Button(action: {
                             self.StateManager.isSeaching.toggle()
                             withAnimation(.easeInOut){
-                                self.StateManager.searchingText = "" //for currrent view only
+                                self.searchMV.searchingText = "" //for currrent view only
+                                
                                 self.StateManager.isEditing = false
                                 self.StateManager.isFocuse = [false,false]
                             }
@@ -803,32 +1088,6 @@ struct SeachItem : Identifiable,Hashable{
     let itemName : String
 }
 
-let movieDB : [SeachItem] = [
-    SeachItem(itemName: "Sholay (1975)"),
-    SeachItem(itemName: "Mughal-e-Azam (1960)"),
-    SeachItem(itemName: "Mother India (1957)"),
-    SeachItem(itemName: "Dilwale Dulhania Le Jayenee (1995)"),
-    SeachItem(itemName: "Guide (1965)"),
-    SeachItem(itemName: "Deewaar (1975)"),
-    SeachItem(itemName: "Pakeezah (1972)"),
-    SeachItem(itemName: "Shree 420 (1955)"),
-    SeachItem(itemName: "Barfi! (2012)"),
-    SeachItem(itemName: "Umrao Jaan (1981)"),
-    SeachItem(itemName: "Bobby (1973)"),
-    SeachItem(itemName: "Mr India (1987)"),
-    SeachItem(itemName: "Jab We Met (2007)"),
-    SeachItem(itemName: "Ankur (1974)"),
-    SeachItem(itemName: "GolMaal (1979)"),
-    SeachItem(itemName: "Chak De! India (2007)"),
-    SeachItem(itemName: "Ek Tha Tiger (2012)"),
-    SeachItem(itemName: "Swades (2004)"),
-    SeachItem(itemName: "Hera Pheri (2000)"),
-    SeachItem(itemName: "Mujhse Dosti Karoge! (2002)"),
-    SeachItem(itemName: "Veer-Zaara (2004)"),
-    SeachItem(itemName: "Iron man"),
-    SeachItem(itemName: "Iron man 2"),
-    SeachItem(itemName: "Iron man 3")
-]
 
 
 let testList  : [MovieRule] = [
@@ -871,16 +1130,7 @@ let testList  : [MovieRule] = [
 //    }
 //}
 
-//struct ResultList : View{
-//    var result : [MovieRule]
-//    var body: some View{
-//        HStack{
-//            ForEach(self.result){ item in
-//                ResultCardView(imageURL: item.postURL)
-//            }
-//        }
-//    }
-//}
+
 
 struct ResultList : View{
     var result : [Movie]
@@ -889,134 +1139,18 @@ struct ResultList : View{
     var body: some View{
         HStack{
             ForEach(self.result){ item in
-                ResultCardView2(isShowDetail: self.$isShowDetail, selectedID: self.$selectedID, movie: item)
+                ResultCardView(isShowDetail: self.$isShowDetail, selectedID: self.$selectedID, movie: item)
             }
         }
     }
 }
 
-//
-//struct pageView: View {
-//    @AppStorage("seachHistory") var history : [String] =  []
-//
-//    @EnvironmentObject var StateManager : SeachingViewStateManager
-//    @StateObject var provider : CardProvider = CardProvider()
-//    @State private var page = 1
-//    @State private var showAsList : Bool = false
-//    var body: some View {
-//        VStack{
-//            HStack(){
-//                Button(action: {
-//                    withAnimation(){
-//                        if !self.StateManager.isSeaching {
-//                            self.StateManager.getResult = false
-//                            self.StateManager.searchingText = ""
-//                        }
-//
-//                        if !self.StateManager.isEditing{
-//                            self.StateManager.getResult = false
-//                        }
-//                    }
-//                    self.StateManager.isSeaching = false
-//                    self.StateManager.isEditing = false
-//
-//                }) {
-//                    Image(systemName: "chevron.left")
-//                        .foregroundColor(.white)
-//                }
-//                .padding(.trailing, 2)
-//
-//                if !self.StateManager.isSeaching {
-//                    HStack{
-//                        HStack{
-//                            Text(self.StateManager.searchingText)
-//                                .foregroundColor(.white)
-//                                .padding(.leading,5)
-//                                .lineLimit(1)
-//                            Spacer()
-//                        }
-//                        .frame(maxWidth:.infinity)
-//                        .background(Color.black.opacity(0.05))
-//                        .onTapGesture {
-//                            self.StateManager.isSeaching = true
-//                            self.StateManager.isFocuse = [false,true]
-//                            self.StateManager.isEditing = true
-//                        }
-//                        Spacer()
-//                        Button(action:{
-//                            withAnimation(){
-//                                //Clean the text and turn on the search mode
-//                                //now is nothing to do
-//                                withAnimation(){
-//                                    self.StateManager.isSeaching = true
-//                                    self.StateManager.searchingText = ""
-//                                    self.StateManager.isFocuse = [false,true]
-//                                }
-//                            }
-//                        }){
-//                            Image(systemName: "xmark")
-//                                .foregroundColor(.white)
-//                                .padding(.horizontal,3)
-//                        }
-//                        //A toggle button to toggle show tag a list or a silder
-//                        Button(action:{
-//                            withAnimation(){
-//                                self.showAsList.toggle()
-//                            }
-//                        }){
-//                            Image(systemName: "list.and.film")
-//                                .foregroundColor(.white)
-//                                .padding(.horizontal,3)
-//                        }
-//                    }
-//                    .transition(.identity)
-//
-//
-//                }else{
-//                    SearchingMode(placeholder:"Recommand to you....Iron man!")
-//                }
-//
-//            }
-//            .padding(8)
-//            .padding(.horizontal)
-////            .padding(.bottom,5)
-//            .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
-//
-//            Divider()
-//
-//
-//            if self.StateManager.isSeaching && !self.StateManager.isEditing{
-//                //show history view
-//                searchingField(history: self.history)
-//                    .transition(.identity)
-//            }else if(self.StateManager.isEditing){
-//                //show seaching recommandation view
-//                searchingResultList()
-//            }else if !self.showAsList{
-//                GeometryReader{ proxy in
-//                    MovieSeachResultView(width:proxy.frame(in: .global).width,height:proxy.frame(in: .global).height )
-//                }
-//            }else{
-//                MovieResultList(imageList: provider.genreList)
-//                    .zIndex(1)
-//                    .transition(AnyTransition.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
-//            }
-//
-//        }
-////        .navigationViewStyle(StackNavigationViewStyle())
-////        .navigationTitle("")
-////        .navigationBarTitle("")
-////        .navigationBarHidden(true)
-////
-//
-//    }
-//}
-
-struct pageView: View {
+struct SearchResultView: View {
     @AppStorage("seachHistory") var history : [String] =  []
     
     @EnvironmentObject var StateManager : SeachingViewStateManager
-    @StateObject var provider : CardProvider = CardProvider()
+    @EnvironmentObject var searchMV : SearchBarViewModel
+
     @State private var page = 1
     @State private var showAsList : Bool = false
 
@@ -1031,7 +1165,7 @@ struct pageView: View {
                             withAnimation(){
                                 if !self.StateManager.isSeaching {
                                     self.StateManager.getResult = false
-                                    self.StateManager.searchingText = ""
+                                    self.searchMV.searchingText = ""
                                 }
                                 
                                 if !self.StateManager.isEditing{
@@ -1050,7 +1184,7 @@ struct pageView: View {
                         if !self.StateManager.isSeaching {
                             HStack{
                                 HStack{
-                                    Text(self.StateManager.searchingText)
+                                    Text(self.searchMV.searchingText)
                                         .foregroundColor(.white)
                                         .padding(.leading,5)
                                         .lineLimit(1)
@@ -1070,7 +1204,7 @@ struct pageView: View {
                                         //now is nothing to do
                                         withAnimation(){
                                             self.StateManager.isSeaching = true
-                                            self.StateManager.searchingText = ""
+                                            self.searchMV.searchingText = ""
                                             self.StateManager.isFocuse = [false,true]
                                         }
                                     }
@@ -1091,14 +1225,16 @@ struct pageView: View {
                                 }
                             }
                             .transition(.identity)
+                            .padding(.vertical,5)
                         }else{
                             SearchingMode(placeholder:"Recommand to you....Iron man!")
+                                .padding(.vertical,5)
                         }
                         
                     
                 }
                 .padding(.horizontal,8)
-                .padding(.vertical)
+                .padding(.vertical,5)
                 .background(Color("DarkMode2").edgesIgnoringSafeArea(.all))
 
                 Divider()
@@ -1106,6 +1242,7 @@ struct pageView: View {
                 if self.StateManager.isSeaching && !self.StateManager.isEditing{
                     //show history view
                     searchingField(history: self.history)
+                        .padding(.top,5)
                     //                            .transition(.identity)
                     
                 }else if(self.StateManager.isEditing){
@@ -1155,7 +1292,7 @@ struct pageView: View {
             .navigationBarBackButtonHidden(true)
             
             if self.selectedID != nil{
-                NavigationLink(destination:  MovieDetailView(movieId:self.selectedID!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$isShowDetail){
+                NavigationLink(destination:  MovieDetailView(movieId:self.selectedID!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)) , isActive: self.$isShowDetail){
                     EmptyView()
 
                 }
@@ -1165,21 +1302,6 @@ struct pageView: View {
         
     }
 }
-
-//struct MovieResultList : View {
-//    let imageList :[MovieRule]
-//    var body: some View{
-//        List(imageList,id:\.self){ data in
-//            Button(action:{
-//                print("selected:\(data.id)")
-//            }){
-//                MovieResultListCell(imageURL: data.postURL)
-//                    .padding(.vertical,5)
-//            }
-//
-//        }
-//    }
-//}
 
 struct MovieResultList : View {
     let movies :[Movie]
@@ -1202,7 +1324,6 @@ struct MovieResultList : View {
         .listStyle(PlainListStyle())
     }
 }
-
 
 struct MovieResultListCell : View {
     let movie : Movie
@@ -1315,9 +1436,7 @@ struct MovieResultListCell : View {
     }
 }
 
-
 struct MovieSeachResultView : View{
-    @StateObject var provider : CardProvider = CardProvider()
     @State private var page = 0
     
     @Binding var isShowDetail : Bool
@@ -1364,8 +1483,7 @@ struct MovieSeachResultView : View{
     }
 }
 
-
-struct ResultCardView2: View{
+struct ResultCardView: View{
     @Binding var isShowDetail : Bool
     @Binding var selectedID : Int?
     let movie : Movie
@@ -1486,35 +1604,31 @@ struct ResultCardView2: View{
     }
 }
 
-
 struct SeachDragingView : View{
-    @StateObject var cardProvider  = CardProvider()
+
     @State private var offset : CGFloat = 0.0
-    @EnvironmentObject var previewModle : PreviewModle //Using previeModle
+    @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel //Using previeModle
     var body : some View{
         return
             VStack(spacing:0){
                 Group{
-                    Text(cardProvider.selectedTab)
+                    Text(DragAndDropPreview.selectedTab.rawValue)
                         .bold()
                         .font(.subheadline)
                         .padding(.vertical,3)
-                    CustomePicker(selectedTabs: $cardProvider.selectedTab)
+                    CustomePicker(selectedTabs: $DragAndDropPreview.selectedTab)
                 }
 
                 Divider()
-                switch(cardProvider.selectedTab){
-                case "Genre":
-                    ScrollableCardGrid(list: self.$cardProvider.dragGenre)
+                switch(DragAndDropPreview.selectedTab){
+                case .Genre:
+                    ScrollableCardGrid(list: self.$DragAndDropPreview.dragGenre,beAbleToUpdate: false)
                     
-                case "Actor":
-                    ScrollableCardGrid(list: self.$cardProvider.dragActor)
+                case .Actor:
+                    ScrollableCardGrid(list: self.$DragAndDropPreview.dragActor)
                     
-                case "Director":
-                    ScrollableCardGrid(list: self.$cardProvider.dragDirector)
-                    
-                default :
-                    EmptyView()
+                case .Director:
+                    ScrollableCardGrid(list: self.$DragAndDropPreview.dragDirector)
                 }
                 Divider()
                 Spacer()
@@ -1522,11 +1636,11 @@ struct SeachDragingView : View{
                 //Drop area
                 //Make a drop area as a box for dropping any cardItem user is wanted
                 VStack(alignment:.trailing){
-                    if !cardProvider.selectedPreviewDatas.isEmpty{
+                    if !DragAndDropPreview.selectedPreviewDatas.isEmpty{
                         HStack{
                             Button(action:{
                                 withAnimation(){
-                                    self.cardProvider.selectedPreviewDatas.removeAll()
+                                    self.DragAndDropPreview.selectedPreviewDatas.removeAll()
                                 }
                             }){
                                 HStack{
@@ -1540,10 +1654,17 @@ struct SeachDragingView : View{
                             }
 
                             Spacer()
-
+                            
+                            if DragAndDropPreview.selectedPreviewDatas.count == 10{
+                                Text("FULLED!")
+                                    .bold()
+                                    .font(.caption)
+                                
+                                Spacer()
+                            }
                             Button(action:{
                                 withAnimation(){
-                                    self.previewModle.isShowPreview.toggle() //using envronment object
+                                    self.DragAndDropPreview.isShowPreview.toggle() //using envronment object
                                 }
                             }){
                                 HStack{
@@ -1560,7 +1681,7 @@ struct SeachDragingView : View{
 
                     ZStack{
                         //If not card is dropped
-                        if cardProvider.selectedPreviewDatas.isEmpty{
+                        if DragAndDropPreview.selectedPreviewDatas.isEmpty{
                             Text("Drop image here")
                                 .fontWeight(.bold)
                                 .foregroundColor(.black)
@@ -1569,7 +1690,7 @@ struct SeachDragingView : View{
 
                         ScrollView(.horizontal, showsIndicators: false){
                             HStack{
-                                ForEach(cardProvider.selectedPreviewDatas,id:\.id){card in
+                                ForEach(DragAndDropPreview.selectedPreviewDatas,id:\.id){card in
 //                                    ZStack(alignment: .topTrailing){
                                     VStack(spacing:3){
                                         if card.itemType == CharacterRule.Genre{
@@ -1581,7 +1702,7 @@ struct SeachDragingView : View{
                                                 .clipped()
                                                 .onTapGesture(count: 2){
                                                     withAnimation(.default){
-                                                        self.cardProvider.selectedPreviewDatas.removeAll{ (checking) in
+                                                        self.DragAndDropPreview.selectedPreviewDatas.removeAll{ (checking) in
                                                             return checking.id == card.id
                                                         }}
                                                 }
@@ -1600,7 +1721,7 @@ struct SeachDragingView : View{
                                                 .clipped()
                                                 .onTapGesture(count: 2){
                                                     withAnimation(.default){
-                                                        self.cardProvider.selectedPreviewDatas.removeAll{ (checking) in
+                                                        self.DragAndDropPreview.selectedPreviewDatas.removeAll{ (checking) in
                                                             return checking.id == card.id
                                                         }}
                                                 }
@@ -1619,18 +1740,18 @@ struct SeachDragingView : View{
                             .padding(.horizontal)
                         }
                     }
-                    .frame(height: self.cardProvider.selectedPreviewDatas.isEmpty ? 50 : 100)
+                    .frame(height: self.DragAndDropPreview.selectedPreviewDatas.isEmpty ? 50 : 100)
                     .padding(.bottom,10)
                     .padding(.top,10)
-                    .background(self.cardProvider.selectedPreviewDatas.isEmpty ? Color("OrangeColor") : Color("DropBoxColor"))
+                    .background(self.DragAndDropPreview.selectedPreviewDatas.isEmpty ? Color("OrangeColor") : Color("DropBoxColor"))
                     .cornerRadius(20
                     )
                     .edgesIgnoringSafeArea(.all)
                     .shadow(color: Color.black.opacity(0.5), radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 1.0, y: 1.0 )
                     .padding(.horizontal)
-                    .onDrop(of: [String(kUTTypeURL)], delegate: cardProvider)
+                    .onDrop(of: [String(kUTTypeURL)], delegate: DragAndDropPreview)
 
-                    if !cardProvider.selectedPreviewDatas.isEmpty{
+                    if !DragAndDropPreview.selectedPreviewDatas.isEmpty{
                         Text("Double tab to remove!")
                             .font(.caption)
                             .foregroundColor(.red)
@@ -1649,9 +1770,251 @@ struct SeachDragingView : View{
     }
 }
 
+/// <#Description#>
+//struct BottomSheet : View{
+//    @EnvironmentObject var previewModle : PreviewModle
+//    @EnvironmentObject var searchStateManager : SeachingViewStateManager
+//    @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel //Using previeModle
+//
+////    @Binding var isPreview : Bool
+//    @State private var cardOffset:CGFloat = 0
+//    var body : some View{
+//        VStack{
+//            Spacer()
+//            VStack(spacing:12){
+//
+//                Capsule()
+//                    .fill(Color.gray)
+//                    .frame(width: 60, height: 4)
+//
+//                Text("PREVIEW RESULT")
+//                    .bold()
+//                    .foregroundColor(.gray)
+//
+//                //the preview result must not empty
+//                if previewModle.previewData != nil{
+//                    VStack{
+//                        HStack(){
+//                            //Movie Image Cover Here
+//                            HStack(alignment:.top){
+//                                WebImage(url: self.previewModle.previewData!.posterURL)
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                    .frame(width: 135)
+//                                    .cornerRadius(10)
+//                                    .clipped()
+//                                //Movie Deatil
+//
+//                                //OR MORE...
+//                                //Name,Genre,Actor,ReleaseDate,Time, Langauge etc
+//                                VStack(alignment:.leading,spacing:10){
+//                                    Text(self.previewModle.previewData!.title)
+//                                        .bold()
+//                                        .font(.headline)
+//                                        .lineLimit(1)
+//                                    HStack(spacing:0){
+//                                        //at most show 2 genre!
+//                                        Text("Genre: ")
+//                                            .font(.system(size: 14))
+//                                            .foregroundColor(.gray)
+////                                            .lineLimit(1)
+//
+//                                        if self.previewModle.previewData!.genres != nil{
+//                                            HStack(spacing:0){
+//                                                ForEach(0..<(self.previewModle.previewData!.genres!.count >= 2 ? 2 : self.previewModle.previewData!.genres!.count)){i in
+//
+//                                                    Text(self.previewModle.previewData!.genres![i].name)
+//                                                        .font(.system(size: 14))
+//                                                        .foregroundColor(.gray)
+//
+//                                                    if i != (self.previewModle.previewData!.genres!.count >= 2 ? 1 : self.previewModle.previewData!.genres!.count-1){
+//                                                        Text(",")
+//                                                            .font(.system(size: 14))
+//                                                            .foregroundColor(.gray)
+//                                                    }
+//                                                }
+//                                            }
+//                                            .lineLimit(1)
+//                                        }else{
+//                                            Text("n/a")
+//                                                .font(.system(size: 14))
+//                                                .foregroundColor(.gray)
+//                                        }
+//
+//                                    }
+//
+//                                    Text("Language: \(self.previewModle.previewData!.originalLanguage)")
+//                                        .font(.system(size: 14))
+//                                        .foregroundColor(.gray)
+//                                        .lineLimit(1)
+//
+//                                    HStack(spacing:0){
+//                                        //at most show 2 genre!
+//                                        Text("Actor: ")
+//                                            .font(.system(size: 14))
+//                                            .foregroundColor(.gray)
+////                                            .lineLimit(1)
+//                                        if self.previewModle.previewData!.cast != nil{
+//                                            HStack(spacing:0){
+//                                                ForEach(0..<(self.previewModle.previewData!.cast!.count >= 2 ? 2 : self.previewModle.previewData!.cast!.count)){i in
+//
+//                                                    Text(self.previewModle.previewData!.cast![i].name)
+//                                                        .font(.system(size: 14))
+//                                                        .foregroundColor(.gray)
+//
+//                                                    if i != (self.previewModle.previewData!.cast!.count >= 2 ? 1 : self.previewModle.previewData!.cast!.count-1){
+//                                                        Text(",")
+//                                                            .font(.system(size: 14))
+//                                                            .foregroundColor(.gray)
+//                                                    }
+//                                                }
+//                                            }
+//                                            .lineLimit(1)
+//
+//                                        }else{
+//                                            Text("n/a")
+//                                                .font(.system(size: 14))
+//                                                .foregroundColor(.gray)
+//                                        }
+//
+//                                    }
+//
+//                                    Text("Release: \(self.previewModle.previewData!.releaseDate!)")
+//                                        .font(.system(size: 14))
+//                                        .foregroundColor(.gray)
+//                                        .lineLimit(1)
+//                                    Text("Time: \(self.previewModle.previewData!.durationText)")
+//                                        .font(.system(size: 14))
+//                                        .foregroundColor(.gray)
+//                                        .lineLimit(1)
+//                                }
+//                                .padding(.top)
+//
+//                                Spacer()
+//
+//                            }.padding(.horizontal)
+//                            .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
+//
+//
+////                            Spacer()
+//                        }
+////                        .padding(.horizontal)
+//
+//                        VStack(alignment:.leading){
+//                            Text("Overview:")
+//                                .bold()
+//                                .font(.subheadline)
+//                                .lineLimit(1)
+//
+//                            if self.previewModle.previewData!.overview != "" {
+//                                HStack(spacing:0){
+//                                    Text(self.previewModle.previewData!.overview)
+//
+//                                        .font(.footnote)
+//                                        .lineLimit(3)
+//
+//                                    Spacer()
+//                                }
+//                                .frame(maxWidth:.infinity)
+//                            }else{
+//                                HStack(spacing:0){
+//                                    Text("Opps! Overview is comming soon...")
+//                                        .font(.footnote)
+//                                        .lineLimit(3)
+//
+//                                    Spacer()
+//                                }
+//                                .frame(maxWidth:.infinity)
+//                            }
+//                        }
+//                        .padding(.horizontal)
+//
+//                        HStack(spacing:45){
+//
+//                            SmallRectButton(title: "Detail", icon: "ellipsis.circle"){
+//                                withAnimation(){
+//                                    //it need to toggle preview state too
+//                                    self.searchStateManager.previewResult.toggle()
+//                                    self.previewModle.isShowPreview.toggle()
+//                                }
+//                            }
+//
+//                            SmallRectButton(title: "More", icon: "magnifyingglass", textColor: .white, buttonColor: Color("BluttonBulue2")){
+//                                withAnimation(){
+//                                    self.searchStateManager.previewMoreResult.toggle()
+//                                    self.previewModle.isShowPreview.toggle()
+//                                }
+//                            }
+//
+//                        }
+//                        .padding(.horizontal)
+//                    }
+//                    //                .padding(.horizontal,5)
+//                    .padding(.top,10)
+//                    .padding(.bottom)
+//                    .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+//                }
+//                else{
+//                    VStack{
+//                        Text("Empty Result!")
+//                            .foregroundColor(.gray)
+//                            .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
+//                    }
+//                    .padding(.top,10)
+//                    .padding(.bottom)
+//                    .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+//                }
+//                //The preview result here
+//            }
+////            .padding(.horizontal,5) ??
+//            .padding(.top)
+//            .background(BlurView().clipShape(CustomeConer(width: 20, height: 20,coners: [.topLeft,.topRight])))
+//            .offset(y:cardOffset)
+//            .gesture(
+//                DragGesture()
+//                    .onChanged(self.onChage(value:))
+//                    .onEnded(self.onEnded(value:))
+//            )
+//            .offset(y:self.previewModle.isShowPreview ? 0 : UIScreen.main.bounds.height)
+//        }
+//        .ignoresSafeArea()
+//        .background(Color
+//                        .black
+//                        .opacity(self.previewModle.isShowPreview ? 0.3 : 0)
+//                        .onTapGesture {
+//
+//                            withAnimation(){                                self.previewModle.isShowPreview.toggle()
+//                            }
+//                        }
+//                        .ignoresSafeArea().clipShape(CustomeConer(width: 20, height: 20,coners: [.topLeft,.topRight])))
+//
+//    }
+//
+//    private func onChage(value : DragGesture.Value){
+//        print(value.translation.height)
+//        if value.translation.height > 0 {
+//            self.cardOffset = value.translation.height
+//        }
+//    }
+//
+//    private func onEnded(value : DragGesture.Value){
+//        if value.translation.height > 0 {
+//            withAnimation(){
+//                let cardHeight = UIScreen.main.bounds.height / 4
+//
+//                if value.translation.height > cardHeight / 2.8 {
+//                    self.previewModle.isShowPreview.toggle()
+//                }
+//                self.cardOffset = 0
+//            }
+//        }
+//    }
+//
+//}
+
 struct BottomSheet : View{
-    @EnvironmentObject var previewModle : PreviewModle
     @EnvironmentObject var searchStateManager : SeachingViewStateManager
+    @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel //Using previeModle
 
 //    @Binding var isPreview : Bool
     @State private var cardOffset:CGFloat = 0
@@ -1669,178 +2032,198 @@ struct BottomSheet : View{
                     .foregroundColor(.gray)
                 
                 //the preview result must not empty
-                if previewModle.previewData != nil{
-                    VStack{
-                        HStack(){
-                            //Movie Image Cover Here
-                            HStack(alignment:.top){
-                                WebImage(url: self.previewModle.previewData!.posterURL)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 135)
-                                    .cornerRadius(10)
-                                    .clipped()
-                                //Movie Deatil
-                                
-                                //OR MORE...
-                                //Name,Genre,Actor,ReleaseDate,Time, Langauge etc
-                                VStack(alignment:.leading,spacing:10){
-                                    Text(self.previewModle.previewData!.title)
-                                        .bold()
-                                        .font(.headline)
-                                        .lineLimit(1)
-                                    HStack(spacing:0){
-                                        //at most show 2 genre!
-                                        Text("Genre: ")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.gray)
-//                                            .lineLimit(1)
-                                        
-                                        if self.previewModle.previewData!.genres != nil{
-                                            HStack(spacing:0){
-                                                ForEach(0..<(self.previewModle.previewData!.genres!.count >= 2 ? 2 : self.previewModle.previewData!.genres!.count)){i in
-                                                    
-                                                    Text(self.previewModle.previewData!.genres![i].name)
-                                                        .font(.system(size: 14))
-                                                        .foregroundColor(.gray)
-                                                    
-                                                    if i != (self.previewModle.previewData!.genres!.count >= 2 ? 1 : self.previewModle.previewData!.genres!.count-1){
-                                                        Text(",")
-                                                            .font(.system(size: 14))
-                                                            .foregroundColor(.gray)
-                                                    }
-                                                }
-                                            }
-                                            .lineLimit(1)
-                                        }else{
-                                            Text("n/a")
-                                                .font(.system(size: 14))
-                                                .foregroundColor(.gray)
-                                        }
-    
-                                    }
-                                    
-                                    Text("Language: \(self.previewModle.previewData!.originalLanguage)")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
-                                    
-                                    HStack(spacing:0){
-                                        //at most show 2 genre!
-                                        Text("Actor: ")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.gray)
-//                                            .lineLimit(1)
-                                        if self.previewModle.previewData!.cast != nil{
-                                            HStack(spacing:0){
-                                                ForEach(0..<(self.previewModle.previewData!.cast!.count >= 2 ? 2 : self.previewModle.previewData!.cast!.count)){i in
-                                                    
-                                                    Text(self.previewModle.previewData!.cast![i].name)
-                                                        .font(.system(size: 14))
-                                                        .foregroundColor(.gray)
-                                                    
-                                                    if i != (self.previewModle.previewData!.cast!.count >= 2 ? 1 : self.previewModle.previewData!.cast!.count-1){
-                                                        Text(",")
-                                                            .font(.system(size: 14))
-                                                            .foregroundColor(.gray)
-                                                    }
-                                                }
-                                            }
-                                            .lineLimit(1)
-                                          
-                                        }else{
-                                            Text("n/a")
-                                                .font(.system(size: 14))
-                                                .foregroundColor(.gray)
-                                        }
-    
-                                    }
-                                
-                                    Text("Release: \(self.previewModle.previewData!.releaseDate!)")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
-                                    Text("Time: \(self.previewModle.previewData!.durationText)")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
-                                }
-                                .padding(.top)
-                                
-                                Spacer()
-                                
-                            }.padding(.horizontal)
-                            .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
-                            
-                            
-//                            Spacer()
-                        }
-//                        .padding(.horizontal)
-                        
-                        VStack(alignment:.leading){
-                            Text("Overview:")
-                                .bold()
-                                .font(.subheadline)
-                                .lineLimit(1)
-                            
-                            if self.previewModle.previewData!.overview != "" {
-                                HStack(spacing:0){
-                                    Text(self.previewModle.previewData!.overview)
-                                       
-                                        .font(.footnote)
-                                        .lineLimit(3)
-                                    
-                                    Spacer()
-                                }
-                                .frame(maxWidth:.infinity)
-                            }else{
-                                HStack(spacing:0){
-                                    Text("Opps! Overview is comming soon...")
-                                        .font(.footnote)
-                                        .lineLimit(3)
-                                    
-                                    Spacer()
-                                }
-                                .frame(maxWidth:.infinity)
-                            }
-                        }
-                        .padding(.horizontal)
-                        
-                        HStack(spacing:45){
-                            
-                            SmallRectButton(title: "Detail", icon: "ellipsis.circle"){
-                                withAnimation(){
-                                    //it need to toggle preview state too
-                                    self.searchStateManager.previewResult.toggle()
-                                    self.previewModle.isShowPreview.toggle()
-                                }
-                            }
-                            
-                            SmallRectButton(title: "More", icon: "magnifyingglass", textColor: .white, buttonColor: Color("BluttonBulue2")){
-                                withAnimation(){
-                                    self.searchStateManager.previewMoreResult.toggle()
-                                    self.previewModle.isShowPreview.toggle()
-                                }
-                            }
-                            
-                        }
-                        .padding(.horizontal)
-                    }
-                    //                .padding(.horizontal,5)
-                    .padding(.top,10)
-                    .padding(.bottom)
-                    .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-                }
-                else{
-                    VStack{
-                        Text("Empty Result!")
+                if self.DragAndDropPreview.fetchPreLoading {
+                    HStack{
+                        ActivityIndicatorView()
+                        Text("loading")
                             .foregroundColor(.gray)
-                            .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
+                            .font(.system(size: 14))
+                           
                     }
+                    .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
                     .padding(.top,10)
                     .padding(.bottom)
                     .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                } else {
+                    if DragAndDropPreview.previewData != nil{
+                        VStack{
+                            HStack(){
+                                //Movie Image Cover Here
+                                HStack(alignment:.top){
+                                    WebImage(url: self.DragAndDropPreview.previewData!.posterURL)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 135)
+                                        .cornerRadius(10)
+                                        .clipped()
+                                    //Movie Deatil
+                                    
+                                    //OR MORE...
+                                    //Name,Genre,Actor,ReleaseDate,Time, Langauge etc
+                                    VStack(alignment:.leading,spacing:10){
+                                        Text(self.DragAndDropPreview.previewData!.title)
+                                            .bold()
+                                            .font(.headline)
+                                            .lineLimit(1)
+                                        HStack(spacing:0){
+                                            //at most show 2 genre!
+                                            Text("Genre: ")
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.gray)
+                                            //                                            .lineLimit(1)
+                                            
+                                            if self.DragAndDropPreview.previewData!.genres != nil{
+                                                HStack(spacing:0){
+                                                    ForEach(0..<(self.DragAndDropPreview.previewData!.genres!.count >= 2 ? 2 : self.DragAndDropPreview.previewData!.genres!.count)){i in
+                                                        
+                                                        Text(self.DragAndDropPreview.previewData!.genres![i].name)
+                                                            .font(.system(size: 14))
+                                                            .foregroundColor(.gray)
+                                                        
+                                                        if i != (self.DragAndDropPreview.previewData!.genres!.count >= 2 ? 1 : self.DragAndDropPreview.previewData!.genres!.count-1){
+                                                            Text(",")
+                                                                .font(.system(size: 14))
+                                                                .foregroundColor(.gray)
+                                                        }
+                                                    }
+                                                }
+                                                .lineLimit(1)
+                                            }else{
+                                                Text("n/a")
+                                                    .font(.system(size: 14))
+                                                    .foregroundColor(.gray)
+                                            }
+                                            
+                                        }
+                                        
+                                        Text("Language: \(self.DragAndDropPreview.previewData!.originalLanguage)")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.gray)
+                                            .lineLimit(1)
+                                        
+                                        HStack(spacing:0){
+                                            //at most show 2 genre!
+                                            Text("Actor: ")
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.gray)
+                                            //                                            .lineLimit(1)
+                                            if self.DragAndDropPreview.previewData!.cast != nil{
+                                                HStack(spacing:0){
+                                                    ForEach(0..<(self.DragAndDropPreview.previewData!.cast!.count >= 2 ? 2 : self.DragAndDropPreview.previewData!.cast!.count)){i in
+                                                        
+                                                        Text(self.DragAndDropPreview.previewData!.cast![i].name)
+                                                            .font(.system(size: 14))
+                                                            .foregroundColor(.gray)
+                                                        
+                                                        if i != (self.DragAndDropPreview.previewData!.cast!.count >= 2 ? 1 : self.DragAndDropPreview.previewData!.cast!.count-1){
+                                                            Text(",")
+                                                                .font(.system(size: 14))
+                                                                .foregroundColor(.gray)
+                                                        }
+                                                    }
+                                                }
+                                                .lineLimit(1)
+                                                
+                                            }else{
+                                                Text("n/a")
+                                                    .font(.system(size: 14))
+                                                    .foregroundColor(.gray)
+                                            }
+                                            
+                                        }
+                                        
+                                        Text("Release: \(self.DragAndDropPreview.previewData!.releaseDate!)")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.gray)
+                                            .lineLimit(1)
+                                        Text("Time: \(self.DragAndDropPreview.previewData!.durationText)")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.gray)
+                                            .lineLimit(1)
+                                    }
+                                    .padding(.top)
+                                    
+                                    Spacer()
+                                    
+                                }.padding(.horizontal)
+                                .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
+                                
+                                
+                                //                            Spacer()
+                            }
+                            //                        .padding(.horizontal)
+                            
+                            VStack(alignment:.leading){
+                                Text("Overview:")
+                                    .bold()
+                                    .font(.subheadline)
+                                    .lineLimit(1)
+                                
+                                if self.DragAndDropPreview.previewData!.overview != "" {
+                                    HStack(spacing:0){
+                                        Text(self.DragAndDropPreview.previewData!.overview)
+                                            
+                                            .font(.footnote)
+                                            .lineLimit(3)
+                                        
+                                        Spacer()
+                                    }
+                                    .frame(maxWidth:.infinity)
+                                }else{
+                                    HStack(spacing:0){
+                                        Text("Opps! Overview is comming soon...")
+                                            .font(.footnote)
+                                            .lineLimit(3)
+                                        
+                                        Spacer()
+                                    }
+                                    .frame(maxWidth:.infinity)
+                                }
+                            }
+                            .padding(.horizontal)
+                            
+                            HStack(spacing:45){
+                                
+                                SmallRectButton(title: "Detail", icon: "ellipsis.circle"){
+                                    withAnimation(){
+                                        //it need to toggle preview state too
+                                        self.searchStateManager.previewResult.toggle()
+                                        self.DragAndDropPreview.isShowPreview.toggle()
+                                    }
+                                }
+                                
+                                SmallRectButton(title: "More", icon: "magnifyingglass", textColor: .white, buttonColor: Color("BluttonBulue2")){
+                                    withAnimation(){
+                                        self.searchStateManager.previewMoreResult.toggle()
+                                        self.DragAndDropPreview.isShowPreview.toggle()
+                                    }
+                                }
+                                
+                            }
+                            .padding(.horizontal)
+                        }
+                        //                .padding(.horizontal,5)
+                        .padding(.top,10)
+                        .padding(.bottom)
+                        .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                    }
+                    else{
+                        VStack{
+                            Text("Empty Result!")
+                                .foregroundColor(.gray)
+                                .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
+                        }
+                        .padding(.top,10)
+                        .padding(.bottom)
+                        .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                        
+                        
+                        
+                    }
+                    
                 }
+
+                
                 //The preview result here
             }
 //            .padding(.horizontal,5) ??
@@ -1852,15 +2235,15 @@ struct BottomSheet : View{
                     .onChanged(self.onChage(value:))
                     .onEnded(self.onEnded(value:))
             )
-            .offset(y:self.previewModle.isShowPreview ? 0 : UIScreen.main.bounds.height)
+            .offset(y:self.DragAndDropPreview.isShowPreview ? 0 : UIScreen.main.bounds.height)
         }
         .ignoresSafeArea()
         .background(Color
                         .black
-                        .opacity(self.previewModle.isShowPreview ? 0.3 : 0)
+                        .opacity(self.DragAndDropPreview.isShowPreview ? 0.3 : 0)
                         .onTapGesture {
                             
-                            withAnimation(){                                self.previewModle.isShowPreview.toggle()
+                            withAnimation(){                                self.DragAndDropPreview.isShowPreview.toggle()
                             }
                         }
                         .ignoresSafeArea().clipShape(CustomeConer(width: 20, height: 20,coners: [.topLeft,.topRight])))
@@ -1880,7 +2263,7 @@ struct BottomSheet : View{
                 let cardHeight = UIScreen.main.bounds.height / 4
 
                 if value.translation.height > cardHeight / 2.8 {
-                    self.previewModle.isShowPreview.toggle()
+                    self.DragAndDropPreview.isShowPreview.toggle()
                 }
                 self.cardOffset = 0
             }
@@ -1902,18 +2285,18 @@ struct CustomeConer : Shape {
 }
 
 struct CustomePicker : View {
-    @Binding var selectedTabs:String
+    @Binding var selectedTabs : Tab
     @Namespace var animateTab
     var body: some View {
         VStack{
             HStack{
                 Image(systemName: "globe")
                     .font(.system(size: 22,weight:.bold))
-                    .foregroundColor(self.selectedTabs == "Genre" ? .black : .white)
+                    .foregroundColor(self.selectedTabs == .Genre ? .black : .white)
                     .frame(width: 70, height: 35)
                     .background(
                         ZStack{
-                            if self.selectedTabs != "Genre" {
+                            if self.selectedTabs != .Genre {
                                 Color.clear
                             }else{
                                 Color.white.matchedGeometryEffect(id: "Tab", in: animateTab)
@@ -1924,17 +2307,17 @@ struct CustomePicker : View {
                     .cornerRadius(10)
                     .onTapGesture {
                         withAnimation{
-                            self.selectedTabs = "Genre"
+                            self.selectedTabs = .Genre
                         }
                     }
 
                 Image(systemName: "signature")
                     .font(.system(size: 22,weight:.bold))
-                    .foregroundColor(self.selectedTabs == "Actor" ? .black : .white)
+                    .foregroundColor(self.selectedTabs == .Actor ? .black : .white)
                     .frame(width: 70, height: 35)
                     .background(
                         ZStack{
-                            if self.selectedTabs != "Actor" {
+                            if self.selectedTabs != .Actor {
                                 Color.clear
                             }else{
                                 Color.white.matchedGeometryEffect(id: "Tab", in: animateTab)
@@ -1945,17 +2328,17 @@ struct CustomePicker : View {
                     .cornerRadius(10)
                     .onTapGesture {
                         withAnimation{
-                            self.selectedTabs = "Actor"
+                            self.selectedTabs = .Actor
                         }
                     }
 
                 Image(systemName: "squareshape.controlhandles.on.squareshape.controlhandles")
                     .font(.system(size: 22,weight:.bold))
-                    .foregroundColor(self.selectedTabs == "Director" ? .black : .white)
+                    .foregroundColor(self.selectedTabs == .Director ? .black : .white)
                     .frame(width: 70, height: 35)
                     .background(
                         ZStack{
-                            if self.selectedTabs != "Director" {
+                            if self.selectedTabs != .Director {
                                 Color.clear
                             }else{
                                 Color.white.matchedGeometryEffect(id: "Tab", in: animateTab)
@@ -1966,7 +2349,7 @@ struct CustomePicker : View {
                     .cornerRadius(10)
                     .onTapGesture {
                         withAnimation{
-                            self.selectedTabs = "Director"
+                            self.selectedTabs = .Director
                         }
                     }
             }
@@ -1992,6 +2375,7 @@ struct ScrollableCardGrid: View{
     @Binding var list : [DragItemData]
     @State private var isFetchingData : Bool = false
     @State private var offset:CGFloat = 0.0
+    var beAbleToUpdate : Bool = true
     var body : some View{
 //        ScrollView(.vertical, showsIndicators: false){
 //        }
@@ -1999,6 +2383,7 @@ struct ScrollableCardGrid: View{
             dataType : list[0].itemType ,
             datas:self.$list,
             isFetchingData: self.$isFetchingData,
+            beAbleToUpdate : beAbleToUpdate,
             content: {
                 VStack{
                     LazyVGrid(columns: comlums){
@@ -2052,24 +2437,27 @@ struct ScrollableCardGrid: View{
                             }
                         }
                     }
-                
-                if isFetchingData{
-                    VStack{
-                        ActivityIndicatorView()
-                    }
-                    .padding(.vertical)
+                    
+                    if isFetchingData && beAbleToUpdate{
+                        VStack{
+                            ActivityIndicatorView()
+                        }
+                        .padding(.vertical)
                         
+                    }
                 }
-            }
-//                .padding(.bottom,150)
-//                .modifier(OffsetModifier(offset: self.$offset))
-            .padding(.horizontal)
-        }, onRefresh: {control in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.list.insert(contentsOf: fakeDataFetch(type: list[0].itemType), at: 0)
-                control.endRefreshing()
-            }
-        })
+                //                .padding(.bottom,150)
+                //                .modifier(OffsetModifier(offset: self.$offset))
+                .padding(.horizontal)
+            }, onRefresh: {control in
+                if beAbleToUpdate{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.list.insert(contentsOf: fakeDataFetch(type: list[0].itemType), at: 0)
+                        control.endRefreshing()
+                    }
+                }
+                
+            })
 
         
         .onAppear(perform: initEngine)

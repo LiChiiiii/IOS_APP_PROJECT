@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct MovieListView: View {
-    @ObservedObject private var nowPlayingState = MovieListState()
-    @ObservedObject private var upcomingState = MovieListState()
-    @ObservedObject private var topRatedState = MovieListState()
-    @ObservedObject private var popularState = MovieListState()
-    @ObservedObject var genreTypeState = GenreTypeState()
-    @ObservedObject var genreTypeState2 = GenreTypeState()
-    @ObservedObject var genreTypeState3 = GenreTypeState()
-    @ObservedObject var genreTypeState4 = GenreTypeState()
-    @ObservedObject var genreTypeState5 = GenreTypeState()
+    @StateObject private var nowPlayingState = MovieListState()
+    @StateObject private var upcomingState = MovieListState()
+    @StateObject private var topRatedState = MovieListState()
+    @StateObject private var popularState = MovieListState()
+    
+    @StateObject var genreTypeState = GenreTypeState()
+    @StateObject var genreTypeState2 = GenreTypeState()
+    @StateObject var genreTypeState3 = GenreTypeState()
+    @StateObject var genreTypeState4 = GenreTypeState()
+    @StateObject var genreTypeState5 = GenreTypeState()
     @Binding var showHomePage:Bool
     
     var body: some View {
@@ -32,6 +33,8 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState.movies!,genreID:28)
+                                    .environmentObject(genreTypeState)
+                                    
                 
                             } else {
                                 LoadingView(isLoading: self.genreTypeState.isLoading, error: self.genreTypeState.error) {
@@ -46,6 +49,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState2.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState2.movies!,genreID:16)
+                                    .environmentObject(genreTypeState2)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState2.isLoading, error: self.genreTypeState2.error) {
                                     self.genreTypeState2.genreType(
@@ -59,6 +63,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState3.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState3.movies!,genreID:12)
+                                    .environmentObject(genreTypeState3)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState3.isLoading, error: self.genreTypeState3.error) {
                                     self.genreTypeState3.genreType(
@@ -72,6 +77,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState4.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState4.movies!,genreID:35)
+                                    .environmentObject(genreTypeState4)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState4.isLoading, error: self.genreTypeState4.error) {
                                     self.genreTypeState4.genreType(
@@ -85,6 +91,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState5.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState5.movies!,genreID:80)
+                                    .environmentObject(genreTypeState5)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState5.isLoading, error: self.genreTypeState5.error) {
                                     self.genreTypeState5.genreType(

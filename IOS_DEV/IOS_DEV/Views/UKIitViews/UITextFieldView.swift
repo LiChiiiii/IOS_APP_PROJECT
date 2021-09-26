@@ -14,6 +14,7 @@ struct UITextFieldView : UIViewRepresentable{
     }
     @AppStorage("seachHistory") private var history : [String] =  []
     @EnvironmentObject var StateManager : SeachingViewStateManager
+    @EnvironmentObject var SearchMV : SearchBarViewModel
     let keybooardType : UIKeyboardType
     let returnKeytype : UIReturnKeyType
     let tag:Int
@@ -37,8 +38,7 @@ struct UITextFieldView : UIViewRepresentable{
     }
     
     func updateUIView(_ uiView: UITextField, context: Context) {
-        print("test")
-        uiView.text = self.StateManager.searchingText == "" ?  "" : self.StateManager.searchingText
+        uiView.text = self.SearchMV.searchingText == "" ?  "" : self.SearchMV.searchingText
         if self.StateManager.isFocuse[tag]{
             uiView.becomeFirstResponder()
         }else{
@@ -65,7 +65,10 @@ struct UITextFieldView : UIViewRepresentable{
         //change it every keystroke
         func textFieldDidChangeSelection(_ textField: UITextField) {
             DispatchQueue.main.async {
-                self.parent.StateManager.searchingText = textField.text ?? ""
+                self.parent.SearchMV.searchingText = textField.text ?? ""
+                if self.parent.SearchMV.searchingText != "" {
+                    self.parent.SearchMV.getRecommandationList() // call send request and cancel previous one ?? but now just keep it
+                }
             }
         }
         
@@ -81,17 +84,25 @@ struct UITextFieldView : UIViewRepresentable{
             }
             
             
-            parent.StateManager.searchingText = textField.text ?? ""
+            parent.SearchMV.searchingText = textField.text ?? ""
+            
             if textField.text != ""{
                 withAnimation(.easeInOut(duration: 0.3)){
                     parent.history.insert(textField.text!, at: 0)
                     parent.StateManager.isEditing = false
                     parent.StateManager.getResult = true
                     parent.StateManager.isSeaching = false
-                    
                 }
-
+                
+                //not empty then get the list
+//                DispatchQueue.main.async{
+//                    if self.parent.SearchMV.searchingText != "" {
+//                        self.parent.SearchMV.getRecommandationList()
+//                    }
+//                }
             }
+
+
             return true
         }
         

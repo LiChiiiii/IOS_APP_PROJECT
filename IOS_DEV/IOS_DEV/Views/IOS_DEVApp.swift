@@ -27,6 +27,48 @@ struct IOS_DEVApp: App {
     }
 }
 
+struct testTmpe: View{
+    @State var toggles : Bool = false
+    var body: some View{
+        VStack{
+            Button(action:{
+                self.toggles.toggle()
+            }){
+                Text("Test")
+            }
+            
+        }
+        .fullScreenCover(isPresented: self.$toggles){
+            testTmpe2(toggles: self.$toggles)
+        }
+        
+    }
+    
+}
+
+struct testTmpe2: View{
+    @Binding var toggles : Bool
+    @State private var isActive : Bool = false
+    var body: some View{
+        NavigationView{
+            VStack{
+                NavigationLink(destination: Text("AAA"), isActive: self.$isActive){
+                    EmptyView()
+                    
+                }
+                
+                Button(action:{
+                    self.isActive.toggle()
+                }){
+                    Text("Test")
+                }
+                
+            }
+        }
+    }
+}
+
+
 //struct CardModle : Identifiable{
 //    let id : String = UUID().uuidString
 //    let image : String
@@ -329,9 +371,6 @@ struct MorePreviewResultView : View{
                 .foregroundColor(.white)
             
             
-        }
-        .onAppear{
-            print(card.id)
         }
         .onTapGesture {
             withAnimation(){

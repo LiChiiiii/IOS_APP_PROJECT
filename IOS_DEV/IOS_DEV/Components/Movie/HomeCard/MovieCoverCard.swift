@@ -18,12 +18,16 @@ struct MovieCoverCard: View {
          
                 WebImage(url: movie.posterURL)
                     .resizable()
+                    .placeholder{
+                        Text(movie.title)
+                    }
+                    .indicator(.activity) // Activity Indicator
+//                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                     .frame(width: 250, height: 340)
                     .aspectRatio(contentMode: .fill)
                     .cornerRadius(8)
                     .shadow(radius: 4)
-            
-                
+
             } else {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))

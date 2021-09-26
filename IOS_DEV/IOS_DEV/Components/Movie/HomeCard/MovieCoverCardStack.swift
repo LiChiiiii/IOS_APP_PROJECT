@@ -19,7 +19,7 @@ struct MovieCoverCardStack: View {
     var body: some View {
         VStack{
             ZStack{
-                ForEach((self.movies.count > 8 ? movies.count-8 : 0)..<movies.count){index in
+                ForEach((self.movies.count > 4 ? movies.count-4 : 0)..<movies.count){index in
                     //at most 5 image only
                     
                     if index >= movies.count - 8{
@@ -28,9 +28,6 @@ struct MovieCoverCardStack: View {
                             .scaleEffect( 1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movies[index].id})!) * 0.03)
                             .padding(.top,1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movies[index].id})!) * 16)
                             .shadow(color: Color.black.opacity(0.3), radius: 10, x: 8, y: 8)
-                            .onAppear{
-                                print(index)
-                            }
                     }
                 }
             }

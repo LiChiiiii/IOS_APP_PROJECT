@@ -1164,7 +1164,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"IOS_DEV/Preview Content\"";
-				DEVELOPMENT_TEAM = 69JR94W859;
+				DEVELOPMENT_TEAM = TB3MC545F4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = IOS_DEV/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1172,7 +1172,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "LiChi.IOS-DEV";
+				PRODUCT_BUNDLE_IDENTIFIER = "Jackson.IOS-DEV";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1190,7 +1190,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"IOS_DEV/Preview Content\"";
-				DEVELOPMENT_TEAM = 69JR94W859;
+				DEVELOPMENT_TEAM = TB3MC545F4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = IOS_DEV/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1198,7 +1198,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "LiChi.IOS-DEV";
+				PRODUCT_BUNDLE_IDENTIFIER = "Jackson.IOS-DEV";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

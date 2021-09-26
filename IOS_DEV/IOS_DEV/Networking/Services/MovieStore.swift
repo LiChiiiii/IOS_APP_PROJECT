@@ -100,7 +100,7 @@ class MovieStore: MovieService {
     }
     
   
-    func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ()) {
+    func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ())  {
         guard let url = URL(string: "\(baseAPIURL)/movie/\(id)/images") else {
             completion(.failure(.invalidEndpoint))
             return
@@ -157,6 +157,8 @@ class MovieStore: MovieService {
                 self.executeCompletionHandlerInMainThread(with: .failure(.serializationError), completion: completion)
             }
         }.resume()
+//        dataTask.resume()
+//        return dataTask
     }
     
     private func executeCompletionHandlerInMainThread<D: Decodable>(with result: Result<D, MovieError>, completion: @escaping (Result<D, MovieError>) -> ()) {

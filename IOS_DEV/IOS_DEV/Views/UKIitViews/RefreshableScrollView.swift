@@ -15,14 +15,16 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
     var dataType : CharacterRule
     var content : Content
     var onRefresh : (UIRefreshControl)->()
+    var beAbleToUpdate : Bool
     
     var refreshController = UIRefreshControl()
-    init(dataType :CharacterRule,datas : Binding<[DragItemData]>,isFetchingData : Binding<Bool>,@ViewBuilder content: @escaping ()->Content,onRefresh: @escaping (UIRefreshControl)->()){
+    init(dataType :CharacterRule,datas : Binding<[DragItemData]>,isFetchingData : Binding<Bool>,beAbleToUpdate : Bool,@ViewBuilder content: @escaping ()->Content,onRefresh: @escaping (UIRefreshControl)->()){
         self.content = content()
         self.onRefresh = onRefresh
         self._isFetchingData = isFetchingData
         self._datas = datas
         self.dataType = dataType
+        self.beAbleToUpdate = beAbleToUpdate
     }
     
     func makeCoordinator() -> Coordinator {
@@ -32,11 +34,15 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
     func makeUIView(context: Context) ->  UIScrollView {
         let view = UIScrollView()
         
-        self.refreshController.attributedTitle = NSAttributedString(string: "Loading...")
-        self.refreshController.tintColor = .white
-        self.refreshController.addTarget(context.coordinator, action: #selector(context.coordinator.onRefresh), for: .valueChanged)
         setUp(view: view)
-        view.refreshControl = self.refreshController //need to add  after setting up
+        
+        if beAbleToUpdate{
+            self.refreshController.attributedTitle = NSAttributedString(string: "Loading...")
+            self.refreshController.tintColor = .white
+            self.refreshController.addTarget(context.coordinator, action: #selector(context.coordinator.onRefresh), for: .valueChanged)
+            view.refreshControl = self.refreshController //need to add  after setting up
+        }
+    
         view.delegate = context.coordinator
         return view
     }
@@ -144,14 +150,18 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
 //                    print("is already featched!")
                     return
                 }
+                
                 self.parent.isFetchingData = true
 //                print("a")
-                DispatchQueue.global().asyncAfter(deadline: .now()+2){ [self] in
-//                    self.parent.datas.append(tes) // add 5 to list
-                    withAnimation(){
-                        self.parent.datas.append(contentsOf: self.fakeDataFetch(type: self.parent.dataType))
-                        self.parent.isFetchingData = false
+                if parent.beAbleToUpdate{
+                    DispatchQueue.main.asyncAfter(deadline: .now()+2){ [self] in
+                        //                    self.parent.datas.append(tes) // add 5 to list
+                        withAnimation(){
+                            self.parent.datas.append(contentsOf: self.fakeDataFetch(type: self.parent.dataType))
+                            self.parent.isFetchingData = false
+                        }
                     }
+                    
                 }
             }
         }

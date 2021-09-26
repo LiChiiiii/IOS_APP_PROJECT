@@ -12,6 +12,8 @@ struct MovieCardCarousel: View{
     var movies:[Movie]
     let genreID : Int
     @State private var isCardSelectedMovie:Bool = false
+    @EnvironmentObject var movieListMV : GenreTypeState
+    
     private func getScale(geo : GeometryProxy)->CGFloat{
        var scale:CGFloat = 1.0
        let x = geo.frame(in: .global).minX
@@ -25,37 +27,27 @@ struct MovieCardCarousel: View{
    }
    
     
-   var body: some View{
+    var body: some View{
             VStack{
                 GeometryReader { proxy in
                     let scaleValue = getScale(geo: proxy)
-
+                    
                     MovieCoverCardStack(isCardSelectedMovie: $isCardSelectedMovie, movies: movies, genreID: genreID)
-                            .rotation3DEffect(Angle(degrees:Double(proxy.frame(in: .global).minX - 30)  / -20), axis: (x: 0, y: 20.0, z: 0))
-                            .scaleEffect(CGSize(width: scaleValue, height: scaleValue))
-                    .onTapGesture {
+                        .rotation3DEffect(Angle(degrees:Double(proxy.frame(in: .global).minX - 30)  / -20), axis: (x: 0, y: 20.0, z: 0))
+                        .scaleEffect(CGSize(width: scaleValue, height: scaleValue))
+                        .animation(.spring())
+                        .onTapGesture {
                             withAnimation(){
                                 self.isCardSelectedMovie.toggle()
                             }
                         }
-                    .fullScreenCover(isPresented: $isCardSelectedMovie, content: {
-                        MovieCardGesture( movies: movies,currentMovie: movies.last, backHomePage: $isCardSelectedMovie)
-                    })
-               }
+                        .fullScreenCover(isPresented: $isCardSelectedMovie, content: {
+                            MovieCardGesture( movies: movies,currentMovie: movies.last, backHomePage: $isCardSelectedMovie,genreID:genreID)
+                                .environmentObject(movieListMV)
+                        })
+                }
                 .frame(width: 275)
             }
-   }
+    }
 }
-
-
-struct MovieCardCarousel_Previews: PreviewProvider
-{
-   static var previews: some View
-   {
-    MovieCardCarousel(movies: stubbedMovie, genreID: 28)
-              .preferredColorScheme(.dark)
-    
-   }
-}
-
 
