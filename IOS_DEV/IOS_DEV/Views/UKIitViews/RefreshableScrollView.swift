@@ -16,15 +16,27 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
     var content : Content
     var onRefresh : (UIRefreshControl)->()
     var beAbleToUpdate : Bool
+    var isOffsetting : Bool
+    var offsetVal : CGFloat
     
     var refreshController = UIRefreshControl()
-    init(dataType :CharacterRule,datas : Binding<[DragItemData]>,isFetchingData : Binding<Bool>,beAbleToUpdate : Bool,@ViewBuilder content: @escaping ()->Content,onRefresh: @escaping (UIRefreshControl)->()){
-        self.content = content()
-        self.onRefresh = onRefresh
-        self._isFetchingData = isFetchingData
-        self._datas = datas
-        self.dataType = dataType
-        self.beAbleToUpdate = beAbleToUpdate
+    init(
+        dataType :CharacterRule,
+        datas : Binding<[DragItemData]>,
+        isFetchingData : Binding<Bool>,
+        beAbleToUpdate : Bool,
+        isOffsetting:Bool = false,
+        offsetVal:CGFloat = 0,
+        @ViewBuilder content: @escaping ()->Content,
+        onRefresh: @escaping (UIRefreshControl)->()){
+            self.content = content()
+            self.onRefresh = onRefresh
+            self._isFetchingData = isFetchingData
+            self._datas = datas
+            self.dataType = dataType
+            self.beAbleToUpdate = beAbleToUpdate
+            self.isOffsetting = isOffsetting
+            self.offsetVal = offsetVal
     }
     
     func makeCoordinator() -> Coordinator {
@@ -40,9 +52,11 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
             self.refreshController.attributedTitle = NSAttributedString(string: "Loading...")
             self.refreshController.tintColor = .white
             self.refreshController.addTarget(context.coordinator, action: #selector(context.coordinator.onRefresh), for: .valueChanged)
+            
+            self.refreshController.bounds = CGRect(x: self.refreshController.bounds.origin.x, y: self.isOffsetting ? -offsetVal : 0, width: self.refreshController.bounds.width, height: self.refreshController.bounds.height)
             view.refreshControl = self.refreshController //need to add  after setting up
         }
-    
+//        setUpController(view: view)
         view.delegate = context.coordinator
         return view
     }
@@ -50,8 +64,13 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
     func updateUIView(_ uiView: UIScrollView, context: Context) {
         //TO UPDATE CURRENT VIEW
         setUp(view: uiView)
+//        setUpController(view: uiView)
         uiView.delegate = context.coordinator
     }
+    
+//    private func setUpController(view : UIScrollView){
+//
+//    }
     
     private func setUp(view : UIScrollView){
         let host = UIHostingController(rootView: self.content.frame(maxHeight: .infinity, alignment: .top))
@@ -59,7 +78,7 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
         //our swiftui view add the constrans to uiview
         
         let constrains = [ //UIKit autolayout to swiftUI layout
-            host.view.topAnchor.constraint(equalTo: view.topAnchor),
+            host.view.topAnchor.constraint(equalTo: view.topAnchor,constant: self.isOffsetting ? offsetVal : 0),
             host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             host.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             host.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),

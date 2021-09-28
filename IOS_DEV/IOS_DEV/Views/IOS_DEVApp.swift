@@ -18,55 +18,13 @@ struct IOS_DEVApp: App {
         WindowGroup {
             
 //            NavBar(index: 0)
-            NavBar(index: 0)
-//                .preferredColorScheme(.dark)
-//            WelcomePage()
-//                .preferredColorScheme(.dark)
+            WelcomePage()
           
         }
     }
 }
 
-struct testTmpe: View{
-    @State var toggles : Bool = false
-    var body: some View{
-        VStack{
-            Button(action:{
-                self.toggles.toggle()
-            }){
-                Text("Test")
-            }
-            
-        }
-        .fullScreenCover(isPresented: self.$toggles){
-            testTmpe2(toggles: self.$toggles)
-        }
-        
-    }
-    
-}
 
-struct testTmpe2: View{
-    @Binding var toggles : Bool
-    @State private var isActive : Bool = false
-    var body: some View{
-        NavigationView{
-            VStack{
-                NavigationLink(destination: Text("AAA"), isActive: self.$isActive){
-                    EmptyView()
-                    
-                }
-                
-                Button(action:{
-                    self.isActive.toggle()
-                }){
-                    Text("Test")
-                }
-                
-            }
-        }
-    }
-}
 
 
 //struct CardModle : Identifiable{

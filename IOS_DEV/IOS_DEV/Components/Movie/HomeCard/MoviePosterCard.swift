@@ -62,11 +62,23 @@ struct MoviePosterCard: View {
                 .multilineTextAlignment(.center)
             
             //star
-            HStack {
-                if !movie.ratingText.isEmpty {
-                    Text(movie.ratingText).foregroundColor(.yellow)
+            HStack(spacing:3){
+                if (movie.voteAverage)/2 == 0{
+                    Text("N/A")
+                        .foregroundColor(.white)
+                        .font(.caption)
+                }else{
+                    ForEach(1...5,id:\.self){index in
+                        Image(systemName: "star.fill")
+                            .font(.caption)
+                            .foregroundColor(index <= Int(movie.voteAverage)/2 ? .yellow: .gray)
+                    }
+                    
+                    Text("(\(Int(movie.voteAverage)/2).0)")
+                        .foregroundColor(.white)
+                        .font(.caption)
                 }
-                Text(movie.scoreText)
+
             }
             
             

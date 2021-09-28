@@ -60,19 +60,18 @@ struct NavBar: View {
         ZStack(alignment:.top){
             VStack(spacing:0){
                 ZStack(alignment:.top){
-                    if self.index == 0 {
                         HomePage()
-                        
-                    }
-                    if self.index == 1 && GroupSelect == true{
+                            .opacity(self.index == 0 ? 1 : 0)
+                    
                         ListView(lists: controller.listData)
+                            .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
 
-                    }
-                    if self.index == 2 {
-                        AutoScroll_V()                    }
-                    if self.index == 3 {
+                        AutoScroll_V()
+                            .opacity(self.index == 2 ? 1 : 0)
+                    
                         ProfileView(NowUser: userController.NowUser)
-                    }
+                            .opacity(self.index == 3 ? 1 : 0)
+//
                 }
                 NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
             }

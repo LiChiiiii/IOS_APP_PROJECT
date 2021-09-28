@@ -160,11 +160,6 @@ struct DragItemData : Identifiable{
     let personData : Person? //only for actor and director
 }
 
-//struct SearchModel : Codable,Identifiable{
-//    var id : String = UUID().uuidString
-//    let keyWord : String
-//}
-
 enum Tab : String {
     case Actor = "Actor"
     case Director = "Director"
@@ -258,168 +253,6 @@ class PreviewModle : ObservableObject {
     }
     
 }
-
-//class CardProvider : ObservableObject,DropDelegate {
-//
-//    @Published var selectedPreviewDatas : [DragItemData] = [] //here we are getting all the movies info that user is selected
-//    @Published var dragActor : [DragItemData] = tempDragDataActor
-//    @Published var dragDirector : [DragItemData] = tempDragDataDirector
-//    @Published var dragGenre : [DragItemData] = tempDragDataGenre
-//    @Published var selectedTab : Tab = .Actor
-//
-//    @Published var fetchingError : NSError?
-//
-//    @Published var previewMoviesList : [Movie]?
-//    @Published var previewResult : Movie?
-//
-//    private let movieService: MovieService
-//
-//    init(movieService: MovieService = MovieStore.shared) {
-//        self.movieService = movieService
-//    }
-//
-//    func fetchData(type : CharacterRule) {
-//
-//        switch type {
-//        case .Actor:
-//            //update actor list
-//
-//            break
-//        case .Director:
-//            //update director list
-//            break
-//        case .Genre:
-//            //update genre list
-//            break
-//        }
-//    }
-//
-//    private var movieIds : [Int] = [
-//        497698,
-//        80752,
-//        774021,
-//        611489,
-//        547565
-//    ]
-//
-//    func getPreviewResult(movieID : Int){
-//        movieService.fetchMovie(id: movieID){ [weak self] result in
-//            guard let self = self else { return } //do it need here if it use weak self??
-//
-//            switch result{
-//            case .success(let result):
-//                // print(result)
-//                self.previewResult = result
-//            case .failure(let err):
-//                self.fetchingError = err as NSError
-//            }
-//
-//        }
-//    }
-//
-//    func getAllPreviewResultList() -> NSError? {
-//        return nil
-//    }
-//
-//    func getPreview(){
-//        let id = self.movieIds.randomElement()!
-//        getPreviewResult(movieID: id)
-//    }
-//
-//    func performDrop(info: DropInfo) -> Bool {
-//        // just allow to drop at most 10 Card
-//
-//        for imgProvider in info.itemProviders(for: [String(kUTTypeURL)]){
-//            if imgProvider.canLoadObject(ofClass: URL.self){
-//                print("URL loaded")
-//
-//                //for each drop item if can load and it will provide a CardID
-//                //And Seching from the list
-//
-//                let _ = imgProvider.loadObject(ofClass: URL.self){ (CardId,err) in
-//
-//                    print(CardId!)
-//                    //check current selected list is exist or not
-//                    let checkState = self.selectedPreviewDatas.contains{ (exist) -> Bool in
-//                        return exist.id == "\(CardId!)"
-//                    }
-//
-//                    //Get the item is exist in current list or not
-//                    //If not exist append to current list
-//                    if !checkState {
-//                        //We need to find the current data in provider lsit first
-//                        //and we can get is Actor? Director? Genre
-//                        //But we don't know the card in which list
-//                        // we need to figure our first
-//                        let actor = self.dragActor.filter{(item) -> Bool in
-//                            return item.id == "\(CardId!)"
-//                        }
-//
-//                        let director = self.dragDirector.filter{(item) -> Bool in
-//                            return item.id == "\(CardId!)"
-//                        }
-//
-//                        let genre = self.dragGenre.filter{(item) -> Bool in
-//                            return item.id == "\(CardId!)"
-//                        }
-//
-//                        //Either one is not empty
-//                        if !actor.isEmpty {
-//                            //Because we are using Uquie ID ,won't have same id
-//                            //There is one item only
-//                            //Append to the list
-//                            DispatchQueue.main.async {
-//                                withAnimation(.default){
-//                                    self.selectedPreviewDatas.insert(actor.first!, at: 0) //we have already check is not empty
-//                                }
-//
-//                                //fecth the preview result
-//                                //here just simulating
-//                                self.getPreview()
-//
-//                            }
-//                        }else if !director.isEmpty {
-//                            //Because we are using Uquie ID ,won't have same id
-//                            //There is one item only
-//                            DispatchQueue.main.async {
-//                                withAnimation(.default){
-//                                    self.selectedPreviewDatas.insert(director.first!, at: 0) //we have already check is not empty
-//                                }
-//
-//                                //fecth the preview result
-//                                //here just simulating
-//                                self.getPreview()
-//                            }
-//
-//                        }
-//                        else if !genre.isEmpty {
-//                            DispatchQueue.main.async {
-//                                withAnimation(.default){
-//                                    self.selectedPreviewDatas.insert(genre.first!, at: 0) //we have already check is not empty
-//                                }
-//
-//                                //fecth the preview result
-//                                //here just simulating
-//                                self.getPreview()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            else {
-//                print("URL can't load")
-//            }
-//
-//
-//        }
-//        return true
-//    }
-//
-//    func dropUpdated(info: DropInfo) -> DropProposal? {
-//        return DropProposal.init(operation: .move)
-//    }
-//
-//}
 
 class DragAndDropViewModel : ObservableObject,DropDelegate {
     
@@ -734,6 +567,7 @@ struct AutoScroll_V: View {
                             NavigationLink(destination: MorePreviewResultView(isNavLink: true, backPageName: "Search", isActive: self.$StateManager.previewMoreResult,movieList: self.DragAndDropPreview.previewDataList!), isActive: self.$StateManager.previewMoreResult){EmptyView()}
                             
                         }
+                        
                         if self.StateManager.getResult{
                             NavigationLink(destination: SearchResultView(movie: self.searchMV.searchResult), isActive: self.$StateManager.getResult){EmptyView()}
        
@@ -741,18 +575,36 @@ struct AutoScroll_V: View {
 
                         SearchingBar(isCameraDisplay: self.$isCameraDisplay)
                            
+                        Divider()
                         
-                        if self.StateManager.isSeaching && !self.StateManager.isEditing{
+                        ZStack(alignment:.top){
+                            SeachDragingView()
+//                                .background(BlurView(sytle: .systemThickMaterialDark).edgesIgnoringSafeArea(.all))
+                                .zIndex(0)
+                            
                             searchingField(history: self.history)
                                 .padding(.top,5)
-                                
-                            
-                        }else if(self.StateManager.isEditing){
+                                .background(Color.black.edgesIgnoringSafeArea(.all))
+                                .opacity(self.StateManager.isSeaching && !self.StateManager.isEditing ? 1 : 0)
+                                .zIndex(1)
                             searchingResultList()
                                 .ignoresSafeArea()
-                        }else{
-                            SeachDragingView()
-                                .padding(.top,5)
+                                .background(Color.black.edgesIgnoringSafeArea(.all))
+                                .opacity(self.StateManager.isEditing ? 1 : 0)
+                                .zIndex(2)
+                            
+//                            if self.StateManager.isSeaching && !self.StateManager.isEditing{
+//                                searchingField(history: self.history)
+//                                    .padding(.top,5)
+//
+//
+//
+//                            }else if(self.StateManager.isEditing){
+//                                searchingResultList()
+//                                    .ignoresSafeArea()
+//                            }else{
+//                                SeachDragingView()
+//                            }
                         }
                         
                         
@@ -1610,28 +1462,36 @@ struct SeachDragingView : View{
     @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel //Using previeModle
     var body : some View{
         return
-            VStack(spacing:0){
-                Group{
-                    Text(DragAndDropPreview.selectedTab.rawValue)
-                        .bold()
-                        .font(.subheadline)
-                        .padding(.vertical,3)
-                    CustomePicker(selectedTabs: $DragAndDropPreview.selectedTab)
-                }
-
-                Divider()
-                switch(DragAndDropPreview.selectedTab){
-                case .Genre:
-                    ScrollableCardGrid(list: self.$DragAndDropPreview.dragGenre,beAbleToUpdate: false)
+            ZStack(alignment:.bottom){
+                ZStack(alignment:.top){
+                    Group{
+                        VStack(spacing:0){
+                            Text(DragAndDropPreview.selectedTab.rawValue)
+                                .bold()
+                                .font(.subheadline)
+                                .padding(.vertical,1)
+                                .padding(.top,3)
+                            CustomePicker(selectedTabs: $DragAndDropPreview.selectedTab)
+                        }
+                        .frame(width:UIScreen.main.bounds.width-5)
+                    }
+                    .background(BlurView(sytle: .regular).clipShape(CustomeConer(width:24,height:24,coners: [.topLeft,.topRight,.bottomRight,.bottomLeft])))
+                    .zIndex(5)
                     
-                case .Actor:
-                    ScrollableCardGrid(list: self.$DragAndDropPreview.dragActor)
+                    Group{
+                        ScrollableCardGrid(list: self.$DragAndDropPreview.dragGenre,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,beAbleToUpdate: false,isOffsetting: true,offsetVal: 75)
+                            .opacity(DragAndDropPreview.selectedTab == .Genre ? 1 : 0)
+                        
+                        ScrollableCardGrid(list: self.$DragAndDropPreview.dragActor,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,isOffsetting: true,offsetVal: 75)
+                            .opacity(DragAndDropPreview.selectedTab == .Actor ? 1 : 0)
+                        
+                        ScrollableCardGrid(list: self.$DragAndDropPreview.dragDirector,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,isOffsetting: true,offsetVal: 75)
+                            .opacity(DragAndDropPreview.selectedTab == .Director ? 1 : 0)
+                    }
                     
-                case .Director:
-                    ScrollableCardGrid(list: self.$DragAndDropPreview.dragDirector)
                 }
-                Divider()
-                Spacer()
+//                Divider()
+//                Spacer()
 
                 //Drop area
                 //Make a drop area as a box for dropping any cardItem user is wanted
@@ -2375,7 +2235,10 @@ struct ScrollableCardGrid: View{
     @Binding var list : [DragItemData]
     @State private var isFetchingData : Bool = false
     @State private var offset:CGFloat = 0.0
+    var isShow : Bool
     var beAbleToUpdate : Bool = true
+    var isOffsetting : Bool = false
+    var offsetVal : CGFloat = 0
     var body : some View{
 //        ScrollView(.vertical, showsIndicators: false){
 //        }
@@ -2384,6 +2247,8 @@ struct ScrollableCardGrid: View{
             datas:self.$list,
             isFetchingData: self.$isFetchingData,
             beAbleToUpdate : beAbleToUpdate,
+            isOffsetting : isOffsetting,
+            offsetVal : offsetVal,
             content: {
                 VStack{
                     LazyVGrid(columns: comlums){
@@ -2449,6 +2314,8 @@ struct ScrollableCardGrid: View{
                 //                .padding(.bottom,150)
                 //                .modifier(OffsetModifier(offset: self.$offset))
                 .padding(.horizontal)
+                .padding(.bottom,self.isShow ? 200 : 100)
+//                .background(BlurView(sytle: .systemThickMaterialDark).edgesIgnoringSafeArea(.all))
             }, onRefresh: {control in
                 if beAbleToUpdate{
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

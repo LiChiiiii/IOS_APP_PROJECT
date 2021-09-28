@@ -17,7 +17,6 @@ struct MoviePosterCarousel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(title)
-
                 .bold()
                 .font(.title2)
                 .padding(.horizontal,8)
@@ -31,10 +30,6 @@ struct MoviePosterCarousel: View {
                         }.buttonStyle(PlainButtonStyle())
                             .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)
                             .padding(.trailing, movie.id == self.movies.last!.id ? 16 : 0)
-                        
-  
-                        
-                        
                     }
                 }
             }

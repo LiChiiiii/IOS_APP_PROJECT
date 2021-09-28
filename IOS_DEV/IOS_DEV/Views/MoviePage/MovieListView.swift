@@ -24,7 +24,7 @@ struct MovieListView: View {
         
         
         ScrollView(.vertical, showsIndicators: false){
-            VStack{
+            LazyVStack{
                 ScrollView(.horizontal, showsIndicators: false)
                 {
                     LazyHStack(spacing: 30)
@@ -123,6 +123,7 @@ struct MovieListView: View {
                 Group {
                     if nowPlayingState.movies != nil {
                         MoviePosterCarousel(title: "Now Playing", movies: nowPlayingState.movies!)
+                            .padding(.bottom)
                         
                     } else {
                         LoadingView(isLoading: self.nowPlayingState.isLoading, error: self.nowPlayingState.error) {
@@ -136,6 +137,7 @@ struct MovieListView: View {
                 Group {
                     if upcomingState.movies != nil {
                         MoviePosterCarousel(title: "Upcoming", movies: upcomingState.movies!)
+                            .padding(.bottom)
                     } else {
                         LoadingView(isLoading: self.upcomingState.isLoading, error: self.upcomingState.error) {
                             self.upcomingState.loadMovies(with: .upcoming)
@@ -148,6 +150,7 @@ struct MovieListView: View {
                 Group {
                     if topRatedState.movies != nil {
                         MoviePosterCarousel(title: "Top Rated", movies: topRatedState.movies!)
+                            .padding(.bottom)
                         
                     } else {
                         LoadingView(isLoading: self.topRatedState.isLoading, error: self.topRatedState.error) {
@@ -162,6 +165,7 @@ struct MovieListView: View {
                 Group {
                     if popularState.movies != nil {
                         MoviePosterCarousel(title: "Popular", movies: popularState.movies!)
+                            .padding(.bottom)
                         
                     } else {
                         LoadingView(isLoading: self.popularState.isLoading, error: self.popularState.error) {
