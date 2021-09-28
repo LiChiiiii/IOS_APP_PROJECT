@@ -10,7 +10,6 @@ import Foundation
 
 class ListService: ObservableObject {
     
-    let baseUrl="http://127.0.0.1:8080"
     let networkingService = NetworkingService()
     
     //get all lists

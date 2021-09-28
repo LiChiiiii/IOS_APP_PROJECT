@@ -13,6 +13,7 @@ struct EditListCard:View{
     @Binding var editAction: Bool
     @Binding var title:String
     @Binding var listID:UUID?
+   
 
     var body: some View {
         VStack{
@@ -21,10 +22,8 @@ struct EditListCard:View{
                     .foregroundColor(.black)
                     .font(.system(size: 20).bold())
 
-                TextField(" ", text: $title)
+                TextField("", text: $title)
                     .font(.system(size: 20))
-                    .background(Color(.gray).opacity(0.1))
-                    .foregroundColor(.black)
                     
             }
             .padding()

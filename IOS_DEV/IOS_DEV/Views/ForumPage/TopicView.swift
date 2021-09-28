@@ -32,74 +32,134 @@ struct TopicView: View
     let articles:[Article]
     let movie: Movie
     let FullSize = UIScreen.main.bounds.size
+    @State var hideBar = false
+    @State var offset : CGFloat = 0
+    @State var lastOffset : CGFloat = 0
+    @ObservedObject private var forumController = ForumController()
+    @State var createAction = false
 
     
     var body: some View
     {
 
-        
-        VStack {
-
-            ZStack()
-            {
-                WebImage(url: movie.backdropURL)
-                    .resizable()
-                    .ignoresSafeArea(edges: .top)
-                    .frame(width: FullSize.width, height: 100)
-                
-                Text(movie.title)
-                    .bold()
-                    .font(.system(size: 30))
-                    .padding(25)
-                    .foregroundColor(.white)
-
-            }
+        TabView(){
             
-            
-            ScrollView(.vertical, showsIndicators: false)
-            {
-                Spacer()
-                
+            VStack {
 
-             
-                ZStack(alignment:.top){
+                ZStack()
+                {
+                    WebImage(url: movie.backdropURL)
+                        .resizable()
+                        .ignoresSafeArea(edges: .top)
+                        .frame(width: FullSize.width, height: FullSize.height/8)
                     
-                    VStack()
-                    {
-                    
-            
-                        ForEach(self.articles ,id: \.id) { article in
-                          
-                            HStack{
-                                
-                                NavigationLink(destination:GetMessageBoardView(article: article))
-                                {
-                                    TopicFrame(article:article)
-                                }
-                                    
-                            }
+                    Text(movie.title)
+                        .bold()
+                        .font(.system(size: 30))
+                        .padding(25)
+                        .foregroundColor(.white)
 
-                        }
-            
+                }
+                
+                
+                ScrollView(.vertical, showsIndicators: false)
+                {
+                    Spacer()
                         
-                    }
-                    .ignoresSafeArea(edges: .top)
-                    
-                    GeometryReader{ proxy in
-                        if proxy.frame(in:.global).minY > 200{
-                            ButtonTool()
-                                .offset(x:140,y:-proxy.frame(in:.global).minY+300)
-                                .frame(width: proxy.frame(in:.global).maxX, height:
-                                       proxy.frame(in:.global).minY  > 0 ?
-                                        proxy.frame(in:.global).minY + 480 : 480   )
+                        VStack()
+                        {
+                        
+                
+                            ForEach(self.articles ,id: \.id) { article in
+                              
+                                HStack{
+                                    
+                                    NavigationLink(destination:GetMessageBoardView(article: article))
+                                    {
+                                        TopicFrame(article:article)
+                                    }
+                                        
+                                }
+
+                            }
+                
+                            
                         }
-                    }
-                    .frame(height: 480)
+                        .ignoresSafeArea(edges: .top)
+                        .overlay(
+                            GeometryReader{ proxy -> Color in
+                                
+                                let minY = proxy.frame(in: .named("SCROLL")).minY
+                                
+                                // hide tab bar offset
+                                let durationOffset : CGFloat = 10
+                                
+                                DispatchQueue.main.async {
+                                    //scroll up
+                                    if offset < 0 && -minY > (lastOffset + durationOffset ) {
+                                        // hidding tab and updating last offset
+                                        withAnimation(.easeOut.speed(1.5)){
+                                            hideBar = true
+                                        }
+                                        
+                                        lastOffset = -offset
+                                    }
+                                    //scroll down
+                                    if minY > offset && -minY < (lastOffset - durationOffset){
+                                        // showing tab and updating last offset
+                                        withAnimation(.easeOut.speed(1.5)){
+                                            hideBar = false
+                                        }
+                                        
+                                        lastOffset = -offset
+                                    }
+                                    
+                                    self.offset = minY
+                                }
+                                return Color.clear
+                                
+                            }
+                        
+                        )
+                   
                    
                 }
-               
+                .coordinateSpace(name: "SCROLL")
             }
+            
         }
+        .overlay(
+            VStack{
+                Button{
+                    self.createAction.toggle()
+                } label:{
+                    HStack(spacing:hideBar ? 0 : 12){
+                        Image(systemName: "pencil")
+                            .font(.title)
+                        
+                        Text("Compose")
+                            .fontWeight(.semibold)
+                            .frame(width: hideBar ? 0 : nil, height: hideBar ? 0 : nil)
+                    }
+                    .foregroundColor(Color("CustomRed"))
+                    .padding(.vertical, hideBar ? 15 : 12)
+                    .padding(.horizontal)
+                    .background(Color(.black))
+                    .cornerRadius(20)
+                    .shadow(color: .white.opacity(0.06), radius: 5, x: 5, y: 10)
+                }
+                .padding(.trailing)
+                .offset(y: -15)
+                .frame(width: FullSize.width, alignment: .trailing)
+            }
+               
+            ,alignment: .bottom
+        )
+        .fullScreenCover(isPresented: self.$createAction, content: {
+            NewArticleCard(createAction: self.$createAction, title: "", text: "", movieID: movie.id)
+        })
+        
+        
            
                 
             
@@ -146,13 +206,8 @@ struct TopicView_Previews: PreviewProvider
 {
     static var previews: some View
     {
-        NavigationView
-        {
-            TopicView(articles: stubbedArticles, movie: stubbedMovie[0])
-        }
-        .navigationBarHidden(true)
-        .navigationBarTitle(Text("Home"))
-        .edgesIgnoringSafeArea([.top, .bottom])
+        TopicView(articles: stubbedArticles, movie: stubbedMovie[0])
+      
 
     }
 }

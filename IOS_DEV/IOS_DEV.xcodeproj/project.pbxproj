@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01061E7E2702DA8900017F75 /* NewArticleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01061E7D2702DA8900017F75 /* NewArticleCard.swift */; };
 		010C2C1926E67F44000E25BC /* NewListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C2C1826E67F44000E25BC /* NewListCard.swift */; };
 		010C6B4E2660DFFD003ECC0D /* TopicFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B4D2660DFFC003ECC0D /* TopicFrame.swift */; };
 		010C6B522660E022003ECC0D /* MessageBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B512660E022003ECC0D /* MessageBoard.swift */; };
@@ -147,6 +148,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01061E7D2702DA8900017F75 /* NewArticleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArticleCard.swift; sourceTree = "<group>"; };
 		010C2C1826E67F44000E25BC /* NewListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListCard.swift; sourceTree = "<group>"; };
 		010C6B4D2660DFFC003ECC0D /* TopicFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicFrame.swift; sourceTree = "<group>"; };
 		010C6B512660E022003ECC0D /* MessageBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBoard.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 			children = (
 				01715CCC26FE184C00161866 /* MyArticleView.swift */,
 				01715CD826FE3E8400161866 /* EditArticleCard.swift */,
+				01061E7D2702DA8900017F75 /* NewArticleCard.swift */,
 			);
 			path = MyArticle;
 			sourceTree = "<group>";
@@ -954,6 +957,7 @@
 				0175AB00265A7F3E001BCD2E /* TractateFrame.swift in Sources */,
 				01CF13AD266B391A00066FC2 /* MoreMovieView.swift in Sources */,
 				01CF13A5266B381400066FC2 /* Genre.swift in Sources */,
+				01061E7E2702DA8900017F75 /* NewArticleCard.swift in Sources */,
 				7ADA5A8726104396000A84D9 /* TopicView.swift in Sources */,
 				01C0E26326AC0A470027B9A9 /* MovieImages.swift in Sources */,
 				01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */,

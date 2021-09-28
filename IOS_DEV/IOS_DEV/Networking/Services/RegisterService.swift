@@ -11,7 +11,6 @@ import Foundation
 
 class RegisterService: ObservableObject {
     
-    let baseUrl="http://127.0.0.1:8080"
     
     func handleResponse(for request: URLRequest,
                         completion: @escaping (Result<User, Error>) -> Void){

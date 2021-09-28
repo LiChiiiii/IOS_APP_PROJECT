@@ -39,6 +39,7 @@ struct MessageBoardView: View
     @ObservedObject private var forumController = ForumController()
     @State var editAction : Bool = false
     @State var deleteAction : Bool = false
+    @State var GotoMovie : Bool = false
     
     var body: some View
     {
@@ -64,7 +65,7 @@ struct MessageBoardView: View
                         self.editAction.toggle()
                     }){
                         HStack {
-                            Text("Edit")
+                            Text("編輯")
                             Image(systemName: "pencil")
                         }
                     }
@@ -72,16 +73,28 @@ struct MessageBoardView: View
                         self.deleteAction.toggle()
                     }){
                         HStack {
-                            Text("Delete")
+                            Text("刪除")
                             Image(systemName: "trash")
+                        }
+                    }
+                    Button(action:{
+                        self.GotoMovie.toggle()
+                    }){
+                        HStack {
+                            Text("瀏覽電影頁面")
+                            Image(systemName: "rectangle.and.hand.point.up.left.filled")
                         }
                     }
                     
                } label: {
-                   Image(systemName: "square.and.pencil")
+                   Image(systemName: "ellipsis")
                }
             }
         }
+        .fullScreenCover(isPresented: self.$GotoMovie, content: {
+            GestureDetailVeiw(movieId: article.movie ,navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true),isPresented: self.$GotoMovie)
+                .preferredColorScheme(.dark)
+        })
         .alert(isPresented: self.$deleteAction, content: {
             Alert(title: Text("刪除此文章？"),
                   primaryButton: .default(Text("確定"),

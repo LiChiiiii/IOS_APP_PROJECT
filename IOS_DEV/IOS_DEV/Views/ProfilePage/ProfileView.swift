@@ -32,7 +32,7 @@ struct ProfileView: View {
         NavigationView{
             ScrollView(.vertical, showsIndicators: false){
                 VStack{
-                    Image("ka")
+                    Image("pic")
                         .resizable()
                         .frame(width: 150, height: 150)
                         .clipShape(Circle())

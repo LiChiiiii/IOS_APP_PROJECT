@@ -46,7 +46,7 @@ class ForumController: ObservableObject {
     }
     
     //---------------------新增討論區的文章---------------------//
-    func postListMovie(Title:String, Text: String, movieID: Int, userID: UUID){
+    func postArticle(Title:String, Text: String, movieID: Int, userID: UUID){
       
         let new = NewArticle(Title: Title, Text: Text, movieID: movieID, userID: userID)
         articleService.POST_Article(endpoint: "/article/new",RegisterObject: new ){ (result) in

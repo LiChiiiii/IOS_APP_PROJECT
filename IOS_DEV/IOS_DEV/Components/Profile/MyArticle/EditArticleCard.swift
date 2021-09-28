@@ -17,10 +17,11 @@ struct EditArticleCard:View{
     @State var title : String
     @State var text : String
     @State var article : Article
-
+    let FullSize = UIScreen.main.bounds.size
+    
     var body:some View{
 
-        VStack{
+        ScrollView{
 
             VStack{
                 Text("編輯文章")
@@ -30,6 +31,10 @@ struct EditArticleCard:View{
                 Spacer(minLength: 0)
             }
             .padding([.top],40)
+       
+            Divider()
+                .padding(.horizontal)
+            
 
             //--------標題---------//
             VStack(alignment: .center, spacing: 15) {
@@ -58,8 +63,8 @@ struct EditArticleCard:View{
                 TextEditor(text: $text )
                     .font(.system(size: 22))
                     .padding()
-                    .background(Color(.gray).opacity(0.1))
                     .frame(height:300)
+                    .border(Color(.gray).opacity(0.1),width:5)
 
             }
             .padding()

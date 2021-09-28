@@ -15,6 +15,20 @@ struct NewArticle: Decodable, Encodable {
     var userID : UUID
 }
 
+struct NewArticleRes: Decodable {
+    var id: UUID?
+    var Title: String
+    var Text: String
+    var user: ArticleUserID?
+    var movie: Int
+    var LikeCount: Int
+    var updatedOn: String?   //db is 'DATE', but here is 'STRING'
+}
+struct ArticleUserID: Decodable, Identifiable{
+    var id: UUID
+}
+
+
 //------------------編輯文章（PUT)------------------//
 struct UpdateArticle: Decodable, Encodable {
     var articleID : UUID

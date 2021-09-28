@@ -10,7 +10,6 @@ import Foundation
 
 class ArticleService: ObservableObject {
     
-    let baseUrl="http://127.0.0.1:8080"
     let networkingService = NetworkingService()
     
     //-------------------------------get某電影的討論區文章-------------------------------------//
@@ -34,7 +33,7 @@ class ArticleService: ObservableObject {
     //--------------------------------post文章在討論區--------------------------------//
     func POST_Article(endpoint: String,
                     RegisterObject: NewArticle,
-                 completion: @escaping (Result<Article, Error>) -> Void) {
+                 completion: @escaping (Result<NewArticleRes, Error>) -> Void) {
         
         guard let url = URL(string: baseUrl + endpoint) else {
             completion(.failure(NetworkingError.badUrl))
@@ -156,7 +155,7 @@ class ArticleService: ObservableObject {
     
     
     func postArticleResponse(for request: URLRequest,
-                        completion: @escaping (Result<Article, Error>) -> Void){
+                        completion: @escaping (Result<NewArticleRes, Error>) -> Void){
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             //check the response status
@@ -173,7 +172,7 @@ class ArticleService: ObservableObject {
                 //伺服器回傳的data （含錯誤訊息）
                 if let unwrappedData = data {
                     do {
-                        if let list = try? JSONDecoder().decode(Article.self, from: unwrappedData) {
+                        if let list = try? JSONDecoder().decode(NewArticleRes.self, from: unwrappedData) {
                             completion(.success(list))
                         } else {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)

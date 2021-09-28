@@ -19,9 +19,9 @@ struct Resource: Decodable {
 
 
 let OTTurl:[ResourceResponse] = [
-    ResourceResponse( ott: "Netflix",
+    ResourceResponse( ott: "KKTV",
                       result: [ Resource( href: "https://hamivideo.hinet.net/product/126160.do?cs=1" ), Resource( href: "https://www.iq.com/album/19rr8lcmtc"  ) ] ),
-    ResourceResponse( ott: "MyVideo", result: [ Resource( href:  "https://www.catchplay.com/tw/video/BXxz6drj-Ydue-dvFX-b7s3-YZjdvlVU9Zxa"  ) ] )
+    ResourceResponse( ott: "LiTV 線上影視", result: [ Resource( href:  "https://www.catchplay.com/tw/video/BXxz6drj-Ydue-dvFX-b7s3-YZjdvlVU9Zxa"  ) ] )
     
 ]
 

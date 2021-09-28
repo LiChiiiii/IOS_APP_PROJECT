@@ -161,7 +161,7 @@ struct CreateListMovie:View{
                                         
                                         HStack(spacing:5){
                                             Text(movie.title)
-                                                .foregroundColor(.black)
+                                                .foregroundColor(.gray)
                                                 .font(.system(size: 20).bold())
                                                 .padding()
                                             
@@ -240,7 +240,6 @@ struct CreateListMovieDetail:View{
                     // movie pic
                     WebImage(url: movie.posterURL)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
                         .frame(width: size.width-40, height: size.height/2)
                         .cornerRadius(12)
 
@@ -281,8 +280,13 @@ struct CreateListMovieDetail:View{
                             
                             VStack(alignment: .leading,spacing:6){
                                 TextEditor(text: $text)
-                                    .padding()
-                                    .border(Color(.gray).opacity(0.1),width: 5)
+                                    .padding(3)
+                                    .foregroundColor(.black)
+                                    .background(Color(.gray).opacity(0.1))
+                                    .onAppear {
+                                        UITextView.appearance().backgroundColor = .white
+                                    }
+                                    
                                     
                                    
                             }
@@ -438,8 +442,14 @@ struct EditListMovie:View{
                             
                             VStack(alignment: .leading,spacing:6){
                                 TextEditor(text: $text)
-                                    .padding()
-                                    .border(Color(.gray).opacity(0.1),width: 5)
+                                    .padding(3)
+                                    .foregroundColor(.black)
+                                    .background(Color(.gray).opacity(0.1))
+                                    .onAppear {
+                                        UITextView.appearance().backgroundColor = .white
+                                    }
+                                   
+                                   
                                     
                                    
                             }

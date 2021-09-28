@@ -128,6 +128,8 @@ struct CarouselBodyView: View
     @State var listDetail:ListDetail //片單資訊
     @Binding var EditAction : Bool
     @Binding var DeleteAction : Bool
+    @State private var todo : Bool = false
+    
     var body: some View {
         
         
@@ -150,7 +152,6 @@ struct CarouselBodyView: View
 
                 }
                 .foregroundColor(.white)
-                
                 
                 
                 ZStack(alignment: .bottom){
@@ -216,6 +217,9 @@ struct CarouselBodyView: View
                     
                     
                 }
+                .onTapGesture {
+                    self.todo.toggle()
+                }
                 
                 
                     
@@ -223,6 +227,10 @@ struct CarouselBodyView: View
                
             }
             .padding(20)
+            .fullScreenCover(isPresented: self.$todo, content: {
+                GestureDetailVeiw(movieId: listDetail.movie ,navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true),isPresented: self.$todo)
+                    .preferredColorScheme(.dark)
+            })
             .sheet(isPresented: self.$EditAction ,content: {
                 EditListMovie(EditAction: self.$EditAction, current:listDetail,listTitle: listTitle)
             })
