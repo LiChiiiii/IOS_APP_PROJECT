@@ -90,7 +90,7 @@ struct WebImages: View {
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
     @State private var isAppear:Bool = false
-    @State var myMovieList : [List]
+    @State var myMovieList : [CustomList]
 
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
@@ -146,7 +146,7 @@ struct WebImages: View {
                
                
                 MovieInfoDetail(myMovieList:myMovieList , movie: movie)
-                    .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+                    .padding([.bottom],UIApplication.shared.windows.first?.safeAreaInsets.bottom)
                     
                 //     .offset(y:10)
                 //   .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -238,7 +238,7 @@ struct WebImages: View {
 struct MovieInfoDetail: View {
     @State private var isMyList = false
     @State private var gotoChat : Bool = false
-    @State var myMovieList : [List]
+    @State var myMovieList : [CustomList]
     @State var movie : Movie
     @ObservedObject private var controller = ListDetailController()
     

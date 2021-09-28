@@ -9,8 +9,8 @@ import Foundation
 class ListController: ObservableObject {
 
     let listService = ListService()
-    @Published var listData:[List] = []
-    @Published var mylistData:[List] = []
+    @Published var listData:[CustomList] = []
+    @Published var mylistData:[CustomList] = []
     @Published var listDetails:[ListDetail] = []
     
     //---------------------所有的片單---------------------//
@@ -20,6 +20,7 @@ class ListController: ObservableObject {
             case .success(let lists):
                 print("get all list")
                 self.listData = lists
+              
 
             case .failure: print("list failed")
             }
@@ -27,13 +28,13 @@ class ListController: ObservableObject {
     }
     //---------------------我的片單---------------------//
     func GetMyList(userID : UUID){
-        listService.GET_allLists(endpoint: "/list/my/\(userID)"){ (result) in
+        listService.GET_allLists(endpoint: "/list/my/\(userID)"){ [self] (result) in
             switch result {
             case .success(let lists):
-                print("get my list")
+                print("get my list success")
                 self.mylistData = lists
 
-            case .failure: print("mylist failed")
+            case .failure: print("get my list failed")
             }
         }
     }

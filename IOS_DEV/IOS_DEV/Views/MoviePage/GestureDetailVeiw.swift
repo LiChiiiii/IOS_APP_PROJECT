@@ -53,7 +53,7 @@ struct GestureDetail: View {
     @Binding var isLoading : Bool
     @Binding var isPresented : Bool
     @State private var isAppear:Bool = false
-    @State var myMovieList : [List]
+    @State var myMovieList : [CustomList]
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
     var body: some View {

@@ -9,8 +9,8 @@ import Foundation
 class ListDetailController: ObservableObject {
 
     let listService = ListService()
-    @Published var listData:[List] = []
-    @Published var mylistData:[List] = []
+    @Published var listData:[CustomList] = []
+    @Published var mylistData:[CustomList] = []
     @Published var listDetails:[ListDetail] = []
     
     //---------------------新增片單中的電影---------------------//

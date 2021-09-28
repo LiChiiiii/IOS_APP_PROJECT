@@ -11,7 +11,7 @@ import SwiftUI
 
 struct MyArticleView: View {
     @ObservedObject private var forumController = ForumController()
-    var articles:[Article]
+//    var articles:[Article]
 //    @State var cardShown : Bool = false
     @State var deleteAction : Bool = false
     
@@ -30,7 +30,7 @@ struct MyArticleView: View {
                 
         
                  
-                    ForEach(self.articles ,id: \.id) { article in
+                    ForEach(forumController.articleData ,id: \.id) { article in
                       
                         HStack{
                             
@@ -74,6 +74,9 @@ struct MyArticleView: View {
             
         }
         .navigationTitle("我發表過的文章")
+        .onAppear{
+            self.forumController.GetMyArticle(userID: NowUserID!)
+        }
 //        .toolbar{
 //            Button(action:{
 //                self.cardShown.toggle()

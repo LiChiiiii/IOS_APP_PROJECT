@@ -14,6 +14,32 @@ enum SideOfState: String, CaseIterable {
     case article = "文章"
 }//Picker Content
 
+//struct GetProfileView: View {
+//    @ObservedObject private var listController = ListController()
+//    @ObservedObject private var forumController = ForumController()
+//    @State var isLoading : Bool = true
+//    
+//    var body:some View{
+//        
+//        VStack{
+//            
+//            if self.isLoading == false {
+//                ProfileView(myListData: listController.mylistData, myArticleData: forumController.articleData)
+//            }
+//        }
+//        .onAppear{
+//            self.listController.GetMyList(userID: NowUserID!)
+//            self.forumController.GetMyArticle(userID: NowUserID!)
+//            DispatchQueue.main.asyncAfter(deadline:.now() + 3){
+//                self.isLoading = false
+//            }
+//        }
+//    }
+//    
+//    
+//}
+
+
 struct ProfileView: View {
     
 //    init(){
@@ -26,10 +52,11 @@ struct ProfileView: View {
     @State private var select: SideOfState = .movie
     @ObservedObject private var listController = ListController()
     @ObservedObject private var forumController = ForumController()
-    @State var NowUser:Me?
+    @State var isLoading : Bool = true
     
     var body: some View{
         NavigationView{
+  
             ScrollView(.vertical, showsIndicators: false){
                 VStack{
                     Image("pic")
@@ -71,7 +98,7 @@ struct ProfileView: View {
                             })
                             .padding(5)
                         NavigationLink(
-                            destination: MyListView(lists: listController.mylistData),
+                            destination: MyListView(),
                             label: {
                                 Text("我的片單")
                                     .bold()
@@ -82,7 +109,7 @@ struct ProfileView: View {
                             })
                             .padding(5)
                         NavigationLink(
-                            destination: MyArticleView(articles:forumController.articleData),
+                            destination: MyArticleView(),
                             label: {
                                 Text("我發表過的文章")
                                     .bold()
@@ -127,12 +154,16 @@ struct ProfileView: View {
                 }
                 .navigationTitle("Profile")
             }
+        
+            
+                
+            
+            
+           
         }
         .accentColor(.red)
-        .onAppear{
-            self.listController.GetMyList(userID: (NowUser?.id)!)
-            self.forumController.GetMyArticle(userID: (NowUser?.id)!)
-        }
+     
+
     }
     
 }

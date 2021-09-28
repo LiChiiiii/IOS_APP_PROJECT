@@ -10,7 +10,8 @@ import SwiftUI
 
 
 struct MyListView: View {
-    var lists:[List]
+    
+    @ObservedObject private var listController = ListController()
     @State var cardShown : Bool = false
     @State private var isAppear:Bool = false
     @State private var showAnimation = false
@@ -36,7 +37,7 @@ struct MyListView: View {
                 
         
                     LazyVGrid(columns: columns, spacing: 20){
-                        ForEach(self.lists ,id: \.id) { list in
+                        ForEach(listController.mylistData ,id: \.id) { list in
                            
                             MyListButton(list: list, editID: self.$editID, editTitle:self.$editTitle , editAction: self.$editAction)
   
@@ -56,6 +57,9 @@ struct MyListView: View {
             
         }
         .navigationTitle("我的片單")
+        .onAppear{
+            self.listController.GetMyList(userID: NowUserID!)
+        }
         .toolbar{
             Button(action:{
                 self.cardShown.toggle()
@@ -77,7 +81,7 @@ struct MyListView: View {
 
 struct MyListButton:View{
     @ObservedObject private var listController = ListController()
-    @State var list:List
+    @State var list:CustomList
     @State var todo : Bool = false
     @Binding var editID: UUID?
     @Binding var editTitle: String

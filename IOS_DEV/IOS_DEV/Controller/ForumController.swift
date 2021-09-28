@@ -13,7 +13,6 @@ class ForumController: ObservableObject {
     let articleService = ArticleService() //get
     @Published var commentData:[Comment] = []
     @Published var articleData:[Article] = []
-    
    
     //--------------------------------get某電影的討論區文章--------------------------------//
     func GetAllArticle(movieID:Int){
@@ -32,7 +31,7 @@ class ForumController: ObservableObject {
     
     //--------------------------------get我發的討論區文章--------------------------------//
     func GetMyArticle(userID:UUID){
-        articleService.GET_allArticle(endpoint: "/article/my/\(userID)"){(result) in
+        articleService.GET_allArticle(endpoint: "/article/my/\(userID)"){ [self](result) in
             //print(result)
             switch result {
             case .success(let res):

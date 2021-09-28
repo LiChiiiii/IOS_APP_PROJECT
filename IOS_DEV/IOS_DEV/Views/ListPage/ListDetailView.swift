@@ -521,16 +521,6 @@ struct CarouselBodyView: View
 //}
 //
 //
-struct BlurView : UIViewRepresentable {
-    func makeUIView(context: Context) -> UIVisualEffectView{
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterialDark))
-        return view
-    }
-
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        //TO UPDATE
-    }
-}
 
 
 

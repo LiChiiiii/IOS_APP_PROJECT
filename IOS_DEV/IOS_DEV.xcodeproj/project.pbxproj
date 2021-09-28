@@ -12,6 +12,11 @@
 		010C6B4E2660DFFD003ECC0D /* TopicFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B4D2660DFFC003ECC0D /* TopicFrame.swift */; };
 		010C6B522660E022003ECC0D /* MessageBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B512660E022003ECC0D /* MessageBoard.swift */; };
 		010C6B5A2660E0D8003ECC0D /* ForumBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B592660E0D8003ECC0D /* ForumBar.swift */; };
+		0113FBFA270362A500BECECF /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FBF9270362A500BECECF /* BlurView.swift */; };
+		0113FBFC270362BB00BECECF /* CameraImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FBFB270362BB00BECECF /* CameraImagePickerView.swift */; };
+		0113FBFE270362D200BECECF /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FBFD270362D200BECECF /* RefreshableScrollView.swift */; };
+		0113FC00270362E900BECECF /* UIHScrollList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FBFF270362E900BECECF /* UIHScrollList.swift */; };
+		0113FC02270362FF00BECECF /* UITextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FC01270362FF00BECECF /* UITextFieldView.swift */; };
 		01571B88263F99FD00C97164 /* MessageBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01571B87263F99FD00C97164 /* MessageBoardView.swift */; };
 		0168857826D0CEB6005589BC /* GestureDetailVeiw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0168857726D0CEB6005589BC /* GestureDetailVeiw.swift */; };
 		0168857A26D14B42005589BC /* ActorMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0168857926D14B42005589BC /* ActorMovieView.swift */; };
@@ -38,7 +43,7 @@
 		0175AAFD265A7EEA001BCD2E /* TractateView(square).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAFC265A7EEA001BCD2E /* TractateView(square).swift */; };
 		0175AB00265A7F3E001BCD2E /* TractateFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175AAFF265A7F3E001BCD2E /* TractateFrame.swift */; };
 		018DD31B26B675A8001A1345 /* ListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31A26B675A8001A1345 /* ListService.swift */; };
-		018DD32026B67B73001A1345 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31F26B67B73001A1345 /* List.swift */; };
+		018DD32026B67B73001A1345 /* CustomList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD31F26B67B73001A1345 /* CustomList.swift */; };
 		018DD32226B69599001A1345 /* RecommendState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018DD32126B69599001A1345 /* RecommendState.swift */; };
 		019017D626F63DF6007F1FE8 /* UpdateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019017D526F63DF6007F1FE8 /* UpdateButton.swift */; };
 		019017D826F651E1007F1FE8 /* ListMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019017D726F651E1007F1FE8 /* ListMovie.swift */; };
@@ -153,6 +158,11 @@
 		010C6B4D2660DFFC003ECC0D /* TopicFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicFrame.swift; sourceTree = "<group>"; };
 		010C6B512660E022003ECC0D /* MessageBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBoard.swift; sourceTree = "<group>"; };
 		010C6B592660E0D8003ECC0D /* ForumBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumBar.swift; sourceTree = "<group>"; };
+		0113FBF9270362A500BECECF /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		0113FBFB270362BB00BECECF /* CameraImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraImagePickerView.swift; sourceTree = "<group>"; };
+		0113FBFD270362D200BECECF /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
+		0113FBFF270362E900BECECF /* UIHScrollList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHScrollList.swift; sourceTree = "<group>"; };
+		0113FC01270362FF00BECECF /* UITextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldView.swift; sourceTree = "<group>"; };
 		01571B87263F99FD00C97164 /* MessageBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBoardView.swift; sourceTree = "<group>"; };
 		0168857726D0CEB6005589BC /* GestureDetailVeiw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureDetailVeiw.swift; sourceTree = "<group>"; };
 		0168857926D14B42005589BC /* ActorMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorMovieView.swift; sourceTree = "<group>"; };
@@ -180,7 +190,7 @@
 		0175AAFF265A7F3E001BCD2E /* TractateFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TractateFrame.swift; sourceTree = "<group>"; };
 		0175ADEA26D4FA4300535C42 /* IOS_DEV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IOS_DEV.entitlements; sourceTree = "<group>"; };
 		018DD31A26B675A8001A1345 /* ListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListService.swift; sourceTree = "<group>"; };
-		018DD31F26B67B73001A1345 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		018DD31F26B67B73001A1345 /* CustomList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomList.swift; sourceTree = "<group>"; };
 		018DD32126B69599001A1345 /* RecommendState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendState.swift; sourceTree = "<group>"; };
 		019017D526F63DF6007F1FE8 /* UpdateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateButton.swift; sourceTree = "<group>"; };
 		019017D726F651E1007F1FE8 /* ListMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMovie.swift; sourceTree = "<group>"; };
@@ -408,7 +418,7 @@
 		018DD31E26B67B69001A1345 /* List */ = {
 			isa = PBXGroup;
 			children = (
-				018DD31F26B67B73001A1345 /* List.swift */,
+				018DD31F26B67B73001A1345 /* CustomList.swift */,
 				019017D726F651E1007F1FE8 /* ListMovie.swift */,
 			);
 			path = List;
@@ -535,6 +545,11 @@
 				01C021A8263E8C7E0090846D /* SafariView.swift */,
 				01CCDF32263E90D8005E2424 /* SearchBarView.swift */,
 				01C02199263E87F90090846D /* LoadingView.swift */,
+				0113FBF9270362A500BECECF /* BlurView.swift */,
+				0113FBFB270362BB00BECECF /* CameraImagePickerView.swift */,
+				0113FBFD270362D200BECECF /* RefreshableScrollView.swift */,
+				0113FBFF270362E900BECECF /* UIHScrollList.swift */,
+				0113FC01270362FF00BECECF /* UITextFieldView.swift */,
 			);
 			path = UKIitViews;
 			sourceTree = "<group>";
@@ -917,6 +932,7 @@
 				01C378C7266E65CE00E75118 /* SearchButtom.swift in Sources */,
 				7A6CE7EA2610E7EA00DB962B /* SocialLoginButton.swift in Sources */,
 				01EBF589266B9D960059B196 /* ForumController.swift in Sources */,
+				0113FC00270362E900BECECF /* UIHScrollList.swift in Sources */,
 				01CF13B2266B39DA00066FC2 /* ActorAvatarList.swift in Sources */,
 				7A74EECD2611A8A000B722CF /* HomePage.swift in Sources */,
 				0175AAEA2658D4C8001BCD2E /* UserRegister.swift in Sources */,
@@ -932,7 +948,7 @@
 				016DE80D26F1A1BF0046DDEA /* UserController.swift in Sources */,
 				0170180A26969EEF00E51209 /* MoviePosterCarousel.swift in Sources */,
 				017018102696B5CC00E51209 /* MovieCoverCardStack.swift in Sources */,
-				018DD32026B67B73001A1345 /* List.swift in Sources */,
+				018DD32026B67B73001A1345 /* CustomList.swift in Sources */,
 				017018152696C92900E51209 /* GenreTypeState.swift in Sources */,
 				01C0E26926AC56540027B9A9 /* MovieResource.swift in Sources */,
 				01C91FB026D1E7020052BF7A /* DataLoader.swift in Sources */,
@@ -940,6 +956,7 @@
 				01C0E26E26AC5AC60027B9A9 /* MovieOTT.swift in Sources */,
 				01C021A9263E8C7E0090846D /* SafariView.swift in Sources */,
 				01C0E26526AC0A6F0027B9A9 /* Person.swift in Sources */,
+				0113FBFC270362BB00BECECF /* CameraImagePickerView.swift in Sources */,
 				01CCDF3D263E945E005E2424 /* RegisterService.swift in Sources */,
 				01CF1395266B2AEC00066FC2 /* MovieCoverGesture.swift in Sources */,
 				01CF13AB266B38C200066FC2 /* MovieDetailScrollView.swift in Sources */,
@@ -961,6 +978,7 @@
 				7ADA5A8726104396000A84D9 /* TopicView.swift in Sources */,
 				01C0E26326AC0A470027B9A9 /* MovieImages.swift in Sources */,
 				01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */,
+				0113FC02270362FF00BECECF /* UITextFieldView.swift in Sources */,
 				7ADA5A7926104355000A84D9 /* CircleButton.swift in Sources */,
 				01CF13A3266B37E200066FC2 /* SmallBorderOnlyButton.swift in Sources */,
 				01CF13A7266B384300066FC2 /* smallNavButton.swift in Sources */,
@@ -1001,6 +1019,7 @@
 				01CF139B266B2F0C00066FC2 /* SmallCoverIcon.swift in Sources */,
 				019017D826F651E1007F1FE8 /* ListMovie.swift in Sources */,
 				01EBF590266BD80C0059B196 /* ProfileView.swift in Sources */,
+				0113FBFE270362D200BECECF /* RefreshableScrollView.swift in Sources */,
 				7A675A7E262BE22B00542DB2 /* MovieVM.swift in Sources */,
 				01AA7CAC269B61BE00F80796 /* MovieTrailer.swift in Sources */,
 				01B7323A26692947004A17BE /* CommentRes.swift in Sources */,
@@ -1022,6 +1041,7 @@
 				01EBF58D266BAA6A0059B196 /* ListController.swift in Sources */,
 				0175AAFD265A7EEA001BCD2E /* TractateView(square).swift in Sources */,
 				01CF13A9266B386000066FC2 /* FloatingButton.swift in Sources */,
+				0113FBFA270362A500BECECF /* BlurView.swift in Sources */,
 				01B7322F26687CF1004A17BE /* Comment.swift in Sources */,
 				01715CC926FE038500161866 /* ArticleService.swift in Sources */,
 				01715CDB26FE436200161866 /* ArticleTodo.swift in Sources */,

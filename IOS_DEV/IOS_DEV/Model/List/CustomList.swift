@@ -1,5 +1,5 @@
 //
-//  List.swift
+//  CustomList.swift
 //  IOS_DEV
 //
 //  Created by Kao Li Chi on 2021/8/1.
@@ -8,7 +8,7 @@
 import Foundation
 
 //--------------------------------所有片單（GET)----------------------------------------//
-struct List: Decodable, Identifiable{       //取片單
+struct CustomList: Decodable, Identifiable{       //取片單
     var id: UUID?
     var Title: String
     var user: ListOwner?
@@ -67,17 +67,17 @@ struct UpdateList: Decodable,Encodable{
 
 
 //-------------------------------------------------------------------------//
-let stubbedList:[List] = [
-    List( Title: "打發時間片單", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
-    List( Title: "2021恐怖電影", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
-    List( Title: "111111", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
-    List( Title: "222222", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
-    List( Title: "sdfsdfsd", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
-    List( Title: "ewrwerwer", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
-    List( Title: "53423434s", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
-    List( Title: "awdawd", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
-    List( Title: "間片單", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
-    List( Title: "20怖電影", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02")
+let stubbedList:[CustomList] = [
+    CustomList( Title: "打發時間片單", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
+    CustomList( Title: "2021恐怖電影", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
+    CustomList( Title: "111111", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
+    CustomList( Title: "222222", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
+    CustomList( Title: "sdfsdfsd", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
+    CustomList( Title: "ewrwerwer", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
+    CustomList( Title: "53423434s", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
+    CustomList( Title: "awdawd", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02"),
+    CustomList( Title: "間片單", user: ListOwner(UserName: "joyce"), updatedOn: "2021-08-02"),
+    CustomList( Title: "20怖電影", user: ListOwner(UserName: "angela"), updatedOn: "2021-08-02")
 ]
 
 let stubbedListDetail:[ListDetail] = [

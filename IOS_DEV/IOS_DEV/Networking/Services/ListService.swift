@@ -14,7 +14,7 @@ class ListService: ObservableObject {
     
     //get all lists
     func GET_allLists(endpoint: String,
-                 completion: @escaping (Result<[List], Error>) -> Void) {
+                 completion: @escaping (Result<[CustomList], Error>) -> Void) {
         
         guard let url = URL(string: baseUrl + endpoint) else {
             completion(.failure(NetworkingError.badUrl))
@@ -291,7 +291,7 @@ class ListService: ObservableObject {
 //----------------------------------------RESPONSE-----------------------------------------//
     
     func allListResponse(for request: URLRequest,
-                        completion: @escaping (Result<[List], Error>) -> Void){
+                        completion: @escaping (Result<[CustomList], Error>) -> Void){
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             //check the response status
@@ -308,7 +308,7 @@ class ListService: ObservableObject {
                 //伺服器回傳的data （含錯誤訊息）
                 if let unwrappedData = data {
                     do {
-                        if let list = try? JSONDecoder().decode([List].self, from: unwrappedData) {
+                        if let list = try? JSONDecoder().decode([CustomList].self, from: unwrappedData) {
                             completion(.success(list))
                         } else {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)

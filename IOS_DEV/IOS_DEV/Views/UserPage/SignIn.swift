@@ -11,6 +11,7 @@ import GoogleSignIn
 import AuthenticationServices
 import CryptoKit
 var NowUserName:String = "" // user who login
+var NowUserID:UUID? // user who login
 
 
 struct SignIn: View {
@@ -78,10 +79,12 @@ struct SignInCell : View{
             
             switch result {
                 
-            case .success: print("login success")
+            case .success(let user):
+                print("login success")
                 self.isPresented.toggle()
                 ErrorAlert = false
-                NowUserName = self.username
+                NowUserName = user.UserName
+                NowUserID = user.id
                 
             case .failure:
                 print("login failed")

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ListView: View
 {
-    var lists:[List]
+    var lists:[CustomList]
     let FullSize = UIScreen.main.bounds.size
     var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 2)
     
@@ -73,7 +73,7 @@ struct ListView: View
 
 struct ListButton:View{
     @ObservedObject private var listController = ListController()
-    @State var list:List
+    @State var list:CustomList
     @State private var todo : Bool = false
 
     var body:some View{
