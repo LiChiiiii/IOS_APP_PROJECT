@@ -59,17 +59,27 @@ struct NavBar: View {
         ZStack(alignment:.top){
             VStack(spacing:10){
                 ZStack(alignment:.top){
+                    if self.index == 0 {
                         HomePage()
-                            .opacity(self.index == 0 ? 1 : 0)
-                    
+//                            .opacity(self.index == 0 ? 1 : 0)
+                    }
+                    if index == 1 && GroupSelect {
                         ListView(lists: controller.listData)
-                            .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
-
+//                            .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
+                    }
+                    if index == 2 {
                         AutoScroll_V()
-                            .opacity(self.index == 2 ? 1 : 0)
-                    
+//                            .opacity(self.index == 2 ? 1 : 0)
+                    }
+                    if index == 3 {
                         ProfileView()
-                            .opacity(self.index == 3 ? 1 : 0)
+                            //.opacity(self.index == 3 ? 1 : 0)
+                    }
+                    
+                    
+                       
+                    
+                        
 //
                 }
                 NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
@@ -147,7 +157,7 @@ struct NavItemButton:View{
                 VStack(alignment:.center,spacing:10){
                     Image(systemName:"list.and.film")
                         .shadow(radius: 10)
-                    Text("My List")
+                    Text("List")
                         .frame(width: 50)
                         .font(.caption)
                 }

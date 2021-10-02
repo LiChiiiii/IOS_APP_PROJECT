@@ -220,7 +220,7 @@ struct CreateListMovieDetail:View{
             let size = proxy.size
             
 
-            
+            ScrollView(.vertical){
             VStack(alignment: .leading,spacing:5){
                 VStack(alignment: .leading,spacing:10){
 
@@ -235,7 +235,7 @@ struct CreateListMovieDetail:View{
                 }
                 
                 
-                ScrollView(.vertical){
+              
                     
                     // movie pic
                     WebImage(url: movie.posterURL)
@@ -302,8 +302,6 @@ struct CreateListMovieDetail:View{
                     .background(Color.white)
                     .cornerRadius(4)
                     
-                    
-                }
                 
                 //--------save button---------//
 
@@ -346,6 +344,8 @@ struct CreateListMovieDetail:View{
 
                 }
                 .padding()
+                    
+                }
                
             }
             .padding(20)

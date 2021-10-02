@@ -14,12 +14,12 @@ struct ActorAvatarList: View {
     @ObservedObject private var personSearchState0 = PersonSearchState()
     @ObservedObject private var personSearchState1 = PersonSearchState()
     @ObservedObject private var personSearchState2 = PersonSearchState()
-    @ObservedObject private var personSearchState3 = PersonSearchState()
-    @ObservedObject private var personSearchState4 = PersonSearchState()
-    @ObservedObject private var personSearchState5 = PersonSearchState()
-    @ObservedObject private var personSearchState6 = PersonSearchState()
-    @ObservedObject private var personSearchState7 = PersonSearchState()
-    @ObservedObject private var personSearchState8 = PersonSearchState()
+//    @ObservedObject private var personSearchState3 = PersonSearchState()
+//    @ObservedObject private var personSearchState4 = PersonSearchState()
+//    @ObservedObject private var personSearchState5 = PersonSearchState()
+//    @ObservedObject private var personSearchState6 = PersonSearchState()
+//    @ObservedObject private var personSearchState7 = PersonSearchState()
+//    @ObservedObject private var personSearchState8 = PersonSearchState()
     
     var body:some View{
         
@@ -71,90 +71,90 @@ struct ActorAvatarList: View {
                         }
                     }
                     
-                    Group{
-                        LoadingView(isLoading: self.personSearchState3.isLoading, error: self.personSearchState3.error) {
-                            self.personSearchState3.searchPerson(query: cast[3].name)
-                        }
-                        
-                        if personSearchState3.person != nil {
-                            NavigationLink(
-                                destination: ActorMovieView(actor: personSearchState3.person!)
-                            ){
-                                Avatar(character: cast[3].character, actorList: personSearchState3.person!.first!)
-                            }
-                            
-                        }
-                    }
+//                    Group{
+//                        LoadingView(isLoading: self.personSearchState3.isLoading, error: self.personSearchState3.error) {
+//                            self.personSearchState3.searchPerson(query: cast[3].name)
+//                        }
+//
+//                        if personSearchState3.person != nil {
+//                            NavigationLink(
+//                                destination: ActorMovieView(actor: personSearchState3.person!)
+//                            ){
+//                                Avatar(character: cast[3].character, actorList: personSearchState3.person!.first!)
+//                            }
+//
+//                        }
+//                    }
                     
-                    Group{
-                        LoadingView(isLoading: self.personSearchState4.isLoading, error: self.personSearchState4.error) {
-                            self.personSearchState4.searchPerson(query: cast[4].name)
-                        }
-                        
-                        if personSearchState4.person != nil {
-                            NavigationLink(
-                                destination: ActorMovieView(actor: personSearchState4.person!)
-                            ){
-                                Avatar(character: cast[4].character, actorList: personSearchState4.person!.first!)
-                            }
-                        }
-                    }
+//                    Group{
+//                        LoadingView(isLoading: self.personSearchState4.isLoading, error: self.personSearchState4.error) {
+//                            self.personSearchState4.searchPerson(query: cast[4].name)
+//                        }
+//
+//                        if personSearchState4.person != nil {
+//                            NavigationLink(
+//                                destination: ActorMovieView(actor: personSearchState4.person!)
+//                            ){
+//                                Avatar(character: cast[4].character, actorList: personSearchState4.person!.first!)
+//                            }
+//                        }
+//                    }
                     
-                    Group{
-                        LoadingView(isLoading: self.personSearchState5.isLoading, error: self.personSearchState5.error) {
-                            self.personSearchState5.searchPerson(query: cast[5].name)
-                        }
-                        
-                        if personSearchState5.person != nil {
-                            NavigationLink(
-                                destination: ActorMovieView(actor: personSearchState5.person!)
-                            ){
-                                Avatar(character: cast[5].character, actorList: personSearchState5.person!.first!)
-                            }
-                        }
-                    }
+//                    Group{
+//                        LoadingView(isLoading: self.personSearchState5.isLoading, error: self.personSearchState5.error) {
+//                            self.personSearchState5.searchPerson(query: cast[5].name)
+//                        }
+//
+//                        if personSearchState5.person != nil {
+//                            NavigationLink(
+//                                destination: ActorMovieView(actor: personSearchState5.person!)
+//                            ){
+//                                Avatar(character: cast[5].character, actorList: personSearchState5.person!.first!)
+//                            }
+//                        }
+//                    }
                     
-                    Group{
-                        LoadingView(isLoading: self.personSearchState6.isLoading, error: self.personSearchState6.error) {
-                            self.personSearchState6.searchPerson(query: cast[6].name)
-                        }
-                        
-                        if personSearchState6.person != nil {
-                            NavigationLink(
-                                destination: ActorMovieView(actor: personSearchState6.person!)
-                            ){
-                                Avatar(character: cast[6].character, actorList: personSearchState6.person!.first!)
-                            }
-                        }
-                    }
+//                    Group{
+//                        LoadingView(isLoading: self.personSearchState6.isLoading, error: self.personSearchState6.error) {
+//                            self.personSearchState6.searchPerson(query: cast[6].name)
+//                        }
+//
+//                        if personSearchState6.person != nil {
+//                            NavigationLink(
+//                                destination: ActorMovieView(actor: personSearchState6.person!)
+//                            ){
+//                                Avatar(character: cast[6].character, actorList: personSearchState6.person!.first!)
+//                            }
+//                        }
+//                    }
                     
-                    Group{
-                        LoadingView(isLoading: self.personSearchState7.isLoading, error: self.personSearchState7.error) {
-                            self.personSearchState7.searchPerson(query: cast[7].name)
-                        }
-                        
-                        if personSearchState7.person != nil {
-                            NavigationLink(
-                                destination: ActorMovieView(actor: personSearchState7.person!)
-                            ){
-                                Avatar(character: cast[7].character, actorList: personSearchState7.person!.first!)
-                            }
-                        }
-                    }
+//                    Group{
+//                        LoadingView(isLoading: self.personSearchState7.isLoading, error: self.personSearchState7.error) {
+//                            self.personSearchState7.searchPerson(query: cast[7].name)
+//                        }
+//
+//                        if personSearchState7.person != nil {
+//                            NavigationLink(
+//                                destination: ActorMovieView(actor: personSearchState7.person!)
+//                            ){
+//                                Avatar(character: cast[7].character, actorList: personSearchState7.person!.first!)
+//                            }
+//                        }
+//                    }
                     
-                    Group{
-                        LoadingView(isLoading: self.personSearchState8.isLoading, error: self.personSearchState8.error) {
-                            self.personSearchState8.searchPerson(query: cast[8].name)
-                        }
-                        
-                        if personSearchState8.person != nil {
-                            NavigationLink(
-                                destination: ActorMovieView(actor: personSearchState8.person!)
-                            ){
-                                Avatar(character: cast[8].character, actorList: personSearchState8.person!.first!)
-                            }
-                        }
-                    }
+//                    Group{
+//                        LoadingView(isLoading: self.personSearchState8.isLoading, error: self.personSearchState8.error) {
+//                            self.personSearchState8.searchPerson(query: cast[8].name)
+//                        }
+//
+//                        if personSearchState8.person != nil {
+//                            NavigationLink(
+//                                destination: ActorMovieView(actor: personSearchState8.person!)
+//                            ){
+//                                Avatar(character: cast[8].character, actorList: personSearchState8.person!.first!)
+//                            }
+//                        }
+//                    }
                     
  
                     
@@ -169,12 +169,12 @@ struct ActorAvatarList: View {
             self.personSearchState0.searchPerson(query: cast[0].name)
             self.personSearchState1.searchPerson(query: cast[1].name)
             self.personSearchState2.searchPerson(query: cast[2].name)
-            self.personSearchState3.searchPerson(query: cast[3].name)
-            self.personSearchState4.searchPerson(query: cast[4].name)
-            self.personSearchState5.searchPerson(query: cast[5].name)
-            self.personSearchState6.searchPerson(query: cast[6].name)
-            self.personSearchState7.searchPerson(query: cast[7].name)
-            self.personSearchState8.searchPerson(query: cast[8].name)
+//            self.personSearchState3.searchPerson(query: cast[3].name)
+//            self.personSearchState4.searchPerson(query: cast[4].name)
+//            self.personSearchState5.searchPerson(query: cast[5].name)
+//            self.personSearchState6.searchPerson(query: cast[6].name)
+//            self.personSearchState7.searchPerson(query: cast[7].name)
+//            self.personSearchState8.searchPerson(query: cast[8].name)
            
             
         }

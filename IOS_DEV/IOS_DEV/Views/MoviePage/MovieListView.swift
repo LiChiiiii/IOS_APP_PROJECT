@@ -215,12 +215,12 @@ struct MovieListView: View {
                             .resizable()
                             .frame(width: 15, height: 15, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         
-                        Text("Tariler")
+                        Text("Trailer")
                             .bold()
                             .font(.footnote)
                         
                     }
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
             
                         
                 }

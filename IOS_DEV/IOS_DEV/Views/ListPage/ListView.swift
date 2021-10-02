@@ -8,35 +8,49 @@
 
 import Foundation
 import SwiftUI
+import CryptoKit
+import SDWebImageSwiftUI
 
 struct ListView: View
 {
+    @ObservedObject private var popularState = MovieListState()
     var lists:[CustomList]
     let FullSize = UIScreen.main.bounds.size
-    var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 2)
-    
+    var columns = Array(repeating: GridItem(.flexible(),spacing:5), count: 2)
+    private let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    @State private var currentIndex = 0
+  
     var body: some View
     {
+        
         VStack()
         {
-            //top pic can not move
-            ZStack()
-            {
-                Image("ta")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea(edges: .top)
-                    .frame(width: FullSize.width, height: 250)
-                    .clipped()
-            LinearGradient(
-                gradient: Gradient(colors: [.white, .gray]),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-            .blendMode(.multiply)
-            .frame(width: FullSize.width, height: 250)
+            if popularState.movies != nil {
+                ZStack()
+                {
+                    TabView(selection: $currentIndex ){
+                        ForEach(0..<popularState.movies!.count){ index in
+                            WebImage(url: popularState.movies![index].backdropURL)
+                                .resizable()
+                                .scaledToFill()
+                                .tag("\(index)")
+                                .overlay(Color.black.opacity(0.2))
+                            
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle())
+                    .frame(width: FullSize.width, height: FullSize.height/3)
+                    .onReceive(timer, perform: { _ in
+                        withAnimation{
+                            currentIndex = currentIndex < popularState.movies!.count ? currentIndex + 1 : 0
+                        }
+                       
+                    })
+                    
 
-            
+                
+                }
+
             }
             
                 
@@ -44,8 +58,7 @@ struct ListView: View
             {
                 Spacer()
                 
-                    //TODO
-                    //two 'TractateFrame' in a Row
+                   
                 LazyVGrid(columns: columns, spacing: 20){
                     ForEach(self.lists ,id: \.id) { list in
                         ListButton(list: list)
@@ -60,6 +73,9 @@ struct ListView: View
             
         }
         .ignoresSafeArea(edges: .top)
+        .onAppear{
+            self.popularState.loadMovies(with: .popular)
+        }
 //        .frame(width: FullSize.width, height: FullSize.height)
         
 
@@ -75,25 +91,47 @@ struct ListButton:View{
     @ObservedObject private var listController = ListController()
     @State var list:CustomList
     @State private var todo : Bool = false
-
+    let FullSize = UIScreen.main.bounds.size
+    
     var body:some View{
         
-        HStack{
-            
+    
             Button(action:{
                 listController.GetListDetail(listID: list.id!)  //取得片單內容
                 
             }){
                
                 
-                VStack(alignment:.leading){
+                VStack(alignment: .leading){
                     
                 
                     HStack(){
-                        Image("ka")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .cornerRadius(30)
+                        
+                        if list.user!.UserName == "SmallPig" {
+                            Image("p3")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                        }
+                        else if list.user!.UserName == "Chichi" {
+                            Image("pic")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                        }
+                        else if list.user!.UserName == "Angelababy" {
+                            Image("p1")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                        }
+                        else{
+                            Image("p2")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                        }
+                       
                         Text(list.user!.UserName)
                             .foregroundColor(.gray)
                             .font(.system(size: 15))
@@ -104,7 +142,7 @@ struct ListButton:View{
                     
                     Text(list.Title)
                         .bold()
-                        .font(.system(size: 20))
+                        .font(.system(size: 18))
                         .padding(.top,25)
                             
                     
@@ -112,19 +150,20 @@ struct ListButton:View{
                     
                     
                 }
-                .frame(width:170,height: 170)
+                .frame(width:160,height: 160, alignment: .leading)
+                .padding([.leading],15)
                 .background(BlurView().cornerRadius(25))
                 //.background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
                 .shadow(color: .gray, radius: 0.5)
                 .foregroundColor(.white)
                 .cornerRadius(20)
-                .padding(8)
+                
         
 
             
             }
             .simultaneousGesture(TapGesture().onEnded{
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
                     self.todo = true
                 })
             })
@@ -135,7 +174,6 @@ struct ListButton:View{
           
             
       
-        }
 
     }
 

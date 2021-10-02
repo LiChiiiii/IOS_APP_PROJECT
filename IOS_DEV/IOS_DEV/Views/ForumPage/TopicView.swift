@@ -42,7 +42,7 @@ struct TopicView: View
     var body: some View
     {
 
-        TabView(){
+        
             
             VStack {
 
@@ -61,6 +61,7 @@ struct TopicView: View
 
                 }
                 
+                TabView(){
                 
                 ScrollView(.vertical, showsIndicators: false)
                 {
@@ -126,36 +127,36 @@ struct TopicView: View
                 }
                 .coordinateSpace(name: "SCROLL")
             }
+            .overlay(
+                VStack{
+                    Button{
+                        self.createAction.toggle()
+                    } label:{
+                        HStack(spacing:hideBar ? 0 : 12){
+                            Image(systemName: "pencil")
+                                .font(.title)
+                            
+                            Text("Compose")
+                                .fontWeight(.semibold)
+                                .frame(width: hideBar ? 0 : nil, height: hideBar ? 0 : nil)
+                        }
+                        .foregroundColor(Color("CustomRed"))
+                        .padding(.vertical, hideBar ? 15 : 12)
+                        .padding(.horizontal)
+                        .background(Color(.black))
+                        .cornerRadius(20)
+                        .shadow(color: .white.opacity(0.06), radius: 5, x: 5, y: 10)
+                    }
+                    .padding(.trailing)
+                    .offset(y: -15)
+                    .frame(width: FullSize.width, alignment: .trailing)
+                }
+                   
+                ,alignment: .bottom
+            )
             
         }
-        .overlay(
-            VStack{
-                Button{
-                    self.createAction.toggle()
-                } label:{
-                    HStack(spacing:hideBar ? 0 : 12){
-                        Image(systemName: "pencil")
-                            .font(.title)
-                        
-                        Text("Compose")
-                            .fontWeight(.semibold)
-                            .frame(width: hideBar ? 0 : nil, height: hideBar ? 0 : nil)
-                    }
-                    .foregroundColor(Color("CustomRed"))
-                    .padding(.vertical, hideBar ? 15 : 12)
-                    .padding(.horizontal)
-                    .background(Color(.black))
-                    .cornerRadius(20)
-                    .shadow(color: .white.opacity(0.06), radius: 5, x: 5, y: 10)
-                }
-                .padding(.trailing)
-                .offset(y: -15)
-                .frame(width: FullSize.width, alignment: .trailing)
-            }
-               
-            ,alignment: .bottom
-        )
-        .fullScreenCover(isPresented: self.$createAction, content: {
+        .sheet(isPresented: self.$createAction, content: {
             NewArticleCard(createAction: self.$createAction, title: "", text: "", movieID: movie.id)
         })
         

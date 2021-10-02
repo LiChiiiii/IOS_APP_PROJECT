@@ -33,7 +33,7 @@ struct TopicFrame: View
                         Spacer()
                         HStack()
                         {
-                            Image("ka")
+                            Image("pic")
                             .resizable()
                             .frame(width: 40, height: 40)
                             .cornerRadius(30)

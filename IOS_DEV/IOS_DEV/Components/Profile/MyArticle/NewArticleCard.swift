@@ -26,9 +26,10 @@ struct NewArticleCard:View{
 
             VStack{
                 Text("新增文章")
-                    .font(.title)
+                    .font(.system(size: 20).bold())
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
+                    .padding([.top],30)
                 Spacer(minLength: 0)
             }
             .padding([.top],40)
@@ -40,10 +41,11 @@ struct NewArticleCard:View{
             VStack(alignment: .center, spacing: 15) {
                 Text("文章標題")
                     .foregroundColor(.white)
-                    .font(.system(size: 20).bold())
+                    .font(.system(size: 18))
 
                 TextField("your title", text: $title )
-                    .font(.system(size: 22))
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
                     .padding()
                     .background(Color(.gray).opacity(0.1))
 
@@ -58,14 +60,21 @@ struct NewArticleCard:View{
             VStack(alignment: .center, spacing: 15) {
                 Text("文章內容 ")
                     .foregroundColor(.white)
-                    .font(.system(size: 20).bold())
+                    .font(.system(size: 18))
 
                 TextEditor(text: $text )
-                    .font(.system(size: 22))
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
                     .padding()
                     .frame(height:300)
-                    .border(Color(.gray).opacity(0.1),width:5)
+                    .background(Color(.gray).opacity(0.1))
+                
 
+            }
+            .onAppear() {
+                UITextView.appearance().backgroundColor = .clear
+            }.onDisappear() {
+                UITextView.appearance().backgroundColor = nil
             }
             .padding()
 
@@ -105,6 +114,9 @@ struct NewArticleCard:View{
             .padding()
 
         }
+        .frame(height: FullSize.height)
+        .background(Color.black.opacity(0.9))
+        
 
     }
 

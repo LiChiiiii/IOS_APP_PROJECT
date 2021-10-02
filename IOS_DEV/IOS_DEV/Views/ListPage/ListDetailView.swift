@@ -90,7 +90,7 @@ struct ListDetailView: View
                     }
                     
                 }
-                .sheet(isPresented: self.$CreateAction, content: {
+                .fullScreenCover(isPresented: self.$CreateAction, content: {
                     CreateListMovie(CreateAction: self.$CreateAction,listOwner: self.listOwner,listTitle: self.listTitle)
                 })
                
@@ -170,7 +170,7 @@ struct CarouselBodyView: View
 
                         HStack{
                             Text("\(listOwner)的評分")
-                                .font(.title2.bold())
+                                .font(.system(size:18))
                                 .kerning(1.5)
                                 .foregroundColor(.black)
                             
@@ -189,11 +189,29 @@ struct CarouselBodyView: View
                         
                 
                         HStack(spacing:25){
-                            Image("pic")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 55, height: 55)
-                                .clipShape(Circle())
+                            
+                            if listOwner == "Chichi" {
+                                Image("pic")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 55, height: 55)
+                                    .clipShape(Circle())
+                            }
+                            else if listOwner == "Angelababy" {
+                                Image("p1")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 55, height: 55)
+                                    .clipShape(Circle())
+                            }
+                            else{
+                                Image("p2")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 55, height: 55)
+                                    .clipShape(Circle())
+                            }
+                           
 
                             VStack(alignment: .leading,spacing:6){
                                 

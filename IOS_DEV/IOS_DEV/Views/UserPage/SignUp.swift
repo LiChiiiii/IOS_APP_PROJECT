@@ -40,6 +40,7 @@ struct SignUp: View {
             case .success:
                 print("register success")
                 ErrorAlert = false
+                self.isSignUp.toggle()
                 
             case .failure(let error):
                 print("register failed")
@@ -62,7 +63,7 @@ struct SignUp: View {
                     HStack {
                         Image(systemName: "arrow.backward")
                             .font(.title)
-                            .foregroundColor(Color.black.opacity(0.5))
+                            .foregroundColor(Color.white.opacity(0.5))
                             .padding(.bottom,20)
                             .padding(.leading)
                         Spacer()

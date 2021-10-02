@@ -19,15 +19,18 @@ struct EditArticleCard:View{
     @State var article : Article
     let FullSize = UIScreen.main.bounds.size
     
+    
+    
     var body:some View{
 
         ScrollView{
-
+            
             VStack{
-                Text("編輯文章")
-                    .font(.title)
+                Text("編輯文章內容")
+                    .font(.system(size: 20).bold())
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
+                    .padding([.top],30)
                 Spacer(minLength: 0)
             }
             .padding([.top],40)
@@ -40,10 +43,11 @@ struct EditArticleCard:View{
             VStack(alignment: .center, spacing: 15) {
                 Text("Article Title ")
                     .foregroundColor(.white)
-                    .font(.system(size: 20).bold())
+                    .font(.system(size: 18))
 
                 TextField("your title", text: $title )
-                    .font(.system(size: 22))
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
                     .padding()
                     .background(Color(.gray).opacity(0.1))
 
@@ -58,14 +62,20 @@ struct EditArticleCard:View{
             VStack(alignment: .center, spacing: 15) {
                 Text("Article Text ")
                     .foregroundColor(.white)
-                    .font(.system(size: 20).bold())
+                    .font(.system(size: 18))
 
                 TextEditor(text: $text )
-                    .font(.system(size: 22))
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
                     .padding()
                     .frame(height:300)
-                    .border(Color(.gray).opacity(0.1),width:5)
+                    .background(Color(.gray).opacity(0.1))
 
+            }
+            .onAppear() {
+                UITextView.appearance().backgroundColor = .clear
+            }.onDisappear() {
+                UITextView.appearance().backgroundColor = nil
             }
             .padding()
 
@@ -105,7 +115,9 @@ struct EditArticleCard:View{
             .padding()
 
         }
-//        .background(Color.black.opacity(0.6))
+        .frame(height: FullSize.height)
+        .background(Color.black.opacity(0.9))
+       
     }
 
 }

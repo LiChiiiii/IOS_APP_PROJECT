@@ -26,7 +26,7 @@ struct MessageBoard: View
             HStack()
             {
                 
-                Image("ka")
+                Image("pic")
                     .resizable()
                     .frame(width: 45, height: 45)
                     .cornerRadius(30)

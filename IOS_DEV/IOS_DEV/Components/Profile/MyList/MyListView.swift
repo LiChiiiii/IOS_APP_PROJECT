@@ -16,7 +16,7 @@ struct MyListView: View {
     @State private var isAppear:Bool = false
     @State private var showAnimation = false
     let FullSize = UIScreen.main.bounds.size
-    var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 2)
+    var columns = Array(repeating: GridItem(.flexible(),spacing:5), count: 2)
     @State var title:String = ""
     @State var editID: UUID?
     @State var editTitle:String = ""
@@ -102,7 +102,7 @@ struct MyListButton:View{
                     
                 
                     HStack(){
-                        Image("ka")
+                        Image("pic")
                             .resizable()
                             .frame(width: 40, height: 40)
                             .cornerRadius(30)
@@ -116,7 +116,7 @@ struct MyListButton:View{
                     
                     Text(list.Title)
                         .bold()
-                        .font(.system(size: 20))
+                        .font(.system(size: 18))
                         .padding(.top,25)
                             
                     
@@ -124,13 +124,13 @@ struct MyListButton:View{
                     
                     
                 }
-                .frame(width:170,height: 170)
+                .frame(width:160,height: 160, alignment: .leading)
+                .padding([.leading],15)
                 .background(BlurView().cornerRadius(25))
                 //.background(Color(hue: 1.0, saturation: 0.0, brightness: 0.144, opacity: 0.329))
                 .shadow(color: .gray, radius: 0.5)
                 .foregroundColor(.white)
                 .cornerRadius(20)
-                .padding(8)
         
 
             

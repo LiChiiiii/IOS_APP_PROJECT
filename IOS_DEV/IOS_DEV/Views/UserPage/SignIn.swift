@@ -37,7 +37,7 @@ struct SignIn: View {
                     HStack {
                         Image(systemName: "arrow.backward")
                             .font(.title)
-                            .foregroundColor(Color.black.opacity(0.5))
+                            .foregroundColor(Color.white.opacity(0.5))
                             .padding(.bottom,20)
                             .padding(.leading)
                         Spacer()

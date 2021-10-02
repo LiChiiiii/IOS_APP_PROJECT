@@ -19,13 +19,11 @@ struct NewListCard: View {
         VStack{
             VStack{
                 Text("List Title ")
-                    .foregroundColor(.black)
                     .font(.system(size: 20).bold())
 
                 TextField("list title", text: $title )
                     .font(.system(size: 20))
                     .background(Color(.gray).opacity(0.1))
-                    .foregroundColor(.black)
                     
             }
             .padding()
@@ -65,11 +63,10 @@ struct NewListCard: View {
         }
         .padding()
         .frame(width: screenSize.width*0.7, height: screenSize.height*0.24)
-        .background(Color(.white))
+        .background(BlurView())
         .clipShape(RoundedRectangle(cornerRadius: 20.0, style: .continuous))
         .offset(y: cardShown ? 0 : screenSize.height)
         .animation(.spring())
-        .shadow(color: .gray.opacity(0.5), radius: 6, x: -9, y: -9)
         
        
     
