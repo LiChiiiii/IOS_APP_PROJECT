@@ -127,7 +127,7 @@ struct MovieListView: View {
               
                 Group {
                     if nowPlayingState.movies != nil {
-                        MoviePosterCarousel(title: "Now Playing", movies: nowPlayingState.movies!)
+                        MoviePosterCarousel(title: "現正熱映", movies: nowPlayingState.movies!)
                         
                     } else {
                         LoadingView(isLoading: self.nowPlayingState.isLoading, error: self.nowPlayingState.error) {
@@ -140,7 +140,7 @@ struct MovieListView: View {
                 
                 Group {
                     if upcomingState.movies != nil {
-                        MoviePosterCarousel(title: "Upcoming", movies: upcomingState.movies!)
+                        MoviePosterCarousel(title: "即將上映", movies: upcomingState.movies!)
                     } else {
                         LoadingView(isLoading: self.upcomingState.isLoading, error: self.upcomingState.error) {
                             self.upcomingState.loadMovies(with: .upcoming)
@@ -152,7 +152,7 @@ struct MovieListView: View {
                 
                 Group {
                     if topRatedState.movies != nil {
-                        MoviePosterCarousel(title: "Top Rated", movies: topRatedState.movies!)
+                        MoviePosterCarousel(title: "高評價電影", movies: topRatedState.movies!)
                         
                     } else {
                         LoadingView(isLoading: self.topRatedState.isLoading, error: self.topRatedState.error) {
@@ -166,7 +166,7 @@ struct MovieListView: View {
                 
                 Group {
                     if popularState.movies != nil {
-                        MoviePosterCarousel(title: "Popular", movies: popularState.movies!)
+                        MoviePosterCarousel(title: "受歡迎電影", movies: popularState.movies!)
                         
                     } else {
                         LoadingView(isLoading: self.popularState.isLoading, error: self.popularState.error) {
@@ -189,7 +189,7 @@ struct MovieListView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.large)
-        .navigationBarTitle("Discovery")
+        .navigationBarTitle("\(NowUserName), 午安！")
         .toolbar{
             ToolbarItemGroup(placement:.navigationBarLeading){
                 HStack{
@@ -215,7 +215,7 @@ struct MovieListView: View {
                             .resizable()
                             .frame(width: 15, height: 15, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         
-                        Text("Trailer")
+                        Text("預告片")
                             .bold()
                             .font(.footnote)
                         

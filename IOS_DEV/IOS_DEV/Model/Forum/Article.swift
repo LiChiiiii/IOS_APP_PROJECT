@@ -51,7 +51,7 @@ struct ArticleOwner: Decodable, Identifiable{
 
 
 let stubbedArticles:[Article] = [
-    Article(Title: "AAAA", Text: "bbb", movie: 111, LikeCount: 12, updatedOn: "123"),
-    Article(Title: "B123BB", Text: "bbb", movie: 111, LikeCount: 23, updatedOn: "123"),
-    Article(Title: "CCCC34234C", Text: "bbb", movie: 111, LikeCount: 1, updatedOn: "123")
+    Article(Title: "看真人快打前需要先做什麼功課", Text: "近期想跟朋友去電影院看...", user: ArticleOwner(UserName: "Angelababy"), movie: 111, LikeCount: 12, updatedOn: "123"),
+    Article(Title: "真人快打劇情討論", Text: "劇情設定本身蠢都無所謂...", user: ArticleOwner(UserName: "Abc"), movie: 111, LikeCount: 23, updatedOn: "123"),
+    Article(Title: "「閒聊」鬼滅之刃", Text: "鬼夜之刃相對於其他動漫...", user: ArticleOwner(UserName: "Sean"), movie: 111, LikeCount: 1, updatedOn: "123")
 ]

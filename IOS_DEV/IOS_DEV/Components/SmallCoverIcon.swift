@@ -43,11 +43,11 @@ struct CenterIcon:View{
     
     var body: some View{
         ZStack{
-            CircleText(radius: 65, text: "Avenger:EndGame",kerning: 15.0,width: 65,height: 65)
+            CircleText(radius: 65, text: "查看電影資訊",kerning: 15.0,width: 65,height: 65)
                 .animation(.none)
                 .rotationEffect(Angle(degrees: self.isAnimating ? -360.0 : 0.0))
 
-                AnimatedImage(url:URL(string: "https://image.tmdb.org/t/p/original/thmDdDLQYrJJuhIYQIA4FDpi1E5.jpg"))
+                AnimatedImage(url:URL(string: "https://image.tmdb.org/t/p/original/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg"))
                     //   Image(systemName: "arrow.down.circle.fill")
                     .resizable()
                     .scaledToFill()

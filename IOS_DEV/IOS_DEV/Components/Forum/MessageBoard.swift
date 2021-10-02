@@ -25,12 +25,40 @@ struct MessageBoard: View
             //Spacer()
             HStack()
             {
+                if article.user!.UserName == "Abc" {
+                    Image("p3")
+                        .resizable()
+                        .frame(width: 45, height: 45)
+                        .cornerRadius(30)
+                        .padding(.leading,15)
+                }
+                else if article.user!.UserName == "Chichi" {
+                    Image("pic")
+                        .resizable()
+                        .frame(width: 45, height: 45)
+                        .cornerRadius(30)
+                        .padding(.leading,15)
+                }
+                else if article.user!.UserName == "Angelababy" {
+                    Image("p1")
+                        .resizable()
+                        .frame(width: 45, height: 45)
+                        .cornerRadius(30)
+                        .padding(.leading,15)
+                }
+                else{
+                    Image("p2")
+                        .resizable()
+                        .frame(width: 45, height: 45)
+                        .cornerRadius(30)
+                        .padding(.leading,15)
+                }
                 
-                Image("pic")
-                    .resizable()
-                    .frame(width: 45, height: 45)
-                    .cornerRadius(30)
-                    .padding(.leading,15)
+//                Image("pic")
+//                    .resizable()
+//                    .frame(width: 45, height: 45)
+//                    .cornerRadius(30)
+//                    .padding(.leading,15)
                 Text(article.user!.UserName)
                 Spacer()
             }

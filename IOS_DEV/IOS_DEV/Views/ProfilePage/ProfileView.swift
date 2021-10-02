@@ -152,7 +152,7 @@ struct ProfileView: View {
                     }
                     Spacer()
                 }
-                .navigationTitle("Profile")
+               
             }
         
             
@@ -222,7 +222,7 @@ struct MovieSettingView: View {
         ScrollView(.vertical, showsIndicators: false){
             
 
-            Text("Preferred genre")
+            Text("選擇您喜愛的類別")
                 .font(.body)
                 .padding(15)
             
@@ -236,7 +236,7 @@ struct MovieSettingView: View {
 
             
         }
-        .navigationTitle("Movie Setting")
+        .navigationTitle("電影喜好設定")
         .toolbar{
             Button("Save"){}
         }
@@ -313,12 +313,44 @@ struct articleRecord: View {
                 
                 VStack(alignment:.leading){
                     HStack(){
-                        Image("ka")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .cornerRadius(30)
-                            .padding(.leading,5)
-                        Text("username")
+                        
+                        if article.user!.UserName == "Abc" {
+                            Image("p3")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                                .padding(.leading,5)
+                        }
+                        else if article.user!.UserName == "Chichi" {
+                            Image("pic")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                                .padding(.leading,5)
+                        }
+                        else if article.user!.UserName == "Angelababy" {
+                            Image("p1")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                                .padding(.leading,5)
+                        }
+                        else{
+                            Image("p2")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
+                                .padding(.leading,5)
+                        }
+                        
+//                        Image("ka")
+//                            .resizable()
+//                            .frame(width: 40, height: 40)
+//                            .cornerRadius(30)
+//                            .padding(.leading,5)
+                        
+                        
+                        Text(article.user!.UserName)
                             .foregroundColor(.gray)
                             .font(.system(size: 15))
                     }
@@ -327,12 +359,12 @@ struct articleRecord: View {
                     
                     Text(article.Title)
                         .bold()
-                        .font(.system(size: 20))
+                        .font(.system(size: 16))
                         .padding(5)
                     
                     Text(article.Text)
                         .foregroundColor(.gray)
-                        .font(.system(size: 15))
+                        .font(.system(size: 13))
                         .padding(5)
                             
                     

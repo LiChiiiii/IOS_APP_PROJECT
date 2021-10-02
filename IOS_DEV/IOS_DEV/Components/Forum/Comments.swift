@@ -20,18 +20,49 @@ struct Comments: View
                     //Spacer()
                     HStack()
                     {
+                        if comment.user!.UserName == "Abc" {
+                            Image("p3")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(30)
+                                .padding(.leading,15)
+                        }
+                        else if comment.user!.UserName == "Chichi" {
+                            Image("pic")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(30)
+                                .padding(.leading,15)
+                        }
+                        else if comment.user!.UserName == "Angelababy" {
+                            Image("p1")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(30)
+                                .padding(.leading,15)
+                        }
+                        else{
+                            Image("p2")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(30)
+                                .padding(.leading,15)
+                        }
                         
-                        Image("ka")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .cornerRadius(30)
-                            .padding(.leading,15)
+//                        Image("ka")
+//                            .resizable()
+//                            .frame(width: 30, height: 30)
+//                            .cornerRadius(30)
+//                            .padding(.leading,15)
                         Text(comment.user!.UserName)
                         Spacer()
                         
                         VStack(alignment: .trailing,spacing:5)
                         {
                             HStack(){
+                                
+                  
+                                
                                 Text(comment.dateText)
                                     .padding(5)
                                     .foregroundColor(.gray)
@@ -42,8 +73,11 @@ struct Comments: View
                                     .foregroundColor(.pink)
                                 
                                 Text("\(comment.LikeCount)")
+                                
+                        
                             }
                             .font(.footnote)
+                            .padding([.trailing],10)
                             
                         }
                         

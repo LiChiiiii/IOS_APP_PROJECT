@@ -234,10 +234,24 @@ struct MovieIntrol: View {
                         
                     }
                     
-                    Text("TailerName")
-                        .font(.body)
+                    HStack{
+                        
+                        ForEach(trailer.movieType,id: \.self ){ type in
+                            
+                            Text(type)
+                                .font(.system(size: 14))
+                                .bold()
+                                .foregroundColor(Color.white)
+                                .padding(.horizontal,8)
+                                .padding(.vertical,5)
+                                .background(Color.gray.opacity(0.45))
+                                .cornerRadius(5)
+                        }
+                    }
 
-                    Text("Release Date:12/04/2020")
+                    Text(trailer.releaseDate!)
+                        .foregroundColor(.gray)
+                        .font(.system(size:16))
                     
                 }
                 .font(.body)
@@ -245,10 +259,10 @@ struct MovieIntrol: View {
                 
                 
                 //click icon enter to moviedetail page
-//                NavigationLink(destination: MovieDetailView(movieId:399566,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading))
-//                {
-//                    SmallCoverIcon()
-//                }
+                NavigationLink(destination: MovieDetailView(movieId:299534,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading))
+                {
+                    SmallCoverIcon()
+                }
                     
                     
                     
