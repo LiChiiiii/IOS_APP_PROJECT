@@ -33,7 +33,7 @@ struct MovieDetailView: View {
         .onAppear {
             print(self.movieId)
             self.movieDetailState.loadMovie(id: self.movieId)
-            self.listController.GetMyList(userID: NowUserID!)
+//            self.listController.GetMyList(userID: NowUserID!)
             
         }
     }

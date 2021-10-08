@@ -288,7 +288,6 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
     }
     
     func fetchData(type : CharacterRule) {
-        
         switch type {
         case .Actor:
             //update actor list
@@ -365,9 +364,8 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
                         //and we can get is Actor? Director? Genre
                         //But we don't know the card in which list
                         // we need to figure our first
-                        
+//
                         if self.selectedPreviewDatas.count == 10{
-                            print("max!")
                             return
                         }
                         
@@ -386,76 +384,74 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
 
                         //Either one is not empty
                         if !actor.isEmpty {
-                            //Because we are using Uquie ID ,won't have same id
-                            //There is one item only
-                            //Append to the list
+//
                             DispatchQueue.main.async {
+//                                withAnimation(.default){
+//                                    self.fetchPreLoading = true
+//
+//                                }
+                                
                                 withAnimation(.default){
                                     self.selectedPreviewDatas.insert(actor.first!, at: 0) //we have already check is not empty
                                 }
-                                
-                                //fecth the preview result
-                                //here just simulating
-                                self.fetchPreLoading = true
-                                
                             }
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
                                 self.getPreview()
                                 print("data fetching")
-                                
-                            }
-                        }else if !director.isEmpty {
-                            //Because we are using Uquie ID ,won't have same id
-                            //There is one item only
-                            DispatchQueue.main.async {
-                                withAnimation(.default){
-                                    self.selectedPreviewDatas.insert(director.first!, at: 0) //we have already check is not empty
-                                }
-                                
-                                //fecth the preview result
-                                //here just simulating
-                                self.fetchPreLoading = true
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
-                                self.getPreview()
-                                print("data fetching")
-                                
-                            }
 
+                            }
+ 
+                        }else if !director.isEmpty {
+                
+                            DispatchQueue.main.async {
+//                                withAnimation(.default){
+//                                    self.fetchPreLoading = true
+//                                }
+//
+                                withAnimation(.default){
+                                    self.selectedPreviewDatas.insert(actor.first!, at: 0) //we have already check is not empty
+                                }
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+                                self.getPreview()
+                                print("data fetching")
+
+                            }
                         }
                         else if !genre.isEmpty {
+//
                             DispatchQueue.main.async {
+//                                withAnimation(.default){
+//                                    self.fetchPreLoading = true
+//                                }
+//
                                 withAnimation(.default){
                                     self.selectedPreviewDatas.insert(genre.first!, at: 0) //we have already check is not empty
                                 }
-                                
-                                //fecth the preview result
-                                //here just simulating
-                                self.fetchPreLoading = true
                             }
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
                                 self.getPreview()
                                 print("data fetching")
-                               
+
                             }
-                        }
-                        let array  = [1,2,3,4]
-                        let type = array.randomElement()!
-                        switch type {
-                        case 1:
-                            self.loadMovies(with: .nowPlaying)
-                        case 2:
-                            self.loadMovies(with: .popular)
-                        case 3:
-                            self.loadMovies(with: .topRated)
-                        case 4:
-                            self.loadMovies(with: .upcoming)
-                        default:
-                            print("something wrong")
-                        }
+                        }                                                                                        
+//                        let array  = [1,2,3,4]
+//                        let type = array.randomElement()!
+//                        switch type {
+//                        case 1:
+//                            self.loadMovies(with: .nowPlaying)
+//                        case 2:
+//                            self.loadMovies(with: .popular)
+//                        case 3:
+//                            self.loadMovies(with: .topRated)
+//                        case 4:
+//                            self.loadMovies(with: .upcoming)
+//                        default:
+//                            print("something wrong")
+//                        }
 
                     }
                 }
@@ -489,18 +485,17 @@ class SearchBarViewModel : ObservableObject{
     
     //fake ,just for testing
     //when searchingText is change chall it
-    func getRecommandationList(){
+    func getRecommandationList(keyWork : String){
         //when the return button is press
-        movieService.searchMovie(query: searchingText){ [weak self] result in
+    
+        movieService.searchMovie(query: keyWork){ [weak self] result in
             guard let self = self else { return }
             withAnimation(){
                 self.isLoading = true
             }
             switch result{
             case.success(let response):
-               
                 self.searchResult = response.results
-                print(self.searchResult.count)
                 withAnimation(){
                     self.isLoading = false
                 }
@@ -509,7 +504,7 @@ class SearchBarViewModel : ObservableObject{
                 self.fetchingError = error as NSError
             }
         }
-        
+//
     }
 }
 
@@ -573,7 +568,8 @@ struct AutoScroll_V: View {
        
                         }
 
-                        SearchingBar(isCameraDisplay: self.$isCameraDisplay)
+//                        SearchingBar(isCameraDisplay: self.$isCameraDisplay)
+                        SearchingBar()
                            
                         Divider()
                         
@@ -592,29 +588,15 @@ struct AutoScroll_V: View {
                                 .background(Color.black.edgesIgnoringSafeArea(.all))
                                 .opacity(self.StateManager.isEditing ? 1 : 0)
                                 .zIndex(2)
-                            
-//                            if self.StateManager.isSeaching && !self.StateManager.isEditing{
-//                                searchingField(history: self.history)
-//                                    .padding(.top,5)
-//
-//
-//
-//                            }else if(self.StateManager.isEditing){
-//                                searchingResultList()
-//                                    .ignoresSafeArea()
-//                            }else{
-//                                SeachDragingView()
-//                            }
                         }
-                        
-                        
+
                     }
                     //                    .zIndex(0)
                     .edgesIgnoringSafeArea(.all)
-                    .fullScreenCover(isPresented: self.$isCameraDisplay){
-                        //show the phone or phone lib as sheet
-                        CameraView(closeCamera : self.$isCameraDisplay)
-                    }
+//                    .fullScreenCover(isPresented: self.$isCameraDisplay){
+//                        //show the phone or phone lib as sheet
+//                        CameraView(closeCamera : self.$isCameraDisplay)
+//                    }
                     .alert(isPresented: self.$StateManager.isRemove){
                         withAnimation(){
                             Alert(title: Text("Delete All Searching History"), message: Text("Are you sure?"),
@@ -700,37 +682,50 @@ struct searchingField : View{
     var history : [String]
 
     var body :some View{
-        return ScrollView(.vertical, showsIndicators: false){
+        ScrollView(.vertical, showsIndicators: false){
             //before user typing seaching thing
             //show user seaching history and recommand keyword
-            HStack{
-                Text("Recent:")
-                    .fontWeight(.bold)
-                    .font(.body)
-                Spacer()
-
-                Button(action:{
-                    //to remove all
-//                    UserDefaults.standard.set([],forKey: "seachHistory")
-                    withAnimation(.easeInOut(duration: 0.3)){
-                        self.StateManager.isRemove.toggle()
-                        self.StateManager.isFocuse = [false,false]
-                    }
-                }){
-                    Image(systemName: "trash")
-                        .foregroundColor(.white)
+            
+            if history.isEmpty{
+                VStack{
+                    Spacer()
+                    Text("More interesting thing...")
+                        .foregroundColor(Color("DarkMode"))
+                        .bold()
+                        .font(.title2)
+                    Spacer()
                 }
-
+                .frame(maxWidth:.infinity,maxHeight: .infinity)
+            }else{
+                HStack{
+                    Text("Recent:")
+                        .fontWeight(.bold)
+                        .font(.body)
+                    Spacer()
+                    
+                    Button(action:{
+                        //to remove all
+                        //                    UserDefaults.standard.set([],forKey: "seachHistory")
+                        withAnimation(.easeInOut(duration: 0.3)){
+                            self.StateManager.isRemove.toggle()
+                            self.StateManager.isFocuse = [false,false]
+                        }
+                    }){
+                        Image(systemName: "trash")
+                            .foregroundColor(.white)
+                    }
+                    
+                }
+                
+                if !history.isEmpty{
+                    HStackLayout(list: self.history)
+                }
+                
+                Spacer()
             }
-
-            if !history.isEmpty{
-                HStackLayout(list: self.history)
-            }
-
-            Spacer()
         }
         .padding(.horizontal)
-        .frame(width:UIScreen.main.bounds.width)
+        .frame(maxWidth:.infinity,maxHeight: .infinity)
     }
 }
 
@@ -827,11 +822,6 @@ struct SearchingMode: View {
                 
                 UITextFieldView(keybooardType: .default, returnKeytype: .search, tag: 1, placeholder:placeholder)
                     .frame(height:22)
-                    .onChange(of: self.searchMV.searchingText, perform: { value in
-                        if self.StateManager.isSeaching {
-                            self.StateManager.isEditing = value == "" ? false : true
-                        }
-                    })
                 
                 if self.StateManager.isEditing {
                     Button(action:{
@@ -851,31 +841,32 @@ struct SearchingMode: View {
 
 struct SeachingButton: View {
     @EnvironmentObject var StateManager : SeachingViewStateManager
-    @Binding var isCameraDisplay : Bool
+//    @Binding var isCameraDisplay : Bool
     var body: some View {
         HStack(spacing:0){
             Button(action:{
+                self.StateManager.isFocuse = [false,true]
                 //TO EXPAND THE SEACHING BAR
                 self.StateManager.isSeaching.toggle()
-                self.StateManager.isFocuse = [false,true]
+                
             }){
                 Image(systemName: "magnifyingglass")
                     .padding(10)
-                    .foregroundColor(.black)
-            }
-            .background(Color.white.clipShape(CustomeConer(coners: [.topLeft,.bottomLeft])))
-
-            Button(action:{
-                withAnimation{
-                    //just toggle the camera viesw
-                    self.isCameraDisplay.toggle()
-                }
-            }){
-                Image(systemName: "camera")
-                    .padding(10)
                     .foregroundColor(.white)
             }
-            .background(Color("DropBoxColor").clipShape(CustomeConer(coners: [.topRight,.bottomRight])))
+            .background(Color("DropBoxColor").clipShape(CustomeConer(coners: [.topLeft,.bottomLeft,.topRight,.bottomRight])))
+
+//            Button(action:{
+//                withAnimation{
+//                    //just toggle the camera viesw
+//                    self.isCameraDisplay.toggle()
+//                }
+//            }){
+//                Image(systemName: "camera")
+//                    .padding(10)
+//                    .foregroundColor(.white)
+//            }
+//            .background(Color("DropBoxColor").clipShape(CustomeConer(coners: [.topRight,.bottomRight])))
         }
     }
 }
@@ -884,11 +875,11 @@ struct SearchingBar: View {
     @EnvironmentObject var StateManager : SeachingViewStateManager
     @EnvironmentObject var searchMV : SearchBarViewModel
     
-    @Binding var isCameraDisplay :Bool
+//    @Binding var isCameraDisplay :Bool
     var body: some View {
         HStack(spacing:0){
             if !self.StateManager.isSeaching {
-                Text("Seach Playground")
+                Text("Funny Searching")
                     .font(.title2)
                     .bold()
                     .foregroundColor(.white)
@@ -918,10 +909,10 @@ struct SearchingBar: View {
                         
                         SearchingMode()
                     }
-
                 }
                 else {
-                    SeachingButton(isCameraDisplay: self.$isCameraDisplay)
+//                    SeachingButton(isCameraDisplay: self.$isCameraDisplay)
+                    SeachingButton()
                 }
             }
             .padding(self.StateManager.isSeaching ? 2 : 0)
@@ -1002,10 +993,10 @@ struct SearchResultView: View {
     
     @EnvironmentObject var StateManager : SeachingViewStateManager
     @EnvironmentObject var searchMV : SearchBarViewModel
-
+    
     @State private var page = 1
     @State private var showAsList : Bool = false
-
+    
     @State private var isShowDetail : Bool = false
     @State private var selectedID : Int?
     var movie : [Movie]
@@ -1013,95 +1004,104 @@ struct SearchResultView: View {
         ZStack{
             VStack(spacing:0){
                 HStack{
-                        Button(action: {
-                            withAnimation(){
-                                if !self.StateManager.isSeaching {
-                                    self.StateManager.getResult = false
-                                    self.searchMV.searchingText = ""
-                                }
-                                
-                                if !self.StateManager.isEditing{
-                                    self.StateManager.getResult = false
-                                }
+                    Button(action: {
+                        withAnimation(){
+                            if !self.StateManager.isSeaching {
+                                self.StateManager.getResult = false
+                                self.searchMV.searchingText = ""
                             }
+                            
+                            if !self.StateManager.isEditing{
+                                self.StateManager.getResult = false
+                            }
+                            
                             self.StateManager.isSeaching = false
                             self.StateManager.isEditing = false
-                            
-                        }) {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.white)
                         }
-                        .padding(.trailing, 2)
+
                         
-                        if !self.StateManager.isSeaching {
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                    }
+                    .padding(.trailing, 2)
+                    
+                    if !self.StateManager.isSeaching {
+                        HStack{
                             HStack{
-                                HStack{
-                                    Text(self.searchMV.searchingText)
-                                        .foregroundColor(.white)
-                                        .padding(.leading,5)
-                                        .lineLimit(1)
-                                    Spacer()
-                                }
-                                .frame(maxWidth:.infinity)
-                                .background(Color.black.opacity(0.05))
-                                .onTapGesture {
-                                    self.StateManager.isSeaching = true
-                                    self.StateManager.isFocuse = [false,true]
-                                    self.StateManager.isEditing = true
-                                }
+                                Text(self.searchMV.searchingText)
+                                    .foregroundColor(.white)
+                                    .padding(.leading,5)
+                                    .lineLimit(1)
                                 Spacer()
-                                Button(action:{
-                                    withAnimation(){
-                                        //Clean the text and turn on the search mode
-                                        //now is nothing to do
-                                        withAnimation(){
-                                            self.StateManager.isSeaching = true
-                                            self.searchMV.searchingText = ""
-                                            self.StateManager.isFocuse = [false,true]
-                                        }
-                                    }
-                                }){
-                                    Image(systemName: "xmark")
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal,3)
-                                }
-                                //A toggle button to toggle show tag a list or a silder
-                                Button(action:{
-                                    withAnimation(){
-                                        self.showAsList.toggle()
-                                    }
-                                }){
-                                    Image(systemName: "list.and.film")
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal,3)
-                                }
                             }
-                            .transition(.identity)
-                            .padding(.vertical,5)
-                        }else{
-                            SearchingMode(placeholder:"Recommand to you....Iron man!")
-                                .padding(.vertical,5)
+                            .frame(maxWidth:.infinity)
+                            .background(Color.black.opacity(0.05))
+                            .onTapGesture {
+                                self.StateManager.isFocuse = [false,true]
+                                withAnimation(){
+                                    self.StateManager.isSeaching = true
+                                    self.StateManager.isEditing = false
+                                }
+
+                            }
+                            Spacer()
+                            Button(action:{
+                                withAnimation(){
+                                    //Clean the text and turn on the search mode
+                                    //now is nothing to do
+                                        self.StateManager.isSeaching = true
+                                        self.searchMV.searchingText = ""
+                                        self.StateManager.isFocuse = [false,true]
+                                    
+                                }
+                            }){
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal,3)
+                            }
+                            //A toggle button to toggle show tag a list or a silder
+                            Button(action:{
+                                withAnimation(){
+                                    self.showAsList.toggle()
+                                }
+                            }){
+                                Image(systemName: "list.and.film")
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal,3)
+                            }
                         }
-                        
+                        .transition(.identity)
+                        .padding(.vertical,5)
+                    }else{
+                        SearchingMode(placeholder:"Recommand to you....Iron man!")
+                            .padding(.vertical,5)
+                    }
+                    
                     
                 }
                 .padding(.horizontal,8)
                 .padding(.vertical,5)
                 .background(Color("DarkMode2").edgesIgnoringSafeArea(.all))
-
-                Divider()
                 
-                if self.StateManager.isSeaching && !self.StateManager.isEditing{
+                Divider()
+                ZStack(alignment:.top){
                     //show history view
                     searchingField(history: self.history)
                         .padding(.top,5)
+                        .ignoresSafeArea()
+                        .background(Color.black.edgesIgnoringSafeArea(.all))
+                        .opacity(self.StateManager.isSeaching && !self.StateManager.isEditing ? 1 : 0)
+                        .zIndex(1)
                     //                            .transition(.identity)
                     
-                }else if(self.StateManager.isEditing){
                     //show seaching recommandation view
                     searchingResultList()
+                        .ignoresSafeArea()
+                        .background(Color.black.edgesIgnoringSafeArea(.all))
+                        .opacity(self.StateManager.isEditing ? 1 : 0)
+                        .zIndex(2)
                     
-                }else if !self.showAsList{
                     if self.StateManager.searchingLoading{
                         VStack{
                             Spacer()
@@ -1123,21 +1123,22 @@ struct SearchResultView: View {
                         
                     }else{
                         MovieSeachResultView(isShowDetail: self.$isShowDetail, selectedID: self.$selectedID, movie: movie)
-                            .onDisappear{
-                                if !isShowDetail{
-                                    self.StateManager.searchingLoading = true
-                                }
-                            }
+                            .opacity(self.showAsList == false ? 1 : 0)
+                            .transition(.opacity)
                     }
-                    
-                }else{
+                    //
                     MovieResultList(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)
+                        
+                        .opacity(self.showAsList ? 1 : 0)
+                        .offset(x:self.showAsList ? 0 : -UIScreen.main.bounds.width)
+                        .zIndex(3)
                         .transition(AnyTransition.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
+                       
+                    //
+                    
                 }
-                
-                
-                
             }
+            .frame(maxWidth:.infinity,maxHeight:.infinity)
             .navigationTitle(self.isShowDetail ? "Search" : "")
             .navigationBarTitle(self.isShowDetail ? "Search" : "")
             .navigationBarHidden(true)
@@ -1146,7 +1147,7 @@ struct SearchResultView: View {
             if self.selectedID != nil{
                 NavigationLink(destination:  MovieDetailView(movieId:self.selectedID!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)) , isActive: self.$isShowDetail){
                     EmptyView()
-
+                    
                 }
             }
             

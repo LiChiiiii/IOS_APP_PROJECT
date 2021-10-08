@@ -64,12 +64,16 @@ struct UITextFieldView : UIViewRepresentable{
 
         //change it every keystroke
         func textFieldDidChangeSelection(_ textField: UITextField) {
-            DispatchQueue.main.async {
-                self.parent.SearchMV.searchingText = textField.text ?? ""
-                if self.parent.SearchMV.searchingText != "" {
-                    self.parent.SearchMV.getRecommandationList() // call send request and cancel previous one ?? but now just keep it
+            if self.parent.StateManager.isSeaching {
+                self.parent.StateManager.isEditing = textField.text == "" ? false : true
+                
+                if textField.text != nil{
+                    let str = textField.text!.description
+                    self.parent.SearchMV.searchingText = str
+                    self.parent.SearchMV.getRecommandationList(keyWork:textField.text!)
                 }
             }
+            
         }
         
         func updatefocus(textfield: UITextField) {
@@ -93,13 +97,7 @@ struct UITextFieldView : UIViewRepresentable{
                     parent.StateManager.getResult = true
                     parent.StateManager.isSeaching = false
                 }
-                
-                //not empty then get the list
-//                DispatchQueue.main.async{
-//                    if self.parent.SearchMV.searchingText != "" {
-//                        self.parent.SearchMV.getRecommandationList()
-//                    }
-//                }
+                self.parent.StateManager.searchingLoading = true
             }
 
 

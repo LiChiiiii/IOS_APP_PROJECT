@@ -69,8 +69,8 @@ struct NavBar: View {
                         AutoScroll_V()
                             .opacity(self.index == 2 ? 1 : 0)
                     
-                        ProfileView(NowUser: userController.NowUser)
-                            .opacity(self.index == 3 ? 1 : 0)
+//                        ProfileView(NowUser: userController.NowUser)
+//                            .opacity(self.index == 3 ? 1 : 0)
 //
                 }
                 NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)

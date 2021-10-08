@@ -17,15 +17,11 @@ struct IOS_DEVApp: App {
     var body: some Scene {
         WindowGroup {
             
-//            NavBar(index: 0)
-            WelcomePage()
-          
+            NavBar(index: 0)
+//            WelcomePage()
         }
     }
 }
-
-
-
 
 //struct CardModle : Identifiable{
 //    let id : String = UUID().uuidString
