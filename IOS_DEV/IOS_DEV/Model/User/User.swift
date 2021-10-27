@@ -7,9 +7,17 @@
 
 import Foundation
 
+
 struct User: Decodable{
     var id: UUID
     var UserName: String
     var Email: String
     var Password: String
+    var UserPhoto: String
+    
+    var UserPhotoURL: URL {
+        return URL(string:"\(baseUrl)/UserPhoto/\(id)" )!
+    }
 }
+
+

@@ -12,6 +12,7 @@ import AuthenticationServices
 import CryptoKit
 var NowUserName:String = "" // user who login
 var NowUserID:UUID? // user who login
+var NowUserPhoto:Image? // user who login
 
 
 struct SignIn: View {
@@ -67,7 +68,7 @@ struct SignInCell : View{
     @Binding var password:String
     @State var isPresented = false
     @State var ErrorAlert = false
-    let networkingService = NetworkingService()
+    @ObservedObject private var networkingService = NetworkingService()
 
     
     func Login(){

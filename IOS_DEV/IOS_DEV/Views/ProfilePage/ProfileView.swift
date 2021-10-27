@@ -9,6 +9,7 @@ import Foundation
 import SDWebImageSwiftUI
 import SwiftUI
 
+
 enum SideOfState: String, CaseIterable {
     case movie = "電影"
     case article = "文章"
@@ -18,11 +19,11 @@ enum SideOfState: String, CaseIterable {
 //    @ObservedObject private var listController = ListController()
 //    @ObservedObject private var forumController = ForumController()
 //    @State var isLoading : Bool = true
-//    
+//
 //    var body:some View{
-//        
+//
 //        VStack{
-//            
+//
 //            if self.isLoading == false {
 //                ProfileView(myListData: listController.mylistData, myArticleData: forumController.articleData)
 //            }
@@ -35,8 +36,8 @@ enum SideOfState: String, CaseIterable {
 //            }
 //        }
 //    }
-//    
-//    
+//
+//
 //}
 
 
@@ -48,10 +49,12 @@ struct ProfileView: View {
     
     @State private var userID = "Justin Bieber" //UserID
     @State private var likedMovie = 30
+//    @State private var PhotoStr:String = "http://127.0.0.1:8080/UserPhoto/4c163c0d-79f0-45ea-94c9-556e49853a6f"
     @State private var notification = true
     @State private var select: SideOfState = .movie
-    @ObservedObject private var listController = ListController()
-    @ObservedObject private var forumController = ForumController()
+    @ObservedObject private var userController = UserController()
+    @State private var appearPhoto = false
+    
     @State var isLoading : Bool = true
     
     var body: some View{
@@ -59,12 +62,26 @@ struct ProfileView: View {
   
             ScrollView(.vertical, showsIndicators: false){
                 VStack{
-                    Image("pic")
-                        .resizable()
-                        .frame(width: 150, height: 150)
-                        .clipShape(Circle())
-                    Text(NowUserName)
-                        .bold()
+                    
+                    
+                    VStack{
+                                             
+                            NowUserPhoto?
+                                .resizable()
+                                .frame(width: 150, height: 150)
+                                .clipShape(Circle())
+                           
+                            
+                            Text(NowUserName)
+                                .bold()
+
+                    }.onAppear(){
+                        self.userController.GetUserPhoto()
+                    }
+                  
+               
+                  
+                  
                     HStack{
                         Image(systemName: "heart.fill")
                             .foregroundColor(.red)
@@ -170,42 +187,96 @@ struct ProfileView: View {
 
 struct AccountSettingView: View {
     
+    let FullSize = UIScreen.main.bounds.size
     @Binding var userID:String
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
     @State private var confirm = ""
-    @State private var bio = ""
+    @State var show = false
+    @State var showImagePicker: Bool = false
+    @State var selectedImage: Image? = NowUserPhoto
+    @ObservedObject private var userController = UserController()
+
     
     var body: some View{
-        VStack{
-            Image("ka")
-                .resizable()
-                .frame(width: 150, height: 150)
-                .clipShape(Circle())
-            Text(NowUserName)
-                .bold()
-            Form{
-                Section(header: Text("Name")){
-                    TextField("Enter Name", text: $name)
+        
+        ZStack{
+            VStack{
+                self.selectedImage?
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+                    
+                
+                VStack(spacing:10){
+                    Button(action:{
+                        self.showImagePicker.toggle()
+                    }, label:{
+                        Text("選擇大頭照")
+                    })
+                    
+    //                Button(action:{
+    //                    let uiImage: UIImage = self.selectedImage.asUIImage()
+    //                    userController.PostUserPhoto(uiImage:uiImage)
+    //                    NowUserPhoto = selectedImage
+    //
+    //                }, label:{
+    //                    Text("確定更換大頭照")
+    //                })
+                    
+                    
                 }
-                Section(header: Text("Email")){
-                    TextField("Enter Email", text: $email)
-                }
-                Section(header: Text("Password")){
-                    SecureField("Enter Password", text: $password)
-                    SecureField("Confirm Password", text: $confirm)
-                }
-                Section(header: Text("Bio")){
-                    TextEditor(text: $bio)
-                        .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                .sheet(isPresented: $showImagePicker, content: {
+                    ImagePicker(image: self.$selectedImage)
+                })
+                
+                Spacer(minLength: 0)
+                
+                Form{
+                    Section(header: Text("Name")){
+                        TextField("\(NowUserName)", text: $name)
+                    }
+                    Section(header: Text("Email")){
+                        TextField("Enter Email", text: $email)
+                    }
+                    Section(header: Text("Password")){
+                        SecureField("Enter Password", text: $password)
+                        SecureField("Confirm Password", text: $confirm)
+                    }
                 }
             }
-            .navigationTitle("Account Setting")
-            .toolbar{
-                Button("Save"){}
+            
+            if self.show == true{
+               
+                Loader()
+                    .frame(width:FullSize.width , height: FullSize.height/1.4, alignment: .center)
+                    .background(Color.black.opacity(0.35).edgesIgnoringSafeArea(.all))
+            
+                
+                
             }
+        
         }
+        .navigationTitle("Account Setting")
+        .toolbar{
+            Button("Save"){
+                if NowUserPhoto != selectedImage {
+                    self.show = true
+                    DispatchQueue.main.asyncAfter(deadline:.now() + 0.1){
+                        let uiImage: UIImage = self.selectedImage.asUIImage()
+                        userController.PostUserPhoto(uiImage:uiImage)
+                        NowUserPhoto = selectedImage
+                    }
+                    DispatchQueue.main.asyncAfter(deadline:.now() + 2){
+                        self.show = false
+                    }
+                }
+                
+            }
+           
+        }
+        
     }
 }
 
@@ -243,13 +314,13 @@ struct MovieSettingView: View {
     }
 }
 
-
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-            
-    }
-}
+//
+//struct ProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AccountSettingView(userID: NowUserID)
+//
+//    }
+//}
 
 
 
@@ -384,3 +455,5 @@ struct articleRecord: View {
         }
     }
 }
+
+
