@@ -17,6 +17,9 @@ class MovieStore: MovieService {
     private let baseAPIURL = "https://api.themoviedb.org/3"
     private let urlSession = URLSession.shared
     private let jsonDecoder = Utils.jsonDecoder
+    
+    private let API_URL = "http://127.0.0.1:8080/api"
+    private let API_PLAYGOUND_URI = "/playground"
 
     func fetchMovies(from endpoint: MovieListEndpoint, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/movie/\(endpoint.rawValue)") else {
@@ -167,8 +170,6 @@ class MovieStore: MovieService {
         }
     }
     
-    
-    
     //---------以下為抓取片源---------//
     
     func fetchMovieResource(query: String, completion: @escaping (Result<[ResourceResponse], MovieError>) -> ()) {
@@ -225,4 +226,143 @@ class MovieStore: MovieService {
 
     
 
+}
+
+class APIService : ServerAPIServerServiceInterface{
+    
+    static let shared = APIService()
+    private init(){} //signleton mode
+    
+    private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
+    private let Client = URLSession.shared
+    private let Decoder = JSONDecoder()
+    
+    //URI Path
+    private let playground = "/playground"
+    
+    //To Fetching and Decoding the response body or throw an error
+    /*FetchAndDecode - parameters
+     @param {url} request - the endpoint url request
+     @param {[String : String]} - the header setting
+     @param { @escaping (Result<ResponseType,MovieError>) -> ()} - the closure that will call when the request is done
+     */
+    private func FetchAndDecode<ResponseType : Decodable>(url : URL,params : [String:String]? = nil,completion : @escaping (Result<ResponseType,MovieError>) -> ()){
+        
+        //check the url
+        guard var component = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        
+        //page=?&value=? etc
+        var query : [URLQueryItem] = []
+        if let params = params{
+            query.append(contentsOf: params.map{ URLQueryItem(name: $0.key, value: $0.value)})
+            component.queryItems = query
+        }
+        
+        guard let request = component.url else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        print(request.absoluteURL)
+        //do a URLSession
+        
+        Client.dataTask(with:request){ [weak self] (data,response,err) in
+            guard let self = self else {return} //if current task is break , return
+            
+            guard err == nil else {
+                DispatchQueue.main.async {
+                    completion(.failure(.apiError))
+                }
+                return
+            }
+            
+            //reponse cast to httpResponse ? and status code is 2xx?
+            guard let statusCode = response as? HTTPURLResponse,200..<300 ~= statusCode.statusCode else{
+                DispatchQueue.main.async {
+                    completion(.failure(.invalidResponse))
+                }
+                return
+            }
+            
+            guard let data = data else{
+                DispatchQueue.main.async {
+                    completion(.failure(.noData))
+                }
+                return
+            }
+            
+            
+            do {
+                let result = try self.Decoder.decode(ResponseType.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(result))
+                    print("[DEBUG] DATA IS FETCHED SUCCESSFULLY")
+                }
+            } catch{
+                DispatchQueue.main.async {
+                    completion(.failure(.serializationError))
+                }
+            }
+        }.resume()
+    }
+    
+    //getactors?page
+    func fetchActors(page : Int = 1,completion: @escaping (Result<PersonInfoResponse, MovieError>) -> ()) {
+        //guard data size in greater than 0
+        if page < 0{
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        
+        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getactors")!
+        
+        let params = [
+            "page" : page.description
+        ]
+//        print(url.absoluteURL)
+        self.FetchAndDecode(url: url, params: params,completion: completion)
+    }
+    
+    func fetchDirectors(page : Int = 1, completion: @escaping (Result<PersonInfoResponse, MovieError>) -> ()) {
+        //T
+        //guard data size in greater than 0
+        if page < 0{
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        
+        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getdirectors")!
+        
+        let params = [
+            "page" : page.description
+        ]
+//        print(url.absoluteURL)
+        self.FetchAndDecode(url: url, params: params,completion: completion)
+    }
+    
+    func fetchGenreById(genreID id: Int, dataSize size: Int = 5, completion: @escaping (Result<GenreInfoResponse, MovieError>) -> ()) {
+        //TODO
+        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getgenre")!
+        
+        let params = [
+            "id" : id.description,
+            "size" : size.description
+        ]
+//        print(url.absoluteURL)
+        self.FetchAndDecode(url: url, params: params,completion: completion)
+        
+    }
+    
+    func fetchAllGenres(completion: @escaping (Result<GenreInfoResponse, MovieError>) -> ()) {
+        //TODO
+        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getallgenres")!
+        
+//        print(url.absoluteURL)
+        self.FetchAndDecode(url: url,completion: completion)
+        
+    }
+    
+    
 }

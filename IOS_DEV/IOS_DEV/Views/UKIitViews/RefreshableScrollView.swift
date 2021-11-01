@@ -10,20 +10,20 @@ import UIKit
 
 struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
     
+    @EnvironmentObject var dragPreviewModel : DragAndDropViewModel
     @Binding var datas : [DragItemData]
-    @Binding var isFetchingData : Bool
+    @Binding var isLoading : Bool
     var dataType : CharacterRule
     var content : Content
     var onRefresh : (UIRefreshControl)->()
     var beAbleToUpdate : Bool
     var isOffsetting : Bool
     var offsetVal : CGFloat
-    
     var refreshController = UIRefreshControl()
     init(
         dataType :CharacterRule,
         datas : Binding<[DragItemData]>,
-        isFetchingData : Binding<Bool>,
+        isLoading : Binding<Bool>,
         beAbleToUpdate : Bool,
         isOffsetting:Bool = false,
         offsetVal:CGFloat = 0,
@@ -31,7 +31,7 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
         onRefresh: @escaping (UIRefreshControl)->()){
             self.content = content()
             self.onRefresh = onRefresh
-            self._isFetchingData = isFetchingData
+            self._isLoading = isLoading
             self._datas = datas
             self.dataType = dataType
             self.beAbleToUpdate = beAbleToUpdate
@@ -106,82 +106,39 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
         @objc func onRefresh(){
             parent.onRefresh(parent.refreshController)
         }
-        
-        func fakeDataFetch(type : CharacterRule) -> [DragItemData] {
-            switch type {
-            case .Genre:
-                let genreTest : [DragItemData] = [
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[0], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[1], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[2], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[3], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[4], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[5], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[6], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[7], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[8], personData: nil),
-                    DragItemData(itemType: .Genre, genreData: tempDragGenreData[9], personData: nil),
-                ]
-                return genreTest.shuffled()
-                
-            case .Actor:
-                let actorTest: [DragItemData] = [
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[0]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[1]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[2]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[3]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[4]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[5]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[6]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[7]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[8]),
-                    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[9]),
-                ]
-                
-                return actorTest.shuffled()
-               
-            case .Director:
-                let directorTest: [DragItemData] = [
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[0]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[1]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[2]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[3]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[4]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[5]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[6]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[7]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[8]),
-                    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[9]),
-                ]
-                
-                return directorTest.shuffled()
-            
-            }
-        }
-        
 
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let offsetY = scrollView.contentOffset.y
-            if offsetY > scrollView.contentSize.height - 300 - scrollView.frame.height{
-              //  print("fetching more data")
-                //just call once
-                guard !self.parent.isFetchingData else {
-//                    print("is already featched!")
-                    return
-                }
-                
-                self.parent.isFetchingData = true
-//                print("a")
-                if parent.beAbleToUpdate{
-                    DispatchQueue.main.asyncAfter(deadline: .now()+2){ [self] in
-                        //                    self.parent.datas.append(tes) // add 5 to list
-                        withAnimation(){
-                            self.parent.datas.append(contentsOf: self.fakeDataFetch(type: self.parent.dataType))
-                            self.parent.isFetchingData = false
+            if offsetY > scrollView.contentSize.height - 300 - scrollView.frame.height {
+                    if self.parent.beAbleToUpdate && !self.parent.isLoading{
+                        self.parent.isLoading = true
+                        switch self.parent.dataType {
+                        case .Actor:
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                self.parent.dragPreviewModel.getActorsList(updateDataAt: .back, succeed: {
+                                    self.parent.isLoading = false
+                                }, failed: {
+                                    self.parent.isLoading = false
+                                    print("data fetching error")
+                                })
+                            }
+                            break
+                            
+                        case .Director:
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                self.parent.dragPreviewModel.getDirectorList(updateDataAt: .back, succeed: {
+                                    self.parent.isLoading = false
+                                }, failed: {
+                                    self.parent.isLoading = false
+                                    print("data fetching error")
+                                })
+                            }
+                            break
+                        default:
+                            break
                         }
                     }
-                    
-                }
+                
             }
         }
         

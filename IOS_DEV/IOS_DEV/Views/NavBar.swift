@@ -46,6 +46,151 @@ let controller = ListController()
 //}
 
 //Working Process
+
+
+struct APITester : View{
+    private let service = APIService.shared
+    @State private var apiError : MovieError? = nil
+    var body: some View{
+        VStack{
+            Button(action: {
+                self.serviceTest()
+            }){
+                VStack{
+                    Text("Send request")
+                }
+            }
+        }
+    }
+    
+    private func serviceTest(){
+        service.fetchAllGenres{ result in
+//            guard let self = self else {return}
+            switch result{
+            case .success(let response):
+                print(response.response[1])
+                break
+            case .failure(let err):
+                self.apiError = err
+                break
+            }
+            
+        }
+        
+    }
+    
+    private func sendDirectorRequest(){
+        let uri = "http://127.0.0.1:8080/api/playground/getdirector?page=1"
+        let req = URLRequest(url: URL(string: uri)!)
+        URLSession.shared.dataTask(with: req){(data,res,err) in
+            
+            if err != nil {
+                print(err!.localizedDescription)
+                return
+            }
+
+            guard let data = data else {
+                print("No Data")
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            
+            if let result = try? decoder.decode(PersonInfoResponse.self, from: data){
+                print(result.response[0])
+            }else{
+                print("Uable to parse JSON response")
+            }
+            
+        }.resume()
+    }
+
+    private func sendActorRequest(){
+        let url = "http://127.0.0.1:8080/api/playground/getactor?page=1"
+        let req = URLRequest(url: URL(string: url)!)
+        
+        URLSession.shared.dataTask(with: req){ (data,res,err) in
+            
+            if let apiError = err {
+                print(apiError.localizedDescription)
+                return
+            }
+            
+            guard let data = data else{
+                print("No Data from Response")
+                return
+            }
+            
+            
+            let decoder = JSONDecoder()
+            if let result = try? decoder.decode(PersonInfoResponse.self, from: data){
+                print(result.response[0])
+            }else{
+                print("Unable to parse JSON response")
+            }
+            
+        }.resume()
+        
+    }
+    
+    private func sendGenreAllRequest() {
+        let url = "http://127.0.0.1:8080/api/playground/getallgenres"
+        let req = URLRequest(url: URL(string: url)!)
+        
+        URLSession.shared.dataTask(with: req){ (data,res,err) in
+            
+            if let apiError = err {
+                print(apiError.localizedDescription)
+                return
+            }
+            
+            guard let data = data else{
+                print("No Data from Response")
+                return
+            }
+            
+            
+            let decoder = JSONDecoder()
+            if let result = try? decoder.decode(GenreInfoResponse.self, from: data){
+                print(result.response)
+            }else{
+                print("Unable to parse JSON response")
+            }
+            
+        }.resume()
+    }
+    
+    private func sendGenreByidRequest() {
+        let url = "http://127.0.0.1:8080/api/playground/getgenre?id=12"
+        let req = URLRequest(url: URL(string: url)!)
+        
+        URLSession.shared.dataTask(with: req){ (data,res,err) in
+            
+            if let apiError = err {
+                print(apiError.localizedDescription)
+                return
+            }
+            
+            guard let data = data else{
+                print("No Data from Response")
+                return
+            }
+            
+            
+            let decoder = JSONDecoder()
+            if let result = try? decoder.decode(GenreInfoResponse.self, from: data){
+                print(result.response)
+            }else{
+                print("Unable to parse JSON response")
+            }
+            
+        }.resume()
+    }
+    
+    
+}
+
+
 struct NavBar: View {
     @StateObject var previewModle = PreviewModle()
     
@@ -98,7 +243,6 @@ struct NavBar: View {
 
     }
 }
-
 
 struct NavBar_Previews: PreviewProvider {
     static var previews: some View {

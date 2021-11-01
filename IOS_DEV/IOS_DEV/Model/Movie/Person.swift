@@ -23,8 +23,10 @@ struct Person: Decodable, Identifiable {
     var ProfileImageURL: URL {
         return URL(string: "https://image.tmdb.org/t/p/w500\( profilePath ?? "")")!
     }
-   
 }
+
+
+
 
 struct knownFor: Decodable, Identifiable{
     let id: Int

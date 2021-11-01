@@ -19,7 +19,24 @@ protocol MovieService {
     func GenreType(genreID: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ())
     func fetchMovieResource(query: String, completion: @escaping (Result<[ResourceResponse], MovieError>) -> ())
+    
 }
+
+
+protocol ServerAPIServerServiceInterface {
+    
+    //Searching and playground
+    //TODO - Person data format
+    func fetchActors(page : Int ,completion : @escaping (Result<PersonInfoResponse,MovieError>) ->  ())
+    func fetchDirectors(page : Int ,completion : @escaping (Result<PersonInfoResponse,MovieError>) -> ())
+    
+    //TODO - Genre with description image of a referencing movie
+    func fetchGenreById(genreID id :Int, dataSize size : Int , completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
+    func fetchAllGenres(completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
+    
+    
+}
+
 
 enum MovieListEndpoint: String, CaseIterable, Identifiable {
 
@@ -63,3 +80,4 @@ enum MovieError: Error, CustomNSError {
     }
 
 }
+

@@ -11,159 +11,51 @@ import MobileCoreServices
 import SDWebImageSwiftUI
 import CoreHaptics
 
-/*
- {"genres":[{"id":28,"name":"Action"},
- {"id":12,"name":"Adventure"},
- {"id":16,"name":"Animation"},
- {"id":35,"name":"Comedy"},
- {"id":80,"name":"Crime"},
- {"id":99,"name":"Documentary"},
- {"id":18,"name":"Drama"},
- {"id":10751,"name":"Family"},
- {"id":14,"name":"Fantasy"},
- {"id":36,"name":"History"},
- {"id":27,"name":"Horror"},
- {"id":10402,"name":"Music"},
- {"id":9648,"name":"Mystery"},
- {"id":10749,"name":"Romance"},
- {"id":878,"name":"Science Fiction"},
- {"id":10770,"name":"TV Movie"},
- {"id":53,"name":"Thriller"},
- {"id":10752,"name":"War"},
- {"id":37,"name":"Western"}
- ]}
- 
- */
-//----------------Genre Data------------------------
-var tempGenreData : [GenreData] = [
-    GenreData(id:28,name:"Action"),
-    GenreData(id:12,name:"Animation"),
-    GenreData(id:35,name:"Comedy"),
-    GenreData(id:80,name:"Crime"),
-    GenreData(id:99,name:"Documentary"),
-    GenreData(id:10751,name:"Family"),
-    GenreData(id:14,name:"Fantasy"),
-    GenreData(id:36,name:"History"),
-    GenreData(id:27,name:"Horror"),
-    GenreData(id:10402,name:"Music"),
-]
 
-var tempDragGenreData : [DragGenreData] = [
-    DragGenreData(info:tempGenreData[0],describeImg : "https://image.tmdb.org/t/p/original/bZnOioDq1ldaxKfUoj3DenHU7mp.jpg"),
-    DragGenreData(info:tempGenreData[1],describeImg : "https://image.tmdb.org/t/p/original/34nDCQZwaEvsy4CFO5hkGRFDCVU.jpg"),
-    DragGenreData(info:tempGenreData[2],describeImg : "https://image.tmdb.org/t/p/original/ic0intvXZSfBlYPIvWXpU1ivUCO.jpg"),
-    DragGenreData(info:tempGenreData[3],describeImg : "https://image.tmdb.org/t/p/original/oxNoVgbu2v9ETL93Kri1pw8osYf.jpg"),
-    DragGenreData(info:tempGenreData[4],describeImg : "https://image.tmdb.org/t/p/original/kU3EJpMLrGrrzcZ0oIgBiFvXbpj.jpg"),
-    DragGenreData(info:tempGenreData[5],describeImg : "https://image.tmdb.org/t/p/original/ic0intvXZSfBlYPIvWXpU1ivUCO.jpg"),
-    DragGenreData(info:tempGenreData[6],describeImg : "https://image.tmdb.org/t/p/original/9dKCd55IuTT5QRs989m9Qlb7d2B.jpg"),
-    DragGenreData(info:tempGenreData[7],describeImg : "https://image.tmdb.org/t/p/original/1JRRvx5RotvWM1maeq9r82ktdHi.jpg"),
-    DragGenreData(info:tempGenreData[8],describeImg : "https://image.tmdb.org/t/p/original/dGv2BWjzwAz6LB8a8JeRIZL8hSz.jpg"),
-    DragGenreData(info:tempGenreData[9],describeImg : "https://image.tmdb.org/t/p/original/mab5wPeGVjbMyYMzyzfdKKnG9cl.jpg"),
-]
+//struct AutoScroll_V_Previews: PreviewProvider
+//{
+//    static var previews: some View{
+//       Text("a")
+//            .preferredColorScheme(.dark)
+////        }
+//
+//    }
+//}
 
-var tempDragDataGenre: [DragItemData] = [
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[0], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[1], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[2], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[3], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[4], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[5], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[6], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[7], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[8], personData: nil),
-    DragItemData(itemType: .Genre, genreData: tempDragGenreData[9], personData: nil),
-]
 
-//----------------Actor Data------------------------
-var actorTemp : [Person] = [
-    Person(id: 115440, name: "Sydney Sweeney", knownForDepartment: "Acting", profilePath: "/kKRVtMkxJoIqswx8gxAuEe0LZB4.jpg", knownFor: []),
-    Person(id: 1136406, name: "Tom Holland", knownForDepartment: "Acting", profilePath: "/l6zPRmg8NI7Y65G5GUqwvjxFdsx.jpg", knownFor: []),
-    Person(id: 73968, name: "Henry Cavill", knownForDepartment: "Acting", profilePath: "/iWdKjMry5Pt7vmxU7bmOQsIUyHa.jpg", knownFor: []),
-    Person(id: 117642, name: "Jason Momoa", knownForDepartment: "Acting", profilePath: "/6dEFBpZH8C8OijsynkSajQT99Pb.jpg", knownFor: []),
-    Person(id: 1372369, name: "Samara Weaving", knownForDepartment: "Acting", profilePath: "/iEciTz4yZQ6enJr5IxyyW7NQUEb.jpg", knownFor: []),
-    Person(id: 25837, name: "Elisha Cuthbert", knownForDepartment: "Acting", profilePath: "/jyo887Q2c3wgME6VqY92BvhENzb.jpg", knownFor: []),
-    Person(id: 2025252, name: "Ester Expósito", knownForDepartment: "Acting", profilePath: "/6wsOvUn9YewNZ3IEEBWfiDVTYOc.jpg", knownFor: []),
-    Person(id: 1883366, name: "Yoo Ji-won", knownForDepartment: "Acting", profilePath: "/hpgMcqgkjadsmVpfIMQlXEBCnpL.jpg", knownFor: []),
-    Person(id: 91606, name: "Tom Hiddleston", knownForDepartment: "Acting", profilePath: "/mclHxMm8aPlCPKptP67257F5GPo.jpg", knownFor: []),
-    Person(id: 63436, name: "Jun Ji-hyun", knownForDepartment: "Acting", profilePath: "/qejOQBdIzN18e69yRcsiD0JQi4c.jpg", knownFor: []),
-]
-
-var tempDragDataActor: [DragItemData] = [
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[0]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[1]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[2]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[3]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[4]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[5]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[6]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[7]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[8]),
-    DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[9]),
-]
-
-//----------------Director Data------------------------ Is There any way to get the director ?????
-
-var DirectorTemp : [Person] = [
-    Person(id: 1388848, name: "Jim Barr", knownForDepartment: "Art", profilePath: "/myLNBZXXESp1YzDkBoKQX8g4Yup.jpg", knownFor: []),
-    Person(id: 32349, name: "Charles Wood", knownForDepartment: "Art", profilePath: "/lxhuwWMdbvuPzher5TSdGFsel1S.jpg", knownFor: []),
-    Person(id: 1822520, name: "Michaela McAllister", knownForDepartment: "Art", profilePath: "/ys7TRFyl7RpBziYZ7JVadSfawWT.jpg", knownFor: []),
-    Person(id: 1675387, name: "Adam Collins", knownForDepartment: "Art", profilePath: "/iuKuZT6xWpzdVhAouEZllgLEwgB.jpg", knownFor: []),
-    Person(id: 1452349, name: "Carl Anthony Nespoli", knownForDepartment: "Art", profilePath: "/b0ZxuVSl46shI2YNq9SUyUm2wHH.jpg", knownFor: []),
-    Person(id: 2178720, name: "Holly Dowell", knownForDepartment: "Art", profilePath: "/zwnrOAdqZOHvmcCSOTMJ3rifAjM.jpg", knownFor: []),
-    Person(id: 1024823, name: "Brian A. Miller", knownForDepartment: "Directing", profilePath: "/8uc10NUQVOdFFgf4gymL3UeDhos.jpg", knownFor: []),
-    Person(id: 17211, name: "Randall Emmett", knownForDepartment: "Production", profilePath: "/wlFuKcM85H1TeNjSshBSpjdsEVg.jpg", knownFor: []),
-    Person(id: 930983, name: "David Barber", knownForDepartment: "Sound", profilePath: "/hlzzHtGS8RqZXAh0vSEZiPHLfgN.jpg", knownFor: []),
-    Person(id: 929145, name: "Lorne Balfe", knownForDepartment: "Sound", profilePath: "/lHAhZC9RAUYtjhKDokKYyNNitLz.jpg", knownFor: []),
-]
-
-var tempDragDataDirector: [DragItemData] = [
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[0]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[1]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[2]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[3]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[4]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[5]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[6]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[7]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[8]),
-    DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[9]),
-]
-//-----------------------------------------------------
 enum CharacterRule : String{
     case Actor = "Actor"
     case Director = "Director"
     case Genre = "Genre"
 }
 
-//Total info for genre
-struct GenreData {
-    let id : Int
-    let name : String
-}
 
-//GET GENRE HEERE : GET /discover/movie uisng with_genre_id:
-struct DragGenreData {
-    let info : GenreData
-    let describeImg : String //using any image which movie can describe this Genre (URL)
-
-    var posterImg: URL {
-        return URL(string: "https://image.tmdb.org/t/p/w500\( describeImg)")!
-    }
-}
 
 //Total info for Dragging data
 struct DragItemData : Identifiable{
     
     let id : String = UUID().uuidString
     let itemType : CharacterRule //descrip what data in used
-    let genreData : DragGenreData? //only for genre
-    let personData : Person? //only for actor and director
+    let genreData : GenreInfo? //only for genre
+    let personData : PersonInfo? //only for actor and director
+}
+
+struct PersonInfo: Decodable, Identifiable {
+    let id:Int
+    let name: String
+    let known_for_department: String?
+    let profile_path: String?
+    
+    var ProfileImageURL: URL {
+        return URL(string: "https://image.tmdb.org/t/p/w500\( profile_path ?? "")")!
+    }
 }
 
 enum Tab : String {
     case Actor = "Actor"
     case Director = "Director"
     case Genre = "Genre"
+    case All = "all" //Use for filter
 }
 
 class PreviewModle : ObservableObject {
@@ -254,14 +146,19 @@ class PreviewModle : ObservableObject {
     
 }
 
+enum updateInsertPosition {
+    case front,back
+}
+
 class DragAndDropViewModel : ObservableObject,DropDelegate {
     
     //This Part is for dragAndDropCar
     @Published var selectedPreviewDatas : [DragItemData] = [] //here we are getting all the movies info that user is selected
-    @Published var dragActor : [DragItemData] = tempDragDataActor
-    @Published var dragDirector : [DragItemData] = tempDragDataDirector
-    @Published var dragGenre : [DragItemData] = tempDragDataGenre
+    @Published var dragActor : [DragItemData] = []
+    @Published var dragDirector : [DragItemData] = []
+    @Published var dragGenre : [DragItemData] = []
     @Published var selectedTab : Tab = .Actor
+    @Published var filter : Tab = .Actor
     
     //This part is for preview and networking
     @Published var isShowPreview : Bool = false
@@ -270,7 +167,18 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
     @Published var fetchingError : NSError?
     @Published var fetchPreLoading : Bool = false
     
+    private var fetchingActorPage : Int = 1 //start at page 2 ,coz init function is fetched page 1
+    private var fetchingDirectorPage : Int = 1 //start at page 2 ,coz init function is fetched page 1
+    @Published var actorHTTPErr : NSError? = nil //is there any error when fetching??
+    @Published var genreHTTPErr : NSError? = nil //is there any error when fetching??
+    @Published var directorHTTPErr : NSError? = nil //is there any error when fetching??
+    @Published var isActorLoading : Bool = false //is there any error when fetching??
+    @Published var isDirectorLoading : Bool = false //is there any error when fetching??
+    @Published var isGenreLoading : Bool = false //is there any error when fetching??
+    @Published var isFinished : Bool = false
+    
     private let movieService: MovieService
+    private let apiService : APIService
     
     private var movieIds : [Int] = [
         497698,
@@ -283,8 +191,20 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
         580489
     ]
     
-    init(movieService: MovieService = MovieStore.shared) {
+    init(movieService: MovieService = MovieStore.shared,apiService : APIService = APIService.shared) {
         self.movieService = movieService
+        self.apiService = apiService
+        getActorsList(succeed: {
+            print("Data Fetching succeed")
+        }, failed: {
+            print("Data Fetching Failed")
+        })
+        getDirectorList(succeed: {
+            print("Data Fetching succeed")
+        }, failed: {
+            print("Data Fetching Failed")
+        })
+        getGenreList()
     }
     
     func fetchData(type : CharacterRule) {
@@ -302,6 +222,100 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
         }
     }
 
+    func getActorsList(updateDataAt at : updateInsertPosition = .back, succeed actionSucceed :  @escaping (()->()),failed actionFailed : @escaping (()->())){
+        //Avoid self referecing
+        self.isFinished = false
+        self.isActorLoading = true
+        apiService.fetchActors(page: self.fetchingActorPage){ [weak self ] results in
+            guard let self = self else {return}
+            switch results{
+            case .success(let responses):
+                DispatchQueue.main.async {
+                    self.fetchingActorPage += 1
+                    self.isFinished = true
+                }
+                switch at {
+                case .front:
+                    withAnimation(){
+                        self.dragActor.insert(contentsOf: responses.response.map{DragItemData(itemType: .Actor, genreData: nil, personData: $0) }, at: 0)
+                    }
+                    break
+                case .back:
+                    withAnimation{
+                        self.dragActor.append(contentsOf: responses.response.map{DragItemData(itemType: .Actor, genreData: nil, personData: $0)})
+                    }
+                    break
+                }
+                self.actorHTTPErr = nil
+                self.isActorLoading = false
+                actionSucceed()
+                break
+            case .failure(let error):
+                self.isActorLoading = false
+                self.actorHTTPErr = error as NSError
+                print(self.actorHTTPErr!.localizedDescription)
+                actionFailed()
+                break
+            }
+        }
+    }
+    
+    func getDirectorList(updateDataAt at : updateInsertPosition = .back,succeed actionSucceed :  @escaping (()->()),failed actionFailed : @escaping (()->())){
+        self.isFinished = false
+        self.isDirectorLoading = true
+        apiService.fetchDirectors(page: self.fetchingDirectorPage){ [weak self ] results in
+            guard let self = self else {return}
+            switch results{
+            case .success(let responses):
+                DispatchQueue.main.async {
+                    self.fetchingDirectorPage += 1
+                    self.isFinished = true
+                }
+                switch at {
+                case .front:
+                    withAnimation(){
+                        self.dragDirector.insert(contentsOf: responses.response.map{DragItemData(itemType: .Director, genreData: nil, personData: $0) }, at: 0)
+                    }
+                    break
+                case .back:
+                    withAnimation{
+                        self.dragDirector.append(contentsOf: responses.response.map{DragItemData(itemType: .Director, genreData: nil, personData: $0)})
+                    }
+                    break
+                }
+                self.directorHTTPErr = nil
+                self.isDirectorLoading = false
+                actionSucceed()
+                break
+            case .failure(let error):
+                self.isDirectorLoading = false
+                self.directorHTTPErr = error as NSError
+                print(self.directorHTTPErr!.localizedDescription)
+                actionFailed()
+                break
+            }
+        }
+    }
+    
+    func getGenreList(){
+        self.isGenreLoading = true
+        apiService.fetchAllGenres(){ [weak self ]results in
+            guard let self = self else {return}
+            switch results{
+            case .success(let responses):
+                self.dragGenre.append(contentsOf: responses.response.map{DragItemData(itemType: .Genre, genreData:$0, personData: nil)})
+                self.genreHTTPErr = nil
+                self.isGenreLoading = false
+                break
+            case .failure(let error):
+                self.isGenreLoading = false
+                self.genreHTTPErr = error as NSError
+                print(self.genreHTTPErr!.localizedDescription)
+                break
+            }
+        }
+    }
+    
     func getPreviewResult(movieID : Int){
         movieService.fetchMovie(id: movieID){ [weak self] result in
             guard let self = self else { return } //do it need here if it use weak self??
@@ -396,11 +410,11 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
                                 }
                             }
                             
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
-                                self.getPreview()
-                                print("data fetching")
-
-                            }
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+//                                self.getPreview()
+//                                print("data fetching")
+//
+//                            }
  
                         }else if !director.isEmpty {
                 
@@ -410,15 +424,15 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
 //                                }
 //
                                 withAnimation(.default){
-                                    self.selectedPreviewDatas.insert(actor.first!, at: 0) //we have already check is not empty
+                                    self.selectedPreviewDatas.insert(director.first!, at: 0) //we have already check is not empty
                                 }
                             }
                             
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
-                                self.getPreview()
-                                print("data fetching")
-
-                            }
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+//                                self.getPreview()
+//                                print("data fetching")
+//
+//                            }
                         }
                         else if !genre.isEmpty {
 //
@@ -432,11 +446,11 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
                                 }
                             }
                             
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
-                                self.getPreview()
-                                print("data fetching")
-
-                            }
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){
+//                                self.getPreview()
+//                                print("data fetching")
+//
+//                            }
                         }                                                                                        
 //                        let array  = [1,2,3,4]
 //                        let type = array.randomElement()!
@@ -931,50 +945,6 @@ struct SeachItem : Identifiable,Hashable{
     let itemName : String
 }
 
-
-
-let testList  : [MovieRule] = [
-    MovieRule(name: "Action", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ppiL13JJx2LkyoNb8JM0h7nxYmk.jpg"),
-    MovieRule(name: "Adventure", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/9dKCd55IuTT5QRs989m9Qlb7d2B.jpg"),
-    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
-    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
-    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
-    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
-    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
-    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
-    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
-    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
-    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
-    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
-    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
-    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
-    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
-    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
-    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
-    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
-    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
-    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
-    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
-    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
-    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
-    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
-    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
-    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
-    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg")
-]
-
-//struct AutoScroll_V_Previews: PreviewProvider
-//{
-//    static var previews: some View{
-//       Text("a")
-//            .preferredColorScheme(.dark)
-////        }
-//
-//    }
-//}
-
-
-
 struct ResultList : View{
     var result : [Movie]
     @Binding var isShowDetail : Bool
@@ -1461,6 +1431,7 @@ struct SeachDragingView : View{
 
     @State private var offset : CGFloat = 0.0
     @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel //Using previeModle
+    @State private var isEndFetching : Bool = false
     var body : some View{
         return
             ZStack(alignment:.bottom){
@@ -1480,19 +1451,62 @@ struct SeachDragingView : View{
                     .zIndex(5)
                     
                     Group{
-                        ScrollableCardGrid(list: self.$DragAndDropPreview.dragGenre,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,beAbleToUpdate: false,isOffsetting: true,offsetVal: 75)
+                        if DragAndDropPreview.dragGenre.isEmpty{
+                            VStack{
+                                Spacer()
+                                LoadingView(isLoading: DragAndDropPreview.isGenreLoading, error: DragAndDropPreview.genreHTTPErr){
+                                    DragAndDropPreview.getGenreList()
+                                }
+                                Spacer()
+                            }
                             .opacity(DragAndDropPreview.selectedTab == .Genre ? 1 : 0)
-                        
-                        ScrollableCardGrid(list: self.$DragAndDropPreview.dragActor,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,isOffsetting: true,offsetVal: 75)
+                            .padding(.vertical)
+                        }else{
+                            ScrollableCardGrid(list: self.$DragAndDropPreview.dragGenre,cardType:.Genre,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,beAbleToUpdate: false,isOffsetting: true,offsetVal: 75)
+                                .opacity(DragAndDropPreview.selectedTab == .Genre ? 1 : 0)
+                        }
+
+                        if DragAndDropPreview.dragActor.isEmpty{
+                            VStack{
+                                Spacer()
+                                LoadingView(isLoading: DragAndDropPreview.isActorLoading, error: DragAndDropPreview.actorHTTPErr){
+                                    DragAndDropPreview.getActorsList(succeed: {
+                                        print("Data re-fetching succeed")
+                                    }, failed: {
+                                        print("Data re-fetching failed")
+                                    })
+
+                                }
+                                Spacer()
+                            }
                             .opacity(DragAndDropPreview.selectedTab == .Actor ? 1 : 0)
-                        
-                        ScrollableCardGrid(list: self.$DragAndDropPreview.dragDirector,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,isOffsetting: true,offsetVal: 75)
+                            .padding(.vertical)
+                        }else{
+                            ScrollableCardGrid(list: self.$DragAndDropPreview.dragActor,cardType:.Actor,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,isOffsetting: true,offsetVal: 75)
+                            .opacity(DragAndDropPreview.selectedTab == .Actor ? 1 : 0)
+                        }
+
+                        if DragAndDropPreview.dragDirector.isEmpty{
+                            VStack{
+                                Spacer()
+                                LoadingView(isLoading: DragAndDropPreview.isDirectorLoading, error: DragAndDropPreview.directorHTTPErr){
+                                    DragAndDropPreview.getDirectorList(succeed: {
+                                        print("Data re-fetching succeed")
+                                    }, failed: {
+                                        print("Data re-fetching failed")
+                                    })
+                                }
+                                Spacer()
+                            }
                             .opacity(DragAndDropPreview.selectedTab == .Director ? 1 : 0)
+                            .padding(.vertical)
+                        }else{
+                            ScrollableCardGrid(list: self.$DragAndDropPreview.dragDirector,cardType:.Director,isShow:DragAndDropPreview.selectedPreviewDatas.isEmpty ? false : true,isOffsetting: true,offsetVal: 75)
+                                .opacity(DragAndDropPreview.selectedTab == .Director ? 1 : 0)
+                        }
                     }
                     
                 }
-//                Divider()
-//                Spacer()
 
                 //Drop area
                 //Make a drop area as a box for dropping any cardItem user is wanted
@@ -1523,6 +1537,8 @@ struct SeachDragingView : View{
                                 
                                 Spacer()
                             }
+
+                    
                             Button(action:{
                                 withAnimation(){
                                     self.DragAndDropPreview.isShowPreview.toggle() //using envronment object
@@ -1533,6 +1549,7 @@ struct SeachDragingView : View{
                                         .foregroundColor(.white)
 
                                     Text("Preview")
+                                        .foregroundColor(.white)
                                 }
                             }
                         }
@@ -1569,7 +1586,7 @@ struct SeachDragingView : View{
                                                 }
                                                 .padding(.top,3)
 
-                                            Text(card.genreData!.info.name)
+                                            Text(card.genreData!.name)
                                                 .font(.caption)
                                                 .frame(width:55,height:13)
                                                 .lineLimit(1)
@@ -1613,11 +1630,77 @@ struct SeachDragingView : View{
                     .onDrop(of: [String(kUTTypeURL)], delegate: DragAndDropPreview)
 
                     if !DragAndDropPreview.selectedPreviewDatas.isEmpty{
-                        Text("Double tab to remove!")
-                            .font(.caption)
-                            .foregroundColor(.red)
-                            .bold()
-                            .padding(.horizontal)
+                        
+                        HStack{
+                            Image(systemName: "line.horizontal.3.decrease.circle.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .contextMenu(ContextMenu(menuItems: {
+                                    Button(action:{
+                                        //TO
+                                    }){
+                                        HStack{
+                                            Text("Show All")
+                                               
+                                            Spacer()
+                                            if self.DragAndDropPreview.selectedTab == Tab.Actor{
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(.green)
+                                            }
+                                        }
+                                    }
+                                    
+                                    Button(action:{
+                                        //TO
+                                    }){
+                                        HStack{
+                                            Text("Show Genres")
+                                               
+                                            Spacer()
+                                            if self.DragAndDropPreview.selectedTab == Tab.Genre{
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(.green)
+                                            }
+                                        }
+                                    }
+
+                                    Button(action:{
+                                        
+                                    }){
+                                        HStack{
+                                            Text("Show Actor")
+                                            Spacer()
+                                            if self.DragAndDropPreview.selectedTab == Tab.Actor{
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(.green)
+                                            }
+                                                
+                                        }
+                                    }
+                                    
+                                    Button(action:{
+                                        
+                                    }){
+                                        HStack{
+                                            Text("Show Director")
+                                            if self.DragAndDropPreview.selectedTab == Tab.Director{
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(.green)
+                                            }
+                                                
+                                        }
+                                    }
+                                    
+                                    
+                                }))
+                                
+                            Spacer()
+                            Text("Double tab to remove!")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                                .bold()
+                        }
+                        .padding(.horizontal)
                     }
                 }
                 .padding(.vertical)
@@ -1626,252 +1709,8 @@ struct SeachDragingView : View{
                 .padding(.horizontal)
                 .padding(.bottom,5)
             }
-
-//            .edgesIgnoringSafeArea(.all)
     }
 }
-
-/// <#Description#>
-//struct BottomSheet : View{
-//    @EnvironmentObject var previewModle : PreviewModle
-//    @EnvironmentObject var searchStateManager : SeachingViewStateManager
-//    @EnvironmentObject var DragAndDropPreview : DragAndDropViewModel //Using previeModle
-//
-////    @Binding var isPreview : Bool
-//    @State private var cardOffset:CGFloat = 0
-//    var body : some View{
-//        VStack{
-//            Spacer()
-//            VStack(spacing:12){
-//
-//                Capsule()
-//                    .fill(Color.gray)
-//                    .frame(width: 60, height: 4)
-//
-//                Text("PREVIEW RESULT")
-//                    .bold()
-//                    .foregroundColor(.gray)
-//
-//                //the preview result must not empty
-//                if previewModle.previewData != nil{
-//                    VStack{
-//                        HStack(){
-//                            //Movie Image Cover Here
-//                            HStack(alignment:.top){
-//                                WebImage(url: self.previewModle.previewData!.posterURL)
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                                    .frame(width: 135)
-//                                    .cornerRadius(10)
-//                                    .clipped()
-//                                //Movie Deatil
-//
-//                                //OR MORE...
-//                                //Name,Genre,Actor,ReleaseDate,Time, Langauge etc
-//                                VStack(alignment:.leading,spacing:10){
-//                                    Text(self.previewModle.previewData!.title)
-//                                        .bold()
-//                                        .font(.headline)
-//                                        .lineLimit(1)
-//                                    HStack(spacing:0){
-//                                        //at most show 2 genre!
-//                                        Text("Genre: ")
-//                                            .font(.system(size: 14))
-//                                            .foregroundColor(.gray)
-////                                            .lineLimit(1)
-//
-//                                        if self.previewModle.previewData!.genres != nil{
-//                                            HStack(spacing:0){
-//                                                ForEach(0..<(self.previewModle.previewData!.genres!.count >= 2 ? 2 : self.previewModle.previewData!.genres!.count)){i in
-//
-//                                                    Text(self.previewModle.previewData!.genres![i].name)
-//                                                        .font(.system(size: 14))
-//                                                        .foregroundColor(.gray)
-//
-//                                                    if i != (self.previewModle.previewData!.genres!.count >= 2 ? 1 : self.previewModle.previewData!.genres!.count-1){
-//                                                        Text(",")
-//                                                            .font(.system(size: 14))
-//                                                            .foregroundColor(.gray)
-//                                                    }
-//                                                }
-//                                            }
-//                                            .lineLimit(1)
-//                                        }else{
-//                                            Text("n/a")
-//                                                .font(.system(size: 14))
-//                                                .foregroundColor(.gray)
-//                                        }
-//
-//                                    }
-//
-//                                    Text("Language: \(self.previewModle.previewData!.originalLanguage)")
-//                                        .font(.system(size: 14))
-//                                        .foregroundColor(.gray)
-//                                        .lineLimit(1)
-//
-//                                    HStack(spacing:0){
-//                                        //at most show 2 genre!
-//                                        Text("Actor: ")
-//                                            .font(.system(size: 14))
-//                                            .foregroundColor(.gray)
-////                                            .lineLimit(1)
-//                                        if self.previewModle.previewData!.cast != nil{
-//                                            HStack(spacing:0){
-//                                                ForEach(0..<(self.previewModle.previewData!.cast!.count >= 2 ? 2 : self.previewModle.previewData!.cast!.count)){i in
-//
-//                                                    Text(self.previewModle.previewData!.cast![i].name)
-//                                                        .font(.system(size: 14))
-//                                                        .foregroundColor(.gray)
-//
-//                                                    if i != (self.previewModle.previewData!.cast!.count >= 2 ? 1 : self.previewModle.previewData!.cast!.count-1){
-//                                                        Text(",")
-//                                                            .font(.system(size: 14))
-//                                                            .foregroundColor(.gray)
-//                                                    }
-//                                                }
-//                                            }
-//                                            .lineLimit(1)
-//
-//                                        }else{
-//                                            Text("n/a")
-//                                                .font(.system(size: 14))
-//                                                .foregroundColor(.gray)
-//                                        }
-//
-//                                    }
-//
-//                                    Text("Release: \(self.previewModle.previewData!.releaseDate!)")
-//                                        .font(.system(size: 14))
-//                                        .foregroundColor(.gray)
-//                                        .lineLimit(1)
-//                                    Text("Time: \(self.previewModle.previewData!.durationText)")
-//                                        .font(.system(size: 14))
-//                                        .foregroundColor(.gray)
-//                                        .lineLimit(1)
-//                                }
-//                                .padding(.top)
-//
-//                                Spacer()
-//
-//                            }.padding(.horizontal)
-//                            .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
-//
-//
-////                            Spacer()
-//                        }
-////                        .padding(.horizontal)
-//
-//                        VStack(alignment:.leading){
-//                            Text("Overview:")
-//                                .bold()
-//                                .font(.subheadline)
-//                                .lineLimit(1)
-//
-//                            if self.previewModle.previewData!.overview != "" {
-//                                HStack(spacing:0){
-//                                    Text(self.previewModle.previewData!.overview)
-//
-//                                        .font(.footnote)
-//                                        .lineLimit(3)
-//
-//                                    Spacer()
-//                                }
-//                                .frame(maxWidth:.infinity)
-//                            }else{
-//                                HStack(spacing:0){
-//                                    Text("Opps! Overview is comming soon...")
-//                                        .font(.footnote)
-//                                        .lineLimit(3)
-//
-//                                    Spacer()
-//                                }
-//                                .frame(maxWidth:.infinity)
-//                            }
-//                        }
-//                        .padding(.horizontal)
-//
-//                        HStack(spacing:45){
-//
-//                            SmallRectButton(title: "Detail", icon: "ellipsis.circle"){
-//                                withAnimation(){
-//                                    //it need to toggle preview state too
-//                                    self.searchStateManager.previewResult.toggle()
-//                                    self.previewModle.isShowPreview.toggle()
-//                                }
-//                            }
-//
-//                            SmallRectButton(title: "More", icon: "magnifyingglass", textColor: .white, buttonColor: Color("BluttonBulue2")){
-//                                withAnimation(){
-//                                    self.searchStateManager.previewMoreResult.toggle()
-//                                    self.previewModle.isShowPreview.toggle()
-//                                }
-//                            }
-//
-//                        }
-//                        .padding(.horizontal)
-//                    }
-//                    //                .padding(.horizontal,5)
-//                    .padding(.top,10)
-//                    .padding(.bottom)
-//                    .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-//                }
-//                else{
-//                    VStack{
-//                        Text("Empty Result!")
-//                            .foregroundColor(.gray)
-//                            .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
-//                    }
-//                    .padding(.top,10)
-//                    .padding(.bottom)
-//                    .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-//                }
-//                //The preview result here
-//            }
-////            .padding(.horizontal,5) ??
-//            .padding(.top)
-//            .background(BlurView().clipShape(CustomeConer(width: 20, height: 20,coners: [.topLeft,.topRight])))
-//            .offset(y:cardOffset)
-//            .gesture(
-//                DragGesture()
-//                    .onChanged(self.onChage(value:))
-//                    .onEnded(self.onEnded(value:))
-//            )
-//            .offset(y:self.previewModle.isShowPreview ? 0 : UIScreen.main.bounds.height)
-//        }
-//        .ignoresSafeArea()
-//        .background(Color
-//                        .black
-//                        .opacity(self.previewModle.isShowPreview ? 0.3 : 0)
-//                        .onTapGesture {
-//
-//                            withAnimation(){                                self.previewModle.isShowPreview.toggle()
-//                            }
-//                        }
-//                        .ignoresSafeArea().clipShape(CustomeConer(width: 20, height: 20,coners: [.topLeft,.topRight])))
-//
-//    }
-//
-//    private func onChage(value : DragGesture.Value){
-//        print(value.translation.height)
-//        if value.translation.height > 0 {
-//            self.cardOffset = value.translation.height
-//        }
-//    }
-//
-//    private func onEnded(value : DragGesture.Value){
-//        if value.translation.height > 0 {
-//            withAnimation(){
-//                let cardHeight = UIScreen.main.bounds.height / 4
-//
-//                if value.translation.height > cardHeight / 2.8 {
-//                    self.previewModle.isShowPreview.toggle()
-//                }
-//                self.cardOffset = 0
-//            }
-//        }
-//    }
-//
-//}
 
 struct BottomSheet : View{
     @EnvironmentObject var searchStateManager : SeachingViewStateManager
@@ -2231,33 +2070,33 @@ struct CustomePicker : View {
 }
 
 struct ScrollableCardGrid: View{
+    @EnvironmentObject var dragPreviewModel : DragAndDropViewModel
     @State private var coreHaptics : CHHapticEngine?
+    @State private var isLoading : Bool = false
     let comlums = Array(repeating: GridItem(.flexible(),spacing: 10), count: 2)
     @Binding var list : [DragItemData]
-    @State private var isFetchingData : Bool = false
+    var cardType : CharacterRule
     @State private var offset:CGFloat = 0.0
     var isShow : Bool
     var beAbleToUpdate : Bool = true
     var isOffsetting : Bool = false
     var offsetVal : CGFloat = 0
+
+
     var body : some View{
-//        ScrollView(.vertical, showsIndicators: false){
-//        }
         DragRefreshableScrollView(
-            dataType : list[0].itemType ,
-            datas:self.$list,
-            isFetchingData: self.$isFetchingData,
+            dataType : cardType ,
+            datas: self.$list,
+            isLoading: self.$isLoading,
             beAbleToUpdate : beAbleToUpdate,
             isOffsetting : isOffsetting,
             offsetVal : offsetVal,
             content: {
                 VStack{
                     LazyVGrid(columns: comlums){
-                        if self.list[0].itemType == CharacterRule.Genre{
+                        if cardType == CharacterRule.Genre{
                             ForEach(self.list,id:\.id){ data in
-                                if data.genreData!.describeImg != ""{ //here we are know that is genre type
-                                    //redner the cell
-                                    //Some Drag issue here
+                                if data.genreData!.describe_img != ""{ //here we are know that is genre type
                                     VStack(spacing:3){
                                         WebImage(url: data.genreData!.posterImg)
                                             .resizable()
@@ -2270,7 +2109,7 @@ struct ScrollableCardGrid: View{
                                                 EngineSuccess()
                                                 return NSItemProvider(contentsOf: URL(string: data.id))! }
                                         //
-                                        Text(data.genreData!.info.name)
+                                        Text(data.genreData!.name)
                                             .frame(width:120,height:50,alignment:.center)
                                             .lineLimit(2)
                                     }
@@ -2279,9 +2118,7 @@ struct ScrollableCardGrid: View{
                             }
                         }else{
                             ForEach(self.list,id:\.id){ data in
-                                if data.personData!.profilePath != ""{ //here we are know that is genre type
-                                    //redner the cell
-                                    //Some Drag issue here
+                                if data.personData!.profile_path != ""{ //here we are know that is genre type
                                     VStack(spacing:3){
                                         WebImage(url: data.personData!.ProfileImageURL)
                                             .resizable()
@@ -2304,25 +2141,48 @@ struct ScrollableCardGrid: View{
                         }
                     }
                     
-                    if isFetchingData && beAbleToUpdate{
+                    if beAbleToUpdate && self.isLoading {
                         VStack{
                             ActivityIndicatorView()
                         }
-                        .padding(.vertical)
                         
                     }
                 }
-                //                .padding(.bottom,150)
-                //                .modifier(OffsetModifier(offset: self.$offset))
                 .padding(.horizontal)
-                .padding(.bottom,self.isShow ? 200 : 100)
-//                .background(BlurView(sytle: .systemThickMaterialDark).edgesIgnoringSafeArea(.all))
+                .padding(.bottom,self.isShow ? 220 : 100)
             }, onRefresh: {control in
+                
                 if beAbleToUpdate{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self.list.insert(contentsOf: fakeDataFetch(type: list[0].itemType), at: 0)
-                        control.endRefreshing()
+                    self.isLoading = true
+                    switch self.cardType {
+                    case .Actor:
+                        DispatchQueue.main.asyncAfter(deadline: .now()+0.5){
+                            dragPreviewModel.getActorsList(updateDataAt: .front, succeed: {
+                                self.isLoading = false
+                                control.endRefreshing()
+                            }, failed: {
+                                self.isLoading = false
+                                control.endRefreshing()
+                                print("Data fetching error")
+                            })
+                        }
+                        break
+                    case .Director:
+                        DispatchQueue.main.asyncAfter(deadline: .now()+0.5){
+                            dragPreviewModel.getDirectorList(updateDataAt: .front, succeed: {
+                                self.isLoading = false
+                                control.endRefreshing()
+                            }, failed: {
+                                self.isLoading = false
+                                control.endRefreshing()
+                                print("Data fetching error")
+                            })
+                        }
+                        break
+                    default:
+                        break
                     }
+                    
                 }
                 
             })
@@ -2330,59 +2190,6 @@ struct ScrollableCardGrid: View{
         
         .onAppear(perform: initEngine)
     }
-
-    func fakeDataFetch(type : CharacterRule) -> [DragItemData] {
-        switch type {
-        case .Genre:
-            let genreTest : [DragItemData] = [
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[0], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[1], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[2], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[3], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[4], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[5], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[6], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[7], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[8], personData: nil),
-                DragItemData(itemType: .Genre, genreData: tempDragGenreData[9], personData: nil),
-            ]
-            return genreTest.shuffled()
-            
-        case .Actor:
-            let actorTest: [DragItemData] = [
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[0]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[1]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[2]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[3]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[4]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[5]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[6]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[7]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[8]),
-                DragItemData(itemType: .Actor, genreData: nil, personData: actorTemp[9]),
-            ]
-            
-            return actorTest.shuffled()
-           
-        case .Director:
-            let directorTest: [DragItemData] = [
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[0]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[1]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[2]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[3]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[4]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[5]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[6]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[7]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[8]),
-                DragItemData(itemType: .Director, genreData: nil, personData: DirectorTemp[9]),
-            ]
-            
-            return directorTest.shuffled()
-        
-        }
-    }
-    
 
     private func initEngine(){
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {

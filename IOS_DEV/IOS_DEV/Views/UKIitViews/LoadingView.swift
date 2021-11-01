@@ -19,6 +19,7 @@ struct LoadingView: View {
                 HStack {
                     Spacer()
                     ActivityIndicatorView()
+                    Text("Loading...")
                     Spacer()
                 }
             } else if error != nil {
@@ -28,7 +29,7 @@ struct LoadingView: View {
                         Text(error!.localizedDescription).font(.headline)
                         if self.retryAction != nil {
                             Button(action: self.retryAction!) {
-                                Text("Retry")
+                                Text("Reload")
                             }
                             .foregroundColor(Color.blue)
                             .buttonStyle(PlainButtonStyle())

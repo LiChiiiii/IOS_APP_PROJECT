@@ -16,7 +16,7 @@ struct IOS_DEVApp: App {
     
     var body: some Scene {
         WindowGroup {
-            
+//            APITester()
             NavBar(index: 0)
 //            WelcomePage()
         }
@@ -181,6 +181,36 @@ struct IOS_DEVApp: App {
 //
 //    }
 //}
+
+let testList  : [MovieRule] = [
+    MovieRule(name: "Action", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ppiL13JJx2LkyoNb8JM0h7nxYmk.jpg"),
+    MovieRule(name: "Adventure", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/9dKCd55IuTT5QRs989m9Qlb7d2B.jpg"),
+    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
+    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
+    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
+    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
+    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
+    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
+    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
+    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
+    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
+    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
+    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
+    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
+    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
+    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
+    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
+    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
+    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
+    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
+    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
+    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg"),
+    MovieRule(name: "Comedy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/cycDz68DtTjJrDJ1fV8EBq2Xdpb.jpg"),
+    MovieRule(name: "Crime", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ky8Fua6PD7FyyOA7JACh3GDETli.jpg"),
+    MovieRule(name: "Fantasy", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/dkokENeY5Ka30BFgWAqk14mbnGs.jpg"),
+    MovieRule(name: "Horror", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/bShgiEQoPnWdw4LBrYT5u18JF34.jpg"),
+    MovieRule(name: "Science Fiction", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/78wC6ZWhTlqaCNL0rS7jl7dAV85.jpg")
+]
 
 struct MorePreviewResultView : View{
     

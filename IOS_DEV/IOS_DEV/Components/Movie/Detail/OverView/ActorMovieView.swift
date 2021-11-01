@@ -74,13 +74,7 @@ struct CarouselView: View{
     
    var body: some View
    {
-    
-
-            
             VStack{
-                
-               
-               
                 GeometryReader { proxy in
                     let scaleValue = getScale(geo: proxy)
                     
