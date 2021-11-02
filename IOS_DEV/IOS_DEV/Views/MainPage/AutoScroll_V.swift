@@ -23,7 +23,7 @@ import CoreHaptics
 //}
 
 
-enum CharacterRule : String{
+enum CharacterRule : String,Codable{
     case Actor = "Actor"
     case Director = "Director"
     case Genre = "Genre"
@@ -32,15 +32,15 @@ enum CharacterRule : String{
 
 
 //Total info for Dragging data
-struct DragItemData : Identifiable{
+struct DragItemData : Identifiable,Codable{
     
-    let id : String = UUID().uuidString
+    let id : String
     let itemType : CharacterRule //descrip what data in used
     let genreData : GenreInfo? //only for genre
     let personData : PersonInfo? //only for actor and director
 }
 
-struct PersonInfo: Decodable, Identifiable {
+struct PersonInfo: Codable, Identifiable {
     let id:Int
     let name: String
     let known_for_department: String?
@@ -162,7 +162,7 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
     
     //This part is for preview and networking
     @Published var isShowPreview : Bool = false
-    @Published var previewData : Movie? //get the movie
+    @Published var previewData : MoviePreviewInfo? //get the movie
     @Published var previewDataList : [Movie]?
     @Published var fetchingError : NSError?
     @Published var fetchPreLoading : Bool = false
@@ -207,20 +207,7 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
         getGenreList()
     }
     
-    func fetchData(type : CharacterRule) {
-        switch type {
-        case .Actor:
-            //update actor list
-            
-            break
-        case .Director:
-            //update director list
-            break
-        case .Genre:
-            //update genre list
-            break
-        }
-    }
+
 
     func getActorsList(updateDataAt at : updateInsertPosition = .back, succeed actionSucceed :  @escaping (()->()),failed actionFailed : @escaping (()->())){
         //Avoid self referecing
@@ -237,12 +224,12 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
                 switch at {
                 case .front:
                     withAnimation(){
-                        self.dragActor.insert(contentsOf: responses.response.map{DragItemData(itemType: .Actor, genreData: nil, personData: $0) }, at: 0)
+                        self.dragActor.insert(contentsOf: responses.response.map{DragItemData(id:UUID().uuidString,itemType: .Actor, genreData: nil, personData: $0) }, at: 0)
                     }
                     break
                 case .back:
                     withAnimation{
-                        self.dragActor.append(contentsOf: responses.response.map{DragItemData(itemType: .Actor, genreData: nil, personData: $0)})
+                        self.dragActor.append(contentsOf: responses.response.map{DragItemData(id:UUID().uuidString,itemType: .Actor, genreData: nil, personData: $0)})
                     }
                     break
                 }
@@ -274,12 +261,14 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
                 switch at {
                 case .front:
                     withAnimation(){
-                        self.dragDirector.insert(contentsOf: responses.response.map{DragItemData(itemType: .Director, genreData: nil, personData: $0) }, at: 0)
+                        self.dragDirector.insert(contentsOf: responses.response.map{DragItemData(id:UUID().uuidString,
+itemType: .Director, genreData: nil, personData: $0) }, at: 0)
                     }
                     break
                 case .back:
                     withAnimation{
-                        self.dragDirector.append(contentsOf: responses.response.map{DragItemData(itemType: .Director, genreData: nil, personData: $0)})
+                        self.dragDirector.append(contentsOf: responses.response.map{DragItemData(id:UUID().uuidString,
+itemType: .Director, genreData: nil, personData: $0)})
                     }
                     break
                 }
@@ -303,7 +292,7 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
             guard let self = self else {return}
             switch results{
             case .success(let responses):
-                self.dragGenre.append(contentsOf: responses.response.map{DragItemData(itemType: .Genre, genreData:$0, personData: nil)})
+                self.dragGenre.append(contentsOf: responses.response.map{DragItemData(id:UUID().uuidString,itemType: .Genre, genreData:$0, personData: nil)})
                 self.genreHTTPErr = nil
                 self.isGenreLoading = false
                 break
@@ -316,21 +305,30 @@ class DragAndDropViewModel : ObservableObject,DropDelegate {
         }
     }
     
-    func getPreviewResult(movieID : Int){
-        movieService.fetchMovie(id: movieID){ [weak self] result in
-            guard let self = self else { return } //do it need here if it use weak self??
-            
-            switch result{
-            case .success(let result):
-                // print(result)
-                self.previewData = result
-                self.fetchPreLoading = false
-                print("data got!")
-            case .failure(let err):
-                self.fetchingError = err as NSError
+    func getMoviePreview(){
+        self.fetchPreLoading = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+            self.apiService.getPreviewMovie(datas: self.selectedPreviewDatas){ [weak self] result in
+                guard let self = self else {return}
+                switch result{
+                case .success(let response):
+                    self.fetchPreLoading = false
+                    if response.id != nil{
+                        self.previewData = response
+                    }else{
+                        self.previewData = nil
+                    }
+                    break
+                case .failure(let error):
+                    self.fetchingError = error as NSError
+                }
+                
             }
-            
         }
+    }
+    
+    func getPreviewResult(movieID : Int){
+
     }
     
     func loadMovies(with endpoint: MovieListEndpoint) {
@@ -565,7 +563,7 @@ struct AutoScroll_V: View {
                 NavigationView{
                     VStack(spacing:0){
                         if self.StateManager.previewResult{
-                            NavigationLink(destination:  MovieDetailView(movieId:self.DragAndDropPreview.previewData!.id, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$StateManager.previewResult){
+                            NavigationLink(destination:  MovieDetailView(movieId:self.DragAndDropPreview.previewData!.id!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$StateManager.previewResult){
                                 EmptyView()
                                 
                             }
@@ -1542,6 +1540,7 @@ struct SeachDragingView : View{
                             Button(action:{
                                 withAnimation(){
                                     self.DragAndDropPreview.isShowPreview.toggle() //using envronment object
+                                    self.DragAndDropPreview.getMoviePreview()
                                 }
                             }){
                                 HStack{
@@ -1735,9 +1734,14 @@ struct BottomSheet : View{
                 if self.DragAndDropPreview.fetchPreLoading {
                     HStack{
                         ActivityIndicatorView()
-                        Text("loading")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 14))
+                        VStack{
+                            Text("loading")
+                                .foregroundColor(.gray)
+                                .font(.system(size: 14))
+                            Text("Preparing the movie info for you,please wait...")
+                                .foregroundColor(.gray)
+                                .font(.system(size: 10))
+                        }
                            
                     }
                     .frame(width:UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / 4)
@@ -1761,7 +1765,7 @@ struct BottomSheet : View{
                                     //OR MORE...
                                     //Name,Genre,Actor,ReleaseDate,Time, Langauge etc
                                     VStack(alignment:.leading,spacing:10){
-                                        Text(self.DragAndDropPreview.previewData!.title)
+                                        Text(self.DragAndDropPreview.previewData!.title!)
                                             .bold()
                                             .font(.headline)
                                             .lineLimit(1)
@@ -1796,7 +1800,7 @@ struct BottomSheet : View{
                                             
                                         }
                                         
-                                        Text("Language: \(self.DragAndDropPreview.previewData!.originalLanguage)")
+                                        Text("Language: \(self.DragAndDropPreview.previewData!.original_language!)")
                                             .font(.system(size: 14))
                                             .foregroundColor(.gray)
                                             .lineLimit(1)
@@ -1807,15 +1811,15 @@ struct BottomSheet : View{
                                                 .font(.system(size: 14))
                                                 .foregroundColor(.gray)
                                             //                                            .lineLimit(1)
-                                            if self.DragAndDropPreview.previewData!.cast != nil{
+                                            if self.DragAndDropPreview.previewData!.casts != nil{
                                                 HStack(spacing:0){
-                                                    ForEach(0..<(self.DragAndDropPreview.previewData!.cast!.count >= 2 ? 2 : self.DragAndDropPreview.previewData!.cast!.count)){i in
+                                                    ForEach(0..<(self.DragAndDropPreview.previewData!.casts!.count >= 2 ? 2 : self.DragAndDropPreview.previewData!.casts!.count)){i in
                                                         
-                                                        Text(self.DragAndDropPreview.previewData!.cast![i].name)
+                                                        Text(self.DragAndDropPreview.previewData!.casts![i].name)
                                                             .font(.system(size: 14))
                                                             .foregroundColor(.gray)
                                                         
-                                                        if i != (self.DragAndDropPreview.previewData!.cast!.count >= 2 ? 1 : self.DragAndDropPreview.previewData!.cast!.count-1){
+                                                        if i != (self.DragAndDropPreview.previewData!.casts!.count >= 2 ? 1 : self.DragAndDropPreview.previewData!.casts!.count-1){
                                                             Text(",")
                                                                 .font(.system(size: 14))
                                                                 .foregroundColor(.gray)
@@ -1832,7 +1836,7 @@ struct BottomSheet : View{
                                             
                                         }
                                         
-                                        Text("Release: \(self.DragAndDropPreview.previewData!.releaseDate!)")
+                                        Text("Release: \(self.DragAndDropPreview.previewData!.release_date!)")
                                             .font(.system(size: 14))
                                             .foregroundColor(.gray)
                                             .lineLimit(1)
@@ -1861,7 +1865,7 @@ struct BottomSheet : View{
                                 
                                 if self.DragAndDropPreview.previewData!.overview != "" {
                                     HStack(spacing:0){
-                                        Text(self.DragAndDropPreview.previewData!.overview)
+                                        Text(self.DragAndDropPreview.previewData!.overview!)
                                             
                                             .font(.footnote)
                                             .lineLimit(3)

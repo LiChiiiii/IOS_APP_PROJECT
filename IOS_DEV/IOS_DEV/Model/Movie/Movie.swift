@@ -123,7 +123,7 @@ struct MovieGenreID: Decodable {    //抓特定類別用的
     let id: Int
 }
 
-struct MovieGenre: Decodable {
+struct MovieGenre: Codable {
     
     let id: Int
     let name: String
@@ -136,7 +136,7 @@ struct MovieCredit: Decodable {
     let crew: [MovieCrew]
 }
 
-struct MovieCast: Decodable, Identifiable {
+struct MovieCast: Codable, Identifiable {
     let id: Int
     let character: String
     let name: String

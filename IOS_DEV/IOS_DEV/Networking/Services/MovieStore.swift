@@ -233,9 +233,10 @@ class APIService : ServerAPIServerServiceInterface{
     static let shared = APIService()
     private init(){} //signleton mode
     
-    private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
+    private let API_SERVER_HOST = "http://127.0.0.1:8081/api"
     private let Client = URLSession.shared
     private let Decoder = JSONDecoder()
+    private let Encoder = JSONEncoder()
     
     //URI Path
     private let playground = "/playground"
@@ -364,5 +365,82 @@ class APIService : ServerAPIServerServiceInterface{
         
     }
     
+    func getPreviewMovie(datas: [DragItemData], completion: @escaping (Result<MoviePreviewInfo, MovieError>) -> ()) {
+        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getpreview")
+        guard let component = URLComponents(url: url!, resolvingAgainstBaseURL: false) else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        
+        guard let requestComponent = component.url else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        
+        print(requestComponent.absoluteURL)
+        //do a URLSession
+        var request = URLRequest(url: requestComponent)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let encodedData = try? Encoder.encode(datas) else {
+            completion(.failure(.apiError))
+            return
+        }
+        
+        Client.uploadTask(with: request, from: encodedData){ [weak self] (data,response,err) in
+            guard let self = self else {return} //if current task is break , return
+            
+            guard err == nil else {
+                DispatchQueue.main.async {
+                    completion(.failure(.apiError))
+                }
+                return
+            }
+            
+            //reponse cast to httpResponse ? and status code is 2xx?
+            guard let statusCode = response as? HTTPURLResponse,200..<300 ~= statusCode.statusCode else{
+                DispatchQueue.main.async {
+                    completion(.failure(.invalidResponse))
+                }
+                return
+            }
+            
+            guard let data = data else{
+                DispatchQueue.main.async {
+                    completion(.failure(.noData))
+                }
+                return
+            }
+            
+            
+            do {
+                let result = try self.Decoder.decode(MoviePreviewInfo.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(result))
+                    print("[DEBUG] PREVIEW IS GOT")
+                }
+            } catch{
+                DispatchQueue.main.async {
+                    completion(.failure(.serializationError))
+                }
+            }
+        }.resume()
+    }
+    
+
+    
+}
+
+struct AlgorithmFormatJSON : Codable{
+    var Genres : [GenreInfo]
+    var Actors : [PersonDataInfo]
+    var Directors : [PersonDataInfo]
+}
+
+struct PersonDataInfo : Codable,Identifiable {
+    let id:Int
+    let name: String
+    let known_for_department: String
+    let profile_path: String?
     
 }

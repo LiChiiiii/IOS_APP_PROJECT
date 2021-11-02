@@ -48,6 +48,11 @@ let controller = ListController()
 //Working Process
 
 
+struct TestData : Codable{
+    let name : String
+    let phone : String
+}
+
 struct APITester : View{
     private let service = APIService.shared
     @State private var apiError : MovieError? = nil
@@ -185,6 +190,46 @@ struct APITester : View{
             }
             
         }.resume()
+    }
+    
+    private func postDataRequest(){
+        let url = "http://127.0.0.1:8081/api/playground/getpreview"
+        var req = URLRequest(url: URL(string: url)!)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let postDatas : [TestData] = [
+            TestData(name: "Jackson", phone: "12345677889"),
+            TestData(name: "Alice", phone: "0987654321")
+        ]
+        
+        let encoder = JSONEncoder()
+        let encodeDatas = try? encoder.encode(postDatas)
+        
+        URLSession.shared.uploadTask(with: req, from: encodeDatas){(data,response,error) in
+            guard error == nil else {
+                
+                return
+            }
+            
+            //reponse cast to httpResponse ? and status code is 2xx?
+            guard let statusCode = response as? HTTPURLResponse,200..<300 ~= statusCode.statusCode else{
+                
+                return
+            }
+            
+            guard let data = data else{
+                
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            if let result = try? decoder.decode(String.self, from: data){
+                print(result)
+            }else{
+                print("Unable to parse JSON response")
+            }
+        }
     }
     
     

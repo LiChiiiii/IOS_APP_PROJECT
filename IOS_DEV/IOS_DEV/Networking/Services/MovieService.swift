@@ -34,7 +34,8 @@ protocol ServerAPIServerServiceInterface {
     func fetchGenreById(genreID id :Int, dataSize size : Int , completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
     func fetchAllGenres(completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
     
-    
+    //TODO -Preview API
+    func getPreviewMovie(datas : [DragItemData],completion : @escaping (Result<MoviePreviewInfo,MovieError>) -> ())
 }
 
 

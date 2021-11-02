@@ -1,6 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-
+xcodeproj 'IOS_DEV.xcodeproj'
 target 'IOS_DEV' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
