@@ -10,7 +10,7 @@ import UIKit
 
 struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
     
-    @EnvironmentObject var dragPreviewModel : DragAndDropViewModel
+    @EnvironmentObject var dragPreviewModel : DragSearchModel
     @Binding var datas : [DragItemData]
     @Binding var isLoading : Bool
     var dataType : CharacterRule

@@ -427,6 +427,14 @@ class APIService : ServerAPIServerServiceInterface{
         }.resume()
     }
     
+    
+    func getPreviewMovieList(completion: @escaping (Result<[MoviePreviewInfo], MovieError>) -> ()) {
+        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getpreviewlist")! 
+//        let params = [
+//            "page" : page.description,
+//        ]
+        self.FetchAndDecode(url: url,completion: completion)
+    }
 
     
 }

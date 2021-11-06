@@ -237,10 +237,9 @@ struct APITester : View{
 
 
 struct NavBar: View {
-    @StateObject var previewModle = PreviewModle()
-    
+    @StateObject var previewModel = PreviewModel()
     @StateObject var StateManager  = SeachingViewStateManager()
-    @StateObject var DragAndDropPreview = DragAndDropViewModel()
+    @StateObject var DragAndDropPreview = DragSearchModel()
     
     @State var index : Int
     @State private var GroupSelect : Bool = false
@@ -256,7 +255,7 @@ struct NavBar: View {
                         ListView(lists: controller.listData)
                             .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
 
-                        AutoScroll_V()
+                        DragAndDropMainView()
                             .opacity(self.index == 2 ? 1 : 0)
                     
 //                        ProfileView(NowUser: userController.NowUser)
@@ -281,7 +280,7 @@ struct NavBar: View {
                 .animation(.spring())
             
         }
-        .environmentObject(previewModle)
+        .environmentObject(previewModel)
         .environmentObject(StateManager) //here due to bottomSheet need to use to update some state
         .environmentObject(DragAndDropPreview) //here due to bottomSheet need to use to update some state
         .ignoresSafeArea()
