@@ -332,11 +332,14 @@ class SearchBarViewModel : ObservableObject{
     @Published var searchResult : [Movie] = []
     @Published var isLoading : Bool = false
     @Published var fetchingError : NSError?
+    @Published var recommandPlachold : String = "尚氣與十環傳奇"
+    @Published var hotSearchingDatas : [HotItem] = []
     
     private let movieService: MovieService
     
     init(movieService: MovieService = MovieStore.shared) {
         self.movieService = movieService
+        self.hotSearchingDatas = HotTest
     }
     
     //fake ,just for testing
@@ -346,15 +349,13 @@ class SearchBarViewModel : ObservableObject{
 
         movieService.searchMovie(query: keyWork){ [weak self] result in
             guard let self = self else { return }
-            withAnimation(){
-                self.isLoading = true
-            }
+            self.isLoading = true
+            
             switch result{
             case.success(let response):
                 self.searchResult = response.results
-                withAnimation(){
-                    self.isLoading = false
-                }
+                self.isLoading = false
+                
             case .failure(let error):
 
                 self.fetchingError = error as NSError
@@ -373,7 +374,7 @@ class SeachingViewStateManager : ObservableObject{
     
     //going to share the searching text between the view
 //    @Published var searchingText : String = ""
-    @Published var getResult : Bool  = false
+    @Published var getSearchResult : Bool  = false
     
     @Published var previewResult : Bool = false
     @Published var previewMoreResult : Bool = false

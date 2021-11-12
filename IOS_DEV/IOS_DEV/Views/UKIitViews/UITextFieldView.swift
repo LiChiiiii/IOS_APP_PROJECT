@@ -18,7 +18,7 @@ struct UITextFieldView : UIViewRepresentable{
     let keybooardType : UIKeyboardType
     let returnKeytype : UIReturnKeyType
     let tag:Int
-    let placeholder : String
+//    let placeholder : String
 //    @Binding var text:String
 //    @Binding var getResult : Bool
     
@@ -29,7 +29,7 @@ struct UITextFieldView : UIViewRepresentable{
         textField.tag = tag
         textField.delegate = context.coordinator
         textField.autocorrectionType = .no
-        textField.placeholder = placeholder
+        textField.placeholder = SearchMV.recommandPlachold
         textField.textColor = .white
         textField.tintColor = .darkGray
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -86,24 +86,35 @@ struct UITextFieldView : UIViewRepresentable{
             }else{
                 parent.StateManager.isFocuse = [false,false]
             }
+            var keyWord = textField.text ?? ""
             
-            
-            parent.SearchMV.searchingText = textField.text ?? ""
-            
-            if textField.text != ""{
-                withAnimation(.easeInOut(duration: 0.3)){
-                    parent.history.insert(textField.text!, at: 0)
-                    parent.StateManager.isEditing = false
-                    parent.StateManager.getResult = true
-                    parent.StateManager.isSeaching = false
-                }
-                self.parent.StateManager.searchingLoading = true
+            if keyWord == ""{
+                keyWord = self.parent.SearchMV.recommandPlachold
             }
 
+            parent.SearchMV.searchingText = keyWord
+            parent.StateManager.isEditing = false
+            parent.StateManager.isSeaching = false
+            updateHistory(history: keyWord)
+            parent.StateManager.getSearchResult = true
+            self.parent.StateManager.searchingLoading = true
 
             return true
         }
         
+        func updateHistory(history : String){
+            
+            if self.parent.history.count == 15{
+                self.parent.history.removeLast()
+            }
+            
+            let exist = self.parent.history.contains{$0 == history}
+            if exist{
+                let index = self.parent.history.firstIndex(of: history)
+                self.parent.history.remove(at: index!)
+            }
+            self.parent.history.insert(history, at: 0)
+        }
 
     }
 }

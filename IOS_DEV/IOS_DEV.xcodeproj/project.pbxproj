@@ -733,6 +733,13 @@
 			path = ViewModifire;
 			sourceTree = "<group>";
 		};
+		7AC42D89273CF4A6003C0DEF /* Search */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		7ACC9C5226217FBB00351E8D /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -789,6 +796,7 @@
 		7AF66E3A27367C31004F0D06 /* DragAndDropView */ = {
 			isa = PBXGroup;
 			children = (
+				7AC42D89273CF4A6003C0DEF /* Search */,
 				01C378C4266E65B800E75118 /* DragAndDrag.swift */,
 				7AF66E3C27367DCE004F0D06 /* UsageDatas.swift */,
 				7AF66E4027367E3E004F0D06 /* ManagerAndModel.swift */,

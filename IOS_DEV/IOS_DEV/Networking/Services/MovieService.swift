@@ -37,6 +37,9 @@ protocol ServerAPIServerServiceInterface {
     //TODO -Preview API
     func getPreviewMovie(datas : [DragItemData],completion : @escaping (Result<MoviePreviewInfo,MovieError>) -> ())
     func getPreviewMovieList(completion : @escaping (Result<[MoviePreviewInfo],MovieError>) -> ())
+    
+    //TODO -Search API
+    func getRecommandtionSearch(keyword queryWord : String,completion : @escaping (Result<Movie,MovieError>)-> ())
 }
 
 

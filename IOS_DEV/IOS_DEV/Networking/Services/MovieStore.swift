@@ -239,7 +239,8 @@ class APIService : ServerAPIServerServiceInterface{
     private let Encoder = JSONEncoder()
     
     //URI Path
-    private let playground = "/playground"
+    private let previewSearch = "/previewsearch"
+    private let search = "/search"
     
     //To Fetching and Decoding the response body or throw an error
     /*FetchAndDecode - parameters
@@ -317,7 +318,7 @@ class APIService : ServerAPIServerServiceInterface{
             return
         }
         
-        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getactors")!
+        let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getactors")!
         
         let params = [
             "page" : page.description
@@ -334,7 +335,7 @@ class APIService : ServerAPIServerServiceInterface{
             return
         }
         
-        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getdirectors")!
+        let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getdirectors")!
         
         let params = [
             "page" : page.description
@@ -345,7 +346,7 @@ class APIService : ServerAPIServerServiceInterface{
     
     func fetchGenreById(genreID id: Int, dataSize size: Int = 5, completion: @escaping (Result<GenreInfoResponse, MovieError>) -> ()) {
         //TODO
-        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getgenre")!
+        let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getgenre")!
         
         let params = [
             "id" : id.description,
@@ -358,7 +359,7 @@ class APIService : ServerAPIServerServiceInterface{
     
     func fetchAllGenres(completion: @escaping (Result<GenreInfoResponse, MovieError>) -> ()) {
         //TODO
-        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getallgenres")!
+        let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getallgenres")!
         
 //        print(url.absoluteURL)
         self.FetchAndDecode(url: url,completion: completion)
@@ -366,7 +367,7 @@ class APIService : ServerAPIServerServiceInterface{
     }
     
     func getPreviewMovie(datas: [DragItemData], completion: @escaping (Result<MoviePreviewInfo, MovieError>) -> ()) {
-        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getpreview")
+        let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getpreview")
         guard let component = URLComponents(url: url!, resolvingAgainstBaseURL: false) else {
             completion(.failure(.invalidEndpoint))
             return
@@ -427,16 +428,18 @@ class APIService : ServerAPIServerServiceInterface{
         }.resume()
     }
     
-    
     func getPreviewMovieList(completion: @escaping (Result<[MoviePreviewInfo], MovieError>) -> ()) {
-        let url = URL(string: "\(API_SERVER_HOST)\(playground)/getpreviewlist")! 
+        let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getpreviewlist")! 
 //        let params = [
 //            "page" : page.description,
 //        ]
         self.FetchAndDecode(url: url,completion: completion)
     }
-
     
+    func getRecommandtionSearch(keyword queryWord : String,completion : @escaping (Result<Movie,MovieError>)-> ()){
+        let url = URL(string: "\(API_SERVER_HOST)\(search)/query")!
+        self.FetchAndDecode(url: url, completion:completion)
+    }
 }
 
 struct AlgorithmFormatJSON : Codable{

@@ -35,9 +35,9 @@ struct PersonInfo: Codable, Identifiable {
 }
 
 enum Tab : String {
-    case Actor = "Actor"
-    case Director = "Director"
-    case Genre = "Genre"
+    case Actor = "演員"
+    case Director = "導演"
+    case Genre = "類別"
     case All = "all"
 }
 
