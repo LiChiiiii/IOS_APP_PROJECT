@@ -332,21 +332,25 @@ class SearchBarViewModel : ObservableObject{
     @Published var searchResult : [Movie] = []
     @Published var isLoading : Bool = false
     @Published var fetchingError : NSError?
-    @Published var recommandPlachold : String = "尚氣與十環傳奇"
-    @Published var hotSearchingDatas : [HotItem] = []
+    @Published var recommandPlachold : String = "Movie Name"
+    @Published var hotList : [SearchHotItem] = []
+    @Published var isHotListLoading : Bool = false
+    @Published var hotListErr : NSError? = nil
     
     private let movieService: MovieService
+    private let apiService: APIService
     
-    init(movieService: MovieService = MovieStore.shared) {
+    init(movieService: MovieService = MovieStore.shared,apiService : APIService = APIService.shared) {
         self.movieService = movieService
-        self.hotSearchingDatas = HotTest
+        self.apiService = apiService
+//        self.hotSearchingDatas = HotTest
     }
     
     //fake ,just for testing
     //when searchingText is change chall it
     func getRecommandationList(keyWork : String){
 //        //when the return button is press
-
+        self.searchResult.removeAll()
         movieService.searchMovie(query: keyWork){ [weak self] result in
             guard let self = self else { return }
             self.isLoading = true
@@ -363,6 +367,27 @@ class SearchBarViewModel : ObservableObject{
         }
 //
     }
+    
+    func getHotSeachList(){
+        self.hotList.removeAll()
+        apiService.getHotSeachingList(){ [weak self] result in
+            guard let self = self else { return }
+            self.isHotListLoading = true
+            switch result{
+            case .success(let response):
+                self.hotList.append(contentsOf: response.map{$0})
+                self.recommandPlachold = self.hotList.randomElement()!.title
+                self.isHotListLoading = false
+
+            case .failure(let error):
+                self.isHotListLoading = false
+                self.hotListErr = error as NSError
+
+            }
+        }
+    }
+    
+
 }
 
 class SeachingViewStateManager : ObservableObject{
@@ -371,6 +396,7 @@ class SeachingViewStateManager : ObservableObject{
     @Published var isRemove : Bool = false
     @Published var isFocuse : [Bool] = [false,true] //we are only using [1] true mean open the keybody
     @Published var isEditing : Bool = false
+    @AppStorage("seachHistory") var history : [String] =  []
     
     //going to share the searching text between the view
 //    @Published var searchingText : String = ""
@@ -383,6 +409,24 @@ class SeachingViewStateManager : ObservableObject{
     
     //just for try!
     @Published var searchingLoading : Bool = true
+    
+    func updateSearchingHistory(query : String){
+        if self.history.count == 15{
+            self.history.removeLast()
+        }
+        
+        let exist = self.history.contains{$0 == query}
+        if exist{
+            //the string is inside the collection
+            let index = self.history.firstIndex(of: query)
+            self.history.remove(at: index!)
+        }
+        self.history.insert(query, at: 0)
+    }
+    
+    func removeAllHistory(){
+        self.history.removeAll()
+    }
 }
 
 

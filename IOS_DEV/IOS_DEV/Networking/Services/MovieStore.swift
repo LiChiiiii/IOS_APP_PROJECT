@@ -133,7 +133,7 @@ class MovieStore: MovieService {
         }
         
 //        print("//////////////////////")
-//        print(finalURL)
+        print(finalURL)
         
         urlSession.dataTask(with: finalURL) { [weak self] (data, response, error) in
             guard let self = self else { return }
@@ -229,7 +229,6 @@ class MovieStore: MovieService {
 }
 
 class APIService : ServerAPIServerServiceInterface{
-    
     static let shared = APIService()
     private init(){} //signleton mode
     
@@ -363,7 +362,7 @@ class APIService : ServerAPIServerServiceInterface{
         
 //        print(url.absoluteURL)
         self.FetchAndDecode(url: url,completion: completion)
-        
+    
     }
     
     func getPreviewMovie(datas: [DragItemData], completion: @escaping (Result<MoviePreviewInfo, MovieError>) -> ()) {
@@ -436,10 +435,16 @@ class APIService : ServerAPIServerServiceInterface{
         self.FetchAndDecode(url: url,completion: completion)
     }
     
-    func getRecommandtionSearch(keyword queryWord : String,completion : @escaping (Result<Movie,MovieError>)-> ()){
+    func getRecommandtionSearch(query key : String,completion : @escaping (Result<Movie,MovieError>)-> ()){
         let url = URL(string: "\(API_SERVER_HOST)\(search)/query")!
         self.FetchAndDecode(url: url, completion:completion)
     }
+    
+    func getHotSeachingList(completion: @escaping (Result<[SearchHotItem], MovieError>) -> ()) {
+        let url = URL(string: "\(API_SERVER_HOST)\(search)/gethotsearch")!
+        self.FetchAndDecode(url: url, completion: completion)
+    }
+    
 }
 
 struct AlgorithmFormatJSON : Codable{

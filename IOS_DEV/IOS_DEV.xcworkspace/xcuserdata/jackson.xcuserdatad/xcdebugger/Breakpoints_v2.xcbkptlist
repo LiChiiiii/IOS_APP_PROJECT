@@ -126,8 +126,8 @@
             filePath = "IOS_DEV/Networking/Services/MovieStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
+            startingLineNumber = "433"
+            endingLineNumber = "433"
             landmarkName = "getPreviewMovieList(completion:)"
             landmarkType = "7">
          </BreakpointContent>
