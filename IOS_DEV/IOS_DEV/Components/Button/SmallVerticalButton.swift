@@ -11,8 +11,8 @@ struct SmallVerticalButton: View {
     var IsOnImage:String
     var IsOffImage:String
     var colors:Color = Color.white
-    var text:String
-    var IsOn:Bool
+    var text:String 
+    @Binding var IsOn:Bool
     
     var buttonImage:String{
         if IsOn{
@@ -55,7 +55,7 @@ struct SmallVerticalButton_Previews: PreviewProvider {
             Color.black
                 .edgesIgnoringSafeArea(.all)
             
-            SmallVerticalButton(IsOnImage: "plus", IsOffImage: "checkmark",text: "My List",IsOn: false){
+            SmallVerticalButton(IsOnImage: "plus", IsOffImage: "checkmark",text: "My List",IsOn: .constant(false)){
                 print("Pressed")
             }
             

@@ -6,10 +6,31 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct Comments: View
 {
     var comment:Comment
+    @ObservedObject private var forumController = ForumController()
+    @State private var isMyFavorite = false
+    var heartImage:String{
+        if isMyFavorite{
+            return "heart.fill"
+        }
+        else{
+            return "heart"
+        }
+    }
+    
+    var heartCount:Int{
+        if isMyFavorite{
+            return comment.LikeCount+1
+        }
+        else{
+            return comment.LikeCount
+        }
+    }
+    
     var body: some View
     {
         
@@ -20,40 +41,12 @@ struct Comments: View
                     //Spacer()
                     HStack()
                     {
-                        if comment.user!.UserName == "Abc" {
-                            Image("p3")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(30)
-                                .padding(.leading,15)
-                        }
-                        else if comment.user!.UserName == "Chichi" {
-                            Image("pic")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(30)
-                                .padding(.leading,15)
-                        }
-                        else if comment.user!.UserName == "Angelababy" {
-                            Image("p1")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(30)
-                                .padding(.leading,15)
-                        }
-                        else{
-                            Image("p2")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(30)
-                                .padding(.leading,15)
-                        }
-                        
-//                        Image("ka")
-//                            .resizable()
-//                            .frame(width: 30, height: 30)
-//                            .cornerRadius(30)
-//                            .padding(.leading,15)
+                
+                        WebImage(url: comment.user!.user_avatarURL)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(30)
+                            .padding(.leading,15)
                         Text(comment.user!.UserName)
                         Spacer()
                         
@@ -67,12 +60,18 @@ struct Comments: View
                                     .padding(5)
                                     .foregroundColor(.gray)
                                 
-                                Image(systemName:"heart")
+                                Button(action:{
+                                    self.isMyFavorite.toggle()
+                                    forumController.PutComment(CommentID: comment.id!, LikeCount: heartCount, Text: comment.Text)
+                                }){
+                                    Image(systemName:heartImage)
                                     .resizable()
                                     .frame(width: 15, height: 15)
                                     .foregroundColor(.pink)
-                                
-                                Text("\(comment.LikeCount)")
+
+                                }
+
+                                Text("\(heartCount)")
                                 
                         
                             }

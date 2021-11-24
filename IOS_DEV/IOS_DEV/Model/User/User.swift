@@ -16,7 +16,7 @@ struct User: Decodable{
     var UserPhoto: String
     
     var UserPhotoURL: URL {
-        return URL(string:"\(baseUrl)/UserPhoto/\(id)" )!
+        return URL(string:"\(baseUrl)/UserPhoto/\(UserPhoto)" )!
     }
 }
 

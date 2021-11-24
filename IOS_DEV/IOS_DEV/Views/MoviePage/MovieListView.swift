@@ -189,7 +189,7 @@ struct MovieListView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.large)
-        .navigationBarTitle("\(NowUserName), 午安！")
+        .navigationBarTitle("\(NowUserName), 早安！")
         .toolbar{
             ToolbarItemGroup(placement:.navigationBarLeading){
                 HStack{

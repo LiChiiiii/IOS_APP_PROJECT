@@ -59,24 +59,26 @@ struct MessageBoardView: View
             
         }
         .toolbar{
-            if NowUserName == article.user?.UserName {
                 Menu {
-                    Button(action:{
-                        self.editAction.toggle()
-                    }){
-                        HStack {
-                            Text("編輯")
-                            Image(systemName: "pencil")
+                    if NowUserName == article.user?.UserName {
+                        Button(action:{
+                            self.editAction.toggle()
+                        }){
+                            HStack {
+                                Text("編輯")
+                                Image(systemName: "pencil")
+                            }
+                        }
+                        Button(action:{
+                            self.deleteAction.toggle()
+                        }){
+                            HStack {
+                                Text("刪除")
+                                Image(systemName: "trash")
+                            }
                         }
                     }
-                    Button(action:{
-                        self.deleteAction.toggle()
-                    }){
-                        HStack {
-                            Text("刪除")
-                            Image(systemName: "trash")
-                        }
-                    }
+                    
                     Button(action:{
                         self.GotoMovie.toggle()
                     }){
@@ -89,7 +91,7 @@ struct MessageBoardView: View
                } label: {
                    Image(systemName: "ellipsis")
                }
-            }
+            
         }
         .fullScreenCover(isPresented: self.$GotoMovie, content: {
             GestureDetailVeiw(movieId: article.movie ,navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true),isPresented: self.$GotoMovie)

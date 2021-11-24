@@ -107,30 +107,11 @@ struct ListButton:View{
                 
                     HStack(){
                         
-                        if list.user!.UserName == "SmallPig" {
-                            Image("p3")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                        }
-                        else if list.user!.UserName == "Chichi" {
-                            Image("pic")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                        }
-                        else if list.user!.UserName == "Angelababy" {
-                            Image("p1")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                        }
-                        else{
-                            Image("p2")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                        }
+                        WebImage(url: list.user!.user_avatarURL)
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .cornerRadius(30)
+                        
                        
                         Text(list.user!.UserName)
                             .foregroundColor(.gray)
@@ -168,7 +149,7 @@ struct ListButton:View{
                 })
             })
             .fullScreenCover(isPresented: self.$todo, content: {
-                ListDetailView(todo: self.$todo,listDetails: listController.listDetails,listOwner:list.user!.UserName,listTitle:list.Title)
+                ListDetailView(todo: self.$todo,listDetails: listController.listDetails, listOwnerPhoto: list.user!.user_avatarURL,listOwner:list.user!.UserName,listTitle:list.Title)
                 
             })
           

@@ -12,8 +12,11 @@ import SDWebImageSwiftUI
 struct MovieDetailView: View {
 
     let movieId: Int
+    @State private var todo : Bool = false
     @ObservedObject private var movieDetailState = MovieDetailState()
     @ObservedObject private var listController = ListController()
+    @ObservedObject private var favoriteController = FavoriteController()
+    @State var isMyFavorite = false
     @Binding var navBarHidden:Bool
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
@@ -24,15 +27,22 @@ struct MovieDetailView: View {
                 self.movieDetailState.loadMovie(id: self.movieId)
             }
 
-            if movieDetailState.movie != nil {
+            if movieDetailState.movie != nil && self.todo == true {
                 
-                WebImages(movie: movieDetailState.movie! , navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading,myMovieList:listController.mylistData)
+                WebImages(movie: movieDetailState.movie! , navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading,myMovieList:listController.mylistData, isMyFavorite:isMyFavorite)
 
             }
         }
         .onAppear {
             self.movieDetailState.loadMovie(id: self.movieId)
             self.listController.GetMyList(userID: NowUserID!)
+            self.favoriteController.CheckLikeMovie(movieID: movieId)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                if !self.favoriteController.favorite.isEmpty {
+                    self.isMyFavorite = true
+                }
+                self.todo = true
+            })
             
         }
     }
@@ -91,6 +101,7 @@ struct WebImages: View {
     @Binding var isLoading : Bool
     @State private var isAppear:Bool = false
     @State var myMovieList : [CustomList]
+    @State var isMyFavorite:Bool
 
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
@@ -145,7 +156,7 @@ struct WebImages: View {
                 
                
                
-                MovieInfoDetail(myMovieList:myMovieList , movie: movie)
+                MovieInfoDetail(myMovieList:myMovieList , movie: movie, isMyFavorite:isMyFavorite)
                     .padding([.bottom],UIApplication.shared.windows.first?.safeAreaInsets.bottom)
                     
                 //     .offset(y:10)
@@ -241,6 +252,9 @@ struct MovieInfoDetail: View {
     @State var myMovieList : [CustomList]
     @State var movie : Movie
     @ObservedObject private var controller = ListDetailController()
+    @ObservedObject private var favoriteController = FavoriteController()
+    @State var isMyFavorite: Bool 
+    
     
     var body: some View {
         VStack(spacing:5){
@@ -347,19 +361,20 @@ struct MovieInfoDetail: View {
                         }
                    }
                     
-                    //------------------------  + MY List -------------------------//
+                    //------------------------  Like ? -------------------------//
                     
                     
                     Spacer()
-                    
-                    
-
-                    SmallVerticalButton(IsOnImage: "heart.fill", IsOffImage: "heart", text: "Like", IsOn: true){
-                        //TODO
+          
+                    SmallVerticalButton(IsOnImage: "heart.fill", IsOffImage: "heart", text: "Like", IsOn: $isMyFavorite){
+                        isMyFavorite.toggle()
+                        
+                        if isMyFavorite == true {
+                            favoriteController.PostLikeMovie(movie: movie.id, title: movie.title, posterPath: movie.posterPath!)
+                        } else{
+                            self.favoriteController.deleteLikeMovie(movieID: movie.id)
+                        }
                     }
-                    
-                    
-
                     .padding(.trailing)
 
                 }
@@ -377,6 +392,7 @@ struct MovieInfoDetail: View {
             .padding(.top,5)
             .font(.system(size: 14))
             .foregroundColor(Color(UIColor.systemGray3))
+            
 
             
             
@@ -384,18 +400,19 @@ struct MovieInfoDetail: View {
         .font(.system(.title3))
         .foregroundColor(.white)
         .padding(.top)
-//        .background(Color.black.edgesIgnoringSafeArea(.all))
+       
+       
     }
 }
 
 struct VerticalButton: View {
     var body: some View {
         HStack(spacing:30){
-            SmallVerticalButton(IsOnImage: "paperplane.fill", IsOffImage: "paperplane.fill", text: "Share", IsOn: true){
+            SmallVerticalButton(IsOnImage: "paperplane.fill", IsOffImage: "paperplane.fill", text: "Share", IsOn: .constant(true)){
                 //TODO
             }
             
-            SmallVerticalButton(IsOnImage: "message.fill", IsOffImage: "message", text: "comment", IsOn: true){
+            SmallVerticalButton(IsOnImage: "message.fill", IsOffImage: "message", text: "comment", IsOn: .constant(true)){
                 //TODO
             }
             Spacer()

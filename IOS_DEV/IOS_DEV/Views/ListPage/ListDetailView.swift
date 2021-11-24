@@ -16,6 +16,7 @@ struct ListDetailView: View
     @State private var currentPage = 0
     @Binding var todo:Bool  //go back ListView
     @State var listDetails:[ListDetail] //片單資訊
+    @State var listOwnerPhoto:URL //片單創建者照片
     @State var listOwner:String //片單創建者
     @State var listTitle:String //片單名稱
     @State var listID:UUID? //片單ID
@@ -81,7 +82,7 @@ struct ListDetailView: View
                     VStack {
                             TabView(selection: $currentPage) {
                                 ForEach(0..<listDetails.count) { (index) in
-                                    CarouselBodyView(listTitle: listTitle, listOwner:listOwner, listDetail: listDetails[index], EditAction: self.$EditAction, DeleteAction: self.$DeleteAction)
+                                    CarouselBodyView(listTitle: listTitle, listOwner:listOwner, listOwnerPhoto: listOwnerPhoto, listDetail: listDetails[index], EditAction: self.$EditAction, DeleteAction: self.$DeleteAction)
                                         
                                     
                                 }
@@ -110,13 +111,13 @@ struct ListDetailView: View
 }
 
 
-struct ListDetailView_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        ListDetailView(todo: .constant(true), listDetails: stubbedListDetail, listOwner: "Chichi", listTitle: "你一定要看")
-    }
-}
+//struct ListDetailView_Previews: PreviewProvider
+//{
+//    static var previews: some View
+//    {
+//        ListDetailView(todo: .constant(true), listDetails: stubbedListDetail, listOwner: "Chichi", listTitle: "你一定要看")
+//    }
+//}
 
 
 
@@ -125,6 +126,7 @@ struct CarouselBodyView: View
     @ObservedObject private var controller = ListDetailController()
     @State var listTitle:String //片單名稱
     @State var listOwner:String //片單創建者
+    @State var listOwnerPhoto:URL //片單創建者照片
     @State var listDetail:ListDetail //片單資訊
     @Binding var EditAction : Bool
     @Binding var DeleteAction : Bool
@@ -190,27 +192,13 @@ struct CarouselBodyView: View
                 
                         HStack(spacing:25){
                             
-                            if listOwner == "Chichi" {
-                                Image("pic")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 55, height: 55)
-                                    .clipShape(Circle())
-                            }
-                            else if listOwner == "Angelababy" {
-                                Image("p1")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 55, height: 55)
-                                    .clipShape(Circle())
-                            }
-                            else{
-                                Image("p2")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 55, height: 55)
-                                    .clipShape(Circle())
-                            }
+                            
+                            WebImage(url: listOwnerPhoto)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 55, height: 55)
+                                .clipShape(Circle())
+                            
                            
 
                             VStack(alignment: .leading,spacing:6){

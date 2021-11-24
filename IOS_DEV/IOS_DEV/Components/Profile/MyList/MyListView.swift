@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SDWebImageSwiftUI
 
 
 struct MyListView: View {
@@ -102,7 +103,7 @@ struct MyListButton:View{
                     
                 
                     HStack(){
-                        Image("pic")
+                        WebImage(url: list.user!.user_avatarURL)
                             .resizable()
                             .frame(width: 40, height: 40)
                             .cornerRadius(30)
@@ -142,7 +143,7 @@ struct MyListButton:View{
             })
             //點擊button進入detailView
             .fullScreenCover(isPresented: self.$todo, content: {
-                ListDetailView(todo: self.$todo, listDetails: listController.listDetails, listOwner: NowUserName, listTitle: list.Title)
+                ListDetailView(todo: self.$todo, listDetails: listController.listDetails, listOwnerPhoto: list.user!.user_avatarURL, listOwner: list.user!.UserName, listTitle: list.Title)
                 
             })
             //長按動作

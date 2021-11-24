@@ -49,10 +49,10 @@ struct ProfileView: View {
     
     @State private var userID = "Justin Bieber" //UserID
     @State private var likedMovie = 30
-//    @State private var PhotoStr:String = "http://127.0.0.1:8080/UserPhoto/4c163c0d-79f0-45ea-94c9-556e49853a6f"
     @State private var notification = true
     @State private var select: SideOfState = .movie
     @ObservedObject private var userController = UserController()
+    @ObservedObject private var favoriteController = FavoriteController()
     @State private var appearPhoto = false
     
     @State var isLoading : Bool = true
@@ -76,7 +76,9 @@ struct ProfileView: View {
                                 .bold()
 
                     }.onAppear(){
-                        self.userController.GetUserPhoto()
+                        self.userController.GetUserInfo(userID: NowUserID!)
+                        self.favoriteController.GetLikeMovie(userID: NowUserID!)
+                        self.favoriteController.GetLikeArticle(userID: NowUserID!)
                     }
                   
                
@@ -163,9 +165,9 @@ struct ProfileView: View {
                     .frame(width: 360)
                     switch select{
                     case .movie:
-                        movieRecord()
+                        movieRecord(movies: favoriteController.MovieData)
                     case .article:
-                        articleRecord()
+                        articleRecord(articles: favoriteController.ArticleData)
                     }
                     Spacer()
                 }
@@ -215,15 +217,7 @@ struct AccountSettingView: View {
                     }, label:{
                         Text("選擇大頭照")
                     })
-                    
-    //                Button(action:{
-    //                    let uiImage: UIImage = self.selectedImage.asUIImage()
-    //                    userController.PostUserPhoto(uiImage:uiImage)
-    //                    NowUserPhoto = selectedImage
-    //
-    //                }, label:{
-    //                    Text("確定更換大頭照")
-    //                })
+        
                     
                     
                 }
@@ -350,110 +344,5 @@ struct genrebutton: View {
 }
 
 
-struct movieRecord: View {
-    
-    let movies : [Movie] = stubbedMovie
-    var columns = Array(repeating: GridItem(.flexible(),spacing:20), count: 2)
-      
-    var body: some View{
-        
-        LazyVGrid(columns: columns, spacing: 20){
-            
-            ForEach(movies, id:\.id){ movie in
-                WebImage(url: movie.posterURL)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .cornerRadius(8)
-                    .shadow(radius: 4)
-            }
-        }
-    }
-}
-
-
-struct articleRecord: View {
-    
-    let articles : [Article] = stubbedArticles
-    var columns = Array(repeating: GridItem(.flexible(),spacing:5), count: 2)
-      
-    var body: some View{
-        
-        LazyVGrid(columns: columns, spacing: 10){
-            
-            ForEach(articles, id:\.Title){ article in
-                
-                VStack(alignment:.leading){
-                    HStack(){
-                        
-                        if article.user!.UserName == "Abc" {
-                            Image("p3")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                                .padding(.leading,5)
-                        }
-                        else if article.user!.UserName == "Chichi" {
-                            Image("pic")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                                .padding(.leading,5)
-                        }
-                        else if article.user!.UserName == "Angelababy" {
-                            Image("p1")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                                .padding(.leading,5)
-                        }
-                        else{
-                            Image("p2")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(30)
-                                .padding(.leading,5)
-                        }
-                        
-//                        Image("ka")
-//                            .resizable()
-//                            .frame(width: 40, height: 40)
-//                            .cornerRadius(30)
-//                            .padding(.leading,5)
-                        
-                        
-                        Text(article.user!.UserName)
-                            .foregroundColor(.gray)
-                            .font(.system(size: 15))
-                    }
-                    .padding(.top,15)
-                    
-                    
-                    Text(article.Title)
-                        .bold()
-                        .font(.system(size: 16))
-                        .padding(5)
-                    
-                    Text(article.Text)
-                        .foregroundColor(.gray)
-                        .font(.system(size: 13))
-                        .padding(5)
-                            
-                    
-                    Spacer()
-                    
-                    
-                }
-                .frame(width:170,height: 170)
-                .background(BlurView().cornerRadius(25))
-                .shadow(color: .gray, radius: 0.5)
-                .foregroundColor(.white)
-                .padding(10)
-                .cornerRadius(20)
-
-                
-            }
-        }
-    }
-}
 
 

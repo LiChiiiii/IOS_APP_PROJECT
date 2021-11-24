@@ -10,7 +10,7 @@
 import Foundation
 import SwiftUI
 
-let baseUrl="http://127.0.0.1:8080"
+let baseUrl="http://192.168.0.20:8080"
 
 class NetworkingService: ObservableObject {
     
@@ -151,58 +151,58 @@ class NetworkingService: ObservableObject {
     }
     
     //----------------------------------取得使用者資訊-------------------------------------//
-//    func GetUserInfo(endpoint: String,
-//                 completion: @escaping (Result<User, Error>) -> Void) {
-//
-//        guard let url = URL(string: baseUrl + endpoint) else {
-//            completion(.failure(NetworkingError.badUrl))
-//            return
-//        }
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-//
-//        userInfoResponse(for: request, completion: completion)
-//
-//    }
-//
-//
-//    func userInfoResponse(for request: URLRequest,
-//                        completion: @escaping (Result<User, Error>) -> Void){
-//
-//        let session = URLSession.shared
-//
-//        let task = session.dataTask(with: request) { (data, response, error) in
-//
-//            //check the response status
-//            DispatchQueue.main.async {
-//                if let unwrappedError = error {
-//                    completion(.failure(unwrappedError))
-//                    return
-//                }
-//                if let unwrappedData = data {
-//                    do {
-//                        if let user = try? JSONDecoder().decode(User.self, from: unwrappedData) {
-//                            completion(.success(user))
-//                        } else {
-//                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
-//                            completion(.failure(errorResponse))
-//                        }
-//
-//                    } catch {
-//                        completion(.failure(error))
-//                    }
-//                }
-//
-//            }
-//
-//        }
-//
-//        task.resume()
-//
-//    }
-//
+    func GetUserInfo(endpoint: String,
+                 completion: @escaping (Result<User, Error>) -> Void) {
+
+        guard let url = URL(string: baseUrl + endpoint) else {
+            completion(.failure(NetworkingError.badUrl))
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        userInfoResponse(for: request, completion: completion)
+
+    }
+
+
+    func userInfoResponse(for request: URLRequest,
+                        completion: @escaping (Result<User, Error>) -> Void){
+
+        let session = URLSession.shared
+
+        let task = session.dataTask(with: request) { (data, response, error) in
+
+            //check the response status
+            DispatchQueue.main.async {
+                if let unwrappedError = error {
+                    completion(.failure(unwrappedError))
+                    return
+                }
+                if let unwrappedData = data {
+                    do {
+                        if let user = try? JSONDecoder().decode(User.self, from: unwrappedData) {
+                            completion(.success(user))
+                        } else {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: unwrappedData)
+                            completion(.failure(errorResponse))
+                        }
+
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+
+            }
+
+        }
+
+        task.resume()
+
+    }
+
     
     enum NetworkingError: Error{
         case badUrl

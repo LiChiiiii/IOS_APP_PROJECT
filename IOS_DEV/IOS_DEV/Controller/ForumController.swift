@@ -68,10 +68,10 @@ class ForumController: ObservableObject {
         articleService.PUT_Article(endpoint: "/article/update",RegisterObject: update ){ (result) in
             switch result {
             case 200 :
-                print("put list success")
+                print("put article success")
 
             default:
-                print("put list failed")
+                print("put article failed")
             }
             
         }

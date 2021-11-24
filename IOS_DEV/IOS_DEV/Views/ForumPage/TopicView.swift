@@ -203,12 +203,12 @@ struct TopicView: View
 //}
 
 
-struct TopicView_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        TopicView(articles: stubbedArticles, movie: stubbedMovie[0])
-      
-
-    }
-}
+//struct TopicView_Previews: PreviewProvider
+//{
+//    static var previews: some View
+//    {
+//        TopicView(articles: stubbedArticles, movie: stubbedMovie[0])
+//      
+//
+//    }
+//}

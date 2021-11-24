@@ -105,10 +105,10 @@ struct TractateButton:View{
 }
 
 
-struct TractateView_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        TractateView(articles: stubbedArticles)
-    }
-}
+//struct TractateView_Previews: PreviewProvider
+//{
+//    static var previews: some View
+//    {
+//        TractateView(articles: stubbedArticles)
+//    }
+//}

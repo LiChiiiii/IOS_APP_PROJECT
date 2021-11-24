@@ -15,10 +15,13 @@ struct GestureDetailVeiw: View {
     let movieId: Int
     @ObservedObject private var movieDetailState = MovieDetailState()
     @ObservedObject private var listController = ListController()
+    @ObservedObject private var favoriteController = FavoriteController()
     @Binding var navBarHidden:Bool
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
     @Binding var isPresented : Bool
+    @State var isMyFavorite = false
+    @State private var todo : Bool = false
     
     var body: some View {
         ZStack {
@@ -26,15 +29,22 @@ struct GestureDetailVeiw: View {
                 self.movieDetailState.loadMovie(id: self.movieId)
             }
 
-            if movieDetailState.movie != nil {
+            if movieDetailState.movie != nil && self.todo == true {
                 
-                GestureDetail(movie: self.movieDetailState.movie!, navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading, isPresented:$isPresented,myMovieList:listController.mylistData)
+                GestureDetail(movie: self.movieDetailState.movie!, navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading, isPresented:$isPresented,myMovieList:listController.mylistData,isMyFavorite:isMyFavorite)
 
             }
         }
         .onAppear {
             self.movieDetailState.loadMovie(id: self.movieId)
             self.listController.GetMyList(userID: NowUserID!)
+            self.favoriteController.CheckLikeMovie(movieID: movieId)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                if !self.favoriteController.favorite.isEmpty {
+                    self.isMyFavorite = true
+                }
+                self.todo = true
+            })
         }
     }
 }
@@ -54,6 +64,7 @@ struct GestureDetail: View {
     @Binding var isPresented : Bool
     @State private var isAppear:Bool = false
     @State var myMovieList : [CustomList]
+    @State var isMyFavorite : Bool
     
     //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
     var body: some View {
@@ -108,63 +119,20 @@ struct GestureDetail: View {
                         
                     }
                     .frame(height: 510)
-                    //.frame(height:480 - 150)
                     .animation(.spring(),value:showAnimation)
-                    //                        Detail Items
-                    
+                   
                    
                     
-                    MovieInfoDetail(myMovieList:myMovieList , movie: movie)
-                        .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-                        
-//                         .offset(y:10)
-//                       .background(Color.black.edgesIgnoringSafeArea(.all))
-                    
+                    MovieInfoDetail(myMovieList:myMovieList , movie: movie, isMyFavorite: isMyFavorite)
+//                        .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+
                     
                 }
                 .foregroundColor(.white)
                 .frame(width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height)
                 .background(Color.init("navBarBlack").edgesIgnoringSafeArea(.all))
                 
-    //            Group{
-    //                HStack(alignment:.bottom){
-    //                    HStack(alignment:.center,spacing:0){
-    //                        Button(action:{
-    //                            //back to the page
-    //                            withAnimation{
-    //                                isAction.toggle()
-    //                                isAppear = true
-    //                            }
-    //                        }){
-    //                            HStack(alignment:.center , spacing: 5){
-    //                                Image(systemName: "chevron.backward")
-    //                                    .font(.system(size:18,weight:.bold))
-    //                                Text("Back")
-    //                            }
-    //
-    //                        }
-    //
-    //                        Spacer()
-    //
-    //                            if self.showMovieName{
-    //                                showBarItem(imgURL: movie.posterURL,name:movie.title)
-    //                                    .animation(.easeInOut(duration: 0.08))
-    //                                    .transition(.asymmetric(insertion: .flipFromBottom, removal:.fade))
-    //                            }
-    //
-    //                    }
-    //                }
-    //                .frame(minHeight:50)
-    //                .padding(.horizontal,10)
-    //                .padding(.bottom,5)
-    //
-    //            }
-    //            .foregroundColor(opacity > 0.6 ? Color(UIColor.systemGray3):.white)
-    //            .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
-    //            .background(Color.init("navBarBlack").opacity(opacity))
-    //            .shadow(color: Color.init("navBarBlack").opacity(self.opacity > 0.8 ? 0.5 : 0), radius: 5, x: 0, y: 5)
-    //            .edgesIgnoringSafeArea(.top)
-    //            .unredacted()
+ 
 
 
                 
@@ -172,9 +140,6 @@ struct GestureDetail: View {
             }
             .edgesIgnoringSafeArea(.all)
             .frame(height:UIScreen.main.bounds.height)
-//            .navigationTitle("")
-//            .navigationBarTitle("")
-//            .navigationBarItems(trailing:showBarItem(imgURL: movie.posterURL, name:movie.title).opacity(showMovieName ? 1 : 0).animation(.linear).transition(.flipFromBottom))
             .navigationBarHidden(true)
             .padding(.horizontal,10)
             .onAppear{

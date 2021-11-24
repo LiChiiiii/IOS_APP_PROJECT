@@ -6,59 +6,72 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+
 
 struct MessageBoard: View
 {
     @State private var texts=""
-    
+    @State private var isMyFavorite = false
     var article:Article
     @State var comments:[Comment]
     let commentService = CommentService()
+    @ObservedObject private var forumController = ForumController()
+    @ObservedObject private var favoriteController = FavoriteController()
+    @State private var favoriteID:UUID?
+    
+    var heartImage:String{
+        if isMyFavorite{
+            return "heart.fill"
+        }
+        else{
+            return "heart"
+        }
+    }
+    
+    var like_heartCount:Int{    //原本已在喜愛項目
+        if isMyFavorite{
+            return article.LikeCount
+        }
+        else{
+            return article.LikeCount-1
+        }
+    }
+    
+    var dislike_heartCount:Int{     //原本不在喜愛項目
+        if isMyFavorite{
+            return article.LikeCount+1
+        }
+        else{
+            return article.LikeCount
+        }
+    }
+    
+    var heartCount:Int{             //判斷是否在喜愛項目
+        if favoriteID != nil {
+            return like_heartCount
+        }
+        else{
+            return dislike_heartCount
+        }
+    }
 
     
     var body: some View
     {
-
    
         VStack(alignment:.leading)
         {
             //Spacer()
             HStack()
             {
-                if article.user!.UserName == "Abc" {
-                    Image("p3")
-                        .resizable()
-                        .frame(width: 45, height: 45)
-                        .cornerRadius(30)
-                        .padding(.leading,15)
-                }
-                else if article.user!.UserName == "Chichi" {
-                    Image("pic")
-                        .resizable()
-                        .frame(width: 45, height: 45)
-                        .cornerRadius(30)
-                        .padding(.leading,15)
-                }
-                else if article.user!.UserName == "Angelababy" {
-                    Image("p1")
-                        .resizable()
-                        .frame(width: 45, height: 45)
-                        .cornerRadius(30)
-                        .padding(.leading,15)
-                }
-                else{
-                    Image("p2")
-                        .resizable()
-                        .frame(width: 45, height: 45)
-                        .cornerRadius(30)
-                        .padding(.leading,15)
-                }
                 
-//                Image("pic")
-//                    .resizable()
-//                    .frame(width: 45, height: 45)
-//                    .cornerRadius(30)
-//                    .padding(.leading,15)
+                WebImage(url: article.user?.user_avatarURL)
+                    .resizable()
+                    .frame(width: 45, height: 45)
+                    .cornerRadius(30)
+                    .padding(.leading,15)
+                
                 Text(article.user!.UserName)
                 Spacer()
             }
@@ -83,12 +96,26 @@ struct MessageBoard: View
                     .padding(25)
                     .foregroundColor(.gray)
 
-                Image(systemName:"heart")
-                .resizable()
-                .frame(width: 15, height: 15)
-                .foregroundColor(.pink)
+                Button(action:{
+                    self.isMyFavorite.toggle()
+                    
+                    if isMyFavorite == false {
+                        favoriteController.deleteLikeArticle(FavoriteID: favoriteID!)
+                        forumController.PutArticle(articleID: article.id!, Title: article.Title, Text: article.Text, LikeCount: article.LikeCount-1)
+                    }else{
+                        favoriteController.PostLikeArticle(articleID: article.id!)
+                        forumController.PutArticle(articleID: article.id!, Title: article.Title, Text: article.Text, LikeCount: article.LikeCount+1)
+                    }
+                        
+                }){
+                    Image(systemName:heartImage)
+                    .resizable()
+                    .frame(width: 15, height: 15)
+                    .foregroundColor(.pink)
 
-                Text("\(article.LikeCount)")
+                }
+
+                Text("\(heartCount)")
             }
             .font(.footnote)
            
@@ -123,10 +150,20 @@ struct MessageBoard: View
   
             
         }
+        .onAppear{
+            self.favoriteController.CheckLikeArticle(articleID: article.id!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                if !self.favoriteController.favorite.isEmpty {
+                    self.isMyFavorite = true
+                    self.favoriteID = (favoriteController.favorite.first?.id)!
+                }
+            })
+        }
             
     }
     
     
+    //-----------------------------------------新增留言功能-----------------------------------------//
     func PostComment(){
         
         let com = CommentTodo(Text: self.texts, UserName: NowUserName, ArticleID: article.id!.uuidString , LikeCount: 0)

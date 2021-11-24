@@ -5,6 +5,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct TopicFrame: View
 {
@@ -33,31 +34,10 @@ struct TopicFrame: View
                         Spacer()
                         HStack()
                         {
-                            if article.user!.UserName == "Abc" {
-                                Image("p3")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .cornerRadius(30)
-                            }
-                            else if article.user!.UserName == "Chichi" {
-                                Image("pic")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .cornerRadius(30)
-                            }
-                            else if article.user!.UserName == "Angelababy" {
-                                Image("p1")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .cornerRadius(30)
-                            }
-                            else{
-                                Image("p2")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .cornerRadius(30)
-                            }
-                            
+                            WebImage(url: article.user?.user_avatarURL)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .cornerRadius(30)
                             
                             Text(article.user!.UserName)
                             Spacer()
