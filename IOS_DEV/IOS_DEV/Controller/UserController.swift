@@ -19,19 +19,19 @@ class UserController: ObservableObject {
     var imageCache = _imageCache
     
     
-//    func GetUserPhoto(){
-//        networkingService.GET_userPhoto(endpoint: "/UserPhoto/my/\(NowUserID!)"){ [self] (result) in
-//            switch result {
-//            case nil:
-//                print("UserPhoto failed")
-//            default:
-//                self.PhotoStr = result
-//                print("PhotoStr: \(PhotoStr!)")
-//                loadImage(with: self.PhotoStr!)
-//            }
-//
-//        }
-//    }
+    func GetUserPhoto(){
+        networkingService.GET_userPhoto(endpoint: "/UserPhoto/my/\(NowUserID!)"){ [self] (result) in
+            switch result {
+            case nil:
+                print("UserPhoto failed")
+            default:
+                self.PhotoStr = result
+                print("PhotoStr: \(PhotoStr!)")
+                loadImage(with: self.PhotoStr!)
+            }
+
+        }
+    }
 
 
     

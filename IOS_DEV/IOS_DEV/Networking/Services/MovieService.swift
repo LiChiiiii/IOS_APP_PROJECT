@@ -4,7 +4,7 @@
 //
 //  Created by Kao Li Chi on 2021/5/2.
 //
-// Interface, endpoint, error 
+// Interface, endpoint, error
 
 import Foundation
 
@@ -19,7 +19,30 @@ protocol MovieService {
     func GenreType(genreID: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ())
     func fetchMovieResource(query: String, completion: @escaping (Result<[ResourceResponse], MovieError>) -> ())
+    
 }
+
+
+protocol ServerAPIServerServiceInterface {
+    
+    //Searching and playground
+    //TODO - Person data format
+    func fetchActors(page : Int ,completion : @escaping (Result<PersonInfoResponse,MovieError>) ->  ())
+    func fetchDirectors(page : Int ,completion : @escaping (Result<PersonInfoResponse,MovieError>) -> ())
+    
+    //TODO - Genre with description image of a referencing movie
+    func fetchGenreById(genreID id :Int, dataSize size : Int , completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
+    func fetchAllGenres(completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
+    
+    //TODO -Preview API
+    func getPreviewMovie(datas : [DragItemData],completion : @escaping (Result<MoviePreviewInfo,MovieError>) -> ())
+    func getPreviewMovieList(completion : @escaping (Result<[MoviePreviewInfo],MovieError>) -> ())
+    
+    //TODO -Search API
+    func getRecommandtionSearch(query key: String,completion : @escaping (Result<Movie,MovieError>)-> ())
+    func getHotSeachingList(completion : @escaping (Result<[SearchHotItem],MovieError>)->())
+}
+
 
 enum MovieListEndpoint: String, CaseIterable, Identifiable {
 

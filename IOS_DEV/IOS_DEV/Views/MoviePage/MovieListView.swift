@@ -26,19 +26,17 @@ struct MovieListView: View {
         
         
         ScrollView(.vertical, showsIndicators: false){
-            
-         
-            VStack{
+            LazyVStack{
                 ScrollView(.horizontal, showsIndicators: false)
                 {
-                    
-                 
-                    HStack(spacing: 30)
+                    LazyHStack(spacing: 30)
                     {
                         //one
                         Group {
                             if genreTypeState.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState.movies!,genreID:28)
+                                    .environmentObject(genreTypeState)
+                                    
                 
                             } else {
                                 LoadingView(isLoading: self.genreTypeState.isLoading, error: self.genreTypeState.error) {
@@ -53,6 +51,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState2.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState2.movies!,genreID:16)
+                                    .environmentObject(genreTypeState2)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState2.isLoading, error: self.genreTypeState2.error) {
                                     self.genreTypeState2.genreType(
@@ -66,6 +65,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState3.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState3.movies!,genreID:12)
+                                    .environmentObject(genreTypeState3)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState3.isLoading, error: self.genreTypeState3.error) {
                                     self.genreTypeState3.genreType(
@@ -79,6 +79,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState4.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState4.movies!,genreID:35)
+                                    .environmentObject(genreTypeState4)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState4.isLoading, error: self.genreTypeState4.error) {
                                     self.genreTypeState4.genreType(
@@ -92,6 +93,7 @@ struct MovieListView: View {
                         Group {
                             if genreTypeState5.movies != nil {
                                 MovieCardCarousel(movies: genreTypeState5.movies!,genreID:80)
+                                    .environmentObject(genreTypeState5)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState5.isLoading, error: self.genreTypeState5.error) {
                                     self.genreTypeState5.genreType(
@@ -108,7 +110,7 @@ struct MovieListView: View {
 
 
                 }//scrollview
-                .frame(height:535)
+                .frame(height:600)
                 
             }.onAppear{
                 self.genreTypeState.genreType(genreID:28)
@@ -116,18 +118,14 @@ struct MovieListView: View {
                 self.genreTypeState3.genreType(genreID:12)
                 self.genreTypeState4.genreType(genreID:35)
                 self.genreTypeState5.genreType(genreID:80)
-
             }
-            
-        
-            
-            
-                
-            VStack{
+
+            LazyVStack{
               
                 Group {
                     if nowPlayingState.movies != nil {
-                        MoviePosterCarousel(title: "現正熱映", movies: nowPlayingState.movies!)
+                        MoviePosterCarousel(title: "Now Playing", movies: nowPlayingState.movies!)
+                            .padding(.bottom)
                         
                     } else {
                         LoadingView(isLoading: self.nowPlayingState.isLoading, error: self.nowPlayingState.error) {
@@ -136,11 +134,12 @@ struct MovieListView: View {
                     }
                     
                 }
-                .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
                 
                 Group {
                     if upcomingState.movies != nil {
-                        MoviePosterCarousel(title: "即將上映", movies: upcomingState.movies!)
+                        MoviePosterCarousel(title: "Upcoming", movies: upcomingState.movies!)
+                            .padding(.bottom)
                     } else {
                         LoadingView(isLoading: self.upcomingState.isLoading, error: self.upcomingState.error) {
                             self.upcomingState.loadMovies(with: .upcoming)
@@ -152,7 +151,8 @@ struct MovieListView: View {
                 
                 Group {
                     if topRatedState.movies != nil {
-                        MoviePosterCarousel(title: "高評價電影", movies: topRatedState.movies!)
+                        MoviePosterCarousel(title: "Top Rated", movies: topRatedState.movies!)
+                            .padding(.bottom)
                         
                     } else {
                         LoadingView(isLoading: self.topRatedState.isLoading, error: self.topRatedState.error) {
@@ -166,7 +166,8 @@ struct MovieListView: View {
                 
                 Group {
                     if popularState.movies != nil {
-                        MoviePosterCarousel(title: "受歡迎電影", movies: popularState.movies!)
+                        MoviePosterCarousel(title: "Popular", movies: popularState.movies!)
+                            .padding(.bottom)
                         
                     } else {
                         LoadingView(isLoading: self.popularState.isLoading, error: self.popularState.error) {
@@ -187,6 +188,8 @@ struct MovieListView: View {
             
             
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.large)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.large)
         .navigationBarTitle("\(NowUserName), 早安！")

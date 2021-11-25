@@ -12,101 +12,242 @@ import SwiftUI
 struct MovieCardGesture :View{
     let imageLoader = ImageLoader()
 
+    @EnvironmentObject var movieListMV : GenreTypeState
     @State var movies : [Movie]  //allow as to remove
     @State var currentMovie:Movie?
     @State var gestureState = CardGesture.CardGestureState.inactive
     @Binding var backHomePage:Bool
+
+    
+    @State private var isMovieDetail : Bool = false
+    @State private var previewMovieId : Int?
+    
+    let genreData = DataLoader().genreData
+    let genreID : Int
+    
     var body: some View {
-        ZStack(){
-
-
-            ForEach(movies){movie in
-
-                if self.movies.reversed().firstIndex(where: {$0.id == movie.id}) == 0{
-                    //render the current item as CoverGesture view
-
-                    CardGesture(
-                        DragState: self.$gestureState,
-                        onTapGesture: {},
-                        willEndTranslation: {(translation) in},
-                        EndTranslation: {(direction) in
-                            self.getEndPostion(direction: direction)
-                        }, movie: movie)
-                    
-                }else{
-                    TheCard(movie: movie)
-                        .frame(width:245)
-                        .scaleEffect( 1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movie.id})!) * 0.03 + self.calculateScale())
-                        .padding(.top,1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movie.id})!) * 16)
-                        .animation(.spring())
-
-                }
-
-            }
-
-
-            GeometryReader{proxy in
-                    Button(action:{
-                        withAnimation(){
-                            self.backHomePage.toggle()
+        NavigationView{
+            ZStack{
+                ZStack(){
+                    ForEach(movies){movie in
+                        
+                        if self.movies.reversed().firstIndex(where: {$0.id == movie.id}) == 0{
+                            //render the current item as CoverGesture view
+                            //arrow to drag
+                            CardGesture(
+                                DragState: self.$gestureState,
+                                //                        onTapGesture: {},
+                                willEndTranslation: {(translation) in},
+                                EndTranslation: {(direction) in
+                                    self.getEndPostion(direction: direction)
+                                }, movie: movie)
+                            
+                        }else{
+                            //just show
+                            TheCard(movie: movie)
+                                .frame(width:245)
+                                .scaleEffect( 1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movie.id})!) * 0.03 + self.calculateScale())
+                                .padding(.top,1 - CGFloat(self.movies.reversed().firstIndex(where: {$0.id == movie.id})!) * 16)
+                                .animation(.spring())
+                            
                         }
-                    }){
-                        ZStack{
-                            Circle()
-                                .frame(width:30,height:30)
-                                .opacity(0.5)
-                            Image(systemName: "xmark")
-                                .foregroundColor(.white)
-                        }
-                        .foregroundColor(.black)
-
+                        
                     }
-                    .position(x: proxy.frame(in: .local).maxX - 40
-                              , y: proxy.frame(in: .local).minY + 10)
+                    
+                    
+                    GeometryReader{proxy in
+                        Button(action:{
+                            withAnimation(){
+                                self.backHomePage.toggle()
+                            }
+                        }){
+                            ZStack{
+                                Circle()
+                                    .frame(width:30,height:30)
+                                    .opacity(0.5)
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.white)
+                            }
+                            .foregroundColor(.black)
+                            
+                        }
+                        .position(x: proxy.frame(in: .local).maxX - 40
+                                  , y: proxy.frame(in: .local).minY + 10)
+                        
+                        
+                        VStack{
+                            Text("Movie Discovery")
+                                .bold()
+                                .font(.title3)
+                            
+                            HStack{
+                                ForEach(genreData, id:\.id){ genre in
+                                    if genre.id == self.genreID {
+                                        Text(genre.name)
+                                            .bold()
+                                            .font(.subheadline)
+                                    }
+                                }
+                            }
 
-
-//                Text(self.currentMovie!.ratingText)
-//                    .foregroundColor(.yellow)
-//                    .font(.system(size: 20))
-//                    .position(x: proxy.frame(in: .local).midX
-//                              , y: proxy.frame(in: .local).minY + 50)
-
-                self.renderCurrentInfo()
-                .position(x: proxy.frame(in: .local).midX
-                          , y: proxy.frame(in: .local).maxY - 100)
-
+                        }
+                        .position(x: proxy.frame(in: .local).midX
+                                  , y: proxy.frame(in: .local).minY + 50)
+                        
+                        
+                        self.renderCurrentInfo()
+                            .position(x: proxy.frame(in: .local).midX
+                                      , y: proxy.frame(in: .local).maxY - 50)
+                        
+                        
+                    }
+                }
+                    .background(FullMovieCoverBackground(urlPath: self.currentMovie?.posterPath ?? "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg").blur(radius: 50))
+                
+                if previewMovieId != nil{
+                    NavigationLink(destination: MovieDetailView(movieId:self.previewMovieId!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$isMovieDetail){
+                        EmptyView()
+                    }
+                }
             }
-
-
-
-
+            .navigationViewStyle(DoubleColumnNavigationViewStyle())
+//            .navigationTitle(self.isActive ? "Back" : "")
+            .navigationBarTitle(self.isMovieDetail ? "Back" : "")
+            .navigationBarHidden(true)
         }
-        .background(FullMovieCoverBackground(urlPath: self.currentMovie?.posterPath ?? "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg").blur(radius: 50))
-
+        
+    }
+    
+    func movingLeft() -> Double{
+        //get current possition to determine the opcacity factor
+        Double(-gestureState.translation.width / 1000)
+    }
+    
+    func movingRight() -> Double{
+        //get current possition to determine the opcacity factor
+        Double(gestureState.translation.width / 1000)
     }
 
-
-    func renderCurrentInfo() -> some View{
+    func renderCurrentInfo() -> some View {
         ZStack{
 
             if currentMovie != nil{
-                VStack(spacing:10){
+                Group(){
                     
-                    Text(currentMovie!.title)
-                        .bold()
-                        .foregroundColor(.white)
-                        .lineLimit(2)
-                        .font(.system(size: 25))
+                    VStack(spacing:10){
+                        Text(currentMovie!.title)
+                            .bold()
+                            .foregroundColor(.white)
+                            .lineLimit(2)
+                            .font(.system(size: 25))
+                            .multilineTextAlignment(.center)
 
-                    Text(self.currentMovie!.ratingText)
-                        .foregroundColor(.yellow)
-                        .font(.system(size: 23))
+                        HStack(spacing:3){
+                            if (currentMovie!.voteAverage)/2 == 0{
+                                Text("N/A")
+                                    .foregroundColor(.white)
+                                    .font(.caption)
+                            }else{
+                                ForEach(1...5,id:\.self){index in
+                                    Image(systemName: "star.fill")
+                                        .font(.caption)
+                                        .foregroundColor(index <= Int(currentMovie!.voteAverage)/2 ? .yellow: .gray)
+                                }
+                                
+                                Text("(\(Int(currentMovie!.voteAverage)/2).0)")
+                                    .foregroundColor(.white)
+                                    .font(.caption)
+                            }
+
+                        }
+                    }
+                    .opacity(self.gestureState.isDragging ? 0 : 1)
+                    .animation(.easeInOut)
+                    .offset(y:-80)
+    
+//
+                    
+                    Circle()
+                        .strokeBorder(Color.red,lineWidth: 1)
+                        .frame(width: 50, height: 50)
+                        .overlay(Image(systemName: "xmark").foregroundColor(.red))
+                        .opacity(self.gestureState.isDragging ? 0 : 1)
+                        .animation(.easeInOut)
+                        .onTapGesture {
+                            _ = self.movies.popLast()
+                            if self.movies.count < 10{
+                                print("fetching...")
+                                let currentContainedId = self.movies.map({$0.id})
+                                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
+                                withAnimation(){
+                                    self.movies.insert(contentsOf: newMovies, at: 0)
+                                }
+                            }else{
+                                if self.movies.count == 0{
+                                    withAnimation(){
+                                        self.backHomePage.toggle()
+                                    }
+                                }
+                                
+                                currentMovie = self.movies.last
+                            }
+                        }
+                    
+                    //only appear at dragging
+                    Group{
+                        Circle()
+                            .strokeBorder(Color.pink,lineWidth: 1)
+                            .frame(width: 50, height: 50)
+                            .overlay(Image(systemName: "heart.fill").foregroundColor(.pink))
+                            .offset(x: -60, y: -35)
+                            .opacity(self.gestureState.isDragging ? 0.4 + movingLeft() : 0)
+                            .animation(.easeInOut)
+                        
+                        Circle()
+                            .strokeBorder(Color.blue,lineWidth: 1)
+                            .frame(width: 50, height: 50)
+                            .overlay(Image(systemName: "eye.fill").foregroundColor(.blue))
+                            .offset(x: 60, y: -35)
+                            .opacity(self.gestureState.isDragging ? 0.4 + movingRight() : 0)
+                            .animation(.easeInOut)
+                    }
+
+                    
+                    
+                    //return back
+                    Button(action:{
+                        withAnimation(){
+                            self.movies = self.movieListMV.movies!
+                            self.currentMovie = self.movies.last
+                        }
+                    }){
+                        Image(systemName: "arrow.uturn.down")
+                    }
+                    .frame(width: 40, height: 40)
+                    .offset(x:-60)
+                    .foregroundColor(Color.purple)
+                    .opacity(self.gestureState.isDragging ? 0 : 1)
+                    .animation(.easeInOut)
+                    
+                    //refresh
+                    Button(action:{
+                        self.movies = self.movies.shuffled()
+                        self.currentMovie = self.movies.last
+                    }){
+                        Image(systemName: "arrow.triangle.swap")
+                    }
+                    .frame(width: 40, height: 40)
+                    .offset(x:60)
+                    .foregroundColor(Color.purple)
+                    .opacity(self.gestureState.isDragging ? 0 : 1)
+                    .animation(.easeInOut)
+                    
                     
                 }
-                .frame(width:300)
-                .multilineTextAlignment(.center)
-                .opacity(self.gestureState.isDragging ? 0 : 1)
-                .animation(.easeInOut)
+//                .frame(width:300)
+//                .multilineTextAlignment(.center)
+//                .opacity(self.gestureState.isDragging ? 0 : 1)
+//                .animation(.easeInOut)
                
 
                 //More here
@@ -115,31 +256,60 @@ struct MovieCardGesture :View{
         }
 
     }
-
+    
     func getEndPostion(direction:CardGesture.EndTranslationPostion){
         if direction == .left || direction == .right{
             //TODO
             //remove the last movie in array and set current movie
-
-                _ = self.movies.popLast()
+            
+            _ = self.movies.popLast()
+            if self.movies.count < 10{
+                print("fetching...")
+                let currentContainedId = self.movies.map({$0.id})
+                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
+                withAnimation(){
+                    self.movies.insert(contentsOf: newMovies, at: 0)
+                }
+            }else{
+                if direction == .right{
+                    withAnimation(){
+                        self.previewMovieId = currentMovie!.id
+                    }
+                    self.isMovieDetail.toggle()
+                }
+                
+                if direction == .left{
+                    print("Like!!!")
+                }
                 currentMovie = self.movies.last
+                
 
-
+                
+                if self.movies.count == 0{
+                    withAnimation(){
+                        self.backHomePage.toggle()
+                    }
+                }
+                self.feedBack.impactOccurred(intensity: 0.8)
+            }
         }
     }
+    
+    private let feedBack = UIImpactFeedbackGenerator()
 
     func calculateScale()->CGFloat{
         //when dragging it will affect other card behind
         return CGFloat(abs(self.gestureState.translation.width / 6000))
     }
 }
-//--------------------PREVIEW--------------------//
-struct MovieCardGesture_Previews: PreviewProvider {
-    static var previews: some View {
 
-        MovieCardGesture(movies: stubbedMovie,currentMovie: stubbedMovie.last, backHomePage: .constant(false))
-    }
-}
+//--------------------PREVIEW--------------------//
+//struct MovieCardGesture_Previews: PreviewProvider {
+//    static var previews: some View {
+//
+//        MovieCardGesture(movies: stubbedMovie,currentMovie: stubbedMovie.last, backHomePage: .constant(false))
+//    }
+//}
 
 
 //--------------------GESTURE--------------------//
@@ -195,7 +365,7 @@ struct CardGesture: View {
     }
 
     @Binding var DragState:CardGestureState //let parent know what is current state
-    var onTapGesture:()->Void
+//    var onTapGesture:()->Void
     var willEndTranslation : (CGSize)->Void //geting current Translation postion
     var EndTranslation:(EndTranslationPostion)->Void //getting the state to end
 
@@ -278,15 +448,15 @@ struct CardGesture: View {
         .gesture(longPressGesture)
         .simultaneousGesture(TapGesture(count: 1).onEnded({_ in
             if !self.hasMove{
-                self.onTapGesture()
+//                self.onTapGesture()
                 self.todo = true
                 print("press")
             }
         }))
-        .fullScreenCover(isPresented: self.$todo, content: {
-            GestureDetailVeiw(movieId: movie.id,navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true),isPresented: self.$todo)
-                .preferredColorScheme(.dark)
-        })
+//        .fullScreenCover(isPresented: self.$todo, content: {
+//            GestureDetailVeiw(movieId: movie.id,navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true),isPresented: self.$todo)
+//                .preferredColorScheme(.dark)
+//        })
         .onTapGesture {
             //Given a feed back
             self.feedBack.prepare()
@@ -334,11 +504,16 @@ struct TheCard:View{
     @State private var todo : Bool = false
     var body: some View{
        
-            
         WebImage(url:movie.posterURL)
             .resizable()
+//            .placeholder{
+//                Text(movie.title)
+//            }
+//            .indicator(.activity) // Activity Indicator
+//            .transition(.fade(duration: 0.5)) // Fade Transition with duration
             .aspectRatio(0.66,contentMode: .fit)
             .cornerRadius(10)
+        
             
 
    
