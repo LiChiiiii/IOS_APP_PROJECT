@@ -49,8 +49,10 @@ struct SignIn: View {
             Spacer()
             
             SignInCell(email: $email, username: $username, password: $password)
+            Spacer()
         }
         .padding(.top,20)
+        .padding(.vertical)
         
         
     }
@@ -72,7 +74,6 @@ struct SignInCell : View{
 
     
     func Login(){
-      
         let login = UserLogin(UserName: self.username, Password: self.password)
         
         networkingService.requestLogin(endpoint: "/users/login", loginObject: login) { (result) in
@@ -92,29 +93,26 @@ struct SignInCell : View{
                 ErrorAlert = true
             }
         }
-        
-        
-      
     }
 
     
     
     var body: some View{
         
-        Logo()
+//        Logo()
         
         Text("Sign In")
-            .font(.system(size:35))
             .bold()
             .foregroundColor(.orange)
-            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+            .TekoBoldFontFont(size: 45)
+        
         
         
         Group{
             VStack {
                 HStack{
                     Text("Username :")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .font(.headline)
                     Spacer()
                 }
@@ -127,7 +125,7 @@ struct SignInCell : View{
             VStack {
                 HStack{
                     Text("Password :")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .font(.headline)
                     Spacer()
                 }
@@ -158,7 +156,7 @@ struct SignInCell : View{
         Spacer()
         
         VStack{
-            smallButton(text: "Sign In", textColor: .white, button: .black, image: ""){
+            smallButton(text: "Sign In", textColor: .black, button: .white, image: ""){
                 self.Login()
             }.padding(.horizontal,50)
             .fullScreenCover(isPresented: $isPresented, content: {
@@ -173,29 +171,44 @@ struct SignInCell : View{
             })
         }
         
+        HStack{
+            VStack{
+                Divider()
+                    .padding(.horizontal)
+                    .background(Color.secondary)
+            }
 
-        
-        Text("OR")
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-            .padding(.vertical)
+            Text("OR")
+                .font(.subheadline)
+                .foregroundColor(.white)
+            
+            VStack{
+                Divider()
+                    .padding(.horizontal)
+                    .background(Color.secondary)
+            }
+        }
+        .padding(.vertical,5)
+        .frame(width: UIScreen.main.bounds.width)
+
+
         
         
         SocialLogo()
         
-        HStack{
-            Text("Don't have an accont?")
-                .foregroundColor(.secondary)
-            Button(action:{
-                //TODO:
-                //GO TO SIGN UP PAGE
-                //more
-            }){
-                Text("Sign Up")
-            }
-        }
-        .font(.system(size: 14))
-        .padding()
+//        HStack{
+//            Text("Don't have an accont?")
+//                .foregroundColor(.secondary)
+//            Button(action:{
+//                //TODO:
+//                //GO TO SIGN UP PAGE
+//                //more
+//            }){
+//                Text("Sign Up")
+//            }
+//        }
+//        .padding(.top,5)
+//        .font(.system(size: 14))
     }
 }
 
@@ -215,6 +228,7 @@ struct Logo: View {
         .font(.system(size:150))
         .padding(.bottom)
         .padding(.top)
+        .foregroundColor(.blue)
     }
 }
 
@@ -271,7 +285,7 @@ struct SocialLogo: View {
     var body: some View {
         HStack {
             VStack{
-                SocialLoginButton(text: "Sign in with Google", textColor: .white, button: .black,image: "google"){
+                SocialLoginButton(text: "Sign in with Google", textColor: .black, button: .white,image: "google"){
                     GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.first?.rootViewController
                     
                     GIDSignIn.sharedInstance()?.signIn()
@@ -338,7 +352,8 @@ struct SocialLogo: View {
                         }
                     }
                 
-            )
+                )
+                .signInWithAppleButtonStyle(.white)
                 .cornerRadius(25)
                 .frame(height:50)
                 .padding(.horizontal,50)

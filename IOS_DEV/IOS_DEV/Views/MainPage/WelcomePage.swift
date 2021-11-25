@@ -23,32 +23,16 @@ struct WelcomePage: View {
                 .clipped()
                 .edgesIgnoringSafeArea(.all)
                 .offset(x:animateImagge ? 0 : -350)
-                .animation(.easeInOut(duration: 20))
+                .animation(.easeInOut(duration: 20).repeatForever())
                 .frame(width:screen.width)
                 .zIndex(-1)
             
             VStack(spacing:20){
-                
-//                HStack(spacing:10) {
-//                    Text("Welcome")
-//                        .foregroundColor(.black)
-//                        .bold()
-//                        .font(.system(size:40))
-//                        .offset(x: animateImagge ? 0: -350)
-//                        .animation(.easeInOut(duration: 1.5))
-//                    Spacer()
-//                }
-//                .frame(width:screen.width - 50)
-//                .padding(.horizontal,5)
-//                .padding(.top,100)
-                
-            
-                
                 Spacer()
                 HStack(spacing:10) {
                     Text("Adam's apple")
                         .foregroundColor(Color.white)
-                        .font(.system(size:50,weight: .regular, design: .serif))
+                        .CourgetteRegularFont(size: 50)
                         .offset(x:animateImagge ? 0 : -350)
                         .animation(.easeInOut(duration: 1.5))
                 }
@@ -74,26 +58,13 @@ struct WelcomePage: View {
                         }
                     }
                     .fullScreenCover(isPresented: $isSignUp, content: {
-                        SignUp(isSignUp: $isSignUp)
+                        SignUp(isSignUp: $isSignUp, isSignIn: self.$isSignIn)
                     })
                 }
                 .offset(y:animateImagge ? 0 : 400)
                 .animation(.easeInOut(duration: 1.5))
 
             }
-            
-//            if isSignIn{
-//                SignIn(isSignIn: $isSignIn)
-//
-////                    .transition(.move(edge: .bottom))
-////                    .animation(.easeInOut)
-//            }
-//
-//            if isSignUp{
-//                signUp(isSignUp: $isSignUp)
-//                    .transition(.move(edge: .bottom))
-//                    .animation(.easeInOut)
-//            }
         }
         .onAppear{
             animateImagge = true

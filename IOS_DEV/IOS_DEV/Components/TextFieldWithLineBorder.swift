@@ -43,7 +43,7 @@ struct TextFieldWithLineBorder: View {
     var body: some View {
         VStack {
             TextField(placeholder, text: $text)
-            HorizontalLine(color: .black)
+            HorizontalLine(color: .white)
         }.padding(.bottom, lineThickness)
     }
 }
@@ -57,7 +57,7 @@ struct SeruceFieldWithLineBorder: View {
     var body: some View {
         VStack {
             SecureField(placeholder, text: $text)
-            HorizontalLine(color: .black)
+            HorizontalLine(color: .white)
         }.padding(.bottom, lineThickness)
     }
 }

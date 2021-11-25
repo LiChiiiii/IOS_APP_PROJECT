@@ -119,6 +119,8 @@
 		01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED279826FAE004007C0C00 /* ListDetailController.swift */; };
 		01ED4F39267207E0009E2FD5 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED4F38267207E0009E2FD5 /* ListView.swift */; };
 		0EFBEEB402995C63C993EF15 /* Pods_IOS_DEV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */; };
+		6FD20E77274F41AB004F21F6 /* Courgette-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD20E76274F41AB004F21F6 /* Courgette-Regular.ttf */; };
+		6FD20E7D274F52AC004F21F6 /* Teko-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD20E7C274F52AC004F21F6 /* Teko-Bold.ttf */; };
 		7A0EE932261041690056BC8C /* IOS_DEVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0EE931261041690056BC8C /* IOS_DEVApp.swift */; };
 		7A0EE934261041690056BC8C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0EE933261041690056BC8C /* ContentView.swift */; };
 		7A0EE9392610416A0056BC8C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A0EE9382610416A0056BC8C /* Preview Assets.xcassets */; };
@@ -127,7 +129,6 @@
 		7A2F2273262B09F000D0560D /* v7.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F226A262B09ED00D0560D /* v7.mp4 */; };
 		7A2F2274262B09F000D0560D /* v4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F226B262B09EE00D0560D /* v4.mp4 */; };
 		7A2F2275262B09F000D0560D /* v8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F226C262B09EE00D0560D /* v8.mp4 */; };
-		7A2F2276262B09F000D0560D /* v9.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F226D262B09EF00D0560D /* v9.mp4 */; };
 		7A2F7307261E099200C0A2FF /* MovieTrailerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F7306261E099200C0A2FF /* MovieTrailerModel.swift */; };
 		7A2F7310261E124E00C0A2FF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F730F261E124E00C0A2FF /* Player.swift */; };
 		7A31487C2610942100B6E5FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A31487B2610942100B6E5FB /* GoogleService-Info.plist */; };
@@ -136,7 +137,6 @@
 		7A675A95262BF78B00542DB2 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A675A94262BF78B00542DB2 /* MovieDetailView.swift */; };
 		7A6CE7EA2610E7EA00DB962B /* SocialLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6CE7E92610E7EA00DB962B /* SocialLoginButton.swift */; };
 		7A74EECD2611A8A000B722CF /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A74EECC2611A8A000B722CF /* HomePage.swift */; };
-		7AB06E2F26258E1F00087676 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AB06E2E26258E1F00087676 /* GoogleService-Info.plist */; };
 		7AB42EC4263184A300AC7FA6 /* HScrollList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB42EC3263184A300AC7FA6 /* HScrollList.swift */; };
 		7ACC9C5026217FAE00351E8D /* GlobalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC9C4F26217FAE00351E8D /* GlobalHelper.swift */; };
 		7ADA5A51261042E9000A84D9 /* SignUpInfoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADA5A4E261042E9000A84D9 /* SignUpInfoDetail.swift */; };
@@ -273,6 +273,8 @@
 		01ED279826FAE004007C0C00 /* ListDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailController.swift; sourceTree = "<group>"; };
 		01ED4F38267207E0009E2FD5 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_DEV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FD20E76274F41AB004F21F6 /* Courgette-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Courgette-Regular.ttf"; sourceTree = "<group>"; };
+		6FD20E7C274F52AC004F21F6 /* Teko-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Teko-Bold.ttf"; sourceTree = "<group>"; };
 		7A0EE92E261041690056BC8C /* IOS_DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOS_DEV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A0EE931261041690056BC8C /* IOS_DEVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOS_DEVApp.swift; sourceTree = "<group>"; };
 		7A0EE933261041690056BC8C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -284,7 +286,6 @@
 		7A2F226A262B09ED00D0560D /* v7.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = v7.mp4; sourceTree = "<group>"; };
 		7A2F226B262B09EE00D0560D /* v4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = v4.mp4; sourceTree = "<group>"; };
 		7A2F226C262B09EE00D0560D /* v8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = v8.mp4; sourceTree = "<group>"; };
-		7A2F226D262B09EF00D0560D /* v9.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = v9.mp4; sourceTree = "<group>"; };
 		7A2F7306261E099200C0A2FF /* MovieTrailerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTrailerModel.swift; sourceTree = "<group>"; };
 		7A2F730F261E124E00C0A2FF /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7A31487B2610942100B6E5FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -294,7 +295,6 @@
 		7A675A94262BF78B00542DB2 /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
 		7A6CE7E92610E7EA00DB962B /* SocialLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButton.swift; sourceTree = "<group>"; };
 		7A74EECC2611A8A000B722CF /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
-		7AB06E2E26258E1F00087676 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AB42EC3263184A300AC7FA6 /* HScrollList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HScrollList.swift; sourceTree = "<group>"; };
 		7ACC9C4F26217FAE00351E8D /* GlobalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHelper.swift; sourceTree = "<group>"; };
 		7ADA5A4E261042E9000A84D9 /* SignUpInfoDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpInfoDetail.swift; sourceTree = "<group>"; };
@@ -490,6 +490,8 @@
 		0194A5E92695DD9000E24598 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6FD20E7C274F52AC004F21F6 /* Teko-Bold.ttf */,
+				6FD20E76274F41AB004F21F6 /* Courgette-Regular.ttf */,
 				0125187927081E8800B0778F /* v1.mp4 */,
 				0125187F27082B1C00B0778F /* v2.mp4 */,
 				0125188127082B2F00B0778F /* v3.mp4 */,
@@ -498,7 +500,6 @@
 				7A2F2266262B09EB00D0560D /* v6.mp4 */,
 				7A2F226A262B09ED00D0560D /* v7.mp4 */,
 				7A2F226C262B09EE00D0560D /* v8.mp4 */,
-				7A2F226D262B09EF00D0560D /* v9.mp4 */,
 				0194A5EB2695DE0F00E24598 /* movie_info.json */,
 				0194A5ED2695DE6000E24598 /* movie_list.json */,
 				01C91FAD26D1E6790052BF7A /* movie_genre.json */,
@@ -693,7 +694,6 @@
 				01EBF58B266BAA470059B196 /* Controller */,
 				01AB4530263F9F6300F95CC0 /* Views */,
 				01CCDF3B263E943B005E2424 /* Networking */,
-				7AB06E2E26258E1F00087676 /* GoogleService-Info.plist */,
 				7A314880261095C300B6E5FB /* IOS_DEVDebug.entitlements */,
 				7ADA5A6B26104355000A84D9 /* Components */,
 				7ADA5A6826104347000A84D9 /* Appdelegate.swift */,
@@ -870,17 +870,17 @@
 				7A2F2271262B09F000D0560D /* v5.mp4 in Resources */,
 				0194A5EC2695DE0F00E24598 /* movie_info.json in Resources */,
 				7A2F2273262B09F000D0560D /* v7.mp4 in Resources */,
+				6FD20E77274F41AB004F21F6 /* Courgette-Regular.ttf in Resources */,
 				010014AF27302B3900E2F452 /* Assets.xcassets in Resources */,
 				7A2F2274262B09F000D0560D /* v4.mp4 in Resources */,
 				7A2F2275262B09F000D0560D /* v8.mp4 in Resources */,
-				7A2F2276262B09F000D0560D /* v9.mp4 in Resources */,
 				01C91FAE26D1E6790052BF7A /* movie_genre.json in Resources */,
 				0125188227082B2F00B0778F /* v3.mp4 in Resources */,
 				7A0EE9392610416A0056BC8C /* Preview Assets.xcassets in Resources */,
 				7A31487C2610942100B6E5FB /* GoogleService-Info.plist in Resources */,
+				6FD20E7D274F52AC004F21F6 /* Teko-Bold.ttf in Resources */,
 				0125187A27081E8800B0778F /* v1.mp4 in Resources */,
 				0125188027082B1C00B0778F /* v2.mp4 in Resources */,
-				7AB06E2F26258E1F00087676 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1217,7 +1217,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"IOS_DEV/Preview Content\"";
-				DEVELOPMENT_TEAM = 69JR94W859;
+				DEVELOPMENT_TEAM = TB3MC545F4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = IOS_DEV/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1244,7 +1244,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"IOS_DEV/Preview Content\"";
-				DEVELOPMENT_TEAM = 69JR94W859;
+				DEVELOPMENT_TEAM = TB3MC545F4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = IOS_DEV/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

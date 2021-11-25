@@ -13,17 +13,14 @@ let registerService = RegisterService()
 struct SignUp: View {
     @State var ErrorResponse:String = ""
     @State var ErrorAlert = false
-    
+        
     @State private var email:String = ""
     @State private var password:String = ""
     @State private var ConfirmPassword:String = ""
     @State private var UserName:String = ""
 
-    
-    
-    //Date???
-
     @Binding var isSignUp:Bool
+    @Binding var isSignIn : Bool
     //  @Namespace var names
     
 
@@ -53,6 +50,7 @@ struct SignUp: View {
     
     var body: some View {
         VStack{
+            Spacer()
             HStack {
                 Spacer()
                 Button(action:{
@@ -76,10 +74,9 @@ struct SignUp: View {
             
             HStack {
                 Text("Sign Up")
-                    .font(.system(size:35))
                     .bold()
                     .foregroundColor(.orange)
-                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                    .TekoBoldFontFont(size: 45)
                 
                 Spacer()
             }
@@ -92,7 +89,7 @@ struct SignUp: View {
             Spacer()
             
 
-            smallButton(text: "Sign Up", textColor: .white, button: .black, image: ""){
+            smallButton(text: "Sign Up", textColor: .black, button: .white, image: ""){
                 self.Register()
             }
             .padding(.horizontal,50)
@@ -104,14 +101,7 @@ struct SignUp: View {
 
             
             Spacer()
-//
-//            Text("OR")
-//                .font(.subheadline)
-//                .foregroundColor(.secondary)
-//                .padding(.vertical,5)
-//
-//
-//            SocialSignUp()
+
 
             HStack{
                 Text("Already have an account?")
@@ -119,7 +109,10 @@ struct SignUp: View {
                 Button(action:{
                     //TODO:
                     //GO TO SIGN UP PAGE
-                    //more
+                    withAnimation{
+                        self.isSignIn.toggle()
+                        self.isSignUp.toggle()
+                    }
                 }){
                     Text("Sign In")
                 }
@@ -127,19 +120,16 @@ struct SignUp: View {
             .font(.system(size: 14))
             .padding()
             
+            Spacer()
 
         }
-
     }
     
 }
 
 
-struct SignUp_Previews: PreviewProvider {
-    static var previews: some View {
-        SignUp(isSignUp:.constant(false))
-    }
-}
+//
+
 
 
 struct SocialSignUp: View {
