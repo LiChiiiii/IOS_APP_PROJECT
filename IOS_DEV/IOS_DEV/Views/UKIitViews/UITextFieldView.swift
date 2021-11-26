@@ -18,7 +18,7 @@ struct UITextFieldView : UIViewRepresentable{
     let keybooardType : UIKeyboardType
     let returnKeytype : UIReturnKeyType
     let tag:Int
-    let placeholder : String
+//    let placeholder : String
 //    @Binding var text:String
 //    @Binding var getResult : Bool
     
@@ -29,7 +29,7 @@ struct UITextFieldView : UIViewRepresentable{
         textField.tag = tag
         textField.delegate = context.coordinator
         textField.autocorrectionType = .no
-        textField.placeholder = placeholder
+        textField.placeholder = SearchMV.recommandPlachold
         textField.textColor = .white
         textField.tintColor = .darkGray
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -64,12 +64,16 @@ struct UITextFieldView : UIViewRepresentable{
 
         //change it every keystroke
         func textFieldDidChangeSelection(_ textField: UITextField) {
-            DispatchQueue.main.async {
-                self.parent.SearchMV.searchingText = textField.text ?? ""
-                if self.parent.SearchMV.searchingText != "" {
-                    self.parent.SearchMV.getRecommandationList() // call send request and cancel previous one ?? but now just keep it
+            if self.parent.StateManager.isSeaching {
+                self.parent.StateManager.isEditing = textField.text == "" ? false : true
+                
+                if textField.text != nil{
+                    let str = textField.text!.description
+                    self.parent.SearchMV.searchingText = str
+                    self.parent.SearchMV.getRecommandationList(keyWork:textField.text!)
                 }
             }
+            
         }
         
         func updatefocus(textfield: UITextField) {
@@ -82,51 +86,35 @@ struct UITextFieldView : UIViewRepresentable{
             }else{
                 parent.StateManager.isFocuse = [false,false]
             }
+            var keyWord = textField.text ?? ""
             
-            
-            parent.SearchMV.searchingText = textField.text ?? ""
-            
-            if textField.text != ""{
-                withAnimation(.easeInOut(duration: 0.3)){
-                    parent.history.insert(textField.text!, at: 0)
-                    parent.StateManager.isEditing = false
-                    parent.StateManager.getResult = true
-                    parent.StateManager.isSeaching = false
-                }
-                
-                //not empty then get the list
-//                DispatchQueue.main.async{
-//                    if self.parent.SearchMV.searchingText != "" {
-//                        self.parent.SearchMV.getRecommandationList()
-//                    }
-//                }
+            if keyWord == ""{
+                keyWord = self.parent.SearchMV.recommandPlachold
             }
 
+            parent.SearchMV.searchingText = keyWord
+            parent.StateManager.isEditing = false
+            parent.StateManager.isSeaching = false
+            updateHistory(history: keyWord)
+            parent.StateManager.getSearchResult = true
+            self.parent.StateManager.searchingLoading = true
 
             return true
         }
         
-
-    }
-}
-
-//for Appstorage
-extension Array: RawRepresentable where Element: Codable {
-    public init?(rawValue: String) {
-        guard let data = rawValue.data(using: .utf8),
-              let result = try? JSONDecoder().decode([Element].self, from: data)
-        else {
-            return nil
+        func updateHistory(history : String){
+            
+            if self.parent.history.count == 15{
+                self.parent.history.removeLast()
+            }
+            
+            let exist = self.parent.history.contains{$0 == history}
+            if exist{
+                let index = self.parent.history.firstIndex(of: history)
+                self.parent.history.remove(at: index!)
+            }
+            self.parent.history.insert(history, at: 0)
         }
-        self = result
-    }
 
-    public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else {
-            return "[]"
-        }
-        return result
     }
 }

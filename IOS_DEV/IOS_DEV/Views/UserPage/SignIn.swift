@@ -70,12 +70,17 @@ struct SignInCell : View{
     @Binding var password:String
     @State var isPresented = false
     @State var ErrorAlert = false
+    @State private var remember = false
+    @AppStorage("userName") private var userName : String = ""
+    @AppStorage("userPassword") private var userPassword : String = ""
+    @AppStorage("rememberUser") private var rememberUser : Bool = false
+//    @AppStorage("rememberMe") private var rememberMe : = ""
     @ObservedObject private var networkingService = NetworkingService()
-
     
     func Login(){
         let login = UserLogin(UserName: self.username, Password: self.password)
         
+        //If token is not nil check then token first else login with request
         networkingService.requestLogin(endpoint: "/users/login", loginObject: login) { (result) in
             print(result)
             
@@ -87,6 +92,8 @@ struct SignInCell : View{
                 ErrorAlert = false
                 NowUserName = user.UserName
                 NowUserID = user.id
+                UserDefaults.standard.set(self.remember ? username : "", forKey: "userName")
+                UserDefaults.standard.set(self.remember ? password : "", forKey: "userPassword")
                 
             case .failure:
                 print("login failed")
@@ -95,120 +102,121 @@ struct SignInCell : View{
         }
     }
 
-    
-    
     var body: some View{
-        
-//        Logo()
-        
-        Text("Sign In")
-            .bold()
-            .foregroundColor(.orange)
-            .TekoBoldFontFont(size: 45)
-        
-        
-        
         Group{
-            VStack {
-                HStack{
-                    Text("Username :")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                    Spacer()
-                }
-                
-                TextFieldWithLineBorder(text: $username,placeholder: "Enter Your Username")
-                    .keyboardType(.emailAddress)
-            }
-            .padding(.horizontal)
+            Text("Sign In")
+                .bold()
+                .foregroundColor(.orange)
+                .TekoBoldFontFont(size: 45)
             
-            VStack {
-                HStack{
-                    Text("Password :")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                    Spacer()
-                }
-                
-                SeruceFieldWithLineBorder(text: $password, placeholder: "Enter Your Password")
-                
-            }
-            .padding(.horizontal)
-            
-            HStack {
-                Spacer()
-                
-                Button(action:{
-                    //TODO
-                    //GO TO FROGET PASSWORD
+            VStack(){
+                VStack {
+                    HStack{
+                        Text("Username :")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                        Spacer()
+                    }
                     
-                }){
-                    Text("Forget Password?")
-                        .foregroundColor(.secondary)
-                        .font(.footnote)
+                    TextFieldWithLineBorder(text: $username,placeholder: "Enter Your Username")
+                        .keyboardType(.emailAddress)
                 }
+                .padding(.horizontal)
+                
+                VStack {
+                    HStack{
+                        Text("Password :")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                        Spacer()
+                    }
+                    
+                    SeruceFieldWithLineBorder(text: $password, placeholder: "Enter Your Password")
+                    
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Group{
+                        Image(systemName: self.remember ? "checkmark.square.fill" : "square.fill")
+                            .font(.body)
+                            .foregroundColor(.white)
+                            .onTapGesture(){
+                                withAnimation(){
+                                    self.remember.toggle()
+                                    UserDefaults.standard.set( self.remember, forKey: "rememberUser")
+                                }
+                            }
+                        Text("Remember me")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action:{
+                        //TODO
+                        //GO TO FROGET PASSWORD
+                        
+                    }){
+                        Text("Forget Password?")
+                            .foregroundColor(.secondary)
+                            .font(.footnote)
+                    }
+                    
+                }
+                .padding(.horizontal)
                 
             }
-            .padding(.horizontal)
-        }
-        .padding()
-        
-        Spacer()
-        
-        VStack{
-            smallButton(text: "Sign In", textColor: .black, button: .white, image: ""){
-                self.Login()
-            }.padding(.horizontal,50)
-            .fullScreenCover(isPresented: $isPresented, content: {
-                NavBar(index: 0)
-                    .preferredColorScheme(.dark)
-                //TopicView(articles: self.articleData)
-            })
-            .alert(isPresented: $ErrorAlert, content: {
-                Alert(title: Text("帳號密碼錯誤"),
-                      dismissButton: .cancel())
-
-            })
-        }
-        
-        HStack{
-            VStack{
-                Divider()
-                    .padding(.horizontal)
-                    .background(Color.secondary)
-            }
-
-            Text("OR")
-                .font(.subheadline)
-                .foregroundColor(.white)
+            .padding()
+            
+            Spacer()
             
             VStack{
-                Divider()
-                    .padding(.horizontal)
-                    .background(Color.secondary)
+                smallButton(text: "Sign In", textColor: .black, button: .white, image: ""){
+                    self.Login()
+                }.padding(.horizontal,50)
+                .fullScreenCover(isPresented: $isPresented, content: {
+                    NavBar(index: 0)
+                })
+                .alert(isPresented: $ErrorAlert, content: {
+                    Alert(title: Text("帳號密碼錯誤"),
+                          dismissButton: .cancel())
+
+                })
             }
+            
+            HStack{
+                VStack{
+                    Divider()
+                        .padding(.horizontal)
+                        .background(Color.secondary)
+                }
+
+                Text("OR")
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                
+                VStack{
+                    Divider()
+                        .padding(.horizontal)
+                        .background(Color.secondary)
+                }
+            }
+            .padding(.vertical,5)
+            .frame(width: UIScreen.main.bounds.width)
+
+
+            
+            
+            SocialLogo()
+
         }
-        .padding(.vertical,5)
-        .frame(width: UIScreen.main.bounds.width)
-
-
-        
-        
-        SocialLogo()
-        
-//        HStack{
-//            Text("Don't have an accont?")
-//                .foregroundColor(.secondary)
-//            Button(action:{
-//                //TODO:
-//                //GO TO SIGN UP PAGE
-//                //more
-//            }){
-//                Text("Sign Up")
-//            }
-//        }
-//        .padding(.top,5)
-//        .font(.system(size: 14))
+        .onAppear(){
+            self.remember = rememberUser
+            self.username = userName
+            self.password = userPassword
+        }
     }
 }
 

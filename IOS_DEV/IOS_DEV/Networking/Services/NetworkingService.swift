@@ -13,7 +13,6 @@ import SwiftUI
 let baseUrl="http://127.0.0.1:8080"
 
 class NetworkingService: ObservableObject {
-    
     var token = ""
         
     //login
@@ -41,8 +40,9 @@ class NetworkingService: ObservableObject {
                 let token = String(data:data, encoding: String.Encoding.utf8)
                 print("login token \(String(describing:token))")
                 self.token = token ?? ""
+//                UserDefaults.standard.set(token ?? "", forKey: "USER_TOKEN")
                 self.setMe(token: self.token, completion: completion)
-         
+                
             }.resume()
         } catch {
             print ("Login failed during call")

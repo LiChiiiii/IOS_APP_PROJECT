@@ -17,15 +17,16 @@ struct WelcomePage: View {
     var body: some View {
         ZStack(){
             //a image here
-            Image("test")
+            Image("HomeBG")
                 .resizable()
                 .scaledToFill()
                 .clipped()
                 .edgesIgnoringSafeArea(.all)
-                .offset(x:animateImagge ? 0 : -350)
+                .offset(x:animateImagge ? 0 : -100)
                 .animation(.easeInOut(duration: 20).repeatForever())
                 .frame(width:screen.width)
                 .zIndex(-1)
+                .overlay(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all).blur(radius: 10))
             
             VStack(spacing:20){
                 Spacer()

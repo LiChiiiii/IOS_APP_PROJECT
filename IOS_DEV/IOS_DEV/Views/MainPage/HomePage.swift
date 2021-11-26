@@ -28,16 +28,16 @@ struct HomePage:View{
             }
     }
 }
-
-
-struct HomePage_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        HomePage()
-        
-        
-    }
-}
+//
+//
+//struct HomePage_Previews: PreviewProvider {
+//    static var previews: some View {
+//
+//        HomePage()
+//
+//
+//    }
+//}
 
 struct MainHomeView:View{
     @State private var topBarIndx = 0
