@@ -13,7 +13,7 @@ private let _imageCache = NSCache<AnyObject, AnyObject>()
 // 上傳使用者大頭貼
 class UserController: ObservableObject {
     
-    let networkingService = NetworkingService() //get
+    let networkingService = NetworkingService.shared //get
     var PhotoStr:URL?
     @Published var image: UIImage?
     var imageCache = _imageCache

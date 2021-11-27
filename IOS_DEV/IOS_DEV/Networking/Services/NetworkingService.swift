@@ -13,8 +13,13 @@ import SwiftUI
 let baseUrl="http://127.0.0.1:8080"
 
 class NetworkingService: ObservableObject {
-    var token = ""
+    private var token = ""
         
+    static let shared = NetworkingService()
+    
+    private init(){
+        
+    }
     //login
     func requestLogin(endpoint: String,
                  loginObject: UserLogin,
@@ -41,7 +46,7 @@ class NetworkingService: ObservableObject {
                 print("login token \(String(describing:token))")
                 self.token = token ?? ""
 //                UserDefaults.standard.set(token ?? "", forKey: "USER_TOKEN")
-                self.setMe(token: self.token, completion: completion)
+                self.AuthUser(token: self.token, completion: completion)
                 
             }.resume()
         } catch {
@@ -52,7 +57,7 @@ class NetworkingService: ObservableObject {
     }
     
     //驗證token,辨識user
-    func setMe(token:String, completion: @escaping (Result<Me, Error>) -> Void){
+    func AuthUser(token:String, completion: @escaping (Result<Me, Error>) -> Void){
         let url = URL(string: baseUrl+"/users/me")
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -65,6 +70,7 @@ class NetworkingService: ObservableObject {
             }
             do {
                 if let user = try? JSONDecoder().decode(Me.self, from: gotData) {
+                    UserDefaults.standard.set(token, forKey: "userToken")
                     completion(.success(user))
                 }else {
                     let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: gotData)
@@ -78,6 +84,7 @@ class NetworkingService: ObservableObject {
         }
         result.resume()
     }
+    
     
     
     func getToken() -> String{

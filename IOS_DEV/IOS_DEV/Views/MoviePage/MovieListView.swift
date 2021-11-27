@@ -21,6 +21,8 @@ struct MovieListView: View {
     @ObservedObject var genreTypeState4 = GenreTypeState()
     @ObservedObject var genreTypeState5 = GenreTypeState()
     @Binding var showHomePage:Bool
+    @Binding var isLogOut : Bool
+    
     
     var body: some View {
         
@@ -192,17 +194,34 @@ struct MovieListView: View {
         .navigationBarTitleDisplayMode(.large)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.large)
-        .navigationBarTitle("\(NowUserName), 早安！")
+        .navigationBarTitle("\(NowUserName), \(getTime())")
         .toolbar{
             ToolbarItemGroup(placement:.navigationBarLeading){
-                HStack{
-                    Image("LogoIconsBlack")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width:100)
-                        .offset(x:-15)
-                    
+                Button(action:{
+                    withAnimation(){
+                        //TO trailer view
+                        withAnimation{
+                            isLogOut.toggle()
+                            UserDefaults.standard.set("", forKey: "userToken")
+                        }
+    
+                    }
+                }){
+                    HStack(spacing:5){
+                        Image(systemName: "rectangle.portrait.and.arrow.right.fill")
+                            .resizable()
+                            .frame(width: 15, height: 15, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        
+                        Text("登出")
+                            .bold()
+                            .font(.footnote)
+                        
+                    }
+                    .foregroundColor(.white)
+            
+                        
                 }
+
             }
             
             ToolbarItemGroup(placement:.navigationBarTrailing){
@@ -213,7 +232,7 @@ struct MovieListView: View {
                     }
                 }){
                     
-                    VStack(spacing:5){
+                    HStack{
                         Image(systemName: "arrowtriangle.forward.square.fill")
                             .resizable()
                             .frame(width: 15, height: 15, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -228,15 +247,35 @@ struct MovieListView: View {
                         
                 }
             }
+            
+
         }//toolbar
 
        
     }
-}
+    
+    func getTime() -> String{
+        let hour = Calendar.current.component(.hour, from: Date())
+        
+        switch hour{
+        case 6..<12:
+            return "早上好!"
+        case 12:
+            return "中午好!"
+        case 13..<17:
+            return "下午好!"
+        case 17..<22:
+            return "傍晚好!"
+        default:
+            return "晚上好!"
+        }
 
-struct MovieListView_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieListView(showHomePage: .constant(false))
     }
 }
 
+//struct MovieListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieListView(showHomePage: .constant(false))
+//    }
+//}
+//

@@ -9,7 +9,7 @@ import Foundation
 
 class FavoriteService: ObservableObject {
     
-    let networkingService = NetworkingService()
+    let networkingService = NetworkingService.shared
     
     //-----取得喜愛電影-----//
     func GET_likeMovie(endpoint: String,

@@ -12,7 +12,7 @@ import Foundation
 
 class CommentService: ObservableObject {
     
-    let networkingService = NetworkingService()
+    let networkingService = NetworkingService.shared
     
     
     //get comment

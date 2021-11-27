@@ -53,13 +53,31 @@ struct SeachDragingView : View{
                         if dragSearchModel.dragActor.isEmpty{
                             VStack{
                                 Spacer()
-                                LoadingView(isLoading: dragSearchModel.isActorLoading, error: dragSearchModel.actorHTTPErr){
-                                    dragSearchModel.getActorsList(succeed: {
-                                        print("Data re-fetching succeed")
-                                    }, failed: {
-                                        print("Data re-fetching failed")
-                                    })
+                                if dragSearchModel.actorHTTPErr != nil{
+                                    LoadingView(isLoading: dragSearchModel.isActorLoading, error: dragSearchModel.actorHTTPErr){
+                                        dragSearchModel.getActorsList(succeed: {
+                                            print("Data re-fetching succeed")
+                                        }, failed: {
+                                            print("Data re-fetching failed")
+                                        })
 
+                                    }
+                                }else{
+                                    Text("No Date Here")
+                                        .bold().foregroundColor(.secondary)
+                                    Button(action:{
+                                        dragSearchModel.getActorsList(succeed: {
+                                            print("Data re-fetching succeed")
+                                        }, failed: {
+                                            print("Data re-fetching failed")
+                                        })
+                                    }){
+                                        Text("Fetch again")
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding(8)
+                                    .background(Color.blue)
+                                    .cornerRadius(15)
                                 }
                                 Spacer()
                             }
@@ -321,3 +339,4 @@ struct SeachDragingView : View{
             }
     }
 }
+

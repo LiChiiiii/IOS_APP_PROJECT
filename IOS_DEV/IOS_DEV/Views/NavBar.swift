@@ -286,6 +286,7 @@ struct NavBar: View {
     @StateObject var StateManager  = SeachingViewStateManager()
     @StateObject var DragAndDropPreview = DragSearchModel()
     
+    @Binding var isLogOut : Bool
     @State var index : Int
     @State private var GroupSelect : Bool = false
     @State private var isPriview = false
@@ -294,7 +295,7 @@ struct NavBar: View {
         ZStack(alignment:.top){
             VStack(spacing:0){
                 ZStack(alignment:.top){
-                        HomePage()
+                    HomePage(isLogOut: $isLogOut)
                             .opacity(self.index == 0 ? 1 : 0)
                     
                         ListView(lists: controller.listData)
@@ -303,16 +304,13 @@ struct NavBar: View {
                         DragAndDropMainView()
                             .opacity(self.index == 2 ? 1 : 0)
                     
-//                        ProfileView(NowUser: userController.NowUser)
-//                            .opacity(self.index == 3 ? 1 : 0)
+                        ProfileView()
+                            .opacity(self.index == 3 ? 1 : 0)
 //
                 }
                 NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
             }
-            .onAppear{
-//                self.userController.GetUserInfo(: NowUserName)
-//                self.userController.GetNowUser(UserName: NowUserName)
-            }
+
               
             .edgesIgnoringSafeArea(.all)
             //thse all padding is to adding back the padding of ignoresSafeArea()
@@ -334,19 +332,19 @@ struct NavBar: View {
     }
 }
 
-struct NavBar_Previews: PreviewProvider {
-    static var previews: some View {
-
-        Group {
-            ZStack{
-                Color.black.ignoresSafeArea(.all)
-                NavBar(index: 0)
-            }
-        }
-
-
-    }
-}
+//struct NavBar_Previews: PreviewProvider {
+//    static var previews: some View {
+//
+//        Group {
+//            ZStack{
+//                Color.black.ignoresSafeArea(.all)
+//                NavBar(index: 0)
+//            }
+//        }
+//
+//
+//    }
+//}
 
 struct NavItemButton:View{
     var unselectColor:Color = Color.gray

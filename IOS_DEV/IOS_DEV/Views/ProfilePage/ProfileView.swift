@@ -59,13 +59,8 @@ struct ProfileView: View {
     
     var body: some View{
         NavigationView{
-  
-            ScrollView(.vertical, showsIndicators: false){
                 VStack{
-                    
-                    
                     VStack{
-                                             
                             NowUserPhoto?
                                 .resizable()
                                 .frame(width: 150, height: 150)
@@ -139,18 +134,6 @@ struct ProfileView: View {
                             })
                             .padding(5)
                         
-        //                ZStack{
-        //                    Text("Notification")
-        //                        .bold()
-        //                        .frame(width: 350, height: 45, alignment: .center)
-        //                        .background(Color.red)
-        //                        .foregroundColor(.white)
-        //                        .cornerRadius(15)
-        //                    Toggle(" ", isOn: $notification)
-        //                        .toggleStyle(SwitchToggleStyle(tint: .clear))
-        //                        .frame(width: 330, height: 45, alignment: .center)
-        //                }
-        //                .padding(5)
                     }
                    
                     Text("喜愛項目")
@@ -165,20 +148,19 @@ struct ProfileView: View {
                     .frame(width: 360)
                     switch select{
                     case .movie:
-                        movieRecord(movies: favoriteController.MovieData)
+                        ScrollView{
+                            movieRecord(movies: favoriteController.MovieData)
+                        }
                     case .article:
-                        articleRecord(articles: favoriteController.ArticleData)
+                        ScrollView{
+                            articleRecord(articles: favoriteController.ArticleData)
+                        }
                     }
                     Spacer()
                 }
-               
-            }
-        
-            
-                
-            
-            
-           
+            .navigationTitle("")
+            .navigationBarTitle("")
+
         }
         .accentColor(.red)
      

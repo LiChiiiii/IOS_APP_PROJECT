@@ -19,10 +19,10 @@ struct StaticButtonStyle : ButtonStyle{
 
 struct HomePage:View{
     @State private var showHomePage = false
-
+    @Binding var isLogOut : Bool
     
     var body:some View{
-        MainHomeView(showHomePage: $showHomePage)
+        MainHomeView(showHomePage: $showHomePage, isLogOut: self.$isLogOut)
             .onAppear{
                 showHomePage = true
             }
@@ -50,7 +50,7 @@ struct MainHomeView:View{
     @State private var isLoading = true
     @State private var NavIndex = 0
     @Binding var showHomePage:Bool
-
+    @Binding var isLogOut : Bool
     
 //    init(){
 //        UINavigationBar.appearance().barTintColor = UIColor(Color.init("navBarBlack").opacity(0.85))
@@ -65,7 +65,7 @@ struct MainHomeView:View{
                             SubHomeView_Player(topBarIndx:$topBarIndx,trailerData:$trailerData,isReload:$isReload,value:$value,isAnimation:$isAnimation,isNavBarHidden:$isNavBarHidden,isActive:$isActive,isLoading:$isLoading, pageHeight: geo.frame(in:.global).height)
                             
                             NavigationLink(
-                                destination:  MovieListView(showHomePage: $showHomePage),
+                                destination:  MovieListView(showHomePage: $showHomePage, isLogOut: self.$isLogOut),
                                 isActive: $showHomePage){
                                 BackHomePageButton(){
                                     //jump back to home page

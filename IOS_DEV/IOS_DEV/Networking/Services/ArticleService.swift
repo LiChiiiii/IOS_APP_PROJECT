@@ -10,7 +10,7 @@ import Foundation
 
 class ArticleService: ObservableObject {
     
-    let networkingService = NetworkingService()
+    let networkingService = NetworkingService.shared
     
     //-------------------------------get某電影的討論區文章-------------------------------------//
     func GET_allArticle(endpoint: String,

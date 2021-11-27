@@ -114,6 +114,8 @@
 		01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED279826FAE004007C0C00 /* ListDetailController.swift */; };
 		01ED4F39267207E0009E2FD5 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED4F38267207E0009E2FD5 /* ListView.swift */; };
 		0EFBEEB402995C63C993EF15 /* Pods_IOS_DEV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */; };
+		6FAD51D52751D81900A25ED4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */; };
+		6FCE6E87275258AC00CDAE7E /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE6E86275258AC00CDAE7E /* UserManager.swift */; };
 		6FCFFE10274FBDEE00C46710 /* ManagerAndModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCFFE06274FBDE800C46710 /* ManagerAndModel.swift */; };
 		6FCFFE11274FBDEE00C46710 /* ListSilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCFFE07274FBDE900C46710 /* ListSilder.swift */; };
 		6FCFFE12274FBDEE00C46710 /* CustomePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCFFE08274FBDEA00C46710 /* CustomePicker.swift */; };
@@ -143,7 +145,6 @@
 		7A2F2275262B09F000D0560D /* v8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 7A2F226C262B09EE00D0560D /* v8.mp4 */; };
 		7A2F7307261E099200C0A2FF /* MovieTrailerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F7306261E099200C0A2FF /* MovieTrailerModel.swift */; };
 		7A2F7310261E124E00C0A2FF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F730F261E124E00C0A2FF /* Player.swift */; };
-		7A31487C2610942100B6E5FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A31487B2610942100B6E5FB /* GoogleService-Info.plist */; };
 		7A645450262F120A006ACA4F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A64544F262F120A006ACA4F /* Extension.swift */; };
 		7A675A7E262BE22B00542DB2 /* MovieVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A675A7D262BE22B00542DB2 /* MovieVM.swift */; };
 		7A675A95262BF78B00542DB2 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A675A94262BF78B00542DB2 /* MovieDetailView.swift */; };
@@ -280,6 +281,8 @@
 		01ED279826FAE004007C0C00 /* ListDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailController.swift; sourceTree = "<group>"; };
 		01ED4F38267207E0009E2FD5 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_DEV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6FCE6E86275258AC00CDAE7E /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		6FCFFE06274FBDE800C46710 /* ManagerAndModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerAndModel.swift; sourceTree = "<group>"; };
 		6FCFFE07274FBDE900C46710 /* ListSilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSilder.swift; sourceTree = "<group>"; };
 		6FCFFE08274FBDEA00C46710 /* CustomePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomePicker.swift; sourceTree = "<group>"; };
@@ -440,6 +443,7 @@
 				01CCDF38263E9408005E2424 /* User.swift */,
 				0175AAE92658D4C8001BCD2E /* UserRegister.swift */,
 				0124A471272983A400D0A7CC /* UserLike.swift */,
+				6FCE6E86275258AC00CDAE7E /* UserManager.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -746,6 +750,7 @@
 		7A0EE930261041690056BC8C /* IOS_DEV */ = {
 			isa = PBXGroup;
 			children = (
+				6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */,
 				6FCFFE1A274FBE1500C46710 /* ViewModifire */,
 				0175ADEA26D4FA4300535C42 /* IOS_DEV.entitlements */,
 				0194A5E92695DD9000E24598 /* Resources */,
@@ -928,6 +933,7 @@
 			files = (
 				7A2F226F262B09F000D0560D /* v6.mp4 in Resources */,
 				7A2F2271262B09F000D0560D /* v5.mp4 in Resources */,
+				6FAD51D52751D81900A25ED4 /* GoogleService-Info.plist in Resources */,
 				0194A5EC2695DE0F00E24598 /* movie_info.json in Resources */,
 				7A2F2273262B09F000D0560D /* v7.mp4 in Resources */,
 				6FD20E77274F41AB004F21F6 /* Courgette-Regular.ttf in Resources */,
@@ -937,7 +943,6 @@
 				01C91FAE26D1E6790052BF7A /* movie_genre.json in Resources */,
 				0125188227082B2F00B0778F /* v3.mp4 in Resources */,
 				7A0EE9392610416A0056BC8C /* Preview Assets.xcassets in Resources */,
-				7A31487C2610942100B6E5FB /* GoogleService-Info.plist in Resources */,
 				6FD20E7D274F52AC004F21F6 /* Teko-Bold.ttf in Resources */,
 				0125187A27081E8800B0778F /* v1.mp4 in Resources */,
 				0125188027082B1C00B0778F /* v2.mp4 in Resources */,
@@ -1082,6 +1087,7 @@
 				7ADA5A7726104355000A84D9 /* SearchBar.swift in Sources */,
 				0175AAE02658AF95001BCD2E /* UserLogin.swift in Sources */,
 				6FCFFE1C274FBE2600C46710 /* OffsetModifier.swift in Sources */,
+				6FCE6E87275258AC00CDAE7E /* UserManager.swift in Sources */,
 				7ADA5A7526104355000A84D9 /* TextFieldWithLineBorder.swift in Sources */,
 				0175AAF22658DE05001BCD2E /* Article.swift in Sources */,
 				01E90A1126B7AD3E00609B0F /* ListDetailView.swift in Sources */,

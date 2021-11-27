@@ -25,6 +25,7 @@ struct SignIn: View {
    
     
     @Binding var isSignIn:Bool
+    @Binding var isLoggedIn : Bool
     //  @Namespace var names
     var body: some View {
         VStack{
@@ -48,7 +49,7 @@ struct SignIn: View {
             }
             Spacer()
             
-            SignInCell(email: $email, username: $username, password: $password)
+            SignInCell(email: $email, username: $username, password: $password,isSignIn: $isSignIn,isLoggedIn:$isLoggedIn)
             Spacer()
         }
         .padding(.top,20)
@@ -57,26 +58,27 @@ struct SignIn: View {
         
     }
 }
-struct SignIn_Previews: PreviewProvider {
-    static var previews: some View {
-        SignIn(isSignIn: .constant(false))
-    }
-}
+//struct SignIn_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SignIn(isSignIn: .constant(false))
+//    }
+//}
 
 struct SignInCell : View{
     
     @Binding var email:String
     @Binding var username:String
     @Binding var password:String
-    @State var isPresented = false
+
     @State var ErrorAlert = false
     @State private var remember = false
     @AppStorage("userName") private var userName : String = ""
     @AppStorage("userPassword") private var userPassword : String = ""
     @AppStorage("rememberUser") private var rememberUser : Bool = false
-//    @AppStorage("rememberMe") private var rememberMe : = ""
-    @ObservedObject private var networkingService = NetworkingService()
+    @ObservedObject private var networkingService = NetworkingService.shared
     
+    @Binding var isSignIn:Bool
+    @Binding var isLoggedIn : Bool
     func Login(){
         let login = UserLogin(UserName: self.username, Password: self.password)
         
@@ -88,19 +90,27 @@ struct SignInCell : View{
                 
             case .success(let user):
                 print("login success")
-                self.isPresented.toggle()
+//                self.isPresented.toggle()
+
                 ErrorAlert = false
                 NowUserName = user.UserName
                 NowUserID = user.id
                 UserDefaults.standard.set(self.remember ? username : "", forKey: "userName")
                 UserDefaults.standard.set(self.remember ? password : "", forKey: "userPassword")
                 
+                withAnimation(){
+                    self.isLoggedIn.toggle()
+                    self.isSignIn.toggle()
+                }
+
             case .failure:
                 print("login failed")
                 ErrorAlert = true
             }
         }
     }
+    
+    
 
     var body: some View{
         Group{
@@ -176,9 +186,6 @@ struct SignInCell : View{
                 smallButton(text: "Sign In", textColor: .black, button: .white, image: ""){
                     self.Login()
                 }.padding(.horizontal,50)
-                .fullScreenCover(isPresented: $isPresented, content: {
-                    NavBar(index: 0)
-                })
                 .alert(isPresented: $ErrorAlert, content: {
                     Alert(title: Text("帳號密碼錯誤"),
                           dismissButton: .cancel())

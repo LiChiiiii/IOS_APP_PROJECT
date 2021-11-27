@@ -10,7 +10,7 @@ import Foundation
 
 class ListService: ObservableObject {
     
-    let networkingService = NetworkingService()
+    let networkingService = NetworkingService.shared
     
     //get all lists
     func GET_allLists(endpoint: String,
