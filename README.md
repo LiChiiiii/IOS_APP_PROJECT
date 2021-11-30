@@ -25,3 +25,17 @@
 |FEATURE|Comment|Done%|
 |:---:|:---:|:---:|
 
+### USER MOVIE COMMUNITY
+|FEATURE|Comment|Done%|
+|:---:|:---:|:---:|
+
+### USER ACCOUNT SETTING
+|FEATURE|Comment|Done%|
+|:---:|:---:|:---:|
+
+### ALGORITHM PROGRESS
+|FEATURE|Comment|Done%|
+|:---:|:---:|:---:|
+|RECOMMANDATION SYSTEM|IN PROGRESS|30%|
+|SEARCHING SYSTEM|COMMING SOON|0%|
+
