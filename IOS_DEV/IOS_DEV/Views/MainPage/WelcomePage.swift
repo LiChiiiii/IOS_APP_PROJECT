@@ -9,7 +9,8 @@ import SwiftUI
 
 struct WelcomePage: View {
     let screen = UIScreen.main.bounds
-    
+//    @ObservedObject var networkConnectionService = NetworkConnectionService()
+    @State private var ServerInternalError : Bool = false
     @State private var isSignUp : Bool = false
     @State private var isSignIn : Bool = false
     @State private var animateImagge:Bool = false
@@ -22,8 +23,6 @@ struct WelcomePage: View {
     var body: some View {
         
         ZStack(){
-            
-            
             Group{
                 Image("HomeBG")
                     .resizable()
@@ -76,6 +75,7 @@ struct WelcomePage: View {
                 }
             }
             .zIndex(0)
+            
             if isLoading {
                 Color.black.edgesIgnoringSafeArea(.all)
                     .zIndex(1)
@@ -84,41 +84,59 @@ struct WelcomePage: View {
         }
         .onAppear{
             //Check the token too
-            self.isLoading = true
+//            UserDefaults.standard.set("", forKey: "userToken")
+
             if !userToken.isEmpty{
+                self.isLoading = true
                 networkingService.AuthUser(token: self.userToken){ result in
                     switch result{
                     case.success(let data):
-                        self.isLoggedIn.toggle()
                         NowUserName = data.UserName
                         NowUserID = data.id
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8){
                             self.isLoading.toggle()
                         }
-
+                        
                     case .failure(let err):
-                        self.isLoading.toggle()
-                        print(err)
-
+                        DispatchQueue.main.async{
+                            if err.localizedDescription == NetworkingError.badUrl.localizedDescription{
+                                self.ServerInternalError.toggle()
+                            }else{
+                                self.isLoading.toggle()
+                            }
+                        }
+                        print("Error is : \(err.localizedDescription)")
+//
                     }
-
+                    
                 }
-            }else{
-                self.isLoading = false
+             
             }
+
             animateImagge = true
+            
+            
+            
         }
         .fullScreenCover(isPresented: self.$isLoggedIn, content: {
             NavBar(isLogOut: self.$isLoggedIn,index: 0)
         })
-        
+//        .alert(isPresented: self.$networkConnectionService.isConnected){
+//            return Alert(title: Text("Networking Error"), message: Text("WIFI is disconnected..."), dismissButton: .default(Text("OK"),action: {
+//                exit(0)
+//            }))
+//        }
+        .alert(isPresented: self.$ServerInternalError){
+            return Alert(title: Text("Networking Error"), message: Text("Server's unable to connect..."), dismissButton: .default(Text("OK"),action: {
+                exit(0)
+            }))
+        }
+
         
     }
     
-    func checkToken(){
-        
-    }
+
 }
 
 struct WelcomePage_Previews: PreviewProvider {

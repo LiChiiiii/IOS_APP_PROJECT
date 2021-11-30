@@ -21,6 +21,7 @@ class NetworkingService: ObservableObject {
         
     }
     //login
+
     func requestLogin(endpoint: String,
                  loginObject: UserLogin,
                  completion: @escaping (Result<Me, Error>) -> Void) {
@@ -40,8 +41,10 @@ class NetworkingService: ObservableObject {
             URLSession.shared.uploadTask(with: request, from: payload){ (data, response, error) in
                 guard let data = data else {
                     print("login failed")
+                    completion(.failure(NetworkingError.badUrl))
                     return
                 }
+                
                 let token = String(data:data, encoding: String.Encoding.utf8)
                 print("login token \(String(describing:token))")
                 self.token = token ?? ""
@@ -59,6 +62,7 @@ class NetworkingService: ObservableObject {
     //驗證token,辨識user
     func AuthUser(token:String, completion: @escaping (Result<Me, Error>) -> Void){
         let url = URL(string: baseUrl+"/users/me")
+        
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -66,6 +70,7 @@ class NetworkingService: ObservableObject {
         let result = URLSession.shared.dataTask(with: request){ (data, response, error) in
             guard let gotData = data else{
                 print("failed to get data")
+                completion(.failure(NetworkingError.badUrl))
                 return
             }
             do {
@@ -210,14 +215,13 @@ class NetworkingService: ObservableObject {
 
     }
 
-    
-    enum NetworkingError: Error{
-        case badUrl
-        case badResponse
-        case badEncoding
-    }
 }
 
+enum NetworkingError: Error{
+    case badUrl
+    case badResponse
+    case badEncoding
+}
 
 //
 //protocol SocialService {

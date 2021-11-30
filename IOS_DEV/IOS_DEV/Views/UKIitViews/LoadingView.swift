@@ -42,6 +42,19 @@ struct LoadingView: View {
     }
 }
 
+struct BasicLoadingView: View {
+    var body: some View {
+        
+        VStack {
+
+            ActivityIndicatorView()
+            Text("Loading...")
+
+        }
+        
+    }
+}
+
 struct LoadingView_Previews: PreviewProvider {
     static var previews: some View {
         LoadingView(isLoading: true, error: nil, retryAction: nil)

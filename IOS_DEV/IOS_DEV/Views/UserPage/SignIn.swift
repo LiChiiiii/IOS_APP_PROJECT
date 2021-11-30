@@ -22,40 +22,53 @@ struct SignIn: View {
     @State private var email:String = ""
     @State private var username:String = ""
     @State private var password:String = ""
-   
+    @State private var isLoading : Bool = false
     
     @Binding var isSignIn:Bool
     @Binding var isLoggedIn : Bool
     //  @Namespace var names
     var body: some View {
-        VStack{
-            HStack {
-                Spacer()
-                Button(action:{
-                    withAnimation(){
-                        isSignIn.toggle()
-                    }
-                }){
-                    HStack {
-                        Image(systemName: "arrow.backward")
-                            .font(.title)
-                            .foregroundColor(Color.white.opacity(0.5))
-                            .padding(.bottom,20)
-                            .padding(.leading)
-                        Spacer()
-                        
+        ZStack{
+            VStack{
+                HStack {
+                    Spacer()
+                    Button(action:{
+                        withAnimation(){
+                            isSignIn.toggle()
+                        }
+                    }){
+                        HStack {
+                            Image(systemName: "arrow.backward")
+                                .font(.title)
+                                .foregroundColor(Color.white.opacity(0.5))
+                                .padding(.bottom,20)
+                                .padding(.leading)
+                            Spacer()
+                            
+                        }
                     }
                 }
+                Spacer()
+                
+                SignInCell(email: $email, username: $username, password: $password,isLoading:self.$isLoading,isSignIn: $isSignIn,isLoggedIn:$isLoggedIn)
+                Spacer()
             }
-            Spacer()
+            .padding(.top,20)
+            .padding(.vertical)
+            .zIndex(0)
             
-            SignInCell(email: $email, username: $username, password: $password,isSignIn: $isSignIn,isLoggedIn:$isLoggedIn)
-            Spacer()
+            if isLoading{
+                VStack{
+                    BasicLoadingView()
+                        .padding()
+                        .background(BlurView().cornerRadius(15))
+                }
+                .zIndex(1.0)
+                .frame(maxWidth:.infinity, maxHeight:.infinity)
+                .background(Color.black.opacity(0.75).edgesIgnoringSafeArea(.all))
+            }
         }
-        .padding(.top,20)
-        .padding(.vertical)
-        
-        
+
     }
 }
 //struct SignIn_Previews: PreviewProvider {
@@ -69,16 +82,17 @@ struct SignInCell : View{
     @Binding var email:String
     @Binding var username:String
     @Binding var password:String
-
+    @Binding var isLoading:Bool
+    @Binding var isSignIn:Bool
+    @Binding var isLoggedIn : Bool
+    
     @State var ErrorAlert = false
     @State private var remember = false
     @AppStorage("userName") private var userName : String = ""
     @AppStorage("userPassword") private var userPassword : String = ""
     @AppStorage("rememberUser") private var rememberUser : Bool = false
     @ObservedObject private var networkingService = NetworkingService.shared
-    
-    @Binding var isSignIn:Bool
-    @Binding var isLoggedIn : Bool
+
     func Login(){
         let login = UserLogin(UserName: self.username, Password: self.password)
         
@@ -87,7 +101,6 @@ struct SignInCell : View{
             print(result)
             
             switch result {
-                
             case .success(let user):
                 print("login success")
 //                self.isPresented.toggle()
@@ -101,17 +114,17 @@ struct SignInCell : View{
                 withAnimation(){
                     self.isLoggedIn.toggle()
                     self.isSignIn.toggle()
+                    self.isLoading.toggle()
                 }
 
             case .failure:
                 print("login failed")
                 ErrorAlert = true
+                self.isLoading.toggle()
             }
         }
     }
     
-    
-
     var body: some View{
         Group{
             Text("Sign In")
@@ -184,11 +197,14 @@ struct SignInCell : View{
             
             VStack{
                 smallButton(text: "Sign In", textColor: .black, button: .white, image: ""){
+                    withAnimation(){
+                        self.isLoading.toggle()
+                    }
                     self.Login()
                 }.padding(.horizontal,50)
                 .alert(isPresented: $ErrorAlert, content: {
                     Alert(title: Text("帳號密碼錯誤"),
-                          dismissButton: .cancel())
+                          dismissButton: .default(Text("Enter")))
 
                 })
             }

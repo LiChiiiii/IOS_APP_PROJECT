@@ -114,6 +114,7 @@
 		01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED279826FAE004007C0C00 /* ListDetailController.swift */; };
 		01ED4F39267207E0009E2FD5 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED4F38267207E0009E2FD5 /* ListView.swift */; };
 		0EFBEEB402995C63C993EF15 /* Pods_IOS_DEV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */; };
+		6F78A27227561A76001582B9 /* NetworkConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F78A27127561A76001582B9 /* NetworkConnectionService.swift */; };
 		6FAD51D52751D81900A25ED4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */; };
 		6FCE6E87275258AC00CDAE7E /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE6E86275258AC00CDAE7E /* UserManager.swift */; };
 		6FCFFE10274FBDEE00C46710 /* ManagerAndModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCFFE06274FBDE800C46710 /* ManagerAndModel.swift */; };
@@ -281,6 +282,7 @@
 		01ED279826FAE004007C0C00 /* ListDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailController.swift; sourceTree = "<group>"; };
 		01ED4F38267207E0009E2FD5 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_DEV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F78A27127561A76001582B9 /* NetworkConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionService.swift; sourceTree = "<group>"; };
 		6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6FCE6E86275258AC00CDAE7E /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		6FCFFE06274FBDE800C46710 /* ManagerAndModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerAndModel.swift; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 				01C02177263E7A5B0090846D /* Services */,
 				0175AAD02653EB4B001BCD2E /* ErrorResponse.swift */,
 				0194A5DF2695A1A400E24598 /* Utils.swift */,
+				6F78A27127561A76001582B9 /* NetworkConnectionService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1039,6 +1042,7 @@
 				01C0E26926AC56540027B9A9 /* MovieResource.swift in Sources */,
 				6FCFFE18274FBDEE00C46710 /* BottomSheet.swift in Sources */,
 				01C91FB026D1E7020052BF7A /* DataLoader.swift in Sources */,
+				6F78A27227561A76001582B9 /* NetworkConnectionService.swift in Sources */,
 				6FF3A22127510C920084637D /* UIHScrollList.swift in Sources */,
 				7A645450262F120A006ACA4F /* Extension.swift in Sources */,
 				01C0E26E26AC5AC60027B9A9 /* MovieOTT.swift in Sources */,

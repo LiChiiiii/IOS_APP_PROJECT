@@ -13,6 +13,7 @@ let registerService = RegisterService()
 struct SignUp: View {
     @State var ErrorResponse:String = ""
     @State var ErrorAlert = false
+    @State private var isLoading : Bool = false
         
     @State private var email:String = ""
     @State private var password:String = ""
@@ -33,95 +34,118 @@ struct SignUp: View {
             print(result)
             
             switch result {
-                
             case .success:
                 print("register success")
                 ErrorAlert = false
                 self.isSignUp.toggle()
+                withAnimation(){
+                    self.isLoading.toggle()
+                }
                 
             case .failure(let error):
                 print("register failed")
                 ErrorAlert = true
                 ErrorResponse = error.localizedDescription
+                withAnimation(){
+                    self.isLoading.toggle()
+                }
 
             }
         }
     }
     
     var body: some View {
-        VStack{
-            Spacer()
-            HStack {
+        ZStack{
+            VStack{
                 Spacer()
-                Button(action:{
-                    withAnimation(){
-                        isSignUp.toggle()
-                    }
-                }){
-                    HStack {
-                        Image(systemName: "arrow.backward")
-                            .font(.title)
-                            .foregroundColor(Color.white.opacity(0.5))
-                            .padding(.bottom,20)
-                            .padding(.leading)
-                        Spacer()
-                        
+                HStack {
+                    Spacer()
+                    Button(action:{
+                        withAnimation(){
+                            isSignUp.toggle()
+                        }
+                    }){
+                        HStack {
+                            Image(systemName: "arrow.backward")
+                                .font(.title)
+                                .foregroundColor(Color.white.opacity(0.5))
+                                .padding(.bottom,20)
+                                .padding(.leading)
+                            Spacer()
+                            
+                        }
                     }
                 }
-            }
-            Spacer()
-
-            
-            HStack {
-                Text("Sign Up")
-                    .bold()
-                    .foregroundColor(.orange)
-                    .TekoBoldFontFont(size: 45)
+                Spacer()
+                
+                
+                HStack {
+                    Text("Sign Up")
+                        .bold()
+                        .foregroundColor(.orange)
+                        .TekoBoldFontFont(size: 45)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.leading,10)
+                
+                
+                UserRegForm(email: $email, password: $password, ConfirmPassword: $ConfirmPassword, UserName: $UserName)
+                
                 
                 Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.leading,10)
-
-            UserRegForm(email: $email, password: $password, ConfirmPassword: $ConfirmPassword, UserName: $UserName)
-            
-            
-            Spacer()
-            
-
-            smallButton(text: "Sign Up", textColor: .black, button: .white, image: ""){
-                self.Register()
-            }
-            .padding(.horizontal,50)
-            .alert(isPresented: $ErrorAlert, content: {
-                Alert(title: Text(self.ErrorResponse),
-                      dismissButton: .cancel())
-
-            })
-
-            
-            Spacer()
-
-
-            HStack{
-                Text("Already have an account?")
-                    .foregroundColor(.secondary)
-                Button(action:{
-                    //TODO:
-                    //GO TO SIGN UP PAGE
-                    withAnimation{
-                        self.isSignIn.toggle()
-                        self.isSignUp.toggle()
+                
+                
+                smallButton(text: "Sign Up", textColor: .black, button: .white, image: ""){
+                    withAnimation(){
+                        self.isLoading.toggle()
                     }
-                }){
-                    Text("Sign In")
+                    self.Register()
                 }
+                .padding(.horizontal,50)
+                .alert(isPresented: $ErrorAlert, content: {
+                    Alert(title: Text(self.ErrorResponse),
+                          dismissButton: .cancel())
+                    
+                })
+                
+                
+                Spacer()
+                
+                
+                HStack{
+                    Text("Already have an account?")
+                        .foregroundColor(.secondary)
+                    Button(action:{
+                        //TODO:
+                        //GO TO SIGN UP PAGE
+                        withAnimation{
+                            self.isSignIn.toggle()
+                            self.isSignUp.toggle()
+                        }
+                    }){
+                        Text("Sign In")
+                    }
+                }
+                .font(.system(size: 14))
+                .padding()
+                
+                Spacer()
+                
             }
-            .font(.system(size: 14))
-            .padding()
+            .zIndex(0)
             
-            Spacer()
-
+            if isLoading{
+                VStack{
+                    BasicLoadingView()
+                        .padding()
+                        .background(BlurView().cornerRadius(15))
+                }
+                .zIndex(1.0)
+                .frame(maxWidth:.infinity, maxHeight:.infinity)
+                .background(Color.black.opacity(0.75).edgesIgnoringSafeArea(.all))
+            }
         }
     }
     
@@ -179,8 +203,8 @@ struct UserRegForm: View {
             
             VStack {
                 HStack{
-                    Text("User Name :")
-                        .foregroundColor(.black)
+                    Text("UserName :")
+                        .foregroundColor(.white)
                         .font(.headline)
                     Spacer()
                 }
@@ -192,7 +216,7 @@ struct UserRegForm: View {
             VStack {
                 HStack{
                     Text("Email :")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .font(.headline)
                     Spacer()
                 }
@@ -206,7 +230,7 @@ struct UserRegForm: View {
             VStack {
                 HStack{
                     Text("Password :")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .font(.headline)
                     Spacer()
                 }
@@ -220,7 +244,7 @@ struct UserRegForm: View {
             VStack {
                 HStack{
                     Text("Enter Password :")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .font(.headline)
                     Spacer()
                 }

@@ -13,10 +13,10 @@ struct User: Decodable{
     var UserName: String
     var Email: String
     var Password: String
-    var UserPhoto: String
-    
+    var UserPhoto: String?
+//
     var UserPhotoURL: URL {
-        return URL(string:"\(baseUrl)/UserPhoto/\(UserPhoto)" )!
+        return URL(string:"\(baseUrl)/UserPhoto/\(UserPhoto ?? "")" )!
     }
 }
 
