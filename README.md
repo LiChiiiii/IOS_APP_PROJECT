@@ -1,4 +1,4 @@
-# IOS_APP_PROJECT
+# FINAL PROJECT - Adam's Apple - Project progress
 
 ### SERVER STATUS
 |FEATURE|Comment|Done%|
