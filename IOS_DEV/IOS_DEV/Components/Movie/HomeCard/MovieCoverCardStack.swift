@@ -13,7 +13,7 @@ struct MovieCoverCardStack: View {
     
     @Binding var isCardSelectedMovie:Bool
     @State var isPress = false
-    let movies : [Movie]
+    let movies : [MovieCardInfo]
     let genreData = DataLoader().genreData
     let genreID : Int
     var body: some View {
@@ -50,13 +50,13 @@ struct MovieCoverCardStack: View {
         }
     }
 }
-struct MovieCoverCardStack_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack{
-            Color.black.edgesIgnoringSafeArea(.all)
-            MovieCoverCardStack(isCardSelectedMovie: .constant(false), movies: stubbedMovie, genreID: 28)
-        }
-    }
-}
-
-
+//struct MovieCoverCardStack_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack{
+//            Color.black.edgesIgnoringSafeArea(.all)
+//            MovieCoverCardStack(isCardSelectedMovie: .constant(false), movies: stubbedMovie, genreID: 28)
+//        }
+//    }
+//}
+//
+//

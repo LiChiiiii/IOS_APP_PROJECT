@@ -14,8 +14,8 @@
             filePath = "IOS_DEV/Networking/Services/MovieStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
             landmarkName = "FetchAndDecode(url:params:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -34,6 +34,22 @@
             endingLineNumber = "12"
             landmarkName = "MovieCoverCardStack"
             landmarkType = "14">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "36B2A19F-A0DD-48B4-8826-8B2120F49DD0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "IOS_DEV/Networking/Services/MovieService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "localizedDescription"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -93,7 +93,7 @@ struct WelcomePage: View {
                     case.success(let data):
                         NowUserName = data.UserName
                         NowUserID = data.id
-                        
+                        self.isLoggedIn.toggle()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8){
                             self.isLoading.toggle()
                         }
@@ -127,8 +127,9 @@ struct WelcomePage: View {
 //                exit(0)
 //            }))
 //        }
+        //Movie to root page -> when ever server is unable to connect
         .alert(isPresented: self.$ServerInternalError){
-            return Alert(title: Text("Networking Error"), message: Text("Server's unable to connect..."), dismissButton: .default(Text("OK"),action: {
+            return Alert(title: Text("Networking Error"), message: Text("Server's unable to connect...try again later."), dismissButton: .default(Text("OK"),action: {
                 exit(0)
             }))
         }

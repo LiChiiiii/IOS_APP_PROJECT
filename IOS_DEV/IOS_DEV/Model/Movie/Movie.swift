@@ -8,9 +8,35 @@
 import Foundation
 
 struct MovieResponse: Decodable {
-    
     let results: [Movie]
 }
+
+//This information is used in StackCard View
+struct MovieCardResponse : Decodable {
+    let results : [MovieCardInfo]
+}
+
+struct MovieCardInfo : Identifiable,Decodable{
+    let id : Int
+    let title : String
+    let poster : String?
+    let vote_average : Double
+    
+    var posterURL: URL {
+        return URL(string: "https://image.tmdb.org/t/p/w500\(poster ?? "")")!
+    }
+    
+    var ratingText: String {
+        let rating = Int(vote_average)/2
+        let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
+            return acc + "★"
+            
+        }
+        
+        return ratingText
+    }
+}
+
 
 struct Movie: Decodable, Identifiable, Hashable {
     static func == (lhs: Movie, rhs: Movie) -> Bool {

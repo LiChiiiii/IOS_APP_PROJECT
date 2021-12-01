@@ -240,6 +240,7 @@ class APIService : ServerAPIServerServiceInterface{
     //URI Path
     private let previewSearch = "/previewsearch"
     private let search = "/search"
+    private let movie = "/movie"
     
     //To Fetching and Decoding the response body or throw an error
     /*FetchAndDecode - parameters
@@ -445,6 +446,10 @@ class APIService : ServerAPIServerServiceInterface{
         self.FetchAndDecode(url: url, completion: completion)
     }
     
+    func getMovieCardInfoByGenre(genre: GenreType, completing: @escaping (Result<MovieCardResponse, MovieError>) -> ()) {
+        let url = URL(string: "\(API_SERVER_HOST)\(movie)/getmoviecard?genre=\(genre.rawValue)")!
+        self.FetchAndDecode(url: url, completion: completing)
+    }
 }
 
 struct AlgorithmFormatJSON : Codable{

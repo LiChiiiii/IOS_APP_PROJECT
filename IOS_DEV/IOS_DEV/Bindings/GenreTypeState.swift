@@ -12,32 +12,69 @@ import Foundation
 class GenreTypeState: ObservableObject {
     
 //    @Published var genreID : Int
-    private let movieService: MovieService
-    @Published var movies: [Movie]?
+    @Published var allGenreMovie : [String:[MovieCardInfo]]?
+    @Published var genreMovies : [MovieCardInfo]?
+//    @Published var movies: [Movie]?
     @Published var isLoading = false
     @Published var error: NSError?
     
-    init(movieService: MovieService = MovieStore.shared) {
+    private let movieService: MovieService
+    private let apiService : APIService
+    
+    
+    init(movieService: MovieService = MovieStore.shared,apiService : APIService = APIService.shared) {
         self.movieService = movieService
+        self.apiService = apiService
     }
     
-    func genreType(genreID: Int) {
-        self.movies = nil
+    func getGenreCard(genre: GenreType) {
+        self.genreMovies = nil
         self.isLoading = false
         self.error = nil
-        self.movieService.GenreType(genreID: genreID) {[weak self] (result) in
+        self.apiService.getMovieCardInfoByGenre(genre: genre){ [weak self] (result) in
             guard let self = self else { return }
             
             self.isLoading = false
             switch result {
             case .success(let response):
-                self.movies = response.results
+                self.genreMovies = response.results
+                print(self.genreMovies?.count ?? "0")
             case .failure(let error):
                 self.error = error as NSError
-
+                
             }
         }
+//        self.movieService.GenreType(genreID: genreID) {[weak self] (result) in
+//            guard let self = self else { return }
+//
+//            self.isLoading = false
+//            switch result {
+//            case .success(let response):
+//                self.movies = response.results
+//            case .failure(let error):
+//                self.error = error as NSError
+//
+//            }
+//        }
     }
+    
+//    func genreType(genreID: Int) {
+//        self.movies = nil
+//        self.isLoading = false
+//        self.error = nil
+//        self.movieService.GenreType(genreID: genreID) {[weak self] (result) in
+//            guard let self = self else { return }
+//            
+//            self.isLoading = false
+//            switch result {
+//            case .success(let response):
+//                self.movies = response.results
+//            case .failure(let error):
+//                self.error = error as NSError
+//
+//            }
+//        }
+//    }
     
 //    private var subscriptionToken: AnyCancellable?
 //

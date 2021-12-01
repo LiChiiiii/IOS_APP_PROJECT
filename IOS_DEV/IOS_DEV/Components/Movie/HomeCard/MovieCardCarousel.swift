@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct MovieCardCarousel: View{
-    var movies:[Movie]
+    var movies:[MovieCardInfo]
     let genreID : Int
     @State private var isCardSelectedMovie:Bool = false
     @EnvironmentObject var movieListMV : GenreTypeState

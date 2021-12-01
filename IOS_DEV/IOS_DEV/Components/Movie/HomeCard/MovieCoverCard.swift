@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct MovieCoverCard: View {
-    let movie: Movie
+    let movie: MovieCardInfo
     @ObservedObject var imageLoader = ImageLoader()
     
     var body: some View {
@@ -40,11 +40,11 @@ struct MovieCoverCard: View {
         }
     }
 }
-
-struct MovieCoverCard_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieCoverCard(movie: stubbedMovie[0])
-    }
-}
-
-
+//
+//struct MovieCoverCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieCoverCard(movie: stubbedMovie[0])
+//    }
+//}
+//
+//

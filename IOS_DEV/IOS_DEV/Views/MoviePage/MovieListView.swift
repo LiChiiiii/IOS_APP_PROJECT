@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct MovieListView: View {
-    
-    
-//    @StateObject
+    //Manager this in a class
     @ObservedObject private var nowPlayingState = MovieListState()
     @ObservedObject private var upcomingState = MovieListState()
     @ObservedObject private var topRatedState = MovieListState()
     @ObservedObject private var popularState = MovieListState()
+    
     @ObservedObject var genreTypeState = GenreTypeState()
     @ObservedObject var genreTypeState2 = GenreTypeState()
     @ObservedObject var genreTypeState3 = GenreTypeState()
@@ -25,8 +24,6 @@ struct MovieListView: View {
     
     
     var body: some View {
-        
-        
         ScrollView(.vertical, showsIndicators: false){
             LazyVStack{
                 ScrollView(.horizontal, showsIndicators: false)
@@ -35,15 +32,16 @@ struct MovieListView: View {
                     {
                         //one
                         Group {
-                            if genreTypeState.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState.movies!,genreID:28)
+                            if genreTypeState.genreMovies != nil {
+                                MovieCardCarousel(movies: genreTypeState.genreMovies!,genreID:GenreType.Action.rawValue)
                                     .environmentObject(genreTypeState)
                                     
                 
                             } else {
                                 LoadingView(isLoading: self.genreTypeState.isLoading, error: self.genreTypeState.error) {
-                                    self.genreTypeState.genreType(
-                                        genreID:28)
+//                                    self.genreTypeState.genreType(
+//                                        genreID:28)
+                                    self.genreTypeState.getGenreCard(genre: .Action)
                                 }
                             }
                         }
@@ -51,13 +49,14 @@ struct MovieListView: View {
                         
                         //two
                         Group {
-                            if genreTypeState2.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState2.movies!,genreID:16)
+                            if genreTypeState2.genreMovies != nil {
+                                MovieCardCarousel(movies: genreTypeState2.genreMovies!,genreID:GenreType.Animation.rawValue)
                                     .environmentObject(genreTypeState2)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState2.isLoading, error: self.genreTypeState2.error) {
-                                    self.genreTypeState2.genreType(
-                                        genreID:16)
+//                                    self.genreTypeState2.genreType(
+//                                        genreID:16)
+                                    self.genreTypeState2.getGenreCard(genre: .Animation)
                                 }
                             }
                         }
@@ -65,13 +64,14 @@ struct MovieListView: View {
                         
                         //three
                         Group {
-                            if genreTypeState3.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState3.movies!,genreID:12)
+                            if genreTypeState3.genreMovies != nil {
+                                MovieCardCarousel(movies: genreTypeState3.genreMovies!,genreID:GenreType.Adventure.rawValue)
                                     .environmentObject(genreTypeState3)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState3.isLoading, error: self.genreTypeState3.error) {
-                                    self.genreTypeState3.genreType(
-                                        genreID:12)
+//                                    self.genreTypeState3.genreType(
+//                                        genreID:12)
+                                    self.genreTypeState3.getGenreCard(genre: .Adventure)
                                 }
                             }
                         }
@@ -79,13 +79,14 @@ struct MovieListView: View {
                         
                         //four
                         Group {
-                            if genreTypeState4.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState4.movies!,genreID:35)
+                            if genreTypeState4.genreMovies != nil {
+                                MovieCardCarousel(movies: genreTypeState4.genreMovies!,genreID:GenreType.Comedy.rawValue)
                                     .environmentObject(genreTypeState4)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState4.isLoading, error: self.genreTypeState4.error) {
-                                    self.genreTypeState4.genreType(
-                                        genreID:35)
+//                                    self.genreTypeState4.genreType(
+//                                        genreID:35)
+                                    self.genreTypeState4.getGenreCard(genre: .Comedy)
                                 }
                             }
                         }
@@ -93,13 +94,14 @@ struct MovieListView: View {
                         
                         //five
                         Group {
-                            if genreTypeState5.movies != nil {
-                                MovieCardCarousel(movies: genreTypeState5.movies!,genreID:80)
+                            if genreTypeState5.genreMovies != nil {
+                                MovieCardCarousel(movies: genreTypeState5.genreMovies!,genreID:GenreType.Crime.rawValue)
                                     .environmentObject(genreTypeState5)
                             } else {
                                 LoadingView(isLoading: self.genreTypeState5.isLoading, error: self.genreTypeState5.error) {
-                                    self.genreTypeState5.genreType(
-                                        genreID:80)
+//                                    self.genreTypeState5.genreType(
+//                                        genreID:80)
+                                    self.genreTypeState5.getGenreCard(genre: .Crime)
                                 }
                             }
                         }
@@ -115,11 +117,16 @@ struct MovieListView: View {
                 .frame(height:600)
                 
             }.onAppear{
-                self.genreTypeState.genreType(genreID:28)
-                self.genreTypeState2.genreType(genreID:16)
-                self.genreTypeState3.genreType(genreID:12)
-                self.genreTypeState4.genreType(genreID:35)
-                self.genreTypeState5.genreType(genreID:80)
+                self.genreTypeState.getGenreCard(genre: .Action)
+//                self.genreTypeState.genreType(genreID:28)
+                self.genreTypeState2.getGenreCard(genre: .Animation)
+//                self.genreTypeState2.genreType(genreID:16)
+                self.genreTypeState3.getGenreCard(genre: .Adventure)
+//                self.genreTypeState3.genreType(genreID:12)
+                self.genreTypeState4.getGenreCard(genre: .Comedy)
+//                self.genreTypeState4.genreType(genreID:35)
+                self.genreTypeState5.getGenreCard(genre: .Crime)
+//                self.genreTypeState5.genreType(genreID:80)
             }
 
             LazyVStack{
@@ -250,8 +257,19 @@ struct MovieListView: View {
             
 
         }//toolbar
+//        .onAppear(){
+//            APIService.shared.getMovieCardInfoByGenre(genre: .Action){ result in
+//                switch(result){
+//                case .success(let response):
+//                    print(response.results)
+//
+//                case .failure(let err):
+//                    print(err.localizedDescription)
+//                }
+//            }
+//        }
 
-       
+        
     }
     
     func getTime() -> String{

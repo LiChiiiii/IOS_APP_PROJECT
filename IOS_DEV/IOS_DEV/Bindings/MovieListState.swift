@@ -9,15 +9,17 @@
 import SwiftUI
 
 class MovieListState: ObservableObject {
-    
+
     @Published var movies: [Movie]?
     @Published var isLoading: Bool = false
     @Published var error: NSError?
 
     private let movieService: MovieService
+    private let apiService : APIService
     
-    init(movieService: MovieService = MovieStore.shared) {
+    init(movieService: MovieService = MovieStore.shared,apiService : APIService = APIService.shared) {
         self.movieService = movieService
+        self.apiService = apiService
     }
     
     func loadMovies(with endpoint: MovieListEndpoint) {

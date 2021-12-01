@@ -13,8 +13,8 @@ struct MovieCardGesture :View{
     let imageLoader = ImageLoader()
 
     @EnvironmentObject var movieListMV : GenreTypeState
-    @State var movies : [Movie]  //allow as to remove
-    @State var currentMovie:Movie?
+    @State var movies : [MovieCardInfo]  //allow as to remove
+    @State var currentMovie:MovieCardInfo?
     @State var gestureState = CardGesture.CardGestureState.inactive
     @Binding var backHomePage:Bool
 
@@ -102,7 +102,7 @@ struct MovieCardGesture :View{
                         
                     }
                 }
-                    .background(FullMovieCoverBackground(urlPath: self.currentMovie?.posterPath ?? "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg").blur(radius: 50))
+                .background(FullMovieCoverBackground(urlPath: self.currentMovie?.poster ?? "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg").blur(radius: 50))
                 
                 if previewMovieId != nil{
                     NavigationLink(destination: MovieDetailView(movieId:self.previewMovieId!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$isMovieDetail){
@@ -143,7 +143,7 @@ struct MovieCardGesture :View{
                             .multilineTextAlignment(.center)
 
                         HStack(spacing:3){
-                            if (currentMovie!.voteAverage)/2 == 0{
+                            if (currentMovie!.vote_average)/2 == 0{
                                 Text("N/A")
                                     .foregroundColor(.white)
                                     .font(.caption)
@@ -151,10 +151,10 @@ struct MovieCardGesture :View{
                                 ForEach(1...5,id:\.self){index in
                                     Image(systemName: "star.fill")
                                         .font(.caption)
-                                        .foregroundColor(index <= Int(currentMovie!.voteAverage)/2 ? .yellow: .gray)
+                                        .foregroundColor(index <= Int(currentMovie!.vote_average)/2 ? .yellow: .gray)
                                 }
                                 
-                                Text("(\(Int(currentMovie!.voteAverage)/2).0)")
+                                Text("(\(Int(currentMovie!.vote_average)/2).0)")
                                     .foregroundColor(.white)
                                     .font(.caption)
                             }
@@ -177,11 +177,11 @@ struct MovieCardGesture :View{
                             _ = self.movies.popLast()
                             if self.movies.count < 10{
                                 print("fetching...")
-                                let currentContainedId = self.movies.map({$0.id})
-                                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
-                                withAnimation(){
-                                    self.movies.insert(contentsOf: newMovies, at: 0)
-                                }
+//                                let currentContainedId = self.movies.map({$0.id})
+//                                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
+//                                withAnimation(){
+//                                    self.movies.insert(contentsOf: newMovies, at: 0)
+//                                }
                             }else{
                                 if self.movies.count == 0{
                                     withAnimation(){
@@ -216,10 +216,10 @@ struct MovieCardGesture :View{
                     
                     //return back
                     Button(action:{
-                        withAnimation(){
-                            self.movies = self.movieListMV.movies!
-                            self.currentMovie = self.movies.last
-                        }
+//                        withAnimation(){
+//                            self.movies = self.movieListMV.movies!
+//                            self.currentMovie = self.movies.last
+//                        }
                     }){
                         Image(systemName: "arrow.uturn.down")
                     }
@@ -264,12 +264,12 @@ struct MovieCardGesture :View{
             
             _ = self.movies.popLast()
             if self.movies.count < 10{
-                print("fetching...")
-                let currentContainedId = self.movies.map({$0.id})
-                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
-                withAnimation(){
-                    self.movies.insert(contentsOf: newMovies, at: 0)
-                }
+//                print("fetching...")
+//                let currentContainedId = self.movies.map({$0.id})
+//                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
+//                withAnimation(){
+//                    self.movies.insert(contentsOf: newMovies, at: 0)
+//                }
             }else{
                 if direction == .right{
                     withAnimation(){
@@ -373,7 +373,7 @@ struct CardGesture: View {
     @State private var todo : Bool = false
     @State private var hasMove = false
     @State private var predictEndLocation:CGPoint? = nil
-    var movie: Movie
+    var movie: MovieCardInfo
     var body: some View {
         //concate 2 Gesture to Create a new Gesture
         //in this case longPrssingGesture + GragGresture
@@ -500,7 +500,7 @@ struct FullMovieCoverBackground:View{
 //--------------------CARD-------------------//
 
 struct TheCard:View{
-    var movie: Movie
+    var movie: MovieCardInfo
     @State private var todo : Bool = false
     var body: some View{
        
