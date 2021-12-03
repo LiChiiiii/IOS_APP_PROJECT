@@ -286,6 +286,7 @@ struct NavBar: View {
     @StateObject var StateManager  = SeachingViewStateManager()
     @StateObject var DragAndDropPreview = DragSearchModel()
     
+
     @Binding var isLogOut : Bool
     @State var index : Int
     @State private var GroupSelect : Bool = false
@@ -301,8 +302,10 @@ struct NavBar: View {
                         ListView(lists: controller.listData)
                             .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
 
+
                         DragAndDropMainView()
                             .opacity(self.index == 2 ? 1 : 0)
+                            
                     
                         ProfileView()
                             .opacity(self.index == 3 ? 1 : 0)

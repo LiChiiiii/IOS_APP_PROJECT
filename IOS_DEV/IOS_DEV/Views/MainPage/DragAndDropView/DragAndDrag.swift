@@ -19,6 +19,7 @@ struct SeachItem : Identifiable,Hashable{
 
 struct DragAndDropMainView: View {
 //    @AppStorage("seachHistory") var history : [String] =  []
+    @StateObject var DragAndDropPreview = DragSearchModel()
     
     @EnvironmentObject  var StateManager : SeachingViewStateManager
     @StateObject private var searchMV = SearchBarViewModel()
@@ -84,6 +85,7 @@ struct DragAndDropMainView: View {
                                 .background(Color.black.edgesIgnoringSafeArea(.all))
                                 .opacity(self.StateManager.isEditing ? 1 : 0)
                                 .zIndex(2)
+                                
                         }
 
                     }
@@ -115,6 +117,7 @@ struct DragAndDropMainView: View {
                 }
             }
             .environmentObject(searchMV)
+            .environmentObject(DragAndDropPreview)
     }
     
 }
@@ -127,12 +130,11 @@ struct ResultCareVIew : View{
                 .resizable()
                 .indicator(.activity)
                 .transition(.fade(duration: 0.5))
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fill)
                 .frame(height:230)
-                .cornerRadius(25)
-            
-            
-            
+                .cornerRadius(15)
+                .clipped()
+
             VStack(alignment:.center){
                 Text(movie.title)
                     .bold()
@@ -145,20 +147,11 @@ struct ResultCareVIew : View{
             
             HStack{
                 HStack(spacing:0){
-                    if self.movie.genres != nil{
-                        ForEach(0..<self.movie.genres!.count){i in
-
-                            Text(self.movie.genres![i].name)
-                                .font(.system(size: 14))
-                                .foregroundColor(.gray)
-                                .padding(.horizontal,3)
-
-                            if i != self.movie.genres!.count - 1{
-                                Circle()
-                                    .frame(width: 5, height: 5)
-                                    .foregroundColor(.red)
-                            }
-                        }
+                    if self.movie.genreIds != nil{
+                        Text(self.movie.genreStr)
+                            .font(.system(size: 14))
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal,3)
                     }
                     else{
                         Text("n/a...")
@@ -185,21 +178,32 @@ struct SearchResultsView : View {
     let movies :[Movie]
     @Binding var isShowDetail : Bool
     @Binding var selectedID : Int?
+    @State private var isLoading : Bool = false
     let gridItem = Array(repeating: GridItem(.flexible(),spacing: 5.0), count: 2)
     var body: some View{
-        ScrollView(.vertical, showsIndicators: false){ //TODO - need to change to UIKit
-            LazyVGrid(columns: gridItem){
-                ForEach(movies,id:\.self){ info in
-                    VStack{
-                        Button(action:{
-                            self.selectedID = info.id
-                            self.isShowDetail.toggle()
-                        }){
-                            ResultCareVIew(movie: info)
+        SearchScrollView(isLoading:self.$isLoading){
+            VStack{
+                LazyVGrid(columns: gridItem){
+                    ForEach(movies,id:\.self){ info in
+                        VStack{
+                            Button(action:{
+                                self.selectedID = info.id
+                                self.isShowDetail.toggle()
+                            }){
+                                ResultCareVIew(movie: info)
+                            }
                         }
                     }
                 }
+                
+                if self.isLoading {
+                    VStack(spacing:0){
+                        ActivityIndicatorView()
+                    }
+                }
             }
+            
+
 //            .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
         }
     }
@@ -210,8 +214,8 @@ struct searchingResultList :View{
     @EnvironmentObject var searchMV : SearchBarViewModel
     var body: some View{
         List(){
-            if self.searchMV.searchResult.count > 0{
-                ForEach(self.searchMV.searchResult,id:\.id){ searchData in
+            if self.searchMV.searchRecommandResult.count > 0{
+                ForEach(self.searchMV.searchRecommandResult,id:\.id){ searchData in
                     Button(action: {
                         self.searchMV.searchingText = searchData.title
                         self.StateManager.isSeaching.toggle()
@@ -354,7 +358,8 @@ struct SearchHotCard : View{
                 self.StateManager.getSearchResult = true
             }
             self.StateManager.updateSearchingHistory(query: hotData.title)
-            self.searchMV.getRecommandationList(keyWork: hotData.title)
+            self.searchMV.queryKeyword = hotData.title
+            self.searchMV.getRecommandationList()
         }){
             VStack(alignment:.leading){
                 HStack(spacing:15){
@@ -709,7 +714,8 @@ struct SearchResultView: View {
                         .opacity(self.StateManager.isEditing ? 1 : 0)
                         .zIndex(2)
                     
-                    if self.StateManager.searchingLoading{
+                    //First time to search and fetching
+                    if self.StateManager.searchingLoading && self.searchMV.searchResult.isEmpty{
                         VStack{
                             Spacer()
                             HStack{
@@ -720,13 +726,13 @@ struct SearchResultView: View {
                             }
                             Spacer()
                         }
-                        .onAppear{
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-                                withAnimation(){
-                                    self.StateManager.searchingLoading = false
-                                }
-                            }
-                        }
+//                        .onAppear{
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+//                                withAnimation(){
+//                                    self.StateManager.searchingLoading = false
+//                                }
+//                            }
+//                        }
                         
                     }else{
                         SearchResultsView(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)

@@ -89,13 +89,13 @@ struct HScrollList: View {
         
     }
 }
-
-struct HScrollList_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack{
-            Color.black.edgesIgnoringSafeArea(.all)
-            HScrollList(info:stubbedMovie[0])
-        }
-
-    }
-}
+//
+//struct HScrollList_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack{
+//            Color.black.edgesIgnoringSafeArea(.all)
+//            HScrollList(info:stubbedMovie[0])
+//        }
+//
+//    }
+//}

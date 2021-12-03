@@ -13,7 +13,7 @@ struct ActivityIndicatorView: UIViewRepresentable {
     func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {}
 
     func makeUIView(context: Context) -> UIActivityIndicatorView {
-        let view = UIActivityIndicatorView(style: .large)
+        let view = UIActivityIndicatorView(style: .medium)
         view.startAnimating()
         return view
     }

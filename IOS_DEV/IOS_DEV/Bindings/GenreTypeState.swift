@@ -12,7 +12,6 @@ import Foundation
 class GenreTypeState: ObservableObject {
     
 //    @Published var genreID : Int
-    @Published var allGenreMovie : [String:[MovieCardInfo]]?
     @Published var genreMovies : [MovieCardInfo]?
 //    @Published var movies: [Movie]?
     @Published var isLoading = false

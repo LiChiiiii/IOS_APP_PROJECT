@@ -14,12 +14,14 @@ protocol MovieService {
     func fetchMovie(id: Int, completion: @escaping (Result<Movie, MovieError>) -> ())
     func fetchMovieWithEng(id: Int, completion: @escaping (Result<Movie, MovieError>) -> ())
     func MovieReccomend(id: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
-    func searchMovie(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
+    
+    func searchRecommandMovie(query: String, completion: @escaping (Result<MovieSearchResponse, MovieError>) -> ())
+    func searchMovieInfo(query: String,page:Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func searchPerson(query: String, completion: @escaping (Result<PersonResponse, MovieError>) -> ())
     func GenreType(genreID: Int, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
     func fetchMovieImages(id: Int, completion: @escaping (Result<MovieImages, MovieError>) -> ())
     func fetchMovieResource(query: String, completion: @escaping (Result<[ResourceResponse], MovieError>) -> ())
-    
+
 }
 
 
@@ -93,25 +95,3 @@ enum MovieError: Error, CustomNSError {
 
 
 
-enum GenreType : Int{
-    case Action = 28
-    case Adventure = 12
-    case Animation = 16
-    case Comedy = 35
-    case Crime = 80
-    case Documentary = 99
-    case Drama = 18
-    case Family = 10751
-    case Fantasy = 14
-    case History = 36
-    case Horror = 27
-    case Music = 10402
-    case Mystery = 9648
-    case Romance = 10749
-    case ScienceFiction = 878
-    case TvMovie = 10770
-    case Thriller = 53
-    case War = 10752
-    case Western = 37
-
-}

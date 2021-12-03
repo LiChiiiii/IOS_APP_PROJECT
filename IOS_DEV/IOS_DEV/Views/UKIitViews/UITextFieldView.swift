@@ -40,11 +40,15 @@ struct UITextFieldView : UIViewRepresentable{
     func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = self.SearchMV.searchingText == "" ?  "" : self.SearchMV.searchingText
         if self.StateManager.isFocuse[tag]{
-            uiView.becomeFirstResponder()
+            DispatchQueue.main.async {
+                uiView.becomeFirstResponder()
+            }
         }else{
-            uiView.resignFirstResponder()
+            DispatchQueue.main.async {
+                uiView.resignFirstResponder()
+            }
         }
-    
+        
     }
     
     class Coordinator:NSObject,UITextFieldDelegate{
@@ -70,17 +74,22 @@ struct UITextFieldView : UIViewRepresentable{
                 if textField.text != nil{
                     let str = textField.text!.description
                     self.parent.SearchMV.searchingText = str
-                    self.parent.SearchMV.getRecommandationList(keyWork:textField.text!)
+                    self.parent.SearchMV.queryKeyword = textField.text!
+                    self.parent.SearchMV.getRecommandationList()
                 }
             }
             
         }
         
         func updatefocus(textfield: UITextField) {
-            textfield.becomeFirstResponder()
+            DispatchQueue.main.async {
+                textfield.becomeFirstResponder()
+            }
         }
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            
+            
             if parent.tag == 0{
                 parent.StateManager.isFocuse = [false,true]
             }else{
@@ -96,9 +105,11 @@ struct UITextFieldView : UIViewRepresentable{
             parent.StateManager.isEditing = false
             parent.StateManager.isSeaching = false
             updateHistory(history: keyWord)
+            //Remove previous result data
+            parent.SearchMV.searchResult.removeAll()
             parent.StateManager.getSearchResult = true
-            self.parent.StateManager.searchingLoading = true
-
+            parent.StateManager.searchingLoading = true
+            parent.SearchMV.getSearchingResult()
             return true
         }
         

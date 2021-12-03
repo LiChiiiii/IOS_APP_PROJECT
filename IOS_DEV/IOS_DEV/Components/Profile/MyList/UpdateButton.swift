@@ -213,9 +213,6 @@ struct CreateListMovieDetail:View{
     
     var body: some View
     {
-        
-        
-
         GeometryReader { proxy in
             let size = proxy.size
             
@@ -233,10 +230,6 @@ struct CreateListMovieDetail:View{
                         .font(.body)
 
                 }
-                
-                
-              
-                    
                     // movie pic
                     WebImage(url: movie.posterURL)
                         .resizable()

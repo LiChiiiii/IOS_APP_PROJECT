@@ -175,14 +175,7 @@ struct MovieCardGesture :View{
                         .animation(.easeInOut)
                         .onTapGesture {
                             _ = self.movies.popLast()
-                            if self.movies.count < 10{
-                                print("fetching...")
-//                                let currentContainedId = self.movies.map({$0.id})
-//                                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
-//                                withAnimation(){
-//                                    self.movies.insert(contentsOf: newMovies, at: 0)
-//                                }
-                            }else{
+
                                 if self.movies.count == 0{
                                     withAnimation(){
                                         self.backHomePage.toggle()
@@ -190,7 +183,7 @@ struct MovieCardGesture :View{
                                 }
                                 
                                 currentMovie = self.movies.last
-                            }
+                            
                         }
                     
                     //only appear at dragging
@@ -216,10 +209,10 @@ struct MovieCardGesture :View{
                     
                     //return back
                     Button(action:{
-//                        withAnimation(){
-//                            self.movies = self.movieListMV.movies!
-//                            self.currentMovie = self.movies.last
-//                        }
+                        withAnimation(){
+                            self.movies = self.movieListMV.genreMovies!
+                            self.currentMovie = self.movies.last
+                        }
                     }){
                         Image(systemName: "arrow.uturn.down")
                     }
@@ -263,14 +256,7 @@ struct MovieCardGesture :View{
             //remove the last movie in array and set current movie
             
             _ = self.movies.popLast()
-            if self.movies.count < 10{
-//                print("fetching...")
-//                let currentContainedId = self.movies.map({$0.id})
-//                let newMovies = self.movieListMV.movies!.filter({ !currentContainedId.contains($0.id)}).shuffled()
-//                withAnimation(){
-//                    self.movies.insert(contentsOf: newMovies, at: 0)
-//                }
-            }else{
+
                 if direction == .right{
                     withAnimation(){
                         self.previewMovieId = currentMovie!.id
@@ -291,7 +277,7 @@ struct MovieCardGesture :View{
                     }
                 }
                 self.feedBack.impactOccurred(intensity: 0.8)
-            }
+            
         }
     }
     

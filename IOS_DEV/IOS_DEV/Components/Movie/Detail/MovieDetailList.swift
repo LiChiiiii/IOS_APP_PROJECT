@@ -91,14 +91,14 @@ enum Tabs : String{
     case resources = "MOVIE RESOURCE"
 }
 
-
-struct MovieDetailList_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack{
-            MovieDetailList(movie: stubbedMovie[0], tabs: [.overView,.trailer,.more,.resources])
-                .preferredColorScheme(.dark)
-        }
-    }
-}
-
-
+//
+//struct MovieDetailList_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack{
+//            MovieDetailList(movie: stubbedMovie[0], tabs: [.overView,.trailer,.more,.resources])
+//                .preferredColorScheme(.dark)
+//        }
+//    }
+//}
+//
+//

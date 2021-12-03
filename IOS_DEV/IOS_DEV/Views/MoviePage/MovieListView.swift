@@ -19,6 +19,7 @@ struct MovieListView: View {
     @ObservedObject var genreTypeState3 = GenreTypeState()
     @ObservedObject var genreTypeState4 = GenreTypeState()
     @ObservedObject var genreTypeState5 = GenreTypeState()
+    
     @Binding var showHomePage:Bool
     @Binding var isLogOut : Bool
     

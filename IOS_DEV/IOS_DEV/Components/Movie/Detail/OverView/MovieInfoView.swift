@@ -106,16 +106,16 @@ struct MovieInfoView: View {
     }
 }
 
-struct MovieInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack{
-            Color.black.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            MovieInfoView(movie: stubbedMovie[0])
-                
-        }
-        
-    }
-}
+//struct MovieInfoView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack{
+//            Color.black.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+//            MovieInfoView(movie: stubbedMovie[0])
+//                
+//        }
+//        
+//    }
+//}
 //
 //
 //struct temp{

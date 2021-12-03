@@ -20,6 +20,19 @@ class MovieStore: MovieService {
     
     private let API_URL = "http://127.0.0.1:8080/api"
     private let API_PLAYGOUND_URI = "/playground"
+    
+    func searchRecommandMovie(query: String, completion: @escaping (Result<MovieSearchResponse, MovieError>) -> ()) {
+        guard let url = URL(string: "\(baseAPIURL)/search/movie") else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+        self.loadURLAndDecode(url: url, params: [
+            "language": "zh-TW",
+            "include_adult": "false",
+//            "region": "US",
+            "query": query
+        ], completion: completion)
+    }
 
     func fetchMovies(from endpoint: MovieListEndpoint, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/movie/\(endpoint.rawValue)") else {
@@ -63,7 +76,7 @@ class MovieStore: MovieService {
         ], completion: completion)
     }
     
-    func searchMovie(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
+    func searchMovieInfo(query: String, page : Int = 1,completion: @escaping (Result<MovieResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/search/movie") else {
             completion(.failure(.invalidEndpoint))
             return
@@ -72,7 +85,8 @@ class MovieStore: MovieService {
             "language": "zh-TW",
             "include_adult": "false",
 //            "region": "US",
-            "query": query
+            "query": query,
+            "page":String(page)
         ], completion: completion)
     }
     
@@ -157,6 +171,7 @@ class MovieStore: MovieService {
                 let decodedResponse = try self.jsonDecoder.decode(D.self, from: data)
                 self.executeCompletionHandlerInMainThread(with: .success(decodedResponse), completion: completion)
             } catch {
+                print(error)
                 self.executeCompletionHandlerInMainThread(with: .failure(.serializationError), completion: completion)
             }
         }.resume()
@@ -169,6 +184,7 @@ class MovieStore: MovieService {
             completion(result)
         }
     }
+    
     
     //---------以下為抓取片源---------//
     

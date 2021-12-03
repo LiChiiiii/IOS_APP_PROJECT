@@ -329,7 +329,8 @@ itemType: .Director, genreData: nil, personData: $0)})
 
 class SearchBarViewModel : ObservableObject{
     @Published var searchingText : String = ""
-    @Published var searchResult : [Movie] = []
+    @Published var searchResult : [Movie] = [] //For Result View
+    @Published var searchRecommandResult : [MovieSearchInfo] = [] //For Preivew Result View
     @Published var isLoading : Bool = false
     @Published var fetchingError : NSError?
     @Published var recommandPlachold : String = "Movie Name"
@@ -337,6 +338,8 @@ class SearchBarViewModel : ObservableObject{
     @Published var isHotListLoading : Bool = false
     @Published var hotListErr : NSError? = nil
     
+    @Published var searchResultPage : Int = 1
+    @Published var queryKeyword : String = ""
     private let movieService: MovieService
     private let apiService: APIService
     
@@ -346,26 +349,57 @@ class SearchBarViewModel : ObservableObject{
 //        self.hotSearchingDatas = HotTest
     }
     
-    //fake ,just for testing
-    //when searchingText is change chall it
-    func getRecommandationList(keyWork : String){
+    //This function is used for preview searching
+    func getRecommandationList(){
 //        //when the return button is press
-        self.searchResult.removeAll()
-        movieService.searchMovie(query: keyWork){ [weak self] result in
+        searchRecommandResult.removeAll()
+        movieService.searchRecommandMovie(query: queryKeyword){ [weak self] result in
             guard let self = self else { return }
             self.isLoading = true
-            
             switch result{
             case.success(let response):
-                self.searchResult = response.results
+                //Save the page???
+//                self.searchResult = response.results
+                self.searchRecommandResult = response.results
                 self.isLoading = false
-                
             case .failure(let error):
-
+                
                 self.fetchingError = error as NSError
             }
         }
-//
+    }
+    
+    //This function for fetching detail result
+    func getSearchingResult(){
+        movieService.searchMovieInfo(query: queryKeyword, page: 1){ [weak self] result in
+            guard let self = self else { return }
+            self.isLoading = true
+            switch result{
+            case.success(let response):
+                self.searchResult.append(contentsOf: response.results.map{$0})
+                self.searchResultPage += 1
+            case .failure(let error):
+                self.fetchingError = error as NSError
+            }
+            self.isLoading = false
+        }
+    }
+    
+    func getMoreSearchingResult(succeed actionSucceed:@escaping ()->(), failed actionFailed:@escaping ()->()){
+        movieService.searchMovieInfo(query: queryKeyword, page: searchResultPage){ [weak self] result in
+            guard let self = self else { return }
+            self.isLoading = true
+            switch result{
+            case.success(let response):
+                self.searchResult.append(contentsOf: response.results.map{$0})
+                self.searchResultPage += 1
+                actionSucceed() 
+            case .failure(let error):
+                self.fetchingError = error as NSError
+                actionFailed()
+            }
+            self.isLoading = false
+        }
     }
     
     func getHotSeachList(){

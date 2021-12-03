@@ -23,3 +23,4 @@ struct SearchResult : Codable{
     var title: String
 
 }
+

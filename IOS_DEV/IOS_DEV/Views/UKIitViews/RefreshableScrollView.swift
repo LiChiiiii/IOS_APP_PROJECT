@@ -92,9 +92,7 @@ struct DragRefreshableScrollView<Content:View> : UIViewRepresentable{
         view.addSubview(host.view)
         view.showsVerticalScrollIndicator = false
         view.addConstraints(constrains)
-        
-//        view.addConstraints(constrains)
-//        view.addSubview(host.view)
+
     }
     
     class Coordinator : NSObject,UIScrollViewDelegate{

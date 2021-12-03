@@ -74,12 +74,12 @@ struct MoviePosterCard: View {
         }
     }
 }
-
-struct MoviePosterCard_Previews: PreviewProvider {
-    static var previews: some View {
-        MoviePosterCard(movie: stubbedMovie[0])
-    }
-}
+//
+//struct MoviePosterCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MoviePosterCard(movie: stubbedMovie[0])
+//    }
+//}
 
 func resizeImage(image: UIImage, width: CGFloat) -> UIImage {
         let size = CGSize(width: width, height:

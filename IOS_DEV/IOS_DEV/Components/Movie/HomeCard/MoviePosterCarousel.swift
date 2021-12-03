@@ -42,11 +42,11 @@ struct MoviePosterCarousel: View {
         
     }
 }
-
-struct MoviePosterCarouselView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView{
-            MoviePosterCarousel(title: "Now Playing", movies: stubbedMovie)
-        }
-    }
-}
+//
+//struct MoviePosterCarouselView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView{
+//            MoviePosterCarousel(title: "Now Playing", movies: stubbedMovie)
+//        }
+//    }
+//}
