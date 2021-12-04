@@ -74,7 +74,7 @@ struct UITextFieldView : UIViewRepresentable{
                 if textField.text != nil{
                     let str = textField.text!.description
                     self.parent.SearchMV.searchingText = str
-                    self.parent.SearchMV.queryKeyword = textField.text!
+                    self.parent.SearchMV.searchingText = textField.text!
                     self.parent.SearchMV.getRecommandationList()
                 }
             }
@@ -88,7 +88,6 @@ struct UITextFieldView : UIViewRepresentable{
         }
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            
             
             if parent.tag == 0{
                 parent.StateManager.isFocuse = [false,true]
@@ -109,6 +108,7 @@ struct UITextFieldView : UIViewRepresentable{
             parent.SearchMV.searchResult.removeAll()
             parent.StateManager.getSearchResult = true
             parent.StateManager.searchingLoading = true
+            self.parent.SearchMV.isNoData = false
             parent.SearchMV.getSearchingResult()
             return true
         }

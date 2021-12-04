@@ -12,6 +12,7 @@ struct SearchScrollView<Content:View>: UIViewRepresentable{
         return SearchScrollView.Coordinator(parent: self)
     }
     @EnvironmentObject var searchVM : SearchBarViewModel
+
     @Binding var isLoading : Bool
     let content:Content
     

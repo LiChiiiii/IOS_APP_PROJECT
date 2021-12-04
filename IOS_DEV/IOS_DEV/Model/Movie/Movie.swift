@@ -8,6 +8,7 @@
 import Foundation
 
 struct MovieResponse: Decodable {
+    let totalPages : Int
     let results: [Movie]
 }
 

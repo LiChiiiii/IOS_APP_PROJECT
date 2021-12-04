@@ -86,10 +86,8 @@ struct MainHomeView:View{
                 
             }
             .edgesIgnoringSafeArea(.all)
-
-            
-            
         }
+        
       //  .animation(Animation.spring())
     }
 }

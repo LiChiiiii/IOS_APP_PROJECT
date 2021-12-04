@@ -329,17 +329,19 @@ itemType: .Director, genreData: nil, personData: $0)})
 
 class SearchBarViewModel : ObservableObject{
     @Published var searchingText : String = ""
+    
     @Published var searchResult : [Movie] = [] //For Result View
     @Published var searchRecommandResult : [MovieSearchInfo] = [] //For Preivew Result View
+    @Published var searchResultPage : Int = 1
     @Published var isLoading : Bool = false
     @Published var fetchingError : NSError?
     @Published var recommandPlachold : String = "Movie Name"
+    
     @Published var hotList : [SearchHotItem] = []
     @Published var isHotListLoading : Bool = false
     @Published var hotListErr : NSError? = nil
-    
-    @Published var searchResultPage : Int = 1
-    @Published var queryKeyword : String = ""
+
+    @Published var isNoData : Bool = false
     private let movieService: MovieService
     private let apiService: APIService
     
@@ -353,7 +355,7 @@ class SearchBarViewModel : ObservableObject{
     func getRecommandationList(){
 //        //when the return button is press
         searchRecommandResult.removeAll()
-        movieService.searchRecommandMovie(query: queryKeyword){ [weak self] result in
+        movieService.searchRecommandMovie(query: searchingText){ [weak self] result in
             guard let self = self else { return }
             self.isLoading = true
             switch result{
@@ -371,7 +373,7 @@ class SearchBarViewModel : ObservableObject{
     
     //This function for fetching detail result
     func getSearchingResult(){
-        movieService.searchMovieInfo(query: queryKeyword, page: 1){ [weak self] result in
+        movieService.searchMovieInfo(query: searchingText, page: 1){ [weak self] result in
             guard let self = self else { return }
             self.isLoading = true
             switch result{
@@ -386,14 +388,25 @@ class SearchBarViewModel : ObservableObject{
     }
     
     func getMoreSearchingResult(succeed actionSucceed:@escaping ()->(), failed actionFailed:@escaping ()->()){
-        movieService.searchMovieInfo(query: queryKeyword, page: searchResultPage){ [weak self] result in
+        //This function will only work ,when more datas is available
+        //Base on the result page
+        if isNoData {
+            actionSucceed()
+            return
+        }
+        
+        movieService.searchMovieInfo(query: searchingText, page: searchResultPage){ [weak self] result in
             guard let self = self else { return }
             self.isLoading = true
             switch result{
             case.success(let response):
                 self.searchResult.append(contentsOf: response.results.map{$0})
                 self.searchResultPage += 1
-                actionSucceed() 
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.3){
+                    self.isNoData =  response.totalPages <= self.searchResultPage
+                }
+                actionSucceed()
+
             case .failure(let error):
                 self.fetchingError = error as NSError
                 actionFailed()
@@ -404,21 +417,21 @@ class SearchBarViewModel : ObservableObject{
     
     func getHotSeachList(){
         self.hotList.removeAll()
-        apiService.getHotSeachingList(){ [weak self] result in
-            guard let self = self else { return }
-            self.isHotListLoading = true
-            switch result{
-            case .success(let response):
-                self.hotList.append(contentsOf: response.map{$0})
-                self.recommandPlachold = self.hotList.randomElement()!.title
-                self.isHotListLoading = false
-
-            case .failure(let error):
-                self.isHotListLoading = false
-                self.hotListErr = error as NSError
-
-            }
-        }
+//        apiService.getHotSeachingList(){ [weak self] result in
+//            guard let self = self else { return }
+//            self.isHotListLoading = true
+//            switch result{
+//            case .success(let response):
+//                self.hotList.append(contentsOf: response.map{$0})
+//                self.recommandPlachold = self.hotList.randomElement()!.title
+//                self.isHotListLoading = false
+//
+//            case .failure(let error):
+//                self.isHotListLoading = false
+//                self.hotListErr = error as NSError
+//
+//            }
+//        }
     }
     
 

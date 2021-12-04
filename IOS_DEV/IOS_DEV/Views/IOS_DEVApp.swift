@@ -16,10 +16,7 @@ struct IOS_DEVApp: App {
     
     var body: some Scene {
         WindowGroup {
-            
-//            NavBar(index: 0)
             WelcomePage()
-          
         }
     }
 }

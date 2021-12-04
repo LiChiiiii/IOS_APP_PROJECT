@@ -60,7 +60,11 @@ struct DragAndDropMainView: View {
                         
                         //TODO -Working in progress..
                         if self.StateManager.getSearchResult{
-                            NavigationLink(destination: SearchResultView(movie: self.searchMV.searchResult), isActive: self.$StateManager.getSearchResult){EmptyView()}
+                            NavigationLink(
+                                destination: SearchResultView(movie: self.searchMV.searchResult)
+                                    .navigationBarHidden(true)
+                                    .navigationBarBackButtonHidden(true),
+                                isActive: self.$StateManager.getSearchResult){EmptyView()}.buttonStyle(.plain)
        
                         }
 
@@ -126,12 +130,14 @@ struct ResultCareVIew : View{
     let movie : Movie
     var body: some View{
         VStack(alignment:.center){
-            WebImage(url: movie.posterURL)
+            WebImage(url:  self.movie.posterURL)
+                .placeholder(Image(systemName: "photo")) //
                 .resizable()
                 .indicator(.activity)
                 .transition(.fade(duration: 0.5))
                 .aspectRatio(contentMode: .fill)
-                .frame(height:230)
+                .frame(width:150,height:230)
+            
                 .cornerRadius(15)
                 .clipped()
 
@@ -176,30 +182,43 @@ struct ResultCareVIew : View{
 
 struct SearchResultsView : View {
     let movies :[Movie]
+    @EnvironmentObject var searchVM : SearchBarViewModel
     @Binding var isShowDetail : Bool
-    @Binding var selectedID : Int?
+    @Binding var selectedID : Int
     @State private var isLoading : Bool = false
-    let gridItem = Array(repeating: GridItem(.flexible(),spacing: 5.0), count: 2)
+    let gridItem = Array(repeating: GridItem(.flexible(),spacing: 10), count: 2)
     var body: some View{
         SearchScrollView(isLoading:self.$isLoading){
-            VStack{
+            VStack(spacing:0){
                 LazyVGrid(columns: gridItem){
                     ForEach(movies,id:\.self){ info in
                         VStack{
-                            Button(action:{
-                                self.selectedID = info.id
-                                self.isShowDetail.toggle()
-                            }){
-                                ResultCareVIew(movie: info)
+                            NavigationLink(destination:   MovieDetailView(movieId:selectedID, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$isShowDetail){
+                                    ResultCareVIew(movie: info)
+                                    .onTapGesture(){
+                                        self.selectedID = info.id
+                                        withAnimation(){
+                                            self.isShowDetail.toggle()
+                                        }
+                                    }
                             }
                         }
+
                     }
                 }
                 
-                if self.isLoading {
+                if self.searchVM.isNoData{
+                    HStack(spacing:0){
+                        Text("已經空空如也...")
+                            .foregroundColor(.secondary)
+                            .font(.caption)
+                    }
+                    .padding(.bottom,5)
+                } else if self.isLoading {
                     VStack(spacing:0){
                         ActivityIndicatorView()
                     }
+                    .padding(.bottom,5)
                 }
             }
             
@@ -315,7 +334,6 @@ struct searchingField : View{
 }
 
 struct HistorList : View{
-   
     @EnvironmentObject var StateManager : SeachingViewStateManager
     @EnvironmentObject var searchMV : SearchBarViewModel
     var history :[String]
@@ -325,6 +343,7 @@ struct HistorList : View{
                 HStack{
                     ForEach(self.history,id:\.self){key in
                         searchFieldButton(searchingText: key){
+                            self.searchMV.searchResult.removeAll() //remove previous datas
                             self.StateManager.isSeaching.toggle()
                             self.searchMV.searchingText = key
                             self.StateManager.isEditing = false
@@ -332,7 +351,12 @@ struct HistorList : View{
                                 self.StateManager.isFocuse = [false,false]
                                 self.StateManager.getSearchResult = true
                             }
+                            self.searchMV.isNoData = false
                             self.StateManager.updateSearchingHistory(query: key)
+                            self.StateManager.searchingLoading = true
+                            self.searchMV.getSearchingResult() //get new datas
+                            
+
                         }
                     }
                     
@@ -358,7 +382,7 @@ struct SearchHotCard : View{
                 self.StateManager.getSearchResult = true
             }
             self.StateManager.updateSearchingHistory(query: hotData.title)
-            self.searchMV.queryKeyword = hotData.title
+            self.searchMV.searchingText = hotData.title
             self.searchMV.getRecommandationList()
         }){
             VStack(alignment:.leading){
@@ -607,165 +631,135 @@ struct SearchResultView: View {
     @EnvironmentObject var searchMV : SearchBarViewModel
     
     @State private var page = 1
-//    @State private var showAsList : Bool = false
+    //    @State private var showAsList : Bool = false
     
     @State private var isShowDetail : Bool = false
-    @State private var selectedID : Int?
+    @State private var selectedID : Int = 0
     var movie : [Movie]
     var body: some View {
-        ZStack{
-            VStack(spacing:0){
-                HStack{
-                    Button(action: {
-                        withAnimation(){
-                            if !self.StateManager.isSeaching {
-                                self.StateManager.getSearchResult = false
-                                self.searchMV.searchingText.removeAll()
-                            }
-                            
-                            if !self.StateManager.isEditing{
-                                self.StateManager.getSearchResult = false
-                            }
-                            
-                            self.StateManager.isSeaching = false
-                            self.StateManager.isEditing = false
-                        }
-
-                        
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.white)
-                    }
-                    .padding(.trailing, 2)
-                    
-                    if !self.StateManager.isSeaching {
-                        HStack{
-                            HStack{
-                                Text(self.searchMV.searchingText)
-                                    .foregroundColor(.white)
-                                    .padding(.leading,5)
-                                    .lineLimit(1)
-                                Spacer()
-                            }
-                            .frame(maxWidth:.infinity)
-                            .background(Color.black.opacity(0.05))
-                            .onTapGesture {
-                                self.StateManager.isFocuse = [false,true]
-                                withAnimation(){
-                                    self.StateManager.isSeaching = true
-                                    self.StateManager.isEditing = false
+        NavigationView{
+            
+                VStack(spacing:0){
+                    HStack{
+                        Button(action: {
+                            withAnimation(){
+                                if !self.StateManager.isSeaching {
+                                    self.StateManager.getSearchResult = false
+                                    self.searchMV.searchingText.removeAll()
                                 }
 
+                                if !self.StateManager.isEditing{
+                                    self.StateManager.getSearchResult = false
+                                    self.searchMV.isNoData = false
+                                }
+
+                                self.StateManager.isSeaching = false
+                                self.StateManager.isEditing = false
                             }
-                            Spacer()
-                            Button(action:{
-                                withAnimation(){
-                                    //Clean the text and turn on the search mode
-                                    //now is nothing to do
+                            
+                            
+
+                        }) {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.white)
+                        }
+                        .padding(.trailing, 2)
+
+                        if !self.StateManager.isSeaching {
+                            HStack{
+                                HStack{
+                                    Text(self.searchMV.searchingText)
+                                        .foregroundColor(.white)
+                                        .padding(.leading,5)
+                                        .lineLimit(1)
+                                    Spacer()
+                                }
+                                .frame(maxWidth:.infinity)
+                                .background(Color.black.opacity(0.05))
+                                .onTapGesture {
+                                    self.StateManager.isFocuse = [false,true]
+                                    withAnimation(){
+                                        self.StateManager.isSeaching = true
+                                        self.StateManager.isEditing = false
+                                    }
+
+                                }
+                                Spacer()
+                                Button(action:{
+                                    withAnimation(){
+                                        //Clean the text and turn on the search mode
+                                        //now is nothing to do
                                         self.StateManager.isSeaching = true
                                         self.searchMV.searchingText.removeAll()
                                         self.StateManager.isFocuse = [false,true]
-                                    
+
+                                    }
+                                }){
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal,3)
                                 }
-                            }){
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal,3)
+
                             }
-//                            //A toggle button to toggle show tag a list or a silder
-//                            Button(action:{
-//                                withAnimation(){
-//                                    self.showAsList.toggle()
-//                                }
-//                            }){
-//                                Image(systemName: "list.and.film")
-//                                    .foregroundColor(.white)
-//                                    .padding(.horizontal,3)
-//                            }
-                        }
-                        .transition(.identity)
-                        .padding(.vertical,5)
-                    }else{
-                        SearchingMode()
+                            .transition(.identity)
                             .padding(.vertical,5)
-                    }
-                    
-                    
-                }
-                .padding(.horizontal,8)
-                .padding(.vertical,5)
-                .background(Color("DarkMode2").edgesIgnoringSafeArea(.all))
-                
-                Divider()
-                ZStack(alignment:.top){
-                    //show history view
-                    searchingField(history: self.history)
-                        .padding(.top,5)
-                        .ignoresSafeArea()
-                        .background(Color.black.edgesIgnoringSafeArea(.all))
-                        .opacity(self.StateManager.isSeaching && !self.StateManager.isEditing ? 1 : 0)
-                        .zIndex(1)
-                    //                            .transition(.identity)
-                    
-                    //show seaching recommandation view
-                    searchingResultList()
-                        .ignoresSafeArea()
-                        .background(Color.black.edgesIgnoringSafeArea(.all))
-                        .opacity(self.StateManager.isEditing ? 1 : 0)
-                        .zIndex(2)
-                    
-                    //First time to search and fetching
-                    if self.StateManager.searchingLoading && self.searchMV.searchResult.isEmpty{
-                        VStack{
-                            Spacer()
-                            HStack{
-                                ActivityIndicatorView()
-                                Text("Loading...")
-                                    .bold()
-                                    .font(.caption)
-                            }
-                            Spacer()
+                        }else{
+                            SearchingMode()
+                                .padding(.vertical,5)
                         }
-//                        .onAppear{
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-//                                withAnimation(){
-//                                    self.StateManager.searchingLoading = false
-//                                }
-//                            }
-//                        }
-                        
-                    }else{
-                        SearchResultsView(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)
-//                        MovieSeachResultView(isShowDetail: self.$isShowDetail, selectedID: self.$selectedID, movie: movie)
-//                            .opacity(self.showAsList == false ? 1 : 0)
-                            .transition(.opacity)
+
+
                     }
-                    //
-//                    SearchResult(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)
-////                    MovieResultList(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)
-//
-//                        .opacity(self.showAsList ? 1 : 0)
-//                        .offset(x:self.showAsList ? 0 : -UIScreen.main.bounds.width)
-//                        .zIndex(3)
-//                        .transition(AnyTransition.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
-//
-                    //
-                    
+                    .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
+                    .padding(.horizontal,8)
+                    .padding(.vertical,5)
+                    .background(Color("DarkMode2").edgesIgnoringSafeArea(.all))
+
+                    Divider()
+                    ZStack(alignment:.top){
+                        //show history view
+                        searchingField(history: self.history)
+                            .padding(.top,5)
+                            .ignoresSafeArea()
+                            .background(Color.black.edgesIgnoringSafeArea(.all))
+                            .opacity(self.StateManager.isSeaching && !self.StateManager.isEditing ? 1 : 0)
+                            .zIndex(1)
+                        //                            .transition(.identity)
+
+                        //show seaching recommandation view
+                        searchingResultList()
+                            .ignoresSafeArea()
+                            .background(Color.black.edgesIgnoringSafeArea(.all))
+                            .opacity(self.StateManager.isEditing ? 1 : 0)
+                            .zIndex(2)
+
+                        //First time to search and fetching
+                        if self.StateManager.searchingLoading && self.searchMV.searchResult.isEmpty{
+                            VStack{
+                                Spacer()
+                                HStack{
+                                    ActivityIndicatorView()
+                                    Text("Loading...")
+                                        .bold()
+                                        .font(.caption)
+                                }
+                                Spacer()
+                            }
+
+                        }else{
+                            SearchResultsView(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)
+                                .transition(.opacity)
+                        }
+
+
+                    }
                 }
-            }
-            .frame(maxWidth:.infinity,maxHeight:.infinity)
-            .navigationTitle(self.isShowDetail ? "Search" : "")
-            .navigationBarTitle(self.isShowDetail ? "Search" : "")
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true)
-            
-            if self.selectedID != nil{
-                NavigationLink(destination:  MovieDetailView(movieId:self.selectedID!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)) , isActive: self.$isShowDetail){
-                    EmptyView()
-                    
-                }
-            }
-            
+                .frame(maxWidth:.infinity,maxHeight:.infinity)
+                .navigationTitle("")
+                .navigationBarTitle("")
+                .navigationBarHidden(true)
+                .navigationBarBackButtonHidden(true)
+                .edgesIgnoringSafeArea(.all)
         }
         
     }
