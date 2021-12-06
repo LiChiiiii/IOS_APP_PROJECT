@@ -54,6 +54,18 @@ extension Font{
     static func TekoBoldFont(size:CGFloat)->Font{
         .custom("Teko-Bold", size:size)
     }
+    //KleeOne-SemiBold.ttf
+    static func ZCOOLKuaiLeRegular(size : CGFloat)->Font{
+        .custom("ZCOOLKuaiLe-Regular", size: size)
+    }
+    
+    static func ZenKurenaidoRegular(size : CGFloat)->Font{
+        .custom("ZenKurenaido-Regular", size: size)
+    }
+
+    static func KleeOneSemiBold(size : CGFloat)->Font{
+        .custom("KleeOne-SemiBold", size: size)
+    }
 }
 //
 struct setCourgetteRegularFont : ViewModifier{
@@ -70,6 +82,27 @@ struct setTekoBoldFont : ViewModifier{
     }
 }
 
+struct setZCOOLKuaiLeRegular : ViewModifier{
+    var size : CGFloat
+    func body(content: Content) -> some View {
+        content.font(Font.ZCOOLKuaiLeRegular(size: size))
+    }
+}
+
+struct setZenKurenaidoRegular : ViewModifier{
+    var size : CGFloat
+    func body(content: Content) -> some View {
+        content.font(Font.ZCOOLKuaiLeRegular(size: size))
+    }
+}
+
+struct setKleeOneSemiBold : ViewModifier{
+    var size : CGFloat
+    func body(content: Content) -> some View {
+        content.font(Font.ZCOOLKuaiLeRegular(size: size))
+    }
+}
+
 extension View{
     func CourgetteRegularFont(size:CGFloat = 18)-> some View{
         ModifiedContent(content: self, modifier:setCourgetteRegularFont(size: size) )
@@ -77,5 +110,30 @@ extension View{
     
     func TekoBoldFontFont(size:CGFloat = 18)-> some View{
         ModifiedContent(content: self, modifier:setTekoBoldFont(size: size) )
+    }
+    
+    func ZCOOLKuaiLeRegular(size:CGFloat = 18) -> some View{
+        ModifiedContent(content: self, modifier: setZCOOLKuaiLeRegular(size: size))
+    }
+    
+    func ZenKurenaidoRegular(size:CGFloat = 18) -> some View{
+        ModifiedContent(content: self, modifier: setZenKurenaidoRegular(size: size))
+    }
+
+    func KleeOneSemiBold(size:CGFloat = 18) -> some View{
+        ModifiedContent(content: self, modifier: setKleeOneSemiBold(size: size))
+    }
+}
+
+
+
+extension UINavigationController: UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
     }
 }

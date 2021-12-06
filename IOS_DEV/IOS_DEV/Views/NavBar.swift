@@ -291,12 +291,14 @@ struct NavBar: View {
     @State var index : Int
     @State private var GroupSelect : Bool = false
     @State private var isPriview = false
+    @State private var showHomePage : Bool = false // show it by default
+    
     @ObservedObject private var userController = UserController()
     var body: some View {
         ZStack(alignment:.top){
             VStack(spacing:0){
                 ZStack(alignment:.top){
-                    HomePage(isLogOut: $isLogOut)
+                        HomePage(showHomePage: $showHomePage, isLogOut: $isLogOut)
                             .opacity(self.index == 0 ? 1 : 0)
                     
                         ListView(lists: controller.listData)
@@ -313,7 +315,6 @@ struct NavBar: View {
                 }
                 NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
             }
-
               
             .edgesIgnoringSafeArea(.all)
             //thse all padding is to adding back the padding of ignoresSafeArea()

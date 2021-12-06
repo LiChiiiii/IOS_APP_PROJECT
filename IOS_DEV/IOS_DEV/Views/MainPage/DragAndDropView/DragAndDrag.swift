@@ -301,7 +301,7 @@ struct searchingField : View{
             
             Group{
                 HStack{
-                    Text("熱搜")
+                    Text("推薦搜索")
                         .fontWeight(.bold)
                         .font(.footnote)
                     Spacer()
@@ -316,7 +316,7 @@ struct searchingField : View{
                         }
                     }
                 }else{
-                    Text("空的熱搜...")
+                    Text("抱歉,沒有推薦的電影...")
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
@@ -374,6 +374,7 @@ struct SearchHotCard : View{
     var hotData : SearchHotItem
     var body: some View{
         Button(action:{
+            self.searchMV.searchResult.removeAll()
             self.StateManager.isSeaching.toggle()
             self.searchMV.searchingText = hotData.title
             self.StateManager.isEditing = false
@@ -383,7 +384,7 @@ struct SearchHotCard : View{
             }
             self.StateManager.updateSearchingHistory(query: hotData.title)
             self.searchMV.searchingText = hotData.title
-            self.searchMV.getRecommandationList()
+            self.searchMV.getSearchingResult()
         }){
             VStack(alignment:.leading){
                 HStack(spacing:15){
@@ -734,7 +735,7 @@ struct SearchResultView: View {
                             .zIndex(2)
 
                         //First time to search and fetching
-                        if self.StateManager.searchingLoading && self.searchMV.searchResult.isEmpty{
+                        if self.searchMV.isLoading && self.searchMV.searchResult.isEmpty && !self.searchMV.isNoResult{
                             VStack{
                                 Spacer()
                                 HStack{
@@ -745,6 +746,16 @@ struct SearchResultView: View {
                                 }
                                 Spacer()
                             }
+
+                        }else if !self.searchMV.isLoading && self.searchMV.isNoResult {
+                            //networking is done, but no data and
+                            VStack{
+                                Text("抱歉,沒有搜尋結果...")
+//                                    .foregroundColor(.secondary)
+//                                    .font(.body)
+                            }
+                            .padding(.top,30)
+
 
                         }else{
                             SearchResultsView(movies: movie, isShowDetail: self.$isShowDetail, selectedID: self.$selectedID)

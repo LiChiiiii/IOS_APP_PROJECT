@@ -458,7 +458,7 @@ class APIService : ServerAPIServerServiceInterface{
     }
     
     func getHotSeachingList(completion: @escaping (Result<[SearchHotItem], MovieError>) -> ()) {
-        let url = URL(string: "\(API_SERVER_HOST)\(search)/gethotsearch")!
+        let url = URL(string: "\(API_SERVER_HOST)\(search)/getrecommandsearch")!
         self.FetchAndDecode(url: url, completion: completion)
     }
     

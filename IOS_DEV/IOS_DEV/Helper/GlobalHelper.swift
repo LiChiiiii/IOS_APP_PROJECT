@@ -17,7 +17,8 @@ var VideoList:[Trailer] = [
     Trailer(id:1,
            movieName:"猛毒",
            movieType: ["科幻","動作"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v1", ofType: "mp4")!)) ,
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v1", ofType: "mp4")!)) ,
+            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/trailer.mp4")!),
            videoReplay: false,
            releaseDate: "2018-09-28"),
     

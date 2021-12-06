@@ -116,6 +116,10 @@
 		0EFBEEB402995C63C993EF15 /* Pods_IOS_DEV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */; };
 		6F0E6C60275A5ADA00573729 /* SearchScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E6C5F275A5ADA00573729 /* SearchScrollView.swift */; };
 		6F0E6C62275A5E2D00573729 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E6C61275A5E2D00573729 /* TestView.swift */; };
+		6F458C2B275DFC4D0069E867 /* TrailerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F458C2A275DFC4D0069E867 /* TrailerVM.swift */; };
+		6F458C2D275E0A310069E867 /* ZCOOLKuaiLe-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F458C2C275E0A310069E867 /* ZCOOLKuaiLe-Regular.ttf */; };
+		6F458C2F275E0C700069E867 /* KleeOne-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F458C2E275E0C700069E867 /* KleeOne-SemiBold.ttf */; };
+		6F458C31275E0E070069E867 /* ZenKurenaido-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F458C30275E0E070069E867 /* ZenKurenaido-Regular.ttf */; };
 		6F78A27227561A76001582B9 /* NetworkConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F78A27127561A76001582B9 /* NetworkConnectionService.swift */; };
 		6FAD51D52751D81900A25ED4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */; };
 		6FCE6E87275258AC00CDAE7E /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE6E86275258AC00CDAE7E /* UserManager.swift */; };
@@ -286,6 +290,10 @@
 		05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_DEV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0E6C5F275A5ADA00573729 /* SearchScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScrollView.swift; sourceTree = "<group>"; };
 		6F0E6C61275A5E2D00573729 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		6F458C2A275DFC4D0069E867 /* TrailerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerVM.swift; sourceTree = "<group>"; };
+		6F458C2C275E0A310069E867 /* ZCOOLKuaiLe-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ZCOOLKuaiLe-Regular.ttf"; sourceTree = "<group>"; };
+		6F458C2E275E0C700069E867 /* KleeOne-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KleeOne-SemiBold.ttf"; sourceTree = "<group>"; };
+		6F458C30275E0E070069E867 /* ZenKurenaido-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ZenKurenaido-Regular.ttf"; sourceTree = "<group>"; };
 		6F78A27127561A76001582B9 /* NetworkConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionService.swift; sourceTree = "<group>"; };
 		6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6FCE6E86275258AC00CDAE7E /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -490,6 +498,7 @@
 				01C0E26226AC0A470027B9A9 /* MovieImages.swift */,
 				01C0E26426AC0A6F0027B9A9 /* Person.swift */,
 				01C0E26826AC56540027B9A9 /* MovieResource.swift */,
+				6F458C2A275DFC4D0069E867 /* TrailerVM.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -524,6 +533,9 @@
 		0194A5E92695DD9000E24598 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6F458C30275E0E070069E867 /* ZenKurenaido-Regular.ttf */,
+				6F458C2E275E0C700069E867 /* KleeOne-SemiBold.ttf */,
+				6F458C2C275E0A310069E867 /* ZCOOLKuaiLe-Regular.ttf */,
 				6FD20E7C274F52AC004F21F6 /* Teko-Bold.ttf */,
 				6FD20E76274F41AB004F21F6 /* Courgette-Regular.ttf */,
 				0125187927081E8800B0778F /* v1.mp4 */,
@@ -940,15 +952,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F458C31275E0E070069E867 /* ZenKurenaido-Regular.ttf in Resources */,
 				7A2F226F262B09F000D0560D /* v6.mp4 in Resources */,
 				7A2F2271262B09F000D0560D /* v5.mp4 in Resources */,
 				6FAD51D52751D81900A25ED4 /* GoogleService-Info.plist in Resources */,
 				0194A5EC2695DE0F00E24598 /* movie_info.json in Resources */,
+				6F458C2D275E0A310069E867 /* ZCOOLKuaiLe-Regular.ttf in Resources */,
 				7A2F2273262B09F000D0560D /* v7.mp4 in Resources */,
 				6FD20E77274F41AB004F21F6 /* Courgette-Regular.ttf in Resources */,
 				010014AF27302B3900E2F452 /* Assets.xcassets in Resources */,
 				7A2F2274262B09F000D0560D /* v4.mp4 in Resources */,
 				7A2F2275262B09F000D0560D /* v8.mp4 in Resources */,
+				6F458C2F275E0C700069E867 /* KleeOne-SemiBold.ttf in Resources */,
 				01C91FAE26D1E6790052BF7A /* movie_genre.json in Resources */,
 				0125188227082B2F00B0778F /* v3.mp4 in Resources */,
 				7A0EE9392610416A0056BC8C /* Preview Assets.xcassets in Resources */,
@@ -1122,6 +1137,7 @@
 				7ADA5A53261042E9000A84D9 /* SignIn.swift in Sources */,
 				7A2F7310261E124E00C0A2FF /* Player.swift in Sources */,
 				0124A4742729874700D0A7CC /* FavoriteController.swift in Sources */,
+				6F458C2B275DFC4D0069E867 /* TrailerVM.swift in Sources */,
 				01CF139D266B307D00066FC2 /* NavBar.swift in Sources */,
 				0168857826D0CEB6005589BC /* GestureDetailVeiw.swift in Sources */,
 				01CF139B266B2F0C00066FC2 /* SmallCoverIcon.swift in Sources */,

@@ -233,13 +233,13 @@ struct MovieListView: View {
             }
             
             ToolbarItemGroup(placement:.navigationBarTrailing){
-                Button(action:{
-                    withAnimation(){
-                        //TO trailer view
-                        showHomePage.toggle()
-                    }
-                }){
-                    
+//                Button(action:{
+//                    withAnimation(){
+//                        //TO trailer view
+//                        showHomePage.toggle()
+//                    }
+//                }){
+                NavigationLink(destination: MovieTrailerDiscoryView(showHomePage: self.$showHomePage),isActive: self.$showHomePage){
                     HStack{
                         Image(systemName: "arrowtriangle.forward.square.fill")
                             .resizable()
@@ -252,8 +252,15 @@ struct MovieListView: View {
                     }
                     .foregroundColor(.white)
             
-                        
                 }
+//                .buttonStyle(StaticButtonStyle())
+//                .navigationViewStyle(DoubleColumnNavigationViewStyle())
+//                .navigationTitle("")
+//                .navigationBarTitle("")
+//                .navigationBarHidden(true)
+
+                        
+//                }
             }
             
 

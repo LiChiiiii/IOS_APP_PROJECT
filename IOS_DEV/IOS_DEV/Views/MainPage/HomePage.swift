@@ -18,29 +18,89 @@ struct StaticButtonStyle : ButtonStyle{
 }
 
 struct HomePage:View{
-    @State private var showHomePage = false
+    @Binding var showHomePage : Bool
     @Binding var isLogOut : Bool
     
     var body:some View{
         MainHomeView(showHomePage: $showHomePage, isLogOut: self.$isLogOut)
-            .onAppear{
-                showHomePage = true
-            }
+
     }
 }
+
+
+
+//struct MainHomeView:View{
+//    @State private var topBarIndx = 0
+//    @State private var trailerData = VideoList
+//    @State private var isReload = false
+//    @State private var value:Float = 0.0
+//    @State private var isAnimation = false
+//    @State private var isNavBarHidden = true
+//    @State private var isActive = false
+//    @State private var isLoading = true
+//    @State private var NavIndex = 0
+//
+//    @Binding var showHomePage:Bool
+//    @Binding var isLogOut : Bool
+//
+////    init(){
+////        UINavigationBar.appearance().barTintColor = UIColor(Color.init("navBarBlack").opacity(0.85))
+////        UINavigationBar.appearance().tintColor = .white
+////    }
+//    var body:some View{
+//        ZStack{
+//            VStack(spacing:0){
+//                GeometryReader{geo in
+//                    NavigationView{
+//                        ZStack(alignment:.topTrailing){
+//                            HomeTrailerPlayer(topBarIndx:$topBarIndx,trailerData:$trailerData,isReload:$isReload,value:$value,isAnimation:$isAnimation,isNavBarHidden:$isNavBarHidden,isActive:$isActive,isLoading:$isLoading, pageHeight: geo.frame(in:.global).height)
+//
+//                            NavigationLink(
+//                                destination:  MovieListView(showHomePage: $showHomePage, isLogOut: self.$isLogOut),
+//                                isActive: $showHomePage){
+//                                        BackHomePageButton(){
+//                                            //jump back to home page
+//                                            self.showHomePage.toggle()
+//                                        }
+//                                        .padding(.horizontal,15)
 //
 //
-//struct HomePage_Previews: PreviewProvider {
-//    static var previews: some View {
+//                        }
+//                                .buttonStyle(StaticButtonStyle())
+//                        .navigationViewStyle(DoubleColumnNavigationViewStyle())
+//                        .navigationTitle("")
+//                        .navigationBarTitle("")
+//                        .navigationBarHidden(true)
 //
-//        HomePage()
+//                        }
+//                    }
+//                }
 //
-//
+//            }
+//            .edgesIgnoringSafeArea(.all)
+//        }
 //    }
 //}
 
+
 struct MainHomeView:View{
-    @State private var topBarIndx = 0
+
+    @Binding var showHomePage:Bool
+    @Binding var isLogOut : Bool
+
+//    init(){
+//        UINavigationBar.appearance().barTintColor = UIColor(Color.init("navBarBlack").opacity(0.85))
+//        UINavigationBar.appearance().tintColor = .white
+//    }
+    var body:some View{
+        NavigationView{
+            MovieListView(showHomePage: $showHomePage, isLogOut: self.$isLogOut)
+
+        }
+    }
+}
+
+struct MovieTrailerDiscoryView : View{
     @State private var trailerData = VideoList
     @State private var isReload = false
     @State private var value:Float = 0.0
@@ -49,51 +109,31 @@ struct MainHomeView:View{
     @State private var isActive = false
     @State private var isLoading = true
     @State private var NavIndex = 0
+
     @Binding var showHomePage:Bool
-    @Binding var isLogOut : Bool
-    
-//    init(){
-//        UINavigationBar.appearance().barTintColor = UIColor(Color.init("navBarBlack").opacity(0.85))
-//        UINavigationBar.appearance().tintColor = .white
-//    }
-    var body:some View{
-        ZStack{
-            VStack(spacing:0){
-                GeometryReader{geo in
-                    NavigationView{
-                        ZStack(alignment:.topTrailing){
-                            SubHomeView_Player(topBarIndx:$topBarIndx,trailerData:$trailerData,isReload:$isReload,value:$value,isAnimation:$isAnimation,isNavBarHidden:$isNavBarHidden,isActive:$isActive,isLoading:$isLoading, pageHeight: geo.frame(in:.global).height)
-                            
-                            NavigationLink(
-                                destination:  MovieListView(showHomePage: $showHomePage, isLogOut: self.$isLogOut),
-                                isActive: $showHomePage){
-                                BackHomePageButton(){
-                                    //jump back to home page
-                                    self.showHomePage.toggle()
-                                }
-                                .padding(.horizontal,15)
-                            }
-                            
-                        }
-                        .navigationViewStyle(DoubleColumnNavigationViewStyle())
-                        .navigationTitle("")
-                        .navigationBarTitle("")
-                        .navigationBarHidden(true)
-                        
+
+    var body : some View{
+        VStack{
+            GeometryReader{geo in
+                ZStack(alignment:.topLeading){
+                    HomeTrailerPlayer(trailerData:$trailerData,isReload:$isReload,value:$value,isAnimation:$isAnimation,isNavBarHidden:$isNavBarHidden,isActive:$isActive,isLoading:$isLoading, pageHeight: geo.frame(in:.global).height)
+
+                    BackHomePageButton(){
+                        //jump back to home page
+                        self.showHomePage.toggle()
                     }
+                    .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
+                    .padding(.horizontal,15)
                 }
-                
-                
+
+
             }
-            .edgesIgnoringSafeArea(.all)
         }
-        
-      //  .animation(Animation.spring())
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
-struct SubHomeView_Player:View{
-    @Binding var topBarIndx:Int
+struct HomeTrailerPlayer:View{
     @Binding var trailerData:[Trailer]
     @Binding var isReload:Bool
     @Binding var value:Float
@@ -105,7 +145,8 @@ struct SubHomeView_Player:View{
 
     var body:some View{
         ZStack{
-            PlayerScrollList(isAnimation: $isAnimation, isNavBarHidden: $isNavBarHidden, isActive: $isActive, value: $value, isLoading: $isLoading, trailerData: $trailerData, isReload: $isReload, topBarIndx: $topBarIndx, pageHeight: pageHeight)
+            PlayerScrollList(isAnimation: $isAnimation, isNavBarHidden: $isNavBarHidden, isActive: $isActive, value: $value, isLoading: $isLoading, trailerData: $trailerData, isReload: $isReload, pageHeight: pageHeight)
+
                 .onAppear(perform: {
                     trailerData[0].videoPlayer.play()
                     trailerData[0].videoPlayer.actionAtItemEnd = .none
@@ -127,9 +168,6 @@ struct SubHomeView_Player:View{
                         //                print(trainerList[0].videoPlayer.currentTime().seconds)
                     }
                 })
-            
-//            TopBar(topbar: $topBarIndx)
-//             //   .offset(y:40)
 //
         }
     }
@@ -143,7 +181,9 @@ struct PlayerScrollList: View {
     @Binding var isLoading:Bool
     @Binding var trailerData : [Trailer]
     @Binding var isReload : Bool
-    @Binding var topBarIndx:Int
+    
+    @State private var isFullScreen : Bool = false
+    @State private var currentVideo : Int = 0
     var pageHeight :CGFloat
     var body: some View {
         Group{
@@ -151,105 +191,151 @@ struct PlayerScrollList: View {
                 LazyVStack(spacing:0){
                     ForEach(0..<trailerData.count){ i in
                         ZStack{
-                            Player(VideoPlayer: trailerData[i].videoPlayer)
+                            Player(VideoPlayer: trailerData[i].videoPlayer,videoLayer:.resizeAspect, isFullScreen: self.$isFullScreen)
                                 .frame(height:pageHeight)
-                            //  .offset(y:-7)
-                            MovieIntrol(trailer: trailerData[i], isAnimation: $isAnimation, isActive: $isActive, navBarHidden: $isNavBarHidden,isLoading:$isLoading)
+                                .onDisappear(){
+                                    trailerData[i].videoPlayer.pause()
+                                }
+                            
+                            
+                            
+                            MovieIntrol(trailer: trailerData[i], tailerIndex: i, selectedVideo: $currentVideo, isAnimation: $isAnimation, isActive: $isActive, navBarHidden: $isNavBarHidden,isLoading:$isLoading, isFullScreen: self.$isFullScreen)
                             VStack{
                                 Spacer()
                                 VideoProgressBar(value: $value, player: $trailerData[i].videoPlayer)
-                                //.offset(y:-7)
-                                
                             }
                             
                         }
-                        .onDisappear{
-                         //   data[i].videoPlayer.pause()
-                        }
+
                     }
                 }
                 .edgesIgnoringSafeArea(.all)
             }
             .edgesIgnoringSafeArea(.all)
         }
-    }
-}
+        .fullScreenCover(isPresented: $isFullScreen){
+            Player(VideoPlayer: self.trailerData[currentVideo].videoPlayer, videoLayer: .resizeAspect, isFullScreen: self.$isFullScreen)
+                .edgesIgnoringSafeArea(.all)
+                .onAppear(perform: {
 
-
-struct TopBar: View {
-    @Binding var topbar:Int
-    var body: some View {
-        VStack{
-            HStack(spacing:15){
-                Button(action:{
-                    //TODO:Show Trainer view
-                    //change to selected : 0
-                    self.topbar = 0
-                }){
-                    Text("Following")
-                        .font(.system(size: 16))
-                        .foregroundColor(self.topbar == 0 ? .white : Color.white.opacity(0.75))
-                        .fontWeight(self.topbar == 0 ? .bold : .none)
-                        .padding(.vertical)
                     
-                }
-                
-                Button(action:{
-                    //TODO:Show Movie Card View
-                    //change to selected : 1
-                    self.topbar = 1
-                }){
-                    Text("For You")
-                        .font(.system(size: 16))
-                        .foregroundColor(self.topbar == 1 ? .white : Color.white.opacity(0.75))
-                        .fontWeight(self.topbar == 1 ? .bold : .none)
-                        .padding(.vertical)
-                }
-            }
-            Spacer()
+                    Appdelegate.orientationLock = UIInterfaceOrientationMask.all
+
+                      UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+
+                      UINavigationController.attemptRotationToDeviceOrientation()
+
+                    })
+                .onDisappear(perform: {
+
+            
+
+                          Appdelegate.orientationLock = UIInterfaceOrientationMask.portrait
+
+                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+
+                        UINavigationController.attemptRotationToDeviceOrientation()
+
+                      
+
+                    })
         }
-    //    .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
-        .padding(.bottom,(UIApplication.shared.windows.first?.safeAreaInsets.bottom))
+
+        
     }
 }
+
+
+//struct TopBar: View {
+//    @Binding var topbar:Int
+//    var body: some View {
+//        VStack{
+//            HStack(spacing:15){
+//                Button(action:{
+//                    //TODO:Show Trainer view
+//                    //change to selected : 0
+//                    self.topbar = 0
+//                }){
+//                    Text("Following")
+//                        .font(.system(size: 16))
+//                        .foregroundColor(self.topbar == 0 ? .white : Color.white.opacity(0.75))
+//                        .fontWeight(self.topbar == 0 ? .bold : .none)
+//                        .padding(.vertical)
+//
+//                }
+//
+//                Button(action:{
+//                    //TODO:Show Movie Card View
+//                    //change to selected : 1
+//                    self.topbar = 1
+//                }){
+//                    Text("For You")
+//                        .font(.system(size: 16))
+//                        .foregroundColor(self.topbar == 1 ? .white : Color.white.opacity(0.75))
+//                        .fontWeight(self.topbar == 1 ? .bold : .none)
+//                        .padding(.vertical)
+//                }
+//            }
+//            Spacer()
+//        }
+//    //    .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
+//        .padding(.bottom,(UIApplication.shared.windows.first?.safeAreaInsets.bottom))
+//    }
+//}
 
 struct MovieIntrol: View {
     var trailer:Trailer
+    var tailerIndex : Int
+    @Binding var selectedVideo : Int
     @State private var like = false
     @Binding var isAnimation:Bool
     @Binding var isActive:Bool
     @Binding var navBarHidden:Bool
     @Binding var isLoading:Bool
+    @Binding var isFullScreen : Bool
     var body: some View {
         VStack{
             Spacer()
             HStack(alignment:.bottom){
                 VStack(alignment:.leading,spacing:10){
+                    Button(action: {
+                        withAnimation{
+                            self.isFullScreen.toggle()
+                            self.selectedVideo = tailerIndex
+                        }
+                    }, label: {
+                        HStack{
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            Text("Full Screen")
+                                .font(.subheadline)
+                               
+                        }
+                        .padding(5)
+                        .background(BlurView().clipShape(CustomeConer(width: 5, height: 5, coners: [.allCorners])))
+                    })
+                    
                     HStack{
                         Text(trailer.movieName)
-                            .bold()
-                            .font(.title)
+                            .TekoBoldFontFont(size: 25)
                         
                     }
                     
                     HStack{
-                        
                         ForEach(trailer.movieType,id: \.self ){ type in
-                            
                             Text(type)
                                 .font(.system(size: 14))
                                 .bold()
                                 .foregroundColor(Color.white)
                                 .padding(.horizontal,8)
                                 .padding(.vertical,5)
-                                .background(Color.gray.opacity(0.45))
+                                .background(BlurView().clipShape(CustomeConer(coners: [.allCorners])))
                                 .cornerRadius(5)
                         }
                     }
 
-                    Text(trailer.releaseDate!)
-                        .foregroundColor(.gray)
-                        .font(.system(size:16))
+//                    Text(trailer.releaseDate!)
+//                        .foregroundColor(.secondary)
+//                        .font(.system(size:16))
                     
                 }
                 .font(.body)
@@ -257,14 +343,10 @@ struct MovieIntrol: View {
                 
                 
                 //click icon enter to moviedetail page
-                NavigationLink(destination: MovieDetailView(movieId:299534,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading))
-                {
+                NavigationLink(destination: MovieDetailView(movieId:299534,navBarHidden: $navBarHidden,isAction: $isActive,isLoading: $isLoading)){
                     SmallCoverIcon()
                 }
-                    
-                    
-                    
-                    
+  
                     
 //                NavigationLink(
 //                    destination: WebImages(
@@ -313,119 +395,3 @@ struct BackHomePageButton:View{
     }
 }
 
-
-//JUST FOR SAVING CODE
-
-//struct HomePage: View {
-//    @State private var topbar = 0
-//    @State private var data = VideoList
-//    @State private var reload = false
-//    @State private var value:Float = 0.0
-//    @State private var showDetailView = false
-//
-//    init(){
-//        UINavigationBar.appearance().barTintColor = UIColor(Color.init("navBarBlack").opacity(0.85))
-//        UINavigationBar.appearance().tintColor = .white
-//
-//    }
-//
-//    var body: some View {
-//        NavigationView{
-//            VStack(spacing:0){
-//                GeometryReader{geo in
-//                    PlayerView(videoList: $data, reload: $reload, value: $value,pageHeight: geo.size.height)
-//                        .edgesIgnoringSafeArea(.all)
-//
-//                }
-//
-//            }
-//
-//            //NavBar()
-//
-//        }
-//
-//    }
-//
-//}
-//
-//struct PlayerView:View{
-//    @Binding var videoList:[Traier]
-//    @Binding var reload:Bool
-//    @Binding var value:Float
-//    @State var isAnimation:Bool = false
-//    @State var isAction = false
-//    @State var isLoading = false
-//    var pageHeight:CGFloat
-//
-//    var body:some View{
-//            PlayerScrollView(trainer: $videoList, reload: $reload, value:$value, isAnimation: $isAnimation ,pageHegiht: pageHeight){
-//
-//                LazyVStack(spacing:0){
-//                    ForEach(0..<videoList.count){ i in
-//                        ZStack{
-//                            NavigationLink(
-//                                destination: WebImages(navBarHidden: .constant(true), isAction: $isAction, isLoading: $isLoading),
-//                                isActive: $isAction){
-//                                    HStack{
-//                                        Player(VideoPlayer: videoList[i].videoPlayer)
-//                                            .frame(height:pageHeight)
-//                                          //  .offset(y:-24)
-//                                    }
-//
-//                                }
-//                                .navigationTitle("")
-//                                .navigationBarTitle("")
-//                                .navigationBarHidden(true)
-//
-//                            //     MovieIntrol(trainer: videoList[i], isAnimation: $isAnimation)
-//
-//                            //                                    VStack{
-//                            //                                        Spacer()
-//                            //                                        VideoProgressBar(value: $value, player: $videoList[i].videoPlayer)
-//                            //                                            .offset(y:-7)
-//                            //
-//                            //                                    }
-//
-//                        }
-//
-//                    }
-//                }
-//
-//            }
-//            .edgesIgnoringSafeArea(.all)
-//            .onAppear(perform: {
-//                videoList[0].videoPlayer.play()
-//                videoList[0].videoPlayer.actionAtItemEnd = .none
-//
-//                //Add this view to NotificationCentre and tell all of those evnet
-//                //Chage Replay to true
-//
-//                //get the time period of the play back control
-//                videoList[0].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-//                    self.value =
-//                        (Float(videoList[0].videoPlayer.currentTime().seconds / videoList[0].videoPlayer.currentItem!.duration.seconds))
-//
-//                }
-//
-//                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: videoList[0].videoPlayer.currentItem, queue: .main){ _ in
-//                    videoList[0].videoReplay = true
-//                    videoList[0].videoPlayer.seek(to: .zero)
-//                    videoList[0].videoPlayer.play()
-//                    //                print(trainerList[0].videoPlayer.currentTime().seconds)
-//                }
-//            })
-//
-//    }
-//
-//}
-
-extension UINavigationController: UIGestureRecognizerDelegate {
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = self
-    }
-
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
-    }
-}

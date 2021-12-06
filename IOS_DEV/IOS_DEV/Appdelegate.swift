@@ -10,12 +10,19 @@ import Firebase
 import GoogleSignIn
 
 class Appdelegate: NSObject,UIApplicationDelegate,GIDSignInDelegate {
+    static var orientationLock = UIInterfaceOrientationMask.portrait
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         return true
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+
+      return Appdelegate.orientationLock
+
     }
     
     
@@ -53,3 +60,5 @@ class Appdelegate: NSObject,UIApplicationDelegate,GIDSignInDelegate {
         }
     }
 }
+
+

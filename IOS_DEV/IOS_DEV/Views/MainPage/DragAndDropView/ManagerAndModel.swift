@@ -342,8 +342,10 @@ class SearchBarViewModel : ObservableObject{
     @Published var hotListErr : NSError? = nil
 
     @Published var isNoData : Bool = false
+    @Published var isNoResult : Bool = false
     private let movieService: MovieService
     private let apiService: APIService
+    
     
     init(movieService: MovieService = MovieStore.shared,apiService : APIService = APIService.shared) {
         self.movieService = movieService
@@ -373,11 +375,20 @@ class SearchBarViewModel : ObservableObject{
     
     //This function for fetching detail result
     func getSearchingResult(){
+        self.isNoResult = false
+        self.isLoading = true
         movieService.searchMovieInfo(query: searchingText, page: 1){ [weak self] result in
             guard let self = self else { return }
             self.isLoading = true
             switch result{
             case.success(let response):
+                if response.results.isEmpty{
+                    self.isNoResult = true
+                    break
+                }
+                self.isNoData =  response.totalPages <= self.searchResultPage
+
+            
                 self.searchResult.append(contentsOf: response.results.map{$0})
                 self.searchResultPage += 1
             case .failure(let error):
@@ -417,21 +428,19 @@ class SearchBarViewModel : ObservableObject{
     
     func getHotSeachList(){
         self.hotList.removeAll()
-//        apiService.getHotSeachingList(){ [weak self] result in
-//            guard let self = self else { return }
-//            self.isHotListLoading = true
-//            switch result{
-//            case .success(let response):
-//                self.hotList.append(contentsOf: response.map{$0})
-//                self.recommandPlachold = self.hotList.randomElement()!.title
-//                self.isHotListLoading = false
-//
-//            case .failure(let error):
-//                self.isHotListLoading = false
-//                self.hotListErr = error as NSError
-//
-//            }
-//        }
+        self.isHotListLoading = true
+        apiService.getHotSeachingList(){ [weak self] result in
+            guard let self = self else { return }
+            switch result{
+            case .success(let response):
+                self.hotList.append(contentsOf: response.map{$0})
+                self.recommandPlachold = self.hotList.randomElement()!.title
+            case .failure(let error):
+                self.hotListErr = error as NSError
+
+            }
+            self.isHotListLoading = false
+        }
     }
     
 

@@ -26,22 +26,43 @@ struct TrailerPlayer:UIViewControllerRepresentable{
 
 
 
+
+
 struct Player:UIViewControllerRepresentable{
     var VideoPlayer:AVPlayer
+    var videoLayer : AVLayerVideoGravity = .resizeAspect
+    @Binding var isFullScreen : Bool
+    func makeCoordinator() -> Coordinator {
+        return Player.Coordinator(parent: self)
+    }
+
     
     func makeUIViewController(context: Context) -> AVPlayerViewController {
 
         let playerview = AVPlayerViewController()
         playerview.player = VideoPlayer
         playerview.showsPlaybackControls = false
-        playerview.videoGravity = .resizeAspectFill
+        playerview.videoGravity = videoLayer
+        playerview.delegate = context.coordinator
         return playerview
     }
     
-    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
-        //What to do if view is updated
-        //workcall ,coz nothing will be updated
+    func updateUIViewController(_ controller: AVPlayerViewController, context content: Context) {
+        controller.showsPlaybackControls  = self.isFullScreen ? true : false
+        controller.modalPresentationStyle =  self.isFullScreen ? .fullScreen : .none
+
     }
+    
+    
+    class Coordinator:NSObject,AVPlayerViewControllerDelegate{
+        var parent : Player
+        init(parent : Player){
+            self.parent = parent
+        }
+        
+        
+    }
+    
 }
 
 struct PlayerScrollView<Content:View>: UIViewRepresentable{
