@@ -10,7 +10,7 @@ import Firebase
 import GoogleSignIn
 
 class Appdelegate: NSObject,UIApplicationDelegate,GIDSignInDelegate {
-    static var orientationLock = UIInterfaceOrientationMask.portrait
+//    static var orientationLock = UIInterfaceOrientationMask.portrait
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
@@ -19,12 +19,12 @@ class Appdelegate: NSObject,UIApplicationDelegate,GIDSignInDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//
+//      return Appdelegate.orientationLock
+//
+//    }
 
-      return Appdelegate.orientationLock
-
-    }
-    
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if error != nil{

@@ -16,12 +16,69 @@ struct IOS_DEVApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeTest()
+
+
+            WelcomePage()
         }
+    }
+}
+struct Land: View {
+    var body: some View {
+        ZStack {
+            Color.pink
+            VStack {
+                Text("Hello, SwiftUI!")
+                    .font(.largeTitle)
+                    .bold()
+                Spacer()
+            }
+            
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 
 
+struct DeviceRotationViewModifier: ViewModifier {
+    let action: (UIDeviceOrientation) -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                action(UIDevice.current.orientation)
+            }
+    }
+}
+
+// A View wrapper to make the modifier easier to use
+extension View {
+    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
+        self.modifier(DeviceRotationViewModifier(action: action))
+    }
+}
+//
+//// An example view to demonstrate the solution
+//struct ContentViewTestD: View {
+//    @State private var orientation = UIDeviceOrientation.unknown
+//
+//    var body: some View {
+//        VStack{
+//            if orientation.isLandscape{
+//
+//                LandscapePlayer(VideoPlayer: VideoList[0].videoPlayer)
+//
+//            }else if orientation.isPortrait{
+//                Color.red
+//
+//            } else {
+//                Color.blue
+//            }
+//        }
+//        .onRotate { newOrientation in
+//            orientation = newOrientation
+//        }
+//    }
+//}
 //struct CardModle : Identifiable{
 //    let id : String = UUID().uuidString
 //    let image : String

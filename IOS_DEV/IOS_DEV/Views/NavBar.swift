@@ -292,7 +292,8 @@ struct NavBar: View {
     @State private var GroupSelect : Bool = false
     @State private var isPriview = false
     @State private var showHomePage : Bool = false // show it by default
-    
+    @State private var orientation = UIDeviceOrientation.unknown
+
     @ObservedObject private var userController = UserController()
     var body: some View {
         ZStack(alignment:.top){
@@ -313,7 +314,11 @@ struct NavBar: View {
                             .opacity(self.index == 3 ? 1 : 0)
 //
                 }
-                NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
+                
+                if !orientation.isLandscape{
+                    NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
+                }
+
             }
               
             .edgesIgnoringSafeArea(.all)
@@ -327,6 +332,9 @@ struct NavBar: View {
             BottomSheet()
                 .animation(.spring())
             
+        }
+        .onRotate { newOrientation in
+            orientation = newOrientation
         }
         .environmentObject(previewModel)
         .environmentObject(StateManager) //here due to bottomSheet need to use to update some state

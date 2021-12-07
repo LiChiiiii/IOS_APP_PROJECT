@@ -111,23 +111,36 @@ struct MovieTrailerDiscoryView : View{
     @State private var NavIndex = 0
 
     @Binding var showHomePage:Bool
+    @State private var orientation = UIDeviceOrientation.unknown
 
     var body : some View{
         VStack{
             GeometryReader{geo in
                 ZStack(alignment:.topLeading){
                     HomeTrailerPlayer(trailerData:$trailerData,isReload:$isReload,value:$value,isAnimation:$isAnimation,isNavBarHidden:$isNavBarHidden,isActive:$isActive,isLoading:$isLoading, pageHeight: geo.frame(in:.global).height)
-
-                    BackHomePageButton(){
-                        //jump back to home page
-                        self.showHomePage.toggle()
+                    
+                    if !orientation.isLandscape{
+                        BackHomePageButton(){
+                            //jump back to home page
+                            self.showHomePage.toggle()
+                        }
+                        
+                        .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
+                        .padding(.horizontal,15)
+                    } else{
+                        Image(systemName: "xmark")
+                        
+                        .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
+                        .padding(.horizontal,5)
                     }
-                    .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
-                    .padding(.horizontal,15)
+
                 }
 
 
             }
+        }
+        .onRotate { newOrientation in
+            orientation = newOrientation
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -184,27 +197,29 @@ struct PlayerScrollList: View {
     
     @State private var isFullScreen : Bool = false
     @State private var currentVideo : Int = 0
+    @State private var orientation = UIDeviceOrientation.unknown
+
     var pageHeight :CGFloat
     var body: some View {
         Group{
-            PlayerScrollView(trailerList: $trailerData, reload: $isReload, value:$value, isAnimation: $isAnimation ,pageHegiht: pageHeight){
+            PlayerScrollView(trailerList: $trailerData, reload: $isReload, value:$value, isAnimation: $isAnimation ,isLandScape: self.$orientation, pageHegiht: pageHeight){
                 LazyVStack(spacing:0){
                     ForEach(0..<trailerData.count){ i in
                         ZStack{
-                            Player(VideoPlayer: trailerData[i].videoPlayer,videoLayer:.resizeAspect, isFullScreen: self.$isFullScreen)
-                                .frame(height:pageHeight)
-                                .onDisappear(){
-                                    trailerData[i].videoPlayer.pause()
+                                Player(VideoPlayer: trailerData[i].videoPlayer,videoLayer:.resizeAspect, isFullScreen: self.$orientation)
+                                    .frame(height:pageHeight)
+                                    .onDisappear(){
+                                        trailerData[i].videoPlayer.pause()
+                                    }
+                                
+                                
+                            if !orientation.isLandscape{
+                                MovieIntrol(trailer: trailerData[i], tailerIndex: i, selectedVideo: $currentVideo, isAnimation: $isAnimation, isActive: $isActive, navBarHidden: $isNavBarHidden,isLoading:$isLoading, isFullScreen: self.$isFullScreen)
+                                VStack{
+                                    Spacer()
+                                    VideoProgressBar(value: $value, player: $trailerData[i].videoPlayer)
                                 }
-                            
-                            
-                            
-                            MovieIntrol(trailer: trailerData[i], tailerIndex: i, selectedVideo: $currentVideo, isAnimation: $isAnimation, isActive: $isActive, navBarHidden: $isNavBarHidden,isLoading:$isLoading, isFullScreen: self.$isFullScreen)
-                            VStack{
-                                Spacer()
-                                VideoProgressBar(value: $value, player: $trailerData[i].videoPlayer)
                             }
-                            
                         }
 
                     }
@@ -212,34 +227,15 @@ struct PlayerScrollList: View {
                 .edgesIgnoringSafeArea(.all)
             }
             .edgesIgnoringSafeArea(.all)
+            .navigationTitle("")
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
+            .buttonStyle(StaticButtonStyle())
         }
-        .fullScreenCover(isPresented: $isFullScreen){
-            Player(VideoPlayer: self.trailerData[currentVideo].videoPlayer, videoLayer: .resizeAspect, isFullScreen: self.$isFullScreen)
-                .edgesIgnoringSafeArea(.all)
-                .onAppear(perform: {
-
-                    
-                    Appdelegate.orientationLock = UIInterfaceOrientationMask.all
-
-                      UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-
-                      UINavigationController.attemptRotationToDeviceOrientation()
-
-                    })
-                .onDisappear(perform: {
-
-            
-
-                          Appdelegate.orientationLock = UIInterfaceOrientationMask.portrait
-
-                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-
-                        UINavigationController.attemptRotationToDeviceOrientation()
-
-                      
-
-                    })
+        .onRotate { newOrientation in
+            orientation = newOrientation
         }
+
 
         
     }

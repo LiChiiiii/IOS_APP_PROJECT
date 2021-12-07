@@ -180,45 +180,45 @@ struct ContentViewTest: View {
 
     }
 }
-
-struct HomeTest : View{
-    @State var test : Bool = false
-    var body: some View{
-        VStack{
-            Text("Toggle")
-                .onTapGesture(){
-                    self.test.toggle()
-                }
-        }
-        .fullScreenCover(isPresented: $test){
-            Player(VideoPlayer: VideoList[0].videoPlayer, videoLayer: .resizeAspect, isFullScreen: self.$test)
-                .edgesIgnoringSafeArea(.all)
-                .onAppear(perform: {
-
-                    
-                    Appdelegate.orientationLock = UIInterfaceOrientationMask.all
-
-                      UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-
-                      UINavigationController.attemptRotationToDeviceOrientation()
-
-                    })
-                .onDisappear(perform: {
-
-            
-
-                          Appdelegate.orientationLock = UIInterfaceOrientationMask.portrait
-
-                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-
-                        UINavigationController.attemptRotationToDeviceOrientation()
-
-                      
-
-                    })
-        }
-    }
-}
+//
+//struct HomeTest : View{
+//    @State var test : Bool = false
+//    var body: some View{
+//        VStack{
+//            Text("Toggle")
+//                .onTapGesture(){
+//                    self.test.toggle()
+//                }
+//        }
+//        .fullScreenCover(isPresented: $test){
+//            Player(VideoPlayer: VideoList[0].videoPlayer, videoLayer: .resizeAspect, isLandScape: self.$test)
+//                .edgesIgnoringSafeArea(.all)
+////                .onAppear(perform: {
+////
+////
+////                    Appdelegate.orientationLock = UIInterfaceOrientationMask.all
+////
+////                      UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+////
+////                      UINavigationController.attemptRotationToDeviceOrientation()
+////
+////                    })
+////                .onDisappear(perform: {
+////
+////
+////
+////                          Appdelegate.orientationLock = UIInterfaceOrientationMask.portrait
+////
+////                        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+////
+////                        UINavigationController.attemptRotationToDeviceOrientation()
+////
+////
+////
+////                    })
+//        }
+//    }
+//}
 
 
 struct AVPlayerView: UIViewControllerRepresentable {

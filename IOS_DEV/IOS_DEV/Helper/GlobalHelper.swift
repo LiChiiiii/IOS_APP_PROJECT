@@ -22,47 +22,48 @@ var VideoList:[Trailer] = [
            videoReplay: false,
            releaseDate: "2018-09-28"),
     
-
+//
     Trailer(id:2,
-           movieName:"一級玩家",
-           movieType: ["科幻","冒險","動作"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v2", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2018-03-28"),
-
-    Trailer(id:3,
-           movieName:"復仇者聯盟：終局之戰",
-           movieType: ["冒險", "科幻","動作"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v3", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2019-04-24"),
-
-    Trailer(id:4,
-           movieName:"Avernger 2",
-           movieType: ["Horro","Super Hero","Action"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v4", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2018-09-28"),
-
-    Trailer(id:5,
-           movieName:"Avernger 3",
-           movieType: ["Horro","Super Hero","Action"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v5", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2018-09-28"),
-
-    Trailer(id:6,
-           movieName:"Iron man 1",
-           movieType: ["Horro","Super Hero","Action"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v6", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2018-09-28"),
-
-    Trailer(id:7,movieName:"Iron man 2",
-           movieType: ["Horro","Super Hero","Action"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v7", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2018-09-28"),
-
-    Trailer(id:8,
-           movieName:"Iron man 3",
-           movieType: ["Horro","Super Hero","Action"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v8", ofType: "mp4")!)) ,
-           videoReplay: false,releaseDate: "2018-09-28"),
+           movieName:"猛毒",
+           movieType: ["科幻","動作"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v1", ofType: "mp4")!)) ,
+            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/trailer.mp4")!),
+           videoReplay: false,
+           releaseDate: "2018-09-28")
+//    Trailer(id:3,
+//           movieName:"復仇者聯盟：終局之戰",
+//           movieType: ["冒險", "科幻","動作"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v3", ofType: "mp4")!)) ,
+//           videoReplay: false,releaseDate: "2019-04-24"),
+//
+//    Trailer(id:4,
+//           movieName:"Avernger 2",
+//           movieType: ["Horro","Super Hero","Action"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v4", ofType: "mp4")!)) ,
+//           videoReplay: false,releaseDate: "2018-09-28"),
+//
+//    Trailer(id:5,
+//           movieName:"Avernger 3",
+//           movieType: ["Horro","Super Hero","Action"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v5", ofType: "mp4")!)) ,
+//           videoReplay: false,releaseDate: "2018-09-28"),
+//
+//    Trailer(id:6,
+//           movieName:"Iron man 1",
+//           movieType: ["Horro","Super Hero","Action"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v6", ofType: "mp4")!)) ,
+//           videoReplay: false,releaseDate: "2018-09-28"),
+//
+//    Trailer(id:7,movieName:"Iron man 2",
+//           movieType: ["Horro","Super Hero","Action"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v7", ofType: "mp4")!)) ,
+//           videoReplay: false,releaseDate: "2018-09-28"),
+//
+//    Trailer(id:8,
+//           movieName:"Iron man 3",
+//           movieType: ["Horro","Super Hero","Action"],
+//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v8", ofType: "mp4")!)) ,
+//           videoReplay: false,releaseDate: "2018-09-28"),
 
 //    Trailer(id:9,
 //           movieName:"Iron man 3",

@@ -27,11 +27,10 @@ struct TrailerPlayer:UIViewControllerRepresentable{
 
 
 
-
 struct Player:UIViewControllerRepresentable{
     var VideoPlayer:AVPlayer
     var videoLayer : AVLayerVideoGravity = .resizeAspect
-    @Binding var isFullScreen : Bool
+    @Binding var isFullScreen : UIDeviceOrientation
     func makeCoordinator() -> Coordinator {
         return Player.Coordinator(parent: self)
     }
@@ -48,9 +47,8 @@ struct Player:UIViewControllerRepresentable{
     }
     
     func updateUIViewController(_ controller: AVPlayerViewController, context content: Context) {
-        controller.showsPlaybackControls  = self.isFullScreen ? true : false
-        controller.modalPresentationStyle =  self.isFullScreen ? .fullScreen : .none
-
+        controller.showsPlaybackControls  = self.isFullScreen.isLandscape ? true : false
+        controller.modalPresentationStyle =  self.isFullScreen.isLandscape ? .fullScreen : .none
     }
     
     
@@ -59,7 +57,7 @@ struct Player:UIViewControllerRepresentable{
         init(parent : Player){
             self.parent = parent
         }
-        
+
         
     }
     
@@ -74,6 +72,7 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
     @Binding var reload:Bool
     @Binding var value:Float
     @Binding var isAnimation:Bool
+    @Binding var isLandScape : UIDeviceOrientation
     let pageHegiht:CGFloat
     let content:()->Content
 
@@ -109,9 +108,14 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
     func updateUIView(_ uiView: UIScrollView, context: Context) {
         //TODO
-        uiView.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
         
+        if isLandScape.isLandscape{
+            Landscape(uiView)
+        }else{
 
+        }
+        
+        uiView.delegate = context.coordinator
         for i in 0..<uiView.subviews.count{
             //let all subview have same frame size
             //in this case ,we only have 1 subview:rootView:PlayerView
@@ -119,6 +123,57 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
             uiView.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
         }
     }
+    
+    private func Landscape(_ view: UIScrollView){
+        let rootView = UIHostingController(rootView: self.content())
+
+        //Total Height of this view is the fullscreen * total trainer
+        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trailerList.count))
+
+        //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
+        view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 1.0)
+        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1.0)
+        
+        view.subviews.last?.removeFromSuperview()
+        view.addSubview(rootView.view)
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.bounces = false
+
+        //ignore safe area
+        view.contentInsetAdjustmentBehavior = .never
+
+
+        //Paging the page ,not Scroll
+        view.isPagingEnabled  = true
+    }
+    
+    private func Portrait(_ view : UIScrollView){
+        //Re-init the view!
+        let rootView = UIHostingController(rootView: self.content())
+
+        //Total Height of this view is the fullscreen * total trainer
+        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trailerList.count))
+
+        //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
+        view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height))
+        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trailerList.count))
+        
+        view.subviews.last?.removeFromSuperview()
+        view.addSubview(rootView.view)
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.bounces = false
+
+        //ignore safe area
+        view.contentInsetAdjustmentBehavior = .never
+
+
+        //Paging the page ,not Scroll
+        view.isPagingEnabled  = true
+    }
+    
+
 
     //this is used to communicated between UIKit View And SiwftUI View :UIScrollViewDelegate
     class Coordinator:NSObject,UIScrollViewDelegate{
