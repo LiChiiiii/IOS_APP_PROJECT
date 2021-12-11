@@ -293,29 +293,33 @@ struct NavBar: View {
     @State private var isPriview = false
     @State private var showHomePage : Bool = false // show it by default
     @State private var orientation = UIDeviceOrientation.unknown
-
+    @State private var isHiddenNav : Bool = false
+    @State private var mainPageHeight : CGFloat = 0
     @ObservedObject private var userController = UserController()
     var body: some View {
         ZStack(alignment:.top){
             VStack(spacing:0){
-                ZStack(alignment:.top){
-                        HomePage(showHomePage: $showHomePage, isLogOut: $isLogOut)
+                GeometryReader{geo in
+                    ZStack(alignment:.top){
+                        HomePage(showHomePage: $showHomePage, isLogOut: $isLogOut, mainPageHeight: $mainPageHeight)
                             .opacity(self.index == 0 ? 1 : 0)
-                    
+                        
                         ListView(lists: controller.listData)
                             .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
-
-
+                        
+                        
                         DragAndDropMainView()
                             .opacity(self.index == 2 ? 1 : 0)
-                            
-                    
+                        
+                        
                         ProfileView()
                             .opacity(self.index == 3 ? 1 : 0)
-//
+                        //
+                    }.onAppear(){
+                        self.mainPageHeight = geo.frame(in: .global).height
+                    }
                 }
-                
-                if !orientation.isLandscape{
+                if !isHiddenNav { //Show this when lock portrait
                     NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
                 }
 
@@ -334,6 +338,16 @@ struct NavBar: View {
             
         }
         .onRotate { newOrientation in
+            if Appdelegate.orientationLock == .landscape {
+                withAnimation(){
+                    self.isHiddenNav = true
+                }
+            }else{
+                withAnimation(){
+                    self.isHiddenNav = false
+                }
+            }
+            
             orientation = newOrientation
         }
         .environmentObject(previewModel)

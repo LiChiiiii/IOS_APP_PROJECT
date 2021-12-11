@@ -21,10 +21,11 @@ struct SmallCoverIcon: View {
     var body: some View {
         
         ZStack{
-            Circle()
-                .frame(width: 70, height: 70, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                .foregroundColor(Color.init("navBarBlack").opacity(0.5))
-                .blur(radius: 0.5)
+//            Circle()
+//
+//                .frame(width: 70, height: 70, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//                .foregroundColor(Color.init("navBarBlack").opacity(0.5))
+//                .blur(radius: 0.5)
             
             CenterIcon(isAnimating: Animating)
         }
@@ -43,10 +44,14 @@ struct CenterIcon:View{
     
     var body: some View{
         ZStack{
-            CircleText(radius: 65, text: "查看電影資訊",kerning: 15.0,width: 65,height: 65)
+//            CircleText(radius: 65, text: "Movie Information",kerning: 8.0,width: 65,height: 65)
+//                .animation(.none)
+//                .rotationEffect(Angle(degrees: self.isAnimating ? -360.0 : 0.0))
+            Circle()
+                .foregroundColor(.gray.opacity(0.5))
+                .frame(width: 45, height: 45)
                 .animation(.none)
-                .rotationEffect(Angle(degrees: self.isAnimating ? -360.0 : 0.0))
-
+                .rotationEffect(Angle(degrees: self.isAnimating ? 360.0 : 0.0))
                 AnimatedImage(url:URL(string: "https://image.tmdb.org/t/p/original/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg"))
                     //   Image(systemName: "arrow.down.circle.fill")
                     .resizable()
@@ -57,7 +62,7 @@ struct CenterIcon:View{
                             .stroke(lineWidth: 1)
                             .foregroundColor(.purple)
                     )
-                    .frame(width: 40, height: 40)
+                    .frame(width: 30, height: 30)
                     .rotationEffect(Angle(degrees: self.isAnimating ? 360.0 : 0.0))
         }
         

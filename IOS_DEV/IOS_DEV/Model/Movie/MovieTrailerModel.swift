@@ -14,7 +14,7 @@ struct Trailer:Identifiable{
     var movieType:[String]
     var videoPlayer:AVPlayer
     var videoReplay:Bool
-    var releaseDate:String?
+    var maxValue:Double
   //  var isLike:Bool
 }
 

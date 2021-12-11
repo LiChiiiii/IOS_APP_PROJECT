@@ -71,9 +71,9 @@ struct ProfileView: View {
                                 .bold()
 
                     }.onAppear(){
-                        self.userController.GetUserInfo(userID: NowUserID!)
-                        self.favoriteController.GetLikeMovie(userID: NowUserID!)
-                        self.favoriteController.GetLikeArticle(userID: NowUserID!)
+//                        self.userController.GetUserInfo(userID: NowUserID!)
+//                        self.favoriteController.GetLikeMovie(userID: NowUserID!)
+//                        self.favoriteController.GetLikeArticle(userID: NowUserID!)
                     }
                   
                

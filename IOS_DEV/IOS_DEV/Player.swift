@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 import AVKit
 
 //let AVPlayerController to SWiftUI
@@ -16,11 +17,13 @@ struct TrailerPlayer:UIViewControllerRepresentable{
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         let movieTrailerPlayer = AVPlayerViewController()
         movieTrailerPlayer.player = player
+//        movieTrailerPlayer.player?.play()
         movieTrailerPlayer.showsPlaybackControls = false
         return movieTrailerPlayer
     }
     func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
         //to update view
+        
     }
 }
 
@@ -30,14 +33,12 @@ struct TrailerPlayer:UIViewControllerRepresentable{
 struct Player:UIViewControllerRepresentable{
     var VideoPlayer:AVPlayer
     var videoLayer : AVLayerVideoGravity = .resizeAspect
-    @Binding var isFullScreen : UIDeviceOrientation
     func makeCoordinator() -> Coordinator {
         return Player.Coordinator(parent: self)
     }
 
     
     func makeUIViewController(context: Context) -> AVPlayerViewController {
-
         let playerview = AVPlayerViewController()
         playerview.player = VideoPlayer
         playerview.showsPlaybackControls = false
@@ -47,8 +48,11 @@ struct Player:UIViewControllerRepresentable{
     }
     
     func updateUIViewController(_ controller: AVPlayerViewController, context content: Context) {
-        controller.showsPlaybackControls  = self.isFullScreen.isLandscape ? true : false
-        controller.modalPresentationStyle =  self.isFullScreen.isLandscape ? .fullScreen : .none
+        if Appdelegate.orientationLock == .landscape{
+            controller.modalPresentationStyle = .fullScreen
+        }else{
+            controller.modalPresentationStyle = .none
+        }
     }
     
     
@@ -58,7 +62,7 @@ struct Player:UIViewControllerRepresentable{
             self.parent = parent
         }
 
-        
+
     }
     
 }
@@ -72,15 +76,21 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
     @Binding var reload:Bool
     @Binding var value:Float
     @Binding var isAnimation:Bool
-    @Binding var isLandScape : UIDeviceOrientation
+    @Binding var isUpdateView : Bool
+    @Binding var currentVideIndex : Int
+    @Binding var orientation : UIDeviceOrientation
+    
+    @State private var indexChange : Bool = false
     let pageHegiht:CGFloat
     let content:()->Content
 
     func makeUIView(context: Context) -> UIScrollView {
         let view = UIScrollView()
-
-        //UIHostingController is a UIKit Controller to control SWIFTUI Hierarchy
+//
+//        //UIHostingController is a UIKit Controller to control SWIFTUI Hierarchy
         //rootView is the root View for this controller
+
+
         let rootView = UIHostingController(rootView: self.content())
 
         //Total Height of this view is the fullscreen * total trainer
@@ -94,10 +104,10 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
         view.bounces = false
-
+        
         //ignore safe area
         view.contentInsetAdjustmentBehavior = .never
-
+        view.contentOffset.y = CGFloat(currentVideIndex) * pageHegiht
 
         //Paging the page ,not Scroll
         view.isPagingEnabled  = true
@@ -107,48 +117,63 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
     }
 
     func updateUIView(_ uiView: UIScrollView, context: Context) {
-        //TODO
-        
-        if isLandScape.isLandscape{
-            Landscape(uiView)
-        }else{
+        if isUpdateView {
+//            print("Upading the view")
+            if Appdelegate.orientationLock == .landscape {
+                print("Upading the landscape")
+                Landscape(uiView,context) //Landscape Mode
+            }else if Appdelegate.orientationLock == .portrait {
+                print("Upading the Portrait")
+                Portrait(uiView,context) // Portrait mode
+            }
 
-        }
-        
-        uiView.delegate = context.coordinator
-        for i in 0..<uiView.subviews.count{
-            //let all subview have same frame size
-            //in this case ,we only have 1 subview:rootView:PlayerView
-            //when trainer data is updated
-            uiView.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
+
         }
     }
     
-    private func Landscape(_ view: UIScrollView){
+//    func updatingViewBaseOnOrientation(view: UIScrollView,context: Context){
+//        switch orientation{
+//        case .landscapeLeft:
+//            Landscape(view,context) //Landscape Mode
+//            break
+//        case .landscapeRight:
+//            Landscape(view,context) //Landscape Mode
+//            break
+//        case .portrait:
+//            Portrait(view,context) // Portrait mode
+//            break
+//        default:
+//            break
+//        }
+//    }
+    
+    
+    private func Landscape(_ view: UIScrollView,_ context: Context){
         let rootView = UIHostingController(rootView: self.content())
 
         //Total Height of this view is the fullscreen * total trainer
-        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trailerList.count))
-
-        //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
+        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trailerList.count))
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 1.0)
-        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1.0)
-        
+        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht * CGFloat(trailerList.count))
         view.subviews.last?.removeFromSuperview()
         view.addSubview(rootView.view)
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
+        view.isScrollEnabled = false
+        view.alwaysBounceVertical = false
         view.bounces = false
-
-        //ignore safe area
         view.contentInsetAdjustmentBehavior = .never
-
-
-        //Paging the page ,not Scroll
         view.isPagingEnabled  = true
+        view.contentOffset.y =  CGFloat(currentVideIndex) * pageHegiht
+        view.delegate = context.coordinator
+        
+        for i in 0..<view.subviews.count{
+            view.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
+        }
+        viewUpdated()
     }
     
-    private func Portrait(_ view : UIScrollView){
+    private func Portrait(_ view : UIScrollView,_ context: Context){
         //Re-init the view!
         let rootView = UIHostingController(rootView: self.content())
 
@@ -157,25 +182,30 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
         //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height))
-        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trailerList.count))
-        
+        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht * CGFloat(trailerList.count))
         view.subviews.last?.removeFromSuperview()
         view.addSubview(rootView.view)
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
         view.bounces = false
-
-        //ignore safe area
+        view.isScrollEnabled = true
+        view.alwaysBounceVertical = true
         view.contentInsetAdjustmentBehavior = .never
-
-
-        //Paging the page ,not Scroll
         view.isPagingEnabled  = true
+        view.contentOffset.y =  CGFloat(currentVideIndex) * pageHegiht
+        for i in 0..<view.subviews.count{
+            view.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
+        }
+        view.delegate = context.coordinator
+        viewUpdated()
     }
     
+    private func viewUpdated(){
+        DispatchQueue.main.async {
+            self.isUpdateView = false
+        }
+    }
 
-
-    //this is used to communicated between UIKit View And SiwftUI View :UIScrollViewDelegate
     class Coordinator:NSObject,UIScrollViewDelegate{
 
         var parentView:PlayerScrollView
@@ -185,6 +215,7 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         init(parent:PlayerScrollView,didRefresh:Binding<Bool>){
             parentView = parent
             loadMore = didRefresh
+
         }
         //is Scroll ened?
         func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -209,9 +240,9 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
           //  print(scrollView.contentOffset.y)
             //get index of each content
-
+            
             let currentIndex = Int(scrollView.contentOffset.y / parentView.pageHegiht)
-
+            self.parentView.currentVideIndex = currentIndex
             if index != currentIndex{
                 index = currentIndex
 
@@ -230,14 +261,15 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
                 //add Observer to player timeer
                 parentView.trailerList[index].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
                     self.parentView.value =  Float(self.parentView.trailerList[self.index].videoPlayer.currentTime().seconds / self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds)
-                    
+  
                 }
-
+                
+                
                 NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.trailerList[index].videoPlayer.currentItem, queue: .main){ (_) in
                     self.parentView.trailerList[self.index].videoReplay = true
                     self.parentView.trailerList[self.index].videoPlayer.seek(to: .zero)
                     self.parentView.trailerList[self.index].videoPlayer.play()
-
+                    self.parentView.trailerList[self.index].maxValue = self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds
                 }
             }
 
@@ -252,13 +284,19 @@ struct VideoProgressBar : UIViewRepresentable{
     
     @Binding var value:Float
     @Binding var player:AVPlayer
-    
+    var minTintColor : UIColor = .white
+    var maxTintColor : UIColor = .clear
+    var setThumbImage : Bool = false
     func makeUIView(context: Context) -> UISlider {
         let silder = UISlider()
-        silder.minimumTrackTintColor = .white
-        silder.maximumTrackTintColor = .none
-        silder.setThumbImage(UIImage(), for: .normal)
+        silder.minimumTrackTintColor = minTintColor
+        silder.maximumTrackTintColor = maxTintColor
+        silder.setThumbImage(UIImage(systemName: "circle.fill"), for: .normal)
+        silder.tintColor = .white
+        silder.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
+//        silder.thumbTintColor = .white
         silder.value = value
+//        silder.
         silder.addTarget(context.coordinator, action: #selector(context.coordinator.videoTimeProgress(silder:)), for: .valueChanged)
         return silder
     }
@@ -276,6 +314,7 @@ struct VideoProgressBar : UIViewRepresentable{
         }
         
         @objc func videoTimeProgress(silder:UISlider){
+
             if silder.isTracking{
                 // when user moving slider bar
                 //silder target will call that function

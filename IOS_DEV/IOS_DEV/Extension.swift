@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import SDWebImageSwiftUI
+import AVKit
 
 extension String{
     func widthOfStr(Font font:UIFont) ->CGFloat{
@@ -125,15 +126,19 @@ extension View{
     }
 }
 
+//extension UINavigationController: UIGestureRecognizerDelegate {
+//    override open func viewDidLoad() {
+//        super.viewDidLoad()
+//        interactivePopGestureRecognizer?.delegate = self
+//    }
+//
+//    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return viewControllers.count > 1
+//    }
+//}
 
-
-extension UINavigationController: UIGestureRecognizerDelegate {
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = self
-    }
-
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+extension AVPlayer{
+    func isPlaying() -> Bool{
+        self.timeControlStatus == AVPlayer.TimeControlStatus.playing
     }
 }

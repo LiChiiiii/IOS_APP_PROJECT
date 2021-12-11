@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MovieListView: View {
     //Manager this in a class
+    @StateObject var trailerModel = TrailerVideoVM()
     @ObservedObject private var nowPlayingState = MovieListState()
     @ObservedObject private var upcomingState = MovieListState()
     @ObservedObject private var topRatedState = MovieListState()
@@ -22,6 +23,7 @@ struct MovieListView: View {
     
     @Binding var showHomePage:Bool
     @Binding var isLogOut : Bool
+    @Binding var mainPageHeight : CGFloat
     
     
     var body: some View {
@@ -203,6 +205,7 @@ struct MovieListView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.large)
         .navigationBarTitle("\(NowUserName), \(getTime())")
+        
         .toolbar{
             ToolbarItemGroup(placement:.navigationBarLeading){
                 Button(action:{
@@ -233,13 +236,8 @@ struct MovieListView: View {
             }
             
             ToolbarItemGroup(placement:.navigationBarTrailing){
-//                Button(action:{
-//                    withAnimation(){
-//                        //TO trailer view
-//                        showHomePage.toggle()
-//                    }
-//                }){
-                NavigationLink(destination: MovieTrailerDiscoryView(showHomePage: self.$showHomePage),isActive: self.$showHomePage){
+
+                NavigationLink(destination: MovieTrailerDiscoryView(showHomePage: self.$showHomePage,mainPageHeight:$mainPageHeight).environmentObject(trailerModel),isActive: self.$showHomePage){
                     HStack{
                         Image(systemName: "arrowtriangle.forward.square.fill")
                             .resizable()
@@ -253,11 +251,8 @@ struct MovieListView: View {
                     .foregroundColor(.white)
             
                 }
-//                .buttonStyle(StaticButtonStyle())
-//                .navigationViewStyle(DoubleColumnNavigationViewStyle())
-//                .navigationTitle("")
-//                .navigationBarTitle("")
-//                .navigationBarHidden(true)
+
+
 
                         
 //                }

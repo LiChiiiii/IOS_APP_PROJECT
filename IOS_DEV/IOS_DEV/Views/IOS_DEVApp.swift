@@ -16,25 +16,109 @@ struct IOS_DEVApp: App {
     
     var body: some Scene {
         WindowGroup {
-
-
-            WelcomePage()
+            NavBar(isLogOut: .constant(false), index: 0)
+//            ContentViewAB()
+//            ScrollView{
+//                VStack{
+//                    TrailerPlayer(player: VideoList[0].videoPlayer)
+//                        .edgesIgnoringSafeArea(.all)
+//                    TrailerPlayer(player: VideoList[1].videoPlayer)
+//                        .edgesIgnoringSafeArea(.all)
+//
+//                }
+//                .background(Color.red.edgesIgnoringSafeArea(.all))
+//            }
+//
+//            .onAppear(){
+//                DispatchQueue.main.async {
+//                    Appdelegate.orientationLock = UIInterfaceOrientationMask.landscape
+//
+//                    UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+//
+//                    UINavigationController.attemptRotationToDeviceOrientation()
+//
+//                }
+//            }
+//            STD(player: VideoList[0].videoPlayer)
+//            FullScreenPlayer(player:.constant(VideoList[0].videoPlayer))
+//            TestPlayer(trailerInfo: .constant(VideoList[0]))
+//            TestNAV()
+//            WelcomePage()
+//            MainHomeView(showHomePage: <#T##Bool#>, isLogOut: <#T##Bool#>, body: <#T##View#>)
         }
     }
 }
-struct Land: View {
-    var body: some View {
-        ZStack {
-            Color.pink
-            VStack {
-                Text("Hello, SwiftUI!")
-                    .font(.largeTitle)
-                    .bold()
-                Spacer()
+
+
+
+struct TestPlayer : View {
+    @State private var value : Float = 0
+    @State private var isShow : Bool = false
+    @Binding var trailerInfo : Trailer
+    var body: some View{
+        ZStack{
+            TrailerPlayer(player: trailerInfo.videoPlayer)
+                .onTapGesture{
+                withAnimation{
+                    withAnimation{
+                        isShow.toggle()
+                    }
+                }
             }
+                .zIndex(1)
             
-        }.edgesIgnoringSafeArea(.all)
+            if isShow{
+                VStack{
+                    FullScreenTop(isUpdateView: .constant(false), isFullScreen: .constant(false), movieName: trailerInfo.movieName)
+                    Spacer()
+                    VideoTimeline(maxValue: 0, isPlaying: .constant(true), trailerInfo: $trailerInfo)
+                }
+                .background(Color.black.opacity(0.5).onTapGesture{
+                    withAnimation{
+                        isShow.toggle()
+                    }
+                })
+                .zIndex(2)
+            }
+
+        }
+        .onAppear(){
+            DispatchQueue.main.async {
+//                Appdelegate.orientationLock = UIInterfaceOrientationMask.landscape
+//
+//                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+//
+//                UINavigationController.attemptRotationToDeviceOrientation()
+
+            }
+            trailerInfo.videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){_ in
+                self.value = Float(trailerInfo.videoPlayer.currentTime().seconds / trailerInfo.videoPlayer.currentItem!.duration.seconds)
+            }
+        }
+
     }
+    
+    private func getTrailerMins(second : Double)-> String{
+        print(second)
+        let (m,s) = (((Int(second) % 3600) / 60), ((Int(second) % 3600) % 60))
+
+        let m_string =  m < 10 ? "0\(m)" : "\(m)"
+        let s_string =  s < 10 ? "0\(s)" : "\(s)"
+        return "\(m_string):\(s_string)"
+    }
+    
+
+        
+}
+                
+
+extension Double {
+  func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
+    let formatter = DateComponentsFormatter()
+      formatter.allowedUnits = [.hour,.minute, .second, .nanosecond]
+    formatter.unitsStyle = style
+    return formatter.string(from: self) ?? ""
+  }
 }
 
 

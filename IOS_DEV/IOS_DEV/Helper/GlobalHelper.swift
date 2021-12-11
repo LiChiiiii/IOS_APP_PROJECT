@@ -15,61 +15,36 @@ import AVKit
 //Trainer list"
 var VideoList:[Trailer] = [
     Trailer(id:1,
-           movieName:"猛毒",
-           movieType: ["科幻","動作"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v1", ofType: "mp4")!)) ,
-            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/trailer.mp4")!),
+           movieName:"《蜘蛛俠：不戰無歸》Spider-Man: No Way Home",
+           movieType: ["科幻","動作","冒險"],
+           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "spider", ofType: "mp4")!)) ,
+//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/SpiderManNoWayHome.mp4")!),
            videoReplay: false,
-           releaseDate: "2018-09-28"),
+           maxValue: 0),
     
 //
     Trailer(id:2,
-           movieName:"猛毒",
-           movieType: ["科幻","動作"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v1", ofType: "mp4")!)) ,
-            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/trailer.mp4")!),
+           movieName:"七龍珠第20部劇場版【七龍珠超：布羅利】",
+           movieType: ["動作"],
+           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "dbs", ofType: "mp4")!)) ,
+//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/dbs.mp4")!),
            videoReplay: false,
-           releaseDate: "2018-09-28")
-//    Trailer(id:3,
-//           movieName:"復仇者聯盟：終局之戰",
-//           movieType: ["冒險", "科幻","動作"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v3", ofType: "mp4")!)) ,
-//           videoReplay: false,releaseDate: "2019-04-24"),
-//
-//    Trailer(id:4,
-//           movieName:"Avernger 2",
-//           movieType: ["Horro","Super Hero","Action"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v4", ofType: "mp4")!)) ,
-//           videoReplay: false,releaseDate: "2018-09-28"),
-//
-//    Trailer(id:5,
-//           movieName:"Avernger 3",
-//           movieType: ["Horro","Super Hero","Action"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v5", ofType: "mp4")!)) ,
-//           videoReplay: false,releaseDate: "2018-09-28"),
-//
-//    Trailer(id:6,
-//           movieName:"Iron man 1",
-//           movieType: ["Horro","Super Hero","Action"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v6", ofType: "mp4")!)) ,
-//           videoReplay: false,releaseDate: "2018-09-28"),
-//
-//    Trailer(id:7,movieName:"Iron man 2",
-//           movieType: ["Horro","Super Hero","Action"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v7", ofType: "mp4")!)) ,
-//           videoReplay: false,releaseDate: "2018-09-28"),
-//
-//    Trailer(id:8,
-//           movieName:"Iron man 3",
-//           movieType: ["Horro","Super Hero","Action"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "v8", ofType: "mp4")!)) ,
-//           videoReplay: false,releaseDate: "2018-09-28"),
-
-//    Trailer(id:9,
-//           movieName:"Iron man 3",
-//           movieType: ["Horro","Super Hero","Action"],
-//           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "test", ofType: "mp4")!)) ,
-//           videoReplay: false)
+           maxValue: 0),
+    
+    Trailer(id:3,
+           movieName:"七龍珠第21部劇場版【七龍珠超：超級英雄】",
+           movieType: ["動作","冒險"],
+           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "2020dbs", ofType: "mp4")!)) ,
+//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/2020dbs.mp4")!),
+           videoReplay: false,
+           maxValue: 0),
+    Trailer(id:4,
+           movieName:"《黑寡婦》Black Widow",
+           movieType: ["科幻","動作","冒險"],
+           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "bw", ofType: "mp4")!)) ,
+//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/bw.mp4")!),
+           videoReplay: false,
+           maxValue: 0),
 ]
 
 
