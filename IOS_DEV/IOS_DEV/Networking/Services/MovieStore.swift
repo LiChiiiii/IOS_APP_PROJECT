@@ -248,7 +248,7 @@ class APIService : ServerAPIServerServiceInterface{
     static let shared = APIService()
     private init(){} //signleton mode
     
-    private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
+    private let API_SERVER_HOST = "http://120.126.16.229:8080/api"
     private let Client = URLSession.shared
     private let Decoder = JSONDecoder()
     private let Encoder = JSONEncoder()

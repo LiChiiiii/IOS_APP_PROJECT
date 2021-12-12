@@ -139,6 +139,6 @@ extension View{
 
 extension AVPlayer{
     func isPlaying() -> Bool{
-        self.timeControlStatus == AVPlayer.TimeControlStatus.playing
+        timeControlStatus == AVPlayer.TimeControlStatus.playing
     }
 }

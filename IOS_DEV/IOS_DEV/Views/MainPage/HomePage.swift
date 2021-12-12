@@ -165,7 +165,7 @@ struct HomeTrailerPlayer:View{
                 TrailerModel.TrailerList[0].videoPlayer.play()
                 TrailerModel.TrailerList[0].videoPlayer.actionAtItemEnd = .none
                 
-                //Add this view to NotificationCentre and tell all of those evnet
+                //Add this view to NotificationCentre and tell all of those ev
                 //Chage Replay to true
                 
                 //get the time period of the play back control
@@ -210,10 +210,9 @@ struct FullScreenTop :View{
 
             }, label: {
                 Image(systemName: "chevron.left")
-                    .padding(.horizontal)
                     .imageScale(.large)
                     .foregroundColor(.white)
-                    .padding(5)
+                    .padding(8)
             })
 
             VStack{
@@ -236,7 +235,7 @@ struct FullScreenTop :View{
         }
         .edgesIgnoringSafeArea(.top)
         .padding(.top,35)
-        .padding(.horizontal,25)
+        .padding(.horizontal,50)
         .frame(width: UIScreen.main.bounds.width)
     }
 }
@@ -264,6 +263,7 @@ struct VideoTimeline : View {
                         Image(systemName: self.isPlaying ? "pause.fill" : "play.fill")
                             .foregroundColor(.white)
                             .imageScale(.large)
+                            .padding(8)
                     }
                     .frame(width: 20, height: 20, alignment: .center)
 
@@ -279,14 +279,16 @@ struct VideoTimeline : View {
            
         }
         .padding(.bottom,20)
-        .padding(.horizontal,25)
+        .padding(.horizontal,70)
         .onAppear(){
             trailerInfo.videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){ _ in
                 self.value = Float(trailerInfo.videoPlayer.currentTime().seconds / trailerInfo.videoPlayer.currentItem!.duration.seconds)
                 
             }
+            
         }
     }
+    
     
     private func getTrailerMins(second : Double)-> String{
         let (m,s) = (((Int(second) % 3600) / 60), ((Int(second) % 3600) % 60))
@@ -305,8 +307,8 @@ struct PlayerScrollList: View {
     @State private var currentVideo : Int = 0
     @State private var orientation = UIDeviceOrientation.unknown
     @State private var counter : Int = 1
-    @State private var isPlaying : Bool = true
     @State private var trailerTime : Double = 0
+    @State private var isPlaying : Bool = true
     @State private var isUpdateView : Bool  = false //When toggle to FullScreen View
     @State private var fullScreenSize : CGFloat = 0
     @Binding var value : Float
@@ -324,7 +326,7 @@ struct PlayerScrollList: View {
                             if isFullScreen && i != currentVideo{
                                 EmptyView()
                             }else{
-                                TrailerCell(pageHeight: pageHeight,mainPageHeight:$mainPageHeight,currentVideo: $currentVideo, trailerInfo: $TrailerModel.TrailerList[i], isFullScreen: $isFullScreen, isUpdateView: $isUpdateView, isPlaying: $isPlaying, value: $value , trailerIndex:i)
+                                TrailerCell(pageHeight: pageHeight,mainPageHeight:$mainPageHeight,currentVideo: $currentVideo, trailerInfo: $TrailerModel.TrailerList[i], isFullScreen: $isFullScreen, isUpdateView: $isUpdateView, value: $value ,isPlaying:$isPlaying, trailerIndex:i)
                                     .onAppear(){
                                         value = 0
                                     }
@@ -336,6 +338,9 @@ struct PlayerScrollList: View {
                 }
                 .edgesIgnoringSafeArea(.all)
             }
+            .onDisappear(perform: {
+                TrailerModel.TrailerList[currentVideo].videoPlayer.pause()
+            })
             
         }
         .edgesIgnoringSafeArea(.all)
@@ -352,38 +357,57 @@ struct PlayerScrollList: View {
 struct TrailerCell : View{
     @EnvironmentObject  var TrailerModel : TrailerVideoVM
     @EnvironmentObject  var TrailerManager : TrailerStateManager
+    
     var pageHeight : CGFloat
     @Binding var mainPageHeight : CGFloat
     @Binding var currentVideo : Int
     @Binding var trailerInfo : Trailer
     @Binding var isFullScreen : Bool
     @Binding var isUpdateView : Bool
-    @Binding var isPlaying: Bool
     @Binding var value : Float
+    @Binding var isPlaying : Bool
     @State private var isShowController : Bool = true
     @State private var counter : Int = 0
+    
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var trailerIndex : Int
     var body : some View {
 
-        ZStack(alignment:.bottom){
+        ZStack(alignment:.center){
 
             Player(VideoPlayer: trailerInfo.videoPlayer,videoLayer:.resizeAspect)
+            
                 .frame(width:UIScreen.main.bounds.width,height: Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height : self.mainPageHeight)
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture{
-                    counter = 0
-                    withAnimation(.easeOut(duration: 0.2)){
-                        isShowController.toggle()
+                    if isFullScreen{
+                        counter = 0
+                        withAnimation(.easeOut(duration: 0.2)){
+                            isShowController.toggle()
+                        }
+                    }else{
+                        self.trailerInfo.videoPlayer.pause()
                     }
 
                 }
                 .zIndex(0)
                 .padding(.top,Appdelegate.orientationLock == .landscape ? 21 : 0)
             
+            if !isFullScreen && !isPlaying{
+                
+                Image(systemName: "play.fill")
+                    .foregroundColor(.white)
+                    .font(.system(size:85))
+                    .opacity(0.65)
+                    .onTapGesture(){
+                        self.trailerInfo.videoPlayer.play()
+                    }
 
-            
+                
+            }
+
+        
             if Appdelegate.orientationLock == .portrait{
                 Group{
                     MovieIntrol(trailer: $trailerInfo, tailerIndex: trailerIndex, selectedVideo: $currentVideo, isFullScreen: self.$isFullScreen, isUpdateView: $isUpdateView)
@@ -394,9 +418,12 @@ struct TrailerCell : View{
                 }
             } else   if isShowController{
                 VStack{
-                    FullScreenTop(isUpdateView: $isUpdateView, isFullScreen: $isFullScreen, movieName: trailerInfo.movieName)
-                    Spacer()
-                    VideoTimeline(maxValue: trailerInfo.videoPlayer.currentItem?.duration.seconds ?? 0, isPlaying: $isPlaying, trailerInfo: $trailerInfo)
+                    Group{
+                        FullScreenTop(isUpdateView: $isUpdateView, isFullScreen: $isFullScreen, movieName: trailerInfo.movieName)
+                        Spacer()
+                        VideoTimeline(maxValue: trailerInfo.videoPlayer.currentItem?.duration.seconds ?? 0, isPlaying: $isPlaying, trailerInfo: $trailerInfo)
+                    }
+                    
                 }
                 .frame(height:  Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height : self.mainPageHeight)
                 .background(Color.black.opacity(0.5).onTapGesture{
@@ -408,6 +435,7 @@ struct TrailerCell : View{
                 .zIndex(2)
             }
             
+
             
         }
         .onReceive(timer){_ in
@@ -420,6 +448,17 @@ struct TrailerCell : View{
                 }
             }
         }
+        .onChange(of: trailerInfo.videoPlayer.timeControlStatus){v in
+            if v == AVPlayer.TimeControlStatus.playing{
+                self.isPlaying = true
+            }else if v == AVPlayer.TimeControlStatus.paused{
+                self.isPlaying = false
+            }else{
+                self.isPlaying = false
+            }
+            print(self.isPlaying)
+        }
+
         .onDisappear(){
             //remove the timer
             timer.upstream.connect().cancel()

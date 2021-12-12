@@ -83,8 +83,7 @@ struct WelcomePage: View {
 
         }
         .onAppear{
-            //Check the token too
-//            UserDefaults.standard.set("", forKey: "userToken")
+
 
             if !userToken.isEmpty{
                 self.isLoading = true

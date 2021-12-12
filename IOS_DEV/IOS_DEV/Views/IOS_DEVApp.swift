@@ -16,7 +16,7 @@ struct IOS_DEVApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavBar(isLogOut: .constant(false), index: 0)
+//            NavBar(isLogOut: .constant(false), index: 0)
 //            ContentViewAB()
 //            ScrollView{
 //                VStack{
@@ -43,74 +43,11 @@ struct IOS_DEVApp: App {
 //            FullScreenPlayer(player:.constant(VideoList[0].videoPlayer))
 //            TestPlayer(trailerInfo: .constant(VideoList[0]))
 //            TestNAV()
-//            WelcomePage()
+            WelcomePage()
 //            MainHomeView(showHomePage: <#T##Bool#>, isLogOut: <#T##Bool#>, body: <#T##View#>)
         }
     }
 }
-
-
-
-struct TestPlayer : View {
-    @State private var value : Float = 0
-    @State private var isShow : Bool = false
-    @Binding var trailerInfo : Trailer
-    var body: some View{
-        ZStack{
-            TrailerPlayer(player: trailerInfo.videoPlayer)
-                .onTapGesture{
-                withAnimation{
-                    withAnimation{
-                        isShow.toggle()
-                    }
-                }
-            }
-                .zIndex(1)
-            
-            if isShow{
-                VStack{
-                    FullScreenTop(isUpdateView: .constant(false), isFullScreen: .constant(false), movieName: trailerInfo.movieName)
-                    Spacer()
-                    VideoTimeline(maxValue: 0, isPlaying: .constant(true), trailerInfo: $trailerInfo)
-                }
-                .background(Color.black.opacity(0.5).onTapGesture{
-                    withAnimation{
-                        isShow.toggle()
-                    }
-                })
-                .zIndex(2)
-            }
-
-        }
-        .onAppear(){
-            DispatchQueue.main.async {
-//                Appdelegate.orientationLock = UIInterfaceOrientationMask.landscape
-//
-//                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-//
-//                UINavigationController.attemptRotationToDeviceOrientation()
-
-            }
-            trailerInfo.videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){_ in
-                self.value = Float(trailerInfo.videoPlayer.currentTime().seconds / trailerInfo.videoPlayer.currentItem!.duration.seconds)
-            }
-        }
-
-    }
-    
-    private func getTrailerMins(second : Double)-> String{
-        print(second)
-        let (m,s) = (((Int(second) % 3600) / 60), ((Int(second) % 3600) % 60))
-
-        let m_string =  m < 10 ? "0\(m)" : "\(m)"
-        let s_string =  s < 10 ? "0\(s)" : "\(s)"
-        return "\(m_string):\(s_string)"
-    }
-    
-
-        
-}
-                
 
 extension Double {
   func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
@@ -140,187 +77,7 @@ extension View {
         self.modifier(DeviceRotationViewModifier(action: action))
     }
 }
-//
-//// An example view to demonstrate the solution
-//struct ContentViewTestD: View {
-//    @State private var orientation = UIDeviceOrientation.unknown
-//
-//    var body: some View {
-//        VStack{
-//            if orientation.isLandscape{
-//
-//                LandscapePlayer(VideoPlayer: VideoList[0].videoPlayer)
-//
-//            }else if orientation.isPortrait{
-//                Color.red
-//
-//            } else {
-//                Color.blue
-//            }
-//        }
-//        .onRotate { newOrientation in
-//            orientation = newOrientation
-//        }
-//    }
-//}
-//struct CardModle : Identifiable{
-//    let id : String = UUID().uuidString
-//    let image : String
-//    let title : String
-//    let description : String
-//    let rate : Int
-//}
-//
-//var cardsList : [CardModle] = [
-//    CardModle(image: "post0", title: "Don't Breathe 2", description: "The Blind Man has been hiding out for several years in an isolated cabin and has taken in and raised a young girl orphaned from a devastating house fire. Their quiet life together is shattered when a group of criminals kidnap the girl, forcing the Blind Man to leave his safe haven to save her.", rate: 3),
-//
-//    CardModle(image: "post1", title: "Venom: Let There Be Carnage", description: "Sequel to the box-office hit film \"Venom.\"", rate: 4),
-//
-//    CardModle(image: "post2", title: "Jolt", description:"Lindy is an acid-tongued woman with rage issues who controls her temper by shocking herself with an electrode vest. One day she makes a connection with Justin, who gives her a glimmer of hope for a shock-free future, but when he’s murdered she launches herself on a revenge-fueled rampage in pursuit of his killer.", rate: 3),
-//
-//    CardModle(image: "post4", title: "Black Widow", description: "Natasha Romanoff, also known as Black Widow, confronts the darker parts of her ledger when a dangerous conspiracy with ties to her past arises. Pursued by a force that will stop at nothing to bring her down, Natasha must deal with her history as a spy and the broken relationships left in her wake long before she became an Avenger.", rate: 5),
-//
-//    CardModle(image: "post5", title: "Tooth Fairy: The Last Extraction", description: "Corey and his daughter, Sally, decide to go on a summer break with friends, Diane, Christy, Toby and Benny. Little do they know, Corey's past is going to catch up to him.", rate: 2),
-//]
-//
 
-
-//struct MorePreviewResultView : View{
-//    @State private var currentIndex : Int = 0
-//    var isNavLink : Bool = true
-//    var backPageName : String = "Search"
-//    @Binding var isActive : Bool
-//
-//    @State var isShowResult : Bool = false
-//    var body: some View{
-//        ZStack(alignment:.top){
-//            NavigationLink(destination: MovieDetailView(movieId:774021, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$isShowResult){EmptyView()}
-//
-//            ZStack{
-//                //background iamge using a tab View with page style
-//                TabView(selection:$currentIndex){
-//                    ForEach(cardsList.indices,id:\.self){ i in
-//                        GeometryReader{proxy in
-//                            Image(cardsList[i].image)
-//                                .resizable()
-//                                .aspectRatio(contentMode:.fill)
-//                                .frame(width:proxy.size.width,height:proxy.size.height)
-//                                .cornerRadius(1)
-//                        }
-//                        .ignoresSafeArea()
-//                        .offset(y:-100)
-//                    }
-//
-//                }
-//                .edgesIgnoringSafeArea(.top)
-//                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-//                .ignoresSafeArea()
-//                //            .frame(width:UIScreen.main.bounds.width,height:UIScreen.main.bounds.height)
-//                .animation(.easeOut(duration: 0.25))
-//                .overlay(
-//                    LinearGradient(gradient: Gradient(colors: [
-//                        Color.clear,
-//                        Color.black.opacity(0.2),
-//                        Color.black.opacity(0.4),
-//                        Color.black,
-//                        Color.black,
-//                        Color.black,
-//
-//                    ]), startPoint: .top, endPoint: .bottom)
-//                )
-//                //
-//                ListSilder(trailingSpace:150,index: self.$currentIndex, items: cardsList){ card in
-//                    PreviewView(card: card)
-//
-//                }
-//                .offset(y:UIScreen.main.bounds.height / 4)
-//
-//                .edgesIgnoringSafeArea(.all)
-//            }
-//            if isNavLink{
-//                HStack(spacing:2){
-//                    Button(action:{
-//                        withAnimation(){
-//                            self.isActive.toggle()
-//                        }
-//                    }){
-//                        HStack(spacing:2){
-//                            Image(systemName: "chevron.backward")
-//                            Text(backPageName)
-//                        }
-//                        .padding(10)
-//                        .background(BlurView().cornerRadius(25))
-//
-//                    }
-//                    .foregroundColor(.white)
-//                    Spacer()
-//                }
-//                .padding(.horizontal,5)
-//                .offset(y:60)
-//            }
-//        }
-//        .edgesIgnoringSafeArea(.all)
-//        .navigationTitle(self.isShowResult ? "Preview" : "")
-//        .navigationBarTitle(self.isShowResult ? "Preview" : "")
-//        .navigationBarHidden(true)
-//        .navigationBarBackButtonHidden(true)
-//    }
-//
-//    @ViewBuilder
-//    private func PreviewView(card : CardModle) -> some View{
-//        VStack(spacing:10){
-//            GeometryReader{proxy in
-//                Image(card.image)
-//                    .resizable()
-//                    .aspectRatio(contentMode:.fill)
-//                    .frame(width:proxy.size.width,height:proxy.size.height)
-//                    .cornerRadius(25)
-//
-//            }
-//            .padding(20)
-//            .background(BlurView(sytle: .systemUltraThinMaterialDark))
-//            .cornerRadius(25)
-//            .frame(height:UIScreen.main.bounds.height / 2.5)
-//            .padding(.bottom,15)
-//
-//            //the movie data here
-//            Text(card.title)
-//                .font(.title2)
-//                .bold()
-//                .foregroundColor(.white)
-//                .multilineTextAlignment(.center)
-//
-//            //movie rate
-//            HStack(spacing:3){
-//                ForEach(1...5,id:\.self){index in
-//                    Image(systemName: "star.fill")
-//                        .foregroundColor(index <= card.rate ? .yellow: .gray)
-//                }
-//
-//                Text("(\(card.rate).0)")
-//                    .foregroundColor(.gray)
-//            }
-//            .font(.caption)
-//
-//            Text(card.description)
-//                .font(.callout)
-//                .lineLimit(3)
-//                .multilineTextAlignment(.center)
-//                .padding(.top,8)
-//                .padding(.horizontal)
-//                .foregroundColor(.white)
-//
-//
-//        }
-//        .onTapGesture {
-//            withAnimation(){
-//                self.isShowResult.toggle()
-//            }
-//            print(card.id)
-//        }
-//
-//    }
-//}
 
 let testList  : [MovieRule] = [
     MovieRule(name: "Action", rule: .Genre, postURL: "https://www.themoviedb.org/t/p/original/ppiL13JJx2LkyoNb8JM0h7nxYmk.jpg"),
