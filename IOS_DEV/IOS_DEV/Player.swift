@@ -10,6 +10,7 @@ import SwiftUI
 import UIKit
 import AVKit
 
+
 //let AVPlayerController to SWiftUI
 
 struct TrailerPlayer:UIViewControllerRepresentable{
@@ -130,24 +131,7 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
         }
     }
-    
-//    func updatingViewBaseOnOrientation(view: UIScrollView,context: Context){
-//        switch orientation{
-//        case .landscapeLeft:
-//            Landscape(view,context) //Landscape Mode
-//            break
-//        case .landscapeRight:
-//            Landscape(view,context) //Landscape Mode
-//            break
-//        case .portrait:
-//            Portrait(view,context) // Portrait mode
-//            break
-//        default:
-//            break
-//        }
-//    }
-    
-    
+
     private func Landscape(_ view: UIScrollView,_ context: Context){
         let rootView = UIHostingController(rootView: self.content())
 
@@ -219,30 +203,10 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         }
         //is Scroll ened?
         func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-            
-            /*
-              TODO LIST(might implement):
-              1.WHEN SCROLLING TO THE TOP
-             2.SET THR VALUE TO 0
-             3.MOVING THE TOPBAR
-             */
-            
-//
-//            if scrollView.contentOffset.y <= 0{
-//                print("i am now at the top")
-//                loadMore.wrappedValue = true //assign the value to warppedValue
-//            }
-//            else{
-//                loadMore.wrappedValue = false
-//            }
-//
-//
 
-          //  print(scrollView.contentOffset.y)
-            //get index of each content
-            
             let currentIndex = Int(scrollView.contentOffset.y / parentView.pageHegiht)
             self.parentView.currentVideIndex = currentIndex
+            
             if index != currentIndex{
                 index = currentIndex
 
@@ -260,16 +224,16 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
                 
                 //add Observer to player timeer
                 parentView.trailerList[index].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-                    self.parentView.value =  Float(self.parentView.trailerList[self.index].videoPlayer.currentTime().seconds / self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds)
+                    self.parentView.value =  Float(self.parentView.trailerList[self.index].videoPlayer.currentTime().seconds  / (self.parentView.trailerList[self.index].videoPlayer.currentItem?.duration.seconds ?? 0))
   
                 }
                 
                 
                 NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.trailerList[index].videoPlayer.currentItem, queue: .main){ (_) in
-                    self.parentView.trailerList[self.index].videoReplay = true
+//                    self.parentView.trailerList[self.index].videoReplay = true
                     self.parentView.trailerList[self.index].videoPlayer.seek(to: .zero)
                     self.parentView.trailerList[self.index].videoPlayer.play()
-                    self.parentView.trailerList[self.index].maxValue = self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds
+//                    self.parentView.trailerList[self.index].maxValue = self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds
                 }
             }
 
@@ -283,7 +247,7 @@ struct VideoProgressBar : UIViewRepresentable{
     }
     
     @Binding var value:Float
-    @Binding var player:AVPlayer
+    var player:AVPlayer
     var minTintColor : UIColor = .white
     var maxTintColor : UIColor = .clear
     var setThumbImage : Bool = false

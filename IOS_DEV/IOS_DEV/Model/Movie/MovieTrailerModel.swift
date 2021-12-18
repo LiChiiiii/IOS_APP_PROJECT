@@ -8,15 +8,33 @@ import Foundation
 import SwiftUI
 import AVKit
 
-struct Trailer:Identifiable{
-    var id : Int
-    var movieName:String
-    var movieType:[String]
-    var videoPlayer:AVPlayer
-    var videoReplay:Bool
-    var maxValue:Double
-  //  var isLike:Bool
+//struct Trailer:Identifiable{
+//    var id : Int
+//    var title:String
+//    var genres:[String]
+////    var videoPlayer:AVPlayer
+//=
+//}
+
+struct Trailer : Identifiable{
+    let id : Int
+    let videoPlayer : AVPlayer
+    let info : TrailerInfo
 }
+
+
+struct TrailerInfo : Identifiable,Decodable{
+    let id : Int //MovieID
+    let title : String //Movie Title
+    let genres : [String] //Movie Genres
+    let poster : String //Movie Poster
+    let video_path : String //Movie Trailer URLS
+    
+    var videoURL : String {
+        "http://127.0.0.1:8080/trailer\(video_path)"
+    }
+}
+
 
 //struct MovieInfo:Identifiable{
 //    var id = UUID().uuidString //To identify each movie

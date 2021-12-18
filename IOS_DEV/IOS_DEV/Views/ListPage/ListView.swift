@@ -13,7 +13,7 @@ import SDWebImageSwiftUI
 
 struct ListView: View
 {
-    @ObservedObject private var popularState = MovieListState()
+    @ObservedObject private var popularState = MovieListState(endpoint: .popular)
     var lists:[CustomList]
     let FullSize = UIScreen.main.bounds.size
     var columns = Array(repeating: GridItem(.flexible(),spacing:5), count: 2)
@@ -73,9 +73,7 @@ struct ListView: View
             
         }
         .ignoresSafeArea(edges: .top)
-        .onAppear{
-            self.popularState.loadMovies(with: .popular)
-        }
+
 //        .frame(width: FullSize.width, height: FullSize.height)
         
 

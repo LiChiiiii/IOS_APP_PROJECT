@@ -249,6 +249,7 @@ class APIService : ServerAPIServerServiceInterface{
     private init(){} //signleton mode
     
     private let API_SERVER_HOST = "http://120.126.16.229:8080/api"
+//    private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
     private let Client = URLSession.shared
     private let Decoder = JSONDecoder()
     private let Encoder = JSONEncoder()
@@ -257,6 +258,7 @@ class APIService : ServerAPIServerServiceInterface{
     private let previewSearch = "/previewsearch"
     private let search = "/search"
     private let movie = "/movie"
+    private let video = "/video"
     
     //To Fetching and Decoding the response body or throw an error
     /*FetchAndDecode - parameters
@@ -283,7 +285,7 @@ class APIService : ServerAPIServerServiceInterface{
             completion(.failure(.invalidEndpoint))
             return
         }
-        print(request.absoluteURL)
+//        print(request.absoluteURL)
         //do a URLSession
         
         Client.dataTask(with:request){ [weak self] (data,response,err) in
@@ -316,7 +318,7 @@ class APIService : ServerAPIServerServiceInterface{
                 let result = try self.Decoder.decode(ResponseType.self, from: data)
                 DispatchQueue.main.async {
                     completion(.success(result))
-                    print("[DEBUG] DATA IS FETCHED SUCCESSFULLY")
+//                    print("[DEBUG] DATA IS FETCHED SUCCESSFULLY")
                 }
             } catch{
                 DispatchQueue.main.async {
@@ -434,7 +436,7 @@ class APIService : ServerAPIServerServiceInterface{
                 let result = try self.Decoder.decode(MoviePreviewInfo.self, from: data)
                 DispatchQueue.main.async {
                     completion(.success(result))
-                    print("[DEBUG] PREVIEW IS GOT")
+//                    print("[DEBUG] PREVIEW IS GOT")
                 }
             } catch{
                 DispatchQueue.main.async {
@@ -464,6 +466,11 @@ class APIService : ServerAPIServerServiceInterface{
     
     func getMovieCardInfoByGenre(genre: GenreType, completing: @escaping (Result<MovieCardResponse, MovieError>) -> ()) {
         let url = URL(string: "\(API_SERVER_HOST)\(movie)/getmoviecard?genre=\(genre.rawValue)")!
+        self.FetchAndDecode(url: url, completion: completing)
+    }
+    
+    func getMovieTrailerList(completing : @escaping (Result<[TrailerInfo],MovieError>)->()){
+        let url = URL(string: "\(API_SERVER_HOST)\(video)/trailers")!
         self.FetchAndDecode(url: url, completion: completing)
     }
 }

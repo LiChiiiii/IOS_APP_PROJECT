@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct MovieCardCarousel: View{
-    var movies:[MovieCardInfo]
+
     let genreID : Int
     @State private var isCardSelectedMovie:Bool = false
     @EnvironmentObject var movieListMV : GenreTypeState
@@ -33,7 +33,7 @@ struct MovieCardCarousel: View{
                 GeometryReader { proxy in
                     let scaleValue = getScale(geo: proxy)
                     
-                    MovieCoverCardStack(isCardSelectedMovie: $isCardSelectedMovie, movies: movies, genreID: genreID)
+                    MovieCoverCardStack(isCardSelectedMovie: $isCardSelectedMovie, movies: movieListMV.genreMovies, genreID: genreID)
                         .rotation3DEffect(Angle(degrees:Double(proxy.frame(in: .global).minX - 30)  / -20), axis: (x: 0, y: 20.0, z: 0))
                         .scaleEffect(CGSize(width: scaleValue, height: scaleValue))
                         .animation(.spring())
@@ -43,7 +43,7 @@ struct MovieCardCarousel: View{
                             }
                         }
                         .fullScreenCover(isPresented: $isCardSelectedMovie, content: {
-                            MovieCardGesture( movies: movies,currentMovie: movies.last, backHomePage: $isCardSelectedMovie,genreID:genreID)
+                            MovieCardGesture( movies: movieListMV.genreMovies,currentMovie: movieListMV.genreMovies.last, backHomePage: $isCardSelectedMovie,genreID:genreID)
                                 .environmentObject(movieListMV)
                         })
                 }

@@ -12,47 +12,6 @@ import AVKit
 //USE FOR FAKE DATA TO TEST UI
 
 //USE LOCAL VIDEO URL
-//Trainer list"
-var VideoList:[Trailer] = [
-    Trailer(id:1,
-           movieName:"《蜘蛛俠：不戰無歸》Spider-Man: No Way Home",
-           movieType: ["科幻","動作","冒險"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "spider", ofType: "mp4")!)) ,
-//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/SpiderManNoWayHome.mp4")!),
-           videoReplay: false,
-           maxValue: 0),
-    
-//
-    Trailer(id:2,
-           movieName:"七龍珠第20部劇場版【七龍珠超：布羅利】",
-           movieType: ["動作"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "dbs", ofType: "mp4")!)) ,
-//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/dbs.mp4")!),
-           videoReplay: false,
-           maxValue: 0),
-    
-    Trailer(id:3,
-           movieName:"七龍珠第21部劇場版【七龍珠超：超級英雄】",
-           movieType: ["動作","冒險"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "2020dbs", ofType: "mp4")!)) ,
-//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/2020dbs.mp4")!),
-           videoReplay: false,
-           maxValue: 0),
-    Trailer(id:4,
-           movieName:"《黑寡婦》Black Widow",
-           movieType: ["科幻","動作","冒險"],
-           videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "bw", ofType: "mp4")!)) ,
-//            videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/bw.mp4")!),
-           videoReplay: false,
-           maxValue: 0),
-]
-
-
-//let MovieList = [
-//
-//
-//]
-
 
 
 var ActorLists = [

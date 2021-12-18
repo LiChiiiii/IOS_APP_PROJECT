@@ -14,65 +14,38 @@ import SDWebImageSwiftUI
 class TrailerVideoVM : ObservableObject {
     //
     @Published var TrailerList : [Trailer] = []
-    init(){
-        let VideoList:[Trailer] = [
-            Trailer(id:1,
-                   movieName:"《蜘蛛俠：返校日》Spider-Man: Homecoming",
-                   movieType: ["科幻","動作","冒險"],
-                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "spider1", ofType: "mp4")!)) ,
-//                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/SpiderManNoWayHome.mp4")!),
-                   videoReplay: false,
-                   maxValue: 0),
+    @Published var isNetworkingErr : Error?
+    @Published var isLoading : Bool = false
+    
+    private var apiService : APIService
+    init(apiService : APIService = APIService.shared){
+        self.apiService = apiService
+        getTrailer()
+    }
+    
+    func getTrailer(){
+        self.isNetworkingErr = nil
+        self.isLoading = true
+        self.apiService.getMovieTrailerList(){ [weak self] result in
+            guard let self = self else{
+                return
+            }
             
-            Trailer(id:2,
-                   movieName:"《蜘蛛俠：離家日》Spider-Man: Far From Home",
-                   movieType: ["科幻","動作","冒險"],
-                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "spider2", ofType: "mp4")!)) ,
-//                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/SpiderManNoWayHome.mp4")!),
-                   videoReplay: false,
-                   maxValue: 0),
-            
-            Trailer(id:3,
-                   movieName:"《蜘蛛俠：不戰無歸》Spider-Man: No Way Home",
-                   movieType: ["科幻","動作","冒險"],
-                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "spider3", ofType: "mp4")!)) ,
-//                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/SpiderManNoWayHome.mp4")!),
-                   videoReplay: false,
-                   maxValue: 0),
-            
-        //
-            Trailer(id:4,
-                   movieName:"七龍珠第20部劇場版【七龍珠超：布羅利】",
-                   movieType: ["動作","冒險"],
-                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "dbsBroly", ofType: "mp4")!)) ,
-//                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/dbs.mp4")!),
-                   videoReplay: false,
-                   maxValue: 0),
-
-            Trailer(id:5,
-                   movieName:"七龍珠第21部劇場版 【七龍珠超：超級英雄】",
-                   movieType: ["動作","冒險"],
-                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "2020dbs", ofType: "mp4")!)) ,
-//                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/2020dbs.mp4")!),
-                   videoReplay: false,
-                   maxValue: 0),
-            Trailer(id:6,
-                   movieName:"《黑寡婦》Black Widow",
-                   movieType: ["科幻","動作","冒險"],
-                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "bw", ofType: "mp4")!)) ,
-//                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/bw.mp4")!),
-                   videoReplay: false,
-                   maxValue: 0),
-//            Trailer(id:6,
-//                   movieName:"《黑寡婦》Black Widow",
-//                   movieType: ["科幻","動作","冒險"],
-//                   videoPlayer:AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "bw", ofType: "mp4")!)) ,
-////                    videoPlayer: AVPlayer(url:URL(string: "http://127.0.0.1:8080/trailer/bw.mp4")!),
-//                   videoReplay: false,
-//                   maxValue: 0),
-        ]
-        
-        TrailerList.append(contentsOf: VideoList.map{$0})
+            switch result{
+            case .success(let response):
+                if response.count <= 0{
+                    break
+                }
+//                print("trailer")
+//                print(response)
+                self.TrailerList.append(contentsOf: response.map{Trailer(id: $0.id, videoPlayer: AVPlayer(url: URL(string: $0.videoURL)!), info: $0)})
+                
+            case .failure(let error):
+                self.isNetworkingErr = error as Error
+                
+            }
+            self.isLoading = false
+        }
     }
 }
 
@@ -103,7 +76,9 @@ struct HomePage:View{
     var body:some View{
         NavigationView{
             MovieListView(showHomePage: $showHomePage, isLogOut: self.$isLogOut,mainPageHeight:$mainPageHeight)
-        }.environment(\.horizontalSizeClass, .compact)
+        }
+        .environment(\.horizontalSizeClass, .compact)
+
     }
 }
 
@@ -165,23 +140,16 @@ struct HomeTrailerPlayer:View{
                 TrailerModel.TrailerList[0].videoPlayer.play()
                 TrailerModel.TrailerList[0].videoPlayer.actionAtItemEnd = .none
                 
-                //Add this view to NotificationCentre and tell all of those ev
-                //Chage Replay to true
-                
-                //get the time period of the play back control
-                TrailerModel.TrailerList[0].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-                    self.value =
-                    (Float( TrailerModel.TrailerList[0].videoPlayer.currentTime().seconds /  TrailerModel.TrailerList[0].videoPlayer.currentItem!.duration.seconds))
-                    
+                TrailerModel.TrailerList[0].videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){_ in
+                    self.value = Float((self.TrailerModel.TrailerList[0].videoPlayer.currentTime().seconds / self.TrailerModel.TrailerList[0].videoPlayer.currentItem!.duration.seconds ))
                 }
                 
-                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object:   TrailerModel.TrailerList[0].videoPlayer.currentItem, queue: .main){ _ in
-                    TrailerModel.TrailerList[0].videoReplay = true
+                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemFailedToPlayToEndTime,
+                                                       object: TrailerModel.TrailerList[0].videoPlayer.currentItem, queue: .main){ _ in
                     TrailerModel.TrailerList[0].videoPlayer.seek(to: .zero)
                     TrailerModel.TrailerList[0].videoPlayer.play()
-                    
-                    //                print(trainerList[0].videoPlayer.currentTime().seconds)
                 }
+
             })
         
         
@@ -248,7 +216,7 @@ struct VideoTimeline : View {
     @State private var value : Float = 0
     var body: some View{
         VStack{
-            VideoProgressBar(value: $value, player: $trailerInfo.videoPlayer, minTintColor: .red, maxTintColor: .gray)
+            VideoProgressBar(value: $value, player: trailerInfo.videoPlayer, minTintColor: .red, maxTintColor: .gray)
             HStack{
                 Button(action: {
                     if isPlaying {
@@ -413,13 +381,13 @@ struct TrailerCell : View{
                     MovieIntrol(trailer: $trailerInfo, tailerIndex: trailerIndex, selectedVideo: $currentVideo, isFullScreen: self.$isFullScreen, isUpdateView: $isUpdateView)
                     VStack{
                         Spacer()
-                        VideoProgressBar(value: trailerIndex ==  currentVideo ? $value : .constant(0), player: $TrailerModel.TrailerList[trailerIndex].videoPlayer)
+                        VideoProgressBar(value: trailerIndex ==  currentVideo ? $value : .constant(0), player: TrailerModel.TrailerList[trailerIndex].videoPlayer)
                     }
                 }
             } else   if isShowController{
                 VStack{
                     Group{
-                        FullScreenTop(isUpdateView: $isUpdateView, isFullScreen: $isFullScreen, movieName: trailerInfo.movieName)
+                        FullScreenTop(isUpdateView: $isUpdateView, isFullScreen: $isFullScreen, movieName: trailerInfo.info.title)
                         Spacer()
                         VideoTimeline(maxValue: trailerInfo.videoPlayer.currentItem?.duration.seconds ?? 0, isPlaying: $isPlaying, trailerInfo: $trailerInfo)
                     }
@@ -451,6 +419,7 @@ struct TrailerCell : View{
         .onChange(of: trailerInfo.videoPlayer.timeControlStatus){v in
             if v == AVPlayer.TimeControlStatus.playing{
                 self.isPlaying = true
+                
             }else if v == AVPlayer.TimeControlStatus.paused{
                 self.isPlaying = false
             }else{
@@ -509,13 +478,13 @@ struct MovieIntrol: View {
                     })
                     
                     HStack{
-                        Text(trailer.movieName)
+                        Text(trailer.info.title)
                             .TekoBoldFontFont(size: 25)
                         
                     }
                     
                     HStack{
-                        ForEach(trailer.movieType,id: \.self ){ type in
+                        ForEach(trailer.info.genres,id: \.self ){ type in
                             Text(type)
                                 .font(.system(size: 14))
                                 .bold()

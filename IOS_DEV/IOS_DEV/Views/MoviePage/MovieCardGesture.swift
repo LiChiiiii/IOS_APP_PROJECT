@@ -210,7 +210,7 @@ struct MovieCardGesture :View{
                     //return back
                     Button(action:{
                         withAnimation(){
-                            self.movies = self.movieListMV.genreMovies!
+                            self.movies = self.movieListMV.genreMovies
                             self.currentMovie = self.movies.last
                         }
                     }){

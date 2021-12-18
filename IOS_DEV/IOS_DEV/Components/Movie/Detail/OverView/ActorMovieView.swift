@@ -10,7 +10,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ActorMovieView: View{
-    @ObservedObject var genreTypeState = GenreTypeState()
+//    @ObservedObject var genreTypeState = GenreTypeState()
     var actor:[Person]
     @State private var isCardSelectedMovie:Bool = false
    
@@ -56,7 +56,7 @@ struct ActorMovieView: View{
 
 
 struct CarouselView: View{
-    @ObservedObject var genreTypeState = GenreTypeState()
+//    @ObservedObject var genreTypeState = GenreTypeState()
     var movie: knownFor
     @State private var isCardSelectedMovie:Bool = false
     private func getScale(geo : GeometryProxy)->CGFloat{
@@ -74,13 +74,7 @@ struct CarouselView: View{
     
    var body: some View
    {
-    
-
-            
             VStack{
-                
-               
-               
                 GeometryReader { proxy in
                     let scaleValue = getScale(geo: proxy)
                     
@@ -96,19 +90,12 @@ struct CarouselView: View{
 //                           .fullScreenCover(isPresented: $isCardSelectedMovie, content: {
 //                               MovieCardGesture(movies: movies,currentMovie: movies.last, backHomePage: $isCardSelectedMovie)
 //                           })
-                        
-           
+
                }
                 .frame(width: 275)
-       
             }
-            
-       
-   }
-    
 
-    
-    
+   }
 }
 
 struct ActorMovieCard: View {

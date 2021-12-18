@@ -49,6 +49,32 @@ struct IOS_DEVApp: App {
     }
 }
 
+
+
+
+//
+//struct PlayerContentView: View {
+//    
+//    @State private var player = AVPlayer(url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!)
+//    
+//    var body: some View {
+//        PlayerView(player: $player)
+//            .onTapGesture {
+//                player.pause()
+//                player.seek(to: .zero)
+//                
+//                player = AVPlayer(url: Bundle.main.url(forResource: "test", withExtension: "mp4")!) // or AVPlayer(url: URL(string: "https://media.w3.org/2010/05/sintel/trailer.mp4")!)
+//                player.play()
+//                
+//            }
+//            .onAppear {
+//                player.play()
+//            }
+//        .edgesIgnoringSafeArea(.all)
+//    }
+//}
+
+
 extension Double {
   func asString(style: DateComponentsFormatter.UnitsStyle) -> String {
     let formatter = DateComponentsFormatter()
