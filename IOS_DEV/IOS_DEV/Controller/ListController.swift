@@ -9,9 +9,17 @@ import Foundation
 class ListController: ObservableObject {
 
     let listService = ListService()
+    private let movieService: MovieService
+    private let apiService : APIService
     @Published var listData:[CustomList] = []
     @Published var mylistData:[CustomList] = []
     @Published var listDetails:[ListDetail] = []
+    @Published var TestImages:[Movie] = []
+    
+    init(movieService: MovieService = MovieStore.shared,apiService : APIService = APIService.shared) {
+        self.movieService = movieService
+        self.apiService = apiService
+    }
     
     //---------------------所有的片單---------------------//
     func GetAllList(){
@@ -20,7 +28,6 @@ class ListController: ObservableObject {
             case .success(let lists):
                 print("get all list")
                 self.listData = lists
-              
 
             case .failure: print("list failed")
             }
@@ -100,6 +107,22 @@ class ListController: ObservableObject {
             }
             
         }
+    }
+    
+    //---------------------刪除片單---------------------//
+    func ImageTest(with endpoint: MovieListEndpoint){
+      
+        self.movieService.fetchMovies(from: endpoint) { [self] (result) in
+            switch result {
+            case .success(let response):
+                self.TestImages = response.results
+                print(self.TestImages.description)
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
     }
 
 

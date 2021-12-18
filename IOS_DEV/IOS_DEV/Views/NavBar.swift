@@ -7,6 +7,8 @@
 
 import SwiftUI
 let controller = ListController()
+let favoriteController = FavoriteController()
+let userController = UserController()
 //Working Process
 //struct NavBar: View {
 ////    @Binding var selectedIndex:Int
@@ -295,17 +297,17 @@ struct NavBar: View {
         ZStack(alignment:.top){
             VStack(spacing:0){
                 ZStack(alignment:.top){
-                    HomePage(isLogOut: $isLogOut)
+                        HomePage(isLogOut: $isLogOut)
                             .opacity(self.index == 0 ? 1 : 0)
                     
-                        ListView(lists: controller.listData)
+                    ListView(lists: controller.listData, randomImage: controller.TestImages)
                             .opacity((self.index == 1 && GroupSelect == true) ? 1 : 0)
 
                         DragAndDropMainView()
                             .opacity(self.index == 2 ? 1 : 0)
                     
-                        ProfileView()
-                            .opacity(self.index == 3 ? 1 : 0)
+                    ProfileView(MovieData:favoriteController.MovieData, ArticleData: favoriteController.ArticleData)
+                            .opacity((self.index == 3 && GroupSelect == true) ? 1 : 0)
 //
                 }
                 NavItemButton(index: self.$index ,GroupSelect: self.$GroupSelect)
@@ -351,6 +353,7 @@ struct NavItemButton:View{
     var selectColor:Color = Color.white
     @Binding var index:Int
     @Binding var GroupSelect:Bool
+   
     var body:some View{
         
         HStack{
@@ -378,6 +381,7 @@ struct NavItemButton:View{
             Button(action:{
                 self.index = 1
                 controller.GetAllList()
+                controller.ImageTest(with: .popular)
  
             }){
                 VStack(alignment:.center,spacing:10){
@@ -390,7 +394,7 @@ struct NavItemButton:View{
             }
             .foregroundColor(self.index == 1 ? selectColor : unselectColor)
             .simultaneousGesture(TapGesture().onEnded{
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
                     self.GroupSelect = true
                 })
             })
@@ -415,6 +419,9 @@ struct NavItemButton:View{
             
             //profile
             Button(action:{
+                favoriteController.GetLikeMovie(userID: NowUserID!)
+                favoriteController.GetLikeArticle(userID: NowUserID!)
+                userController.GetUserInfo(userID: NowUserID!)
                 self.index = 3
             }){
                 VStack(alignment:.center,spacing:10){
@@ -426,6 +433,11 @@ struct NavItemButton:View{
                 }
             }
             .foregroundColor(self.index == 3 ? selectColor : unselectColor)
+            .simultaneousGesture(TapGesture().onEnded{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                    self.GroupSelect = true
+                })
+            })
             
             
         }

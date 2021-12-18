@@ -47,19 +47,22 @@ struct ProfileView: View {
 //        UISegmentedControl.appearance().selectedSegmentTintColor = .systemYellow
 //    }
     
-    @State private var userID = "Justin Bieber" //UserID
+    @State private var userID = NowUserName
     @State private var likedMovie = 30
     @State private var notification = true
     @State private var select: SideOfState = .movie
-    @ObservedObject private var userController = UserController()
-    @ObservedObject private var favoriteController = FavoriteController()
+//    @ObservedObject private var userController = UserController()
+//    @ObservedObject private var favoriteController = FavoriteController()
+    let MovieData:[LikeMovie]
+    let ArticleData:[LikeArticle]
     @State private var appearPhoto = false
     
     @State var isLoading : Bool = true
     
     var body: some View{
         NavigationView{
-                VStack{
+            
+            ScrollView{
                     VStack{
                             NowUserPhoto?
                                 .resizable()
@@ -70,11 +73,12 @@ struct ProfileView: View {
                             Text(NowUserName)
                                 .bold()
 
-                    }.onAppear(){
-                        self.userController.GetUserInfo(userID: NowUserID!)
-                        self.favoriteController.GetLikeMovie(userID: NowUserID!)
-                        self.favoriteController.GetLikeArticle(userID: NowUserID!)
                     }
+//                    .onAppear(){
+//                        self.userController.GetUserInfo(userID: NowUserID!)
+//                        self.favoriteController.GetLikeMovie(userID: NowUserID!)
+//                        self.favoriteController.GetLikeArticle(userID: NowUserID!)
+//                    }
                   
                
                   
@@ -148,12 +152,12 @@ struct ProfileView: View {
                     .frame(width: 360)
                     switch select{
                     case .movie:
-                        ScrollView{
-                            movieRecord(movies: favoriteController.MovieData)
+                        VStack{
+                            movieRecord(movies: MovieData)
                         }
                     case .article:
-                        ScrollView{
-                            articleRecord(articles: favoriteController.ArticleData)
+                        VStack{
+                            articleRecord(articles: ArticleData)
                         }
                     }
                     Spacer()

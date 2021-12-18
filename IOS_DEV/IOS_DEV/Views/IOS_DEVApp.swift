@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 
 @main
 struct IOS_DEVApp: App {
-    @UIApplicationDelegateAdaptor(Appdelegate.self) var delegate
+//    @UIApplicationDelegateAdaptor(Appdelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {

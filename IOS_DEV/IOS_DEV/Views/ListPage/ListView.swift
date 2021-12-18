@@ -15,6 +15,7 @@ struct ListView: View
 {
     @ObservedObject private var popularState = MovieListState()
     var lists:[CustomList]
+    let randomImage:[Movie]
     let FullSize = UIScreen.main.bounds.size
     var columns = Array(repeating: GridItem(.flexible(),spacing:5), count: 2)
     private let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
@@ -25,33 +26,34 @@ struct ListView: View
         
         VStack()
         {
-            if popularState.movies != nil {
+            if !randomImage.isEmpty {
                 ZStack()
                 {
                     TabView(selection: $currentIndex ){
-                        ForEach(0..<popularState.movies!.count){ index in
-                            WebImage(url: popularState.movies![index].backdropURL)
+                        ForEach(0..<randomImage.count){ index in
+                            WebImage(url: randomImage[index].backdropURL)
                                 .resizable()
                                 .scaledToFill()
                                 .tag("\(index)")
                                 .overlay(Color.black.opacity(0.2))
-                            
+
                         }
                     }
                     .tabViewStyle(PageTabViewStyle())
                     .frame(width: FullSize.width, height: FullSize.height/3)
                     .onReceive(timer, perform: { _ in
                         withAnimation{
-                            currentIndex = currentIndex < popularState.movies!.count ? currentIndex + 1 : 0
+                            currentIndex = currentIndex < randomImage.count ? currentIndex + 1 : 0
                         }
-                       
-                    })
-                    
 
-                
+                    })
+
+
+
                 }
 
             }
+            
             
                 
             ScrollView(.vertical, showsIndicators: false)
@@ -73,9 +75,9 @@ struct ListView: View
             
         }
         .ignoresSafeArea(edges: .top)
-        .onAppear{
-            self.popularState.loadMovies(with: .popular)
-        }
+//        .onAppear{
+//            self.popularState.loadMovies(with: .popular)
+//        }
 //        .frame(width: FullSize.width, height: FullSize.height)
         
 
