@@ -93,13 +93,12 @@ struct SignInCell : View{
     @AppStorage("rememberUser") private var rememberUser : Bool = false
     @ObservedObject private var networkingService = NetworkingService.shared
 
-    func Login(){
-        let login = UserLogin(UserName: self.username, Password: self.password)
+    func Login(UserName:String, Password:String){
+        let login = UserLogin(UserName: UserName, Password: Password)
         
         //If token is not nil check then token first else login with request
         networkingService.requestLogin(endpoint: "/users/login", loginObject: login) { (result) in
             print(result)
-            
             switch result {
             case .success(let user):
                 print("login success")
@@ -200,12 +199,11 @@ struct SignInCell : View{
                     withAnimation(){
                         self.isLoading.toggle()
                     }
-                    self.Login()
+                    self.Login(UserName: self.username, Password: self.password)
                 }.padding(.horizontal,50)
                 .alert(isPresented: $ErrorAlert, content: {
                     Alert(title: Text("帳號密碼錯誤"),
                           dismissButton: .default(Text("Enter")))
-
                 })
             }
             
@@ -239,6 +237,7 @@ struct SignInCell : View{
             self.remember = rememberUser
             self.username = userName
             self.password = userPassword
+            
         }
     }
 }

@@ -149,8 +149,7 @@ struct MovieGenreID: Decodable {    //抓特定類別用的
     let id: Int
 }
 
-struct MovieGenre: Decodable {
-    
+struct MovieGenre: Decodable, Encodable{
     let id: Int
     let name: String
 }
@@ -194,6 +193,12 @@ struct MovieVideo: Decodable, Identifiable {
     }
 }
 
+//圖表記錄用
+//struct GenreChart: Decodable, Encodable{
+//    let id: Int
+//    let name: String
+//    let TypeNum: Int
+//}
 
 
 let stubbedMovie:[Movie] = [

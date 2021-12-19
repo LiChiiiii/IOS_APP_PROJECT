@@ -14,7 +14,7 @@ struct SignUp: View {
     @State var ErrorResponse:String = ""
     @State var ErrorAlert = false
     @State private var isLoading : Bool = false
-        
+    @State private var MovieSetting : Bool = false
     @State private var email:String = ""
     @State private var password:String = ""
     @State private var ConfirmPassword:String = ""
@@ -22,13 +22,14 @@ struct SignUp: View {
 
     @Binding var isSignUp:Bool
     @Binding var isSignIn : Bool
+
     //  @Namespace var names
     
 
     
     func Register(){
   
-        let auth = UserRegister(UserName: self.UserName, Email: self.email, Password: self.password, confirmPassword: self.ConfirmPassword)
+        let auth = UserRegister(user_name: self.UserName, email: self.email, password: self.password, confirm_password: self.ConfirmPassword)
         
         registerService.requestRegister(endpoint: "/users/register", RegisterObject: auth) { (result) in
             print(result)
@@ -37,8 +38,8 @@ struct SignUp: View {
             case .success:
                 print("register success")
                 ErrorAlert = false
-                self.isSignUp.toggle()
                 withAnimation(){
+                    self.MovieSetting.toggle()
                     self.isLoading.toggle()
                 }
                 
@@ -53,6 +54,8 @@ struct SignUp: View {
             }
         }
     }
+    
+    
     
     var body: some View {
         ZStack{
@@ -97,7 +100,8 @@ struct SignUp: View {
                 Spacer()
                 
                 
-                smallButton(text: "Sign Up", textColor: .black, button: .white, image: ""){
+                
+                smallButton(text: "Next", textColor: .black, button: .white, image: ""){
                     withAnimation(){
                         self.isLoading.toggle()
                     }
@@ -108,6 +112,9 @@ struct SignUp: View {
                     Alert(title: Text(self.ErrorResponse),
                           dismissButton: .cancel())
                     
+                })
+                .fullScreenCover(isPresented: $MovieSetting, content: {
+                    FirstMovieSettingView(isSignUp: $isSignUp, MovieSetting: $MovieSetting)
                 })
                 
                 
@@ -257,5 +264,55 @@ struct UserRegForm: View {
             
         }
         .padding()
+    }
+}
+
+
+//---------------------問卷-------------------------//
+
+struct FirstMovieSettingView: View {
+    @ObservedObject var dramaData=dramaInfoData()
+    @Binding var isSignUp : Bool
+    @Binding var MovieSetting : Bool
+    let genreData = DataLoader().genreData
+    var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 3)
+    var body: some View{
+        
+        Spacer()
+        
+        VStack(spacing:20){
+            
+
+            Text("選擇您喜愛的類別")
+                .font(.body)
+                .padding(15)
+            
+            LazyVGrid(columns: columns, spacing: 15){
+
+                ForEach(genreData, id:\.id){ genre in
+                    genrebutton(genreInfo: genre, dramadata: dramaData)
+                }
+
+            }
+
+            Spacer()
+            
+           
+            smallButton(text: "SignUp", textColor: .black, button: .white, image: ""){
+                withAnimation(){
+                    self.MovieSetting.toggle()  //離開問卷
+                    self.isSignUp.toggle()      //離慨註冊頁面
+                }
+            }
+            .padding(.horizontal,50)
+
+        
+            
+            Spacer()
+
+            
+        }
+        .navigationTitle("電影喜好設定")
+        
     }
 }

@@ -15,6 +15,8 @@
 		010C6B5A2660E0D8003ECC0D /* ForumBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010C6B592660E0D8003ECC0D /* ForumBar.swift */; };
 		0113FBFA270362A500BECECF /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FBF9270362A500BECECF /* BlurView.swift */; };
 		0113FBFC270362BB00BECECF /* CameraImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0113FBFB270362BB00BECECF /* CameraImagePickerView.swift */; };
+		0117AD79276EFA6F004FE7FC /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0117AD78276EFA6F004FE7FC /* ChartView.swift */; };
+		0117AD7A276EFDE1004FE7FC /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF58F266BD80C0059B196 /* ProfileView.swift */; };
 		01222C03271C74040034505E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01222C02271C74040034505E /* ImagePicker.swift */; };
 		0124A46D272957DC00D0A7CC /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0124A46C272957DC00D0A7CC /* Loader.swift */; };
 		0124A46F2729822900D0A7CC /* FavoriteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0124A46E2729822900D0A7CC /* FavoriteService.swift */; };
@@ -110,7 +112,6 @@
 		01E90A1126B7AD3E00609B0F /* ListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E90A1026B7AD3E00609B0F /* ListDetailView.swift */; };
 		01EBF589266B9D960059B196 /* ForumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF588266B9D960059B196 /* ForumController.swift */; };
 		01EBF58D266BAA6A0059B196 /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF58C266BAA6A0059B196 /* ListController.swift */; };
-		01EBF590266BD80C0059B196 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EBF58F266BD80C0059B196 /* ProfileView.swift */; };
 		01ED279926FAE004007C0C00 /* ListDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED279826FAE004007C0C00 /* ListDetailController.swift */; };
 		01ED4F39267207E0009E2FD5 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ED4F38267207E0009E2FD5 /* ListView.swift */; };
 		0EFBEEB402995C63C993EF15 /* Pods_IOS_DEV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05187F38B3A339BD46CEBD0B /* Pods_IOS_DEV.framework */; };
@@ -181,6 +182,7 @@
 		010C6B592660E0D8003ECC0D /* ForumBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumBar.swift; sourceTree = "<group>"; };
 		0113FBF9270362A500BECECF /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		0113FBFB270362BB00BECECF /* CameraImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraImagePickerView.swift; sourceTree = "<group>"; };
+		0117AD78276EFA6F004FE7FC /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		01222C02271C74040034505E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		0124A46C272957DC00D0A7CC /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		0124A46E2729822900D0A7CC /* FavoriteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteService.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 			children = (
 				01715CCB26FE180300161866 /* MyArticle */,
 				01CE9F3926E46D2600A307E3 /* MyList */,
+				0117AD78276EFA6F004FE7FC /* ChartView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -753,9 +756,9 @@
 		7A0EE930261041690056BC8C /* IOS_DEV */ = {
 			isa = PBXGroup;
 			children = (
+				0175ADEA26D4FA4300535C42 /* IOS_DEV.entitlements */,
 				6FAD51D42751D81900A25ED4 /* GoogleService-Info.plist */,
 				6FCFFE1A274FBE1500C46710 /* ViewModifire */,
-				0175ADEA26D4FA4300535C42 /* IOS_DEV.entitlements */,
 				0194A5E92695DD9000E24598 /* Resources */,
 				0194A5E12695A8B100E24598 /* Bindings */,
 				01EBF58B266BAA470059B196 /* Controller */,
@@ -1000,6 +1003,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0117AD79276EFA6F004FE7FC /* ChartView.swift in Sources */,
 				7A675A95262BF78B00542DB2 /* MovieDetailView.swift in Sources */,
 				01C378C7266E65CE00E75118 /* SearchButtom.swift in Sources */,
 				7A6CE7EA2610E7EA00DB962B /* SocialLoginButton.swift in Sources */,
@@ -1073,6 +1077,7 @@
 				7ADA5A7726104355000A84D9 /* SearchBar.swift in Sources */,
 				0175AAE02658AF95001BCD2E /* UserLogin.swift in Sources */,
 				6FCFFE1C274FBE2600C46710 /* OffsetModifier.swift in Sources */,
+				0117AD7A276EFDE1004FE7FC /* ProfileView.swift in Sources */,
 				6FCE6E87275258AC00CDAE7E /* UserManager.swift in Sources */,
 				7ADA5A7526104355000A84D9 /* TextFieldWithLineBorder.swift in Sources */,
 				0175AAF22658DE05001BCD2E /* Article.swift in Sources */,
@@ -1104,7 +1109,6 @@
 				6FF3A21F27510C910084637D /* RefreshableScrollView.swift in Sources */,
 				019017D826F651E1007F1FE8 /* ListMovie.swift in Sources */,
 				6FCFFE17274FBDEE00C46710 /* ScrollableCardGrid.swift in Sources */,
-				01EBF590266BD80C0059B196 /* ProfileView.swift in Sources */,
 				7A675A7E262BE22B00542DB2 /* MovieVM.swift in Sources */,
 				01AA7CAC269B61BE00F80796 /* MovieTrailer.swift in Sources */,
 				6FCFFE12274FBDEE00C46710 /* CustomePicker.swift in Sources */,

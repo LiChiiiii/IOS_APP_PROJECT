@@ -253,6 +253,7 @@ struct MovieInfoDetail: View {
     @State var movie : Movie
     @ObservedObject private var controller = ListDetailController()
     @ObservedObject private var favoriteController = FavoriteController()
+    @ObservedObject var dramaData=dramaInfoData()
     @State var isMyFavorite: Bool 
     
     

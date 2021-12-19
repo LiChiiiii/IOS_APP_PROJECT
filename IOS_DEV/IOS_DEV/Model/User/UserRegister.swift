@@ -8,9 +8,9 @@
 import Foundation
 
 struct UserRegister: Encodable{
-    var UserName: String
-    var Email: String
-    var Password: String
-    var confirmPassword: String
+    var user_name: String
+    var email: String
+    var password: String
+    var confirm_password: String
 }
 
