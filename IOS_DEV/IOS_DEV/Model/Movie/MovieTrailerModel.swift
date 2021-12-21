@@ -20,6 +20,7 @@ struct Trailer : Identifiable{
     let id : Int
     let videoPlayer : AVPlayer
     let info : TrailerInfo
+
 }
 
 
@@ -28,11 +29,9 @@ struct TrailerInfo : Identifiable,Decodable{
     let title : String //Movie Title
     let genres : [String] //Movie Genres
     let poster : String //Movie Poster
-    let video_path : String //Movie Trailer URLS
-    
-    var videoURL : String {
-        "http://127.0.0.1:8080/trailer\(video_path)"
-    }
+    let video_titles : [String]
+    let video_paths : [String] //Movie Trailer URLS
+
 }
 
 

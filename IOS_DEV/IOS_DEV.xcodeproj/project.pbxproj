@@ -703,13 +703,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		6F17D0902765DF9B000D9BAF /* TrailerView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TrailerView;
-			sourceTree = "<group>";
-		};
 		6FCFFE05274FBDD300C46710 /* DragAndDropView */ = {
 			isa = PBXGroup;
 			children = (
@@ -871,7 +864,6 @@
 		7ADA5A7F26104396000A84D9 /* MainPage */ = {
 			isa = PBXGroup;
 			children = (
-				6F17D0902765DF9B000D9BAF /* TrailerView */,
 				6FCFFE05274FBDD300C46710 /* DragAndDropView */,
 				7ADA5A8026104396000A84D9 /* WelcomePage.swift */,
 				7A74EECC2611A8A000B722CF /* HomePage.swift */,

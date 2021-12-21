@@ -16,17 +16,28 @@ class TrailerVideoVM : ObservableObject {
     @Published var TrailerList : [Trailer] = []
     @Published var isNetworkingErr : Error?
     @Published var isLoading : Bool = false
+    @Published var currentTrailer : Int = 0
+    @Published var isSelectedEpisode : Bool = false
+    @Published var isNoResource : Bool = false
+    @Published var loadMoreDataDone : Bool = false
+    private var page = 1
     
+
     private var apiService : APIService
+    private let resoucesHOST = "http://120.126.16.229:8080/trailer"
     init(apiService : APIService = APIService.shared){
         self.apiService = apiService
         getTrailer()
     }
     
     func getTrailer(){
+        if isNoResource{
+            return
+        }
+        self.loadMoreDataDone = false
         self.isNetworkingErr = nil
         self.isLoading = true
-        self.apiService.getMovieTrailerList(){ [weak self] result in
+        self.apiService.getMovieTrailerList(page:self.page){ [weak self] result in
             guard let self = self else{
                 return
             }
@@ -34,17 +45,32 @@ class TrailerVideoVM : ObservableObject {
             switch result{
             case .success(let response):
                 if response.count <= 0{
+                    self.isNoResource.toggle()
                     break
                 }
-//                print("trailer")
-//                print(response)
-                self.TrailerList.append(contentsOf: response.map{Trailer(id: $0.id, videoPlayer: AVPlayer(url: URL(string: $0.videoURL)!), info: $0)})
-                
+                print(response)
+                self.TrailerList.append(contentsOf:
+                                            response.map{Trailer(
+                                                id: $0.id,
+                                                videoPlayer:AVPlayer(url: self.getResoureceURL(path: $0.video_paths[0])),info: $0)}
+                )
+                self.page += 1
+                self.loadMoreDataDone = true
             case .failure(let error):
                 self.isNetworkingErr = error as Error
                 
             }
             self.isLoading = false
+        }
+    }
+    
+    func getResoureceURL(path: String) -> URL{
+       return URL(string: "\(self.resoucesHOST)\(path)")!
+    }
+    
+    func resetTrailerEpideso(){
+        self.TrailerList.forEach{ info in
+            info.videoPlayer.replaceCurrentItem(with: AVPlayerItem(url: self.getResoureceURL(path: info.info.video_paths[0])))
         }
     }
 }
@@ -72,6 +98,7 @@ struct HomePage:View{
     @Binding var showHomePage : Bool
     @Binding var isLogOut : Bool
     @Binding var mainPageHeight : CGFloat
+
     
     var body:some View{
         NavigationView{
@@ -83,6 +110,7 @@ struct HomePage:View{
 }
 
 struct MovieTrailerDiscoryView : View{
+    @EnvironmentObject var TrailerVM : TrailerVideoVM
     @StateObject private var TrailerManager = TrailerStateManager()
     @State private var isLoading : Bool = false
     @State private var orientaion : UIDeviceOrientation = UIDeviceOrientation.unknown
@@ -90,7 +118,7 @@ struct MovieTrailerDiscoryView : View{
     @Binding var mainPageHeight : CGFloat
     
     var body : some View{
-        ZStack(alignment:.topLeading){
+        ZStack(alignment:.top){
             GeometryReader{ geo in
                 ZStack(alignment:.center){
                     HomeTrailerPlayer(showHomePage: $showHomePage, mainPageHeight: $mainPageHeight,pageHeight: geo.frame(in: .global).height)
@@ -98,25 +126,47 @@ struct MovieTrailerDiscoryView : View{
             }
             
             if !orientaion.isLandscape && (Appdelegate.orientationLock == .portrait){
-                BackHomePageButton(){
-                    //jump back to home page
-                    self.showHomePage.toggle()
+                HStack{
+                    BackHomePageButton(){
+                        //jump back to home page
+                        self.showHomePage.toggle()
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action:{
+                        //List all current video trailer with name
+                        withAnimation(){
+//                            self.isSelectTrailer.toggle()
+                            
+                            self.TrailerVM.isSelectedEpisode.toggle()
+                        }
+                    }){
+                        VStack{
+                            Text("RELATED TRAILER")
+                                .foregroundColor(.white)
+                                .TekoBoldFontFont(size: 15)
+                        }
+                        .padding()
+                        .background(BlurView().clipShape(CustomeConer(coners: .allCorners)))
+
+                    }
                 }
                 .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
                 .padding(.horizontal,15)
+                .opacity(self.TrailerVM.isSelectedEpisode ? 0 : 1)
+
             }
+            
         }
         .onRotate{value in
             orientaion = value
         }
-//        .onAppear(){
-//            self.isLoading = true
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08){
-//                self.isLoading.toggle()
-//            }
-//        }
         .environmentObject(TrailerManager)
         .edgesIgnoringSafeArea(.all)
+        .onDisappear(){
+            self.TrailerVM.resetTrailerEpideso()
+        }
         
     }
 
@@ -210,6 +260,8 @@ struct FullScreenTop :View{
 
 struct VideoTimeline : View {
 //    @Binding var value : Float
+    @EnvironmentObject var TrailerModel : TrailerVM
+
     var maxValue : Double
     @Binding var isPlaying : Bool
     @Binding var trailerInfo : Trailer
@@ -238,7 +290,7 @@ struct VideoTimeline : View {
                 })
                 
                 HStack{
-                    Text("\(getTrailerMins(second: trailerInfo.videoPlayer.currentTime().seconds))/\(getTrailerMins(second:maxValue))")
+                    Text("\(getTrailerMins(second:trailerInfo.videoPlayer.currentTime().seconds ))/\(self.getTrailerMins(second: maxValue))")
                         .bold()
                         .padding(.horizontal,3)
                 }
@@ -249,6 +301,7 @@ struct VideoTimeline : View {
         .padding(.bottom,20)
         .padding(.horizontal,70)
         .onAppear(){
+//            print(maxValue)
             trailerInfo.videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){ _ in
                 self.value = Float(trailerInfo.videoPlayer.currentTime().seconds / trailerInfo.videoPlayer.currentItem!.duration.seconds)
                 
@@ -259,6 +312,11 @@ struct VideoTimeline : View {
     
     
     private func getTrailerMins(second : Double)-> String{
+//        print(trailerInfo.videoPlayer.currentItem!.duration.seconds)
+        if second.isNaN {
+            return "N/A"
+        }
+
         let (m,s) = (((Int(second) % 3600) / 60), ((Int(second) % 3600) % 60))
         let m_string =  m < 10 ? "0\(m)" : "\(m)"
         let s_string =  s < 10 ? "0\(s)" : "\(s)"
@@ -272,7 +330,7 @@ struct PlayerScrollList: View {
     @EnvironmentObject  var TrailerManager : TrailerStateManager
     
     @State private var isFullScreen : Bool = false
-    @State private var currentVideo : Int = 0
+//    @State private var currentVideo : Int = 0
     @State private var orientation = UIDeviceOrientation.unknown
     @State private var counter : Int = 1
     @State private var trailerTime : Double = 0
@@ -282,24 +340,23 @@ struct PlayerScrollList: View {
     @Binding var value : Float
     @Binding var showHomePage : Bool
     @Binding var mainPageHeight : CGFloat
-
+    @State private var trailerEpisode : Int = 0
     var pageHeight : CGFloat
 
     var body: some View {
         Group{
-            PlayerScrollView(trailerList: $TrailerModel.TrailerList, reload: $TrailerManager.isReload, value:$value, isAnimation: $TrailerManager.isAnimation , isUpdateView: $isUpdateView,currentVideIndex:$currentVideo,orientation:$orientation ,pageHegiht: Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height  : self.mainPageHeight){
+            PlayerScrollView(reload: $TrailerManager.isReload, value:$value, isAnimation: $TrailerManager.isAnimation , isUpdateView: $isUpdateView,orientation:$orientation ,pageHegiht: Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height  : self.mainPageHeight){
                 LazyVStack(spacing:0){
                     ForEach(0..<TrailerModel.TrailerList.count){ i in
                         ZStack{
-                            if isFullScreen && i != currentVideo{
+                            if isFullScreen && i != self.TrailerModel.currentTrailer{
                                 EmptyView()
                             }else{
-                                TrailerCell(pageHeight: pageHeight,mainPageHeight:$mainPageHeight,currentVideo: $currentVideo, trailerInfo: $TrailerModel.TrailerList[i], isFullScreen: $isFullScreen, isUpdateView: $isUpdateView, value: $value ,isPlaying:$isPlaying, trailerIndex:i)
-                                    .onAppear(){
-                                        value = 0
-                                    }
+                                TrailerCell(pageHeight: pageHeight,mainPageHeight:$mainPageHeight, trailerInfo: $TrailerModel.TrailerList[i], isFullScreen: $isFullScreen, isUpdateView: $isUpdateView, value: $value ,isPlaying:$isPlaying, trailerIndex:i)
                             }
+                            
                         }
+                        
                         .frame(width:UIScreen.main.bounds.width,height: Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height  : self.mainPageHeight)
                         
                     }
@@ -307,7 +364,7 @@ struct PlayerScrollList: View {
                 .edgesIgnoringSafeArea(.all)
             }
             .onDisappear(perform: {
-                TrailerModel.TrailerList[currentVideo].videoPlayer.pause()
+                TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.pause()
             })
             
         }
@@ -328,7 +385,7 @@ struct TrailerCell : View{
     
     var pageHeight : CGFloat
     @Binding var mainPageHeight : CGFloat
-    @Binding var currentVideo : Int
+//    @Binding var currentVideo : Int
     @Binding var trailerInfo : Trailer
     @Binding var isFullScreen : Bool
     @Binding var isUpdateView : Bool
@@ -336,6 +393,7 @@ struct TrailerCell : View{
     @Binding var isPlaying : Bool
     @State private var isShowController : Bool = true
     @State private var counter : Int = 0
+    @State private var trailerEpisode : Int = 0
     
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -345,17 +403,23 @@ struct TrailerCell : View{
         ZStack(alignment:.center){
 
             Player(VideoPlayer: trailerInfo.videoPlayer,videoLayer:.resizeAspect)
-            
                 .frame(width:UIScreen.main.bounds.width,height: Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height : self.mainPageHeight)
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture{
+                    //Testing
+                   
                     if isFullScreen{
                         counter = 0
                         withAnimation(.easeOut(duration: 0.2)){
                             isShowController.toggle()
                         }
                     }else{
-                        self.trailerInfo.videoPlayer.pause()
+                        if isPlaying{
+                            self.trailerInfo.videoPlayer.pause()
+                        }
+                        else{
+                            self.trailerInfo.videoPlayer.play()
+                        }
                     }
 
                 }
@@ -378,10 +442,10 @@ struct TrailerCell : View{
         
             if Appdelegate.orientationLock == .portrait{
                 Group{
-                    MovieIntrol(trailer: $trailerInfo, tailerIndex: trailerIndex, selectedVideo: $currentVideo, isFullScreen: self.$isFullScreen, isUpdateView: $isUpdateView)
+                    MovieIntrol(trailer: $trailerInfo, tailerIndex: trailerIndex, isFullScreen: self.$isFullScreen, isUpdateView: $isUpdateView)
                     VStack{
                         Spacer()
-                        VideoProgressBar(value: trailerIndex ==  currentVideo ? $value : .constant(0), player: TrailerModel.TrailerList[trailerIndex].videoPlayer)
+                        VideoProgressBar(value: trailerIndex ==  self.TrailerModel.currentTrailer ? $value : .constant(0), player: TrailerModel.TrailerList[trailerIndex].videoPlayer)
                     }
                 }
             } else   if isShowController{
@@ -393,17 +457,81 @@ struct TrailerCell : View{
                     }
                     
                 }
-                .frame(height:  Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height : self.mainPageHeight)
                 .background(Color.black.opacity(0.5).onTapGesture{
                     counter = 0
                     withAnimation(.easeOut(duration: 0.2)){
                         isShowController.toggle()
                     }
                 })
+                .frame(height:  Appdelegate.orientationLock == .landscape ? UIScreen.main.bounds.height : self.mainPageHeight)
                 .zIndex(2)
             }
             
+            
 
+            if self.TrailerModel.isSelectedEpisode{
+                VStack{
+                    Spacer()
+                    ForEach(0..<self.TrailerModel.TrailerList[TrailerModel.currentTrailer].info.video_paths.count){ i in
+                        HStack{
+                            Text(self.TrailerModel.TrailerList[TrailerModel.currentTrailer].info.video_titles[i])
+                                .TekoBoldFontFont(size:self.trailerEpisode == i ? 20 : 16)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(self.trailerEpisode == i ? .white : .gray)
+//                                .scaleEffect(self.trailerEpisode == i ? 1.1 : 1.0)
+                                .transition(.slide)
+//                                .frame(width: UIScreen.main.bounds.width)
+//                                .padding(.horizontal)
+                                
+                        }
+                        .frame(width: UIScreen.main.bounds.width)
+                        .padding()
+                        .onTapGesture(){
+                            if self.trailerEpisode == i {
+                                return
+                            }
+                            
+                        
+                            withAnimation(.easeInOut){
+                                self.trailerEpisode = i
+                                self.TrailerModel.isSelectedEpisode.toggle()
+                            }
+                            
+                            DispatchQueue.main.async {
+                                let url = self.TrailerModel.getResoureceURL(path: self.TrailerModel.TrailerList[TrailerModel.currentTrailer].info.video_paths[i])
+                                self.TrailerModel.TrailerList[TrailerModel.currentTrailer].videoPlayer.replaceCurrentItem(with: AVPlayerItem(url: url))
+                            }
+                        }
+
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action:{
+                        withAnimation(){
+                            self.TrailerModel.isSelectedEpisode.toggle()
+                        }
+                    }){
+                        HStack{
+                            Image(systemName:"xmark")
+                                .font(.title)
+                                .foregroundColor(.black)
+                        }
+                        .frame(width: 50, height: 50)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                        
+                        
+                    }
+                    .padding(.bottom)
+
+                }
+                .edgesIgnoringSafeArea(.all)
+                .frame(width: UIScreen.main.bounds.width, height: mainPageHeight)
+                .background(BlurView())
+                .transition(.opacity)
+                .zIndex(10)
+            }
             
         }
         .onReceive(timer){_ in
@@ -429,7 +557,6 @@ struct TrailerCell : View{
         }
 
         .onDisappear(){
-            //remove the timer
             timer.upstream.connect().cancel()
         }
     }
@@ -442,7 +569,6 @@ struct MovieIntrol: View {
     
     @Binding var trailer:Trailer
     var tailerIndex : Int
-    @Binding var selectedVideo : Int
     @Binding var isFullScreen : Bool
     @Binding var isUpdateView : Bool
     var body: some View {
@@ -456,7 +582,7 @@ struct MovieIntrol: View {
                                 UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
                                 UINavigationController.attemptRotationToDeviceOrientation()
                                 self.isFullScreen.toggle()
-                                self.selectedVideo = tailerIndex
+                                self.TrailerModel.currentTrailer = tailerIndex
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                     withAnimation(){
                                         self.isUpdateView = true
@@ -502,43 +628,43 @@ struct MovieIntrol: View {
                 Spacer()
                 
                 VStack{
-                    VStack(spacing:8){
-                        Image(systemName: "heart.fill")
-                            .font(.title)
-                            .foregroundColor(.white)
-                        Text("4")
-                            .bold()
-                            .font(.caption)
-                    }
-                    .padding(.vertical,3)
-
-                    
-                    VStack(spacing:8){
-                        Image(systemName: "ellipsis.bubble.fill")
-                        
-                            .font(.title)
-                            .foregroundColor(.white)
-                        Text("30")
-                            .bold()
-                            .font(.caption)
-                    }.padding(.vertical,3)
-
-                    
-                    VStack(spacing:5){
-                        Image(systemName: "arrowshape.turn.up.right.fill")
-                            .font(.title)
-                            .foregroundColor(.white)
-                        
-                        Text("25")
-                            .bold()
-                            .font(.caption)
-                    }
+//                    VStack(spacing:8){
+//                        Image(systemName: "heart.fill")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                        Text("4")
+//                            .bold()
+//                            .font(.caption)
+//                    }
+//                    .padding(.vertical,3)
+//
+//
+//                    VStack(spacing:8){
+//                        Image(systemName: "ellipsis.bubble.fill")
+//
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                        Text("30")
+//                            .bold()
+//                            .font(.caption)
+//                    }.padding(.vertical,3)
+//
+//
+//                    VStack(spacing:5){
+//                        Image(systemName: "arrowshape.turn.up.right.fill")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//
+//                        Text("25")
+//                            .bold()
+//                            .font(.caption)
+//                    }
 //                    //click icon enter to moviedetail page
-                    NavigationLink(destination: MovieDetailView(movieId:299534,navBarHidden: $TrailerManager.isNavBarHidden,isAction: $TrailerManager.isActive,isLoading: $TrailerManager.isLoading)){
-                        SmallCoverIcon()
+                    NavigationLink(destination: MovieDetailView(movieId:trailer.id,navBarHidden: $TrailerManager.isNavBarHidden,isAction: $TrailerManager.isActive,isLoading: $TrailerManager.isLoading)){
+                        SmallCoverIcon(posterPath: trailer.info.poster)
                     }
-                    .navigationTitle("")
-                    .navigationBarTitle("")
+                    .navigationTitle(TrailerManager.isActive ? trailer.info.title : "")
+                    .navigationBarTitle(TrailerManager.isActive ? trailer.info.title : "")
                     .navigationBarHidden(true)
                     .buttonStyle(StaticButtonStyle())
                     

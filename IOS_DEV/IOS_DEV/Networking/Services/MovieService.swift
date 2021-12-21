@@ -48,7 +48,7 @@ protocol ServerAPIServerServiceInterface {
     func getMovieCardInfoByGenre(genre:GenreType,completing : @escaping (Result<MovieCardResponse,MovieError>)->())
     
     //TODO -TrailerAPI
-    func getMovieTrailerList(completing : @escaping (Result<[TrailerInfo],MovieError>)->())
+    func getMovieTrailerList(page : Int,completing : @escaping (Result<[TrailerInfo],MovieError>)->())
     
 }
 

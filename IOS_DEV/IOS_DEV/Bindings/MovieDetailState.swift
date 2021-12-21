@@ -27,6 +27,7 @@ class MovieDetailState: ObservableObject {
             self.isLoading = false
             switch result {
             case .success(let movie):
+       
                 self.movie = movie
             case .failure(let error):
                 self.error = error as NSError

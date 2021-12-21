@@ -45,6 +45,8 @@ struct Player:UIViewControllerRepresentable{
         playerview.showsPlaybackControls = false
         playerview.videoGravity = videoLayer
         playerview.delegate = context.coordinator
+        
+
         return playerview
     }
     
@@ -69,16 +71,17 @@ struct Player:UIViewControllerRepresentable{
 }
 
 struct PlayerScrollView<Content:View>: UIViewRepresentable{
+    @EnvironmentObject var TrailerModel  : TrailerVideoVM
     func makeCoordinator() -> Coordinator {
         return PlayerScrollView.Coordinator(parent: self,didRefresh: self.$reload)
     }
 
-    @Binding var trailerList:[Trailer]
+//    @Binding var trailerList:[Trailer]
     @Binding var reload:Bool
     @Binding var value:Float
     @Binding var isAnimation:Bool
     @Binding var isUpdateView : Bool
-    @Binding var currentVideIndex : Int
+
     @Binding var orientation : UIDeviceOrientation
     
     @State private var indexChange : Bool = false
@@ -87,103 +90,45 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
     func makeUIView(context: Context) -> UIScrollView {
         let view = UIScrollView()
-//
-//        //UIHostingController is a UIKit Controller to control SWIFTUI Hierarchy
-        //rootView is the root View for this controller
-
-
-        let rootView = UIHostingController(rootView: self.content())
-
-        //Total Height of this view is the fullscreen * total trainer
-        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trailerList.count))
-
-        //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
-        view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height))
-        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trailerList.count))
-
-        view.addSubview(rootView.view)
-        view.showsVerticalScrollIndicator = false
-        view.showsHorizontalScrollIndicator = false
-        view.bounces = false
-        
-        //ignore safe area
-        view.contentInsetAdjustmentBehavior = .never
-        view.contentOffset.y = CGFloat(currentVideIndex) * pageHegiht
-
-        //Paging the page ,not Scroll
-        view.isPagingEnabled  = true
-        view.delegate = context.coordinator
+        viewSetUp(view,context)
+        self.TrailerModel.loadMoreDataDone = false
         return view
 
     }
 
     func updateUIView(_ uiView: UIScrollView, context: Context) {
-        if isUpdateView {
-//            print("Upading the view")
-            if Appdelegate.orientationLock == .landscape {
-                print("Upading the landscape")
-                Landscape(uiView,context) //Landscape Mode
-            }else if Appdelegate.orientationLock == .portrait {
-                print("Upading the Portrait")
-                Portrait(uiView,context) // Portrait mode
-            }
-
-
+        uiView.isScrollEnabled = !(self.TrailerModel.isSelectedEpisode &&  Appdelegate.orientationLock != .landscape) &&  Appdelegate.orientationLock == .portrait
+        
+        if isUpdateView{
+            viewSetUp(uiView,context)
+            viewUpdated()
+        }else if  TrailerModel.loadMoreDataDone{
+            viewSetUp(uiView,context) // Portrait mode
+            self.TrailerModel.loadMoreDataDone = false
         }
+
     }
 
-    private func Landscape(_ view: UIScrollView,_ context: Context){
+    private func viewSetUp(_ view: UIScrollView,_ context: Context){
         let rootView = UIHostingController(rootView: self.content())
-
-        //Total Height of this view is the fullscreen * total trainer
-        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(trailerList.count))
+        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(TrailerModel.TrailerList.count))
+        
         view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 1.0)
-        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht * CGFloat(trailerList.count))
+        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht * CGFloat(TrailerModel.TrailerList.count))
         view.subviews.last?.removeFromSuperview()
         view.addSubview(rootView.view)
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
-        view.isScrollEnabled = false
+        view.isScrollEnabled =  true
         view.alwaysBounceVertical = false
         view.bounces = false
         view.contentInsetAdjustmentBehavior = .never
         view.isPagingEnabled  = true
-        view.contentOffset.y =  CGFloat(currentVideIndex) * pageHegiht
+        view.contentOffset.y =  CGFloat(self.TrailerModel.currentTrailer) * pageHegiht
         view.delegate = context.coordinator
         
-        for i in 0..<view.subviews.count{
-            view.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
-        }
-        viewUpdated()
     }
-    
-    private func Portrait(_ view : UIScrollView,_ context: Context){
-        //Re-init the view!
-        let rootView = UIHostingController(rootView: self.content())
 
-        //Total Height of this view is the fullscreen * total trainer
-        rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.pageHegiht * CGFloat(trailerList.count))
-
-        //Total ScrollView Content size ,width: full window ,and height : trainer count * full screen
-        view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height))
-        view.contentSize = CGSize(width: UIScreen.main.bounds.width, height:  pageHegiht * CGFloat(trailerList.count))
-        view.subviews.last?.removeFromSuperview()
-        view.addSubview(rootView.view)
-        view.showsVerticalScrollIndicator = false
-        view.showsHorizontalScrollIndicator = false
-        view.bounces = false
-        view.isScrollEnabled = true
-        view.alwaysBounceVertical = true
-        view.contentInsetAdjustmentBehavior = .never
-        view.isPagingEnabled  = true
-        view.contentOffset.y =  CGFloat(currentVideIndex) * pageHegiht
-        for i in 0..<view.subviews.count{
-            view.subviews[i].frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  pageHegiht  * CGFloat(trailerList.count))
-        }
-        view.delegate = context.coordinator
-        viewUpdated()
-    }
-    
     private func viewUpdated(){
         DispatchQueue.main.async {
             self.isUpdateView = false
@@ -205,38 +150,43 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
 
             let currentIndex = Int(scrollView.contentOffset.y / parentView.pageHegiht)
-            self.parentView.currentVideIndex = currentIndex
+            if currentIndex != self.parentView.TrailerModel.currentTrailer {
+                self.parentView.value = 0
+            }
+            self.parentView.TrailerModel.currentTrailer = currentIndex
             
             if index != currentIndex{
                 index = currentIndex
 
-                for i in 0..<parentView.trailerList.count{
-                    parentView.trailerList[i].videoPlayer.seek(to: .zero) //video time line to 0
-                    parentView.trailerList[i].videoPlayer.pause() //pause the video
+                for i in 0..<parentView.TrailerModel.TrailerList.count{
+                    parentView.TrailerModel.TrailerList[i].videoPlayer.seek(to: .zero) //video time line to 0
+                    parentView.TrailerModel.TrailerList[i].videoPlayer.pause() //pause the video
                     parentView.isAnimation = false
                 }
 
-                parentView.trailerList[index].videoPlayer.play() //play the video
-                parentView.trailerList[index].videoPlayer.actionAtItemEnd = .none
+                parentView.TrailerModel.TrailerList[index].videoPlayer.play() //play the video
+                parentView.TrailerModel.TrailerList[index].videoPlayer.actionAtItemEnd = .none
                 
                 parentView.isAnimation = true
                 
                 
                 //add Observer to player timeer
-                parentView.trailerList[index].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-                    self.parentView.value =  Float(self.parentView.trailerList[self.index].videoPlayer.currentTime().seconds  / (self.parentView.trailerList[self.index].videoPlayer.currentItem?.duration.seconds ?? 0))
+                parentView.TrailerModel.TrailerList[index].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
+                    self.parentView.value =  Float(self.parentView.TrailerModel.TrailerList[self.index].videoPlayer.currentTime().seconds  / (self.parentView.TrailerModel.TrailerList[self.index].videoPlayer.currentItem?.duration.seconds ?? 0))
   
                 }
                 
                 
-                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.trailerList[index].videoPlayer.currentItem, queue: .main){ (_) in
-//                    self.parentView.trailerList[self.index].videoReplay = true
-                    self.parentView.trailerList[self.index].videoPlayer.seek(to: .zero)
-                    self.parentView.trailerList[self.index].videoPlayer.play()
-//                    self.parentView.trailerList[self.index].maxValue = self.parentView.trailerList[self.index].videoPlayer.currentItem!.duration.seconds
+                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.TrailerModel.TrailerList[index].videoPlayer.currentItem, queue: .main){ (_) in
+                    self.parentView.TrailerModel.TrailerList[self.index].videoPlayer.seek(to: .zero)
+                    self.parentView.TrailerModel.TrailerList[self.index].videoPlayer.play()
+
                 }
             }
-
+            
+            if currentIndex == self.parentView.TrailerModel.TrailerList.count - 1 {
+                self.parentView.TrailerModel.getTrailer()
+            }
         }
     }
 }

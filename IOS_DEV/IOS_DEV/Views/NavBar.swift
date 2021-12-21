@@ -295,6 +295,7 @@ struct NavBar: View {
     @State private var orientation = UIDeviceOrientation.unknown
     @State private var isHiddenNav : Bool = false
     @State private var mainPageHeight : CGFloat = 0
+
     @ObservedObject private var userController = UserController()
     var body: some View {
         ZStack(alignment:.top){
@@ -335,7 +336,7 @@ struct NavBar: View {
             
             BottomSheet()
                 .animation(.spring())
-            
+
         }
         .onRotate { newOrientation in
             if Appdelegate.orientationLock == .landscape {

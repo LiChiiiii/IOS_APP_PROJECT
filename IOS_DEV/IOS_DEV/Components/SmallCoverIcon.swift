@@ -13,7 +13,7 @@ import SDWebImageSwiftUI
 
 struct SmallCoverIcon: View {
     @State var Animating:Bool = false
-    
+    var posterPath : String
     var foreverAnimation: Animation {
         Animation.linear(duration: 10)
             .repeatForever(autoreverses: false)
@@ -27,7 +27,7 @@ struct SmallCoverIcon: View {
 //                .foregroundColor(Color.init("navBarBlack").opacity(0.5))
 //                .blur(radius: 0.5)
             
-            CenterIcon(isAnimating: Animating)
+            CenterIcon(isAnimating: Animating,posterPath: posterPath)
         }
         .animation(self.foreverAnimation)
         .onAppear{
@@ -41,7 +41,7 @@ struct SmallCoverIcon: View {
 
 struct CenterIcon:View{
     var isAnimating : Bool
-    
+    var posterPath : String
     var body: some View{
         ZStack{
 //            CircleText(radius: 65, text: "Movie Information",kerning: 8.0,width: 65,height: 65)
@@ -52,7 +52,7 @@ struct CenterIcon:View{
                 .frame(width: 45, height: 45)
                 .animation(.none)
                 .rotationEffect(Angle(degrees: self.isAnimating ? 360.0 : 0.0))
-                AnimatedImage(url:URL(string: "https://image.tmdb.org/t/p/original/efPM8aU1UxuWQcjzq7sGbzePEF5.jpg"))
+                AnimatedImage(url:URL(string: "https://image.tmdb.org/t/p/original\(posterPath)"))
                     //   Image(systemName: "arrow.down.circle.fill")
                     .resizable()
                     .scaledToFill()
@@ -72,15 +72,15 @@ struct CenterIcon:View{
 
 
 
-struct SmaillCoverIcon_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack{
-            Color.black.edgesIgnoringSafeArea(.all)
-            
-            SmallCoverIcon()
-        }
-        
-        
-    }
-}
+//struct SmaillCoverIcon_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack{
+//            Color.black.edgesIgnoringSafeArea(.all)
+//
+//            SmallCoverIcon()
+//        }
+//
+//
+//    }
+//}
 

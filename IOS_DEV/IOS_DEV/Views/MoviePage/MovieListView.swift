@@ -11,8 +11,7 @@ import SwiftUI
 struct MovieListView: View {
     //Manager this in a class
 
-    
-    @StateObject var trailerModel = TrailerVideoVM()
+    @StateObject var TrailerModel = TrailerVideoVM()
     @StateObject  var nowPlayingState = MovieListState(endpoint: .nowPlaying)
     @StateObject  var upcomingState = MovieListState(endpoint: .upcoming)
     @StateObject  var topRatedState = MovieListState(endpoint: .topRated)
@@ -218,7 +217,7 @@ struct MovieListView: View {
             
             ToolbarItemGroup(placement:.navigationBarTrailing){
 
-                NavigationLink(destination: MovieTrailerDiscoryView(showHomePage: self.$showHomePage,mainPageHeight:$mainPageHeight).environmentObject(trailerModel),isActive: self.$showHomePage){
+                NavigationLink(destination: MovieTrailerDiscoryView(showHomePage: self.$showHomePage,mainPageHeight:$mainPageHeight).environmentObject(TrailerModel),isActive: self.$showHomePage){
                     HStack{
                         Image(systemName: "arrowtriangle.forward.square.fill")
                             .resizable()

@@ -18,8 +18,8 @@ class MovieStore: MovieService {
     private let urlSession = URLSession.shared
     private let jsonDecoder = Utils.jsonDecoder
     
-    private let API_URL = "http://127.0.0.1:8080/api"
-    private let API_PLAYGOUND_URI = "/playground"
+//    private let API_URL = "http://127.0.0.1:8080/api"
+//    private let API_PLAYGOUND_URI = "/playground"
     
     func searchRecommandMovie(query: String, completion: @escaping (Result<MovieSearchResponse, MovieError>) -> ()) {
         guard let url = URL(string: "\(baseAPIURL)/search/movie") else {
@@ -301,6 +301,7 @@ class APIService : ServerAPIServerServiceInterface{
             //reponse cast to httpResponse ? and status code is 2xx?
             guard let statusCode = response as? HTTPURLResponse,200..<300 ~= statusCode.statusCode else{
                 DispatchQueue.main.async {
+                    //Decode datas message???
                     completion(.failure(.invalidResponse))
                 }
                 return
@@ -469,8 +470,8 @@ class APIService : ServerAPIServerServiceInterface{
         self.FetchAndDecode(url: url, completion: completing)
     }
     
-    func getMovieTrailerList(completing : @escaping (Result<[TrailerInfo],MovieError>)->()){
-        let url = URL(string: "\(API_SERVER_HOST)\(video)/trailers")!
+    func getMovieTrailerList(page : Int = 1 , completing : @escaping (Result<[TrailerInfo],MovieError>)->()){
+        let url = URL(string: "\(API_SERVER_HOST)\(video)/trailers?page=\(page)")!
         self.FetchAndDecode(url: url, completion: completing)
     }
 }

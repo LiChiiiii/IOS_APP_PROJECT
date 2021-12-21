@@ -27,9 +27,10 @@ struct MovieDetailView: View {
                 self.movieDetailState.loadMovie(id: self.movieId)
             }
 
-            if movieDetailState.movie != nil && self.todo == true {
+            if movieDetailState.movie != nil {
                 
                 WebImages(movie: movieDetailState.movie! , navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading,myMovieList:listController.mylistData, isMyFavorite:isMyFavorite)
+                   
 
             }
         }
@@ -43,7 +44,7 @@ struct MovieDetailView: View {
                 }
                 self.todo = true
             })
-            
+//
         }
     }
 }
@@ -103,8 +104,6 @@ struct WebImages: View {
     @State var myMovieList : [CustomList]
     @State var isMyFavorite:Bool
 
-    
-    //     var edge = UIApplication.shared.windows.first?.safeAreaInsets
     var body: some View {
         
         
@@ -232,7 +231,6 @@ struct WebImages: View {
 //                self.navBarHidden = true
 //            }
             self.isLoading = true
-            print("XD")
 //            UIScrollView.appearance().bounces = false
         }
         
