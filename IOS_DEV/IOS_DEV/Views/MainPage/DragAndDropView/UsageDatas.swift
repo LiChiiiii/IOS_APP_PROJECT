@@ -15,12 +15,23 @@ enum CharacterRule : String,Codable{
     case Genre = "Genre"
 }
 
+enum RefType :Codable{
+    case Persons
+    case Genre
+}
+
+
 //Total info for Dragging data
 struct DragItemData : Identifiable,Codable{
     let id : String
     let itemType : CharacterRule //descrip what data in used
     let genreData : GenreInfo? //only for genre
     let personData : PersonInfo? //only for actor and director
+}
+
+struct SearchRef : Codable{
+    let id : Int
+    let type : RefType
 }
 
 struct PersonInfo: Codable, Identifiable {

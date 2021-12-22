@@ -29,48 +29,66 @@ class PreviewModel : ObservableObject{
     }
     
     func getMoviePreview(selectedDatas referenceData : [DragItemData]){
+        self.previewDataList.removeAll()
+        self.previewData = nil
+        
         self.fetchPreLoading = true
+        var ref : [SearchRef] = []
+        ref.append(contentsOf: referenceData.map{info -> SearchRef in
+            switch info.itemType{
+            case .Genre:
+                return SearchRef(id: info.genreData!.id, type: .Genre)
+            case .Actor:
+                return SearchRef(id: info.personData!.id, type: .Persons)
+            case .Director:
+                return SearchRef(id: info.personData!.id, type: .Persons)
+            }
+        })
+        
+        
         DispatchQueue.main.async{
-            self.apiService.getPreviewMovie(datas: referenceData){ [weak self] result in
+            self.apiService.getPreviewMovie(datas: ref){ [weak self] result in
                 guard let self = self else {return}
                 switch result{
                 case .success(let response):
-                    print(response)
-                    self.fetchPreLoading = false
-                    self.previewData = response
+//                    print(response)
+                    self.previewData = response[0]
+                    self.previewDataList = response
                     self.fetchError = nil
                     break
                 case .failure(let error):
-                    let err = error as NSError
-                    print(err.localizedDescription)
-                    self.fetchPreLoading = false
-                    self.fetchError = error as NSError
+                    if error != .noData{
+                        let err = error as NSError
+                        print(err.localizedDescription)
+                        self.fetchError = error as NSError
+                    }
                 }
+                self.fetchPreLoading = false
                 
             }
         }
     }
     
-    func getMorePreviewResults(selectedDatas referenceData : [DragItemData]? = nil){
-        self.isFetchingPreviewList = true
-        self.fetchingPreviewListErr = nil
-        
-        //or some argument to provide
-        apiService.getPreviewMovieList(){ [weak self ] result in
-            guard let self = self else {return}
-            switch(result){
-            case .success(let response):
-                self.previewDataList.append(contentsOf: response)
-                self.isFetchingPreviewList = false
-                print(self.previewDataList.count)
-                break
-            case .failure(let error):
-                self.isFetchingPreviewList = false
-                self.fetchingPreviewListErr = error as NSError
-                break
-            }
-        }
-    }
+//    func getMorePreviewResults(selectedDatas referenceData : [DragItemData]? = nil){
+////        self.isFetchingPreviewList = true
+////        self.fetchingPreviewListErr = nil
+////
+////        //or some argument to provide
+////        apiService.getPreviewMovieList(){ [weak self ] result in
+////            guard let self = self else {return}
+////            switch(result){
+////            case .success(let response):
+////                self.previewDataList.append(contentsOf: response)
+////                self.isFetchingPreviewList = false
+////                print(self.previewDataList.count)
+////                break
+////            case .failure(let error):
+////                self.isFetchingPreviewList = false
+////                self.fetchingPreviewListErr = error as NSError
+////                break
+////            }
+////        }
+//    }
     
 }
 
@@ -492,4 +510,3 @@ struct MovieRule : Identifiable,Hashable{
     let rule : CharacterRule
     let postURL : String
 }
-

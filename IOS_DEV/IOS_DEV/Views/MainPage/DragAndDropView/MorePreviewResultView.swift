@@ -108,7 +108,7 @@ struct MorePreviewResultView : View{
                     //Loaing view
                     VStack{
                         LoadingView(isLoading: self.previewModel.isFetchingPreviewList, error: self.previewModel.fetchingPreviewListErr ){
-                            self.previewModel.getMorePreviewResults()
+//                            self.previewModel.getMorePreviewResults()
                         }
                         .frame(width: 225, height: 100)
                         .background(BlurView())

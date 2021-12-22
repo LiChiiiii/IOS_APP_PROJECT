@@ -37,7 +37,8 @@ protocol ServerAPIServerServiceInterface {
     func fetchAllGenres(completion : @escaping (Result<GenreInfoResponse,MovieError>) -> ())
     
     //TODO -Preview API
-    func getPreviewMovie(datas : [DragItemData],completion : @escaping (Result<MoviePreviewInfo,MovieError>) -> ())
+    func getPreviewMovie(datas : [SearchRef],completion : @escaping (Result<[MoviePreviewInfo],MovieError>) -> ())
+    
     func getPreviewMovieList(completion : @escaping (Result<[MoviePreviewInfo],MovieError>) -> ())
     
     //TODO -Search API

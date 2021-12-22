@@ -50,6 +50,7 @@ struct BottomSheet : View{
                     .padding(.bottom,UIApplication.shared.windows.first?.safeAreaInsets.bottom)
                 } else if self.previewModel.fetchError != nil {
                     VStack{
+                        
                         LoadingView(isLoading: self.previewModel.fetchPreLoading, error: self.previewModel.fetchError!){
                             self.previewModel.getMoviePreview(selectedDatas: self.dragSearchModel.selectedPreviewDatas)
                         }
@@ -88,19 +89,11 @@ struct BottomSheet : View{
                                             
                                             if self.previewModel.previewData!.genres != nil{
                                                 HStack(spacing:0){
+                                                    Text(self.previewModel.previewData!.genres!.joined(separator: ","))
+                                                        .font(.system(size: 14))
+                                                        .foregroundColor(.gray)
                                                     
-                                                    ForEach( 0..<self.previewModel.previewData!.genres!.count){i in
-
-                                                        Text(self.previewModel.previewData!.genres![i])
-                                                            .font(.system(size: 14))
-                                                            .foregroundColor(.gray)
-
-                                                        if i != self.previewModel.previewData!.genres!.count - 1{
-                                                            Text(",")
-                                                                .font(.system(size: 14))
-                                                                .foregroundColor(.gray)
-                                                        }
-                                                    }
+                                                    
                                                 }
                                                 .lineLimit(1)
                                             }else{
@@ -211,7 +204,7 @@ struct BottomSheet : View{
                                     withAnimation(){
                                         self.searchStateManager.previewMoreResult.toggle()
                                         self.previewModel.isShowPreview.toggle()
-                                        self.previewModel.getMorePreviewResults()
+//                                        self.previewModel.getMorePreviewResults()
                                     }
                                 }
                                 

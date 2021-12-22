@@ -248,8 +248,8 @@ class APIService : ServerAPIServerServiceInterface{
     static let shared = APIService()
     private init(){} //signleton mode
     
-    private let API_SERVER_HOST = "http://120.126.16.229:8080/api"
-//    private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
+//    private let API_SERVER_HOST = "http://120.126.16.229:8080/api"
+    private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
     private let Client = URLSession.shared
     private let Decoder = JSONDecoder()
     private let Encoder = JSONEncoder()
@@ -385,7 +385,7 @@ class APIService : ServerAPIServerServiceInterface{
     
     }
     
-    func getPreviewMovie(datas: [DragItemData], completion: @escaping (Result<MoviePreviewInfo, MovieError>) -> ()) {
+    func getPreviewMovie(datas: [SearchRef], completion: @escaping (Result<[MoviePreviewInfo], MovieError>) -> ()) {
         let url = URL(string: "\(API_SERVER_HOST)\(previewSearch)/getpreview")
         guard let component = URLComponents(url: url!, resolvingAgainstBaseURL: false) else {
             completion(.failure(.invalidEndpoint))
@@ -424,6 +424,7 @@ class APIService : ServerAPIServerServiceInterface{
                 }
                 return
             }
+
             
             guard let data = data else{
                 DispatchQueue.main.async {
@@ -432,9 +433,17 @@ class APIService : ServerAPIServerServiceInterface{
                 return
             }
             
+            if statusCode.statusCode == 204{
+                DispatchQueue.main.async {
+                    completion(.failure(.noData))
+                }
+                return
+            }
+
             
             do {
-                let result = try self.Decoder.decode(MoviePreviewInfo.self, from: data)
+                
+                let result = try self.Decoder.decode([MoviePreviewInfo].self, from: data)
                 DispatchQueue.main.async {
                     completion(.success(result))
 //                    print("[DEBUG] PREVIEW IS GOT")
