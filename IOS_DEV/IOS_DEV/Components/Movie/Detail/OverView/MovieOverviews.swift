@@ -11,14 +11,14 @@ import SDWebImageSwiftUI
 
 struct GetMovieOverviews: View{
     let movie: Movie
-    @ObservedObject private var movieImagesState = MovieImagesState()
+    @StateObject private var movieImagesState = MovieImagesState()
  
     var body: some View {
         ZStack {
+
             LoadingView(isLoading: self.movieImagesState.isLoading, error: self.movieImagesState.error) {
                 self.movieImagesState.loadMovieImage(id: movie.id)
             }
-            
             if movieImagesState.movieImage != nil {
                 MovieOverviews(movie: movie, movieImages: self.movieImagesState.movieImage!)
             }
@@ -127,15 +127,6 @@ struct MovieOverviews:View {
            
             
         }
-        
-
-
-
-        
-                
-                
-         
-        
     }
 }
 

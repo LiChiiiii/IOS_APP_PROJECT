@@ -199,7 +199,7 @@ struct MovieGenreID: Decodable {    //抓特定類別用的
     let id: Int
 }
 
-struct MovieGenre: Decodable {
+struct MovieGenre: Codable {
     
     let id: Int
     let name: String
@@ -248,7 +248,12 @@ struct MovieVideo: Decodable, Identifiable {
     }
 }
 
-
+//圖表記錄用
+//struct GenreChart: Decodable, Encodable{
+//    let id: Int
+//    let name: String
+//    let TypeNum: Int
+//}
 //
 //let stubbedMovie:[Movie] = [
 //    Movie(id: 338762, title: "Bloodshot", backdropPath: "/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", posterPath: "/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", overview: "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.", voteAverage: 7.1, voteCount: 2324, runtime: 250, releaseDate: "2020-03-05", originalLanguage: "en", genres: [], credits: nil, videos: nil),

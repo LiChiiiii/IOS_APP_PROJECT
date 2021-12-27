@@ -22,6 +22,8 @@ class NetworkingService: ObservableObject {
         
     }
     //login
+    
+
 
     func requestLogin(endpoint: String,
                  loginObject: UserLogin,

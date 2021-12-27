@@ -79,6 +79,7 @@ struct MovieDetailList: View {
         .foregroundColor(.gray)
 //        .frame(height: 50)
         }
+        
     }
     
    

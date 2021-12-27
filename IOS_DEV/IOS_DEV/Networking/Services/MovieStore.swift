@@ -246,9 +246,11 @@ class MovieStore: MovieService {
 
 class APIService : ServerAPIServerServiceInterface{
     static let shared = APIService()
-    private init(){} //signleton mode
+    private init(){
+    } //signleton mode
     
 //    private let API_SERVER_HOST = "http://120.126.16.229:8080/api"
+    private let HOST = "http://127.0.0.1:8080"
     private let API_SERVER_HOST = "http://127.0.0.1:8080/api"
     private let Client = URLSession.shared
     private let Decoder = JSONDecoder()
@@ -259,6 +261,11 @@ class APIService : ServerAPIServerServiceInterface{
     private let search = "/search"
     private let movie = "/movie"
     private let video = "/video"
+    
+    func serverConnection(completion : @escaping (Result<ServerStatus,MovieError>)->()){
+        let url = URL(string: "http://127.0.0.1:8080/ping")!
+        self.FetchAndDecode(url: url, completion: completion)
+    }
     
     //To Fetching and Decoding the response body or throw an error
     /*FetchAndDecode - parameters
@@ -497,4 +504,9 @@ struct PersonDataInfo : Codable,Identifiable {
     let known_for_department: String
     let profile_path: String?
     
+}
+
+struct ServerStatus : Decodable{
+    let status : String
+    let code : Int
 }

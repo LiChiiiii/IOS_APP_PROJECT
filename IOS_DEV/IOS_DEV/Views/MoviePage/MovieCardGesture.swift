@@ -112,7 +112,7 @@ struct MovieCardGesture :View{
             }
             .navigationViewStyle(DoubleColumnNavigationViewStyle())
 //            .navigationTitle(self.isActive ? "Back" : "")
-            .navigationBarTitle(self.isMovieDetail ? "Back" : "")
+            .navigationBarTitle("")
             .navigationBarHidden(true)
         }
         

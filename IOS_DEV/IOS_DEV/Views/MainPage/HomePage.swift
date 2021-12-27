@@ -4,7 +4,7 @@
 //
 //  Created by Jackson on 29/3/2021.
 //
-
+//120.126.17.213:33865
 import SwiftUI
 import Foundation
 import AVKit
@@ -24,7 +24,7 @@ class TrailerVideoVM : ObservableObject {
     
 
     private var apiService : APIService
-    private let resoucesHOST = "http://127.0.0.0.1:8080/trailer"
+    private let resoucesHOST = "http://127.0.0.1:8080/trailer"
     init(apiService : APIService = APIService.shared){
         self.apiService = apiService
         getTrailer()
@@ -187,17 +187,21 @@ struct HomeTrailerPlayer:View{
                     return
                 }
                 
-                TrailerModel.TrailerList[0].videoPlayer.play()
-                TrailerModel.TrailerList[0].videoPlayer.actionAtItemEnd = .none
+                TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.play()
+                TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.actionAtItemEnd = .none
                 
-                TrailerModel.TrailerList[0].videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){_ in
-                    self.value = Float((self.TrailerModel.TrailerList[0].videoPlayer.currentTime().seconds / self.TrailerModel.TrailerList[0].videoPlayer.currentItem!.duration.seconds ))
+                TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main){_ in
+                    self.value = Float(
+                        (self.TrailerModel.TrailerList[self.TrailerModel.currentTrailer]
+                            .videoPlayer.currentTime().seconds / self.TrailerModel
+                                .TrailerList[self.TrailerModel.currentTrailer]
+                                .videoPlayer.currentItem!.duration.seconds ))
                 }
                 
-                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemFailedToPlayToEndTime,
-                                                       object: TrailerModel.TrailerList[0].videoPlayer.currentItem, queue: .main){ _ in
-                    TrailerModel.TrailerList[0].videoPlayer.seek(to: .zero)
-                    TrailerModel.TrailerList[0].videoPlayer.play()
+                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime,
+                                                       object: TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.currentItem, queue: .main){ _ in
+                    TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.seek(to: .zero)
+                    TrailerModel.TrailerList[self.TrailerModel.currentTrailer].videoPlayer.play()
                 }
 
             })
@@ -230,7 +234,8 @@ struct FullScreenTop :View{
                 Image(systemName: "chevron.left")
                     .imageScale(.large)
                     .foregroundColor(.white)
-                    .padding(8)
+                    .padding()
+                    
             })
 
             VStack{
@@ -627,44 +632,20 @@ struct MovieIntrol: View {
                 .font(.body)
                 Spacer()
                 
+//                if previewMovieId != nil{
+//                    NavigationLink(destination: MovieDetailView(movieId:self.previewMovieId!, navBarHidden: .constant(true), isAction: .constant(false), isLoading: .constant(true)), isActive: self.$isMovieDetail){
+//                        EmptyView()
+//                    }
+//                }
+                
                 VStack{
-//                    VStack(spacing:8){
-//                        Image(systemName: "heart.fill")
-//                            .font(.title)
-//                            .foregroundColor(.white)
-//                        Text("4")
-//                            .bold()
-//                            .font(.caption)
-//                    }
-//                    .padding(.vertical,3)
-//
-//
-//                    VStack(spacing:8){
-//                        Image(systemName: "ellipsis.bubble.fill")
-//
-//                            .font(.title)
-//                            .foregroundColor(.white)
-//                        Text("30")
-//                            .bold()
-//                            .font(.caption)
-//                    }.padding(.vertical,3)
-//
-//
-//                    VStack(spacing:5){
-//                        Image(systemName: "arrowshape.turn.up.right.fill")
-//                            .font(.title)
-//                            .foregroundColor(.white)
-//
-//                        Text("25")
-//                            .bold()
-//                            .font(.caption)
-//                    }
-//                    //click icon enter to moviedetail page
                     NavigationLink(destination: MovieDetailView(movieId:trailer.id,navBarHidden: $TrailerManager.isNavBarHidden,isAction: $TrailerManager.isActive,isLoading: $TrailerManager.isLoading)){
                         SmallCoverIcon(posterPath: trailer.info.poster)
+                            .navigationBarTitle(TrailerManager.isActive ? "Back" : "")
+
                     }
-                    .navigationTitle(TrailerManager.isActive ? trailer.info.title : "")
-                    .navigationBarTitle(TrailerManager.isActive ? trailer.info.title : "")
+                    .navigationTitle( "")
+                    .navigationBarTitle("")
                     .navigationBarHidden(true)
                     .buttonStyle(StaticButtonStyle())
                     

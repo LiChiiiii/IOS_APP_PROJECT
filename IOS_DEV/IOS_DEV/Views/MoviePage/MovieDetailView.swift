@@ -13,25 +13,24 @@ struct MovieDetailView: View {
 
     let movieId: Int
     @State private var todo : Bool = false
-    @ObservedObject private var movieDetailState = MovieDetailState()
-    @ObservedObject private var listController = ListController()
-    @ObservedObject private var favoriteController = FavoriteController()
+    @StateObject private var movieDetailState = MovieDetailState()
+    @StateObject private var listController = ListController()
+    @StateObject private var favoriteController = FavoriteController()
     @State var isMyFavorite = false
     @Binding var navBarHidden:Bool
     @Binding var isAction : Bool
     @Binding var isLoading : Bool
-    
+
     var body: some View {
         ZStack {
+
             LoadingView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
                 self.movieDetailState.loadMovie(id: self.movieId)
             }
-
-            if movieDetailState.movie != nil {
-                
+            
+            if movieDetailState.movie != nil{
                 WebImages(movie: movieDetailState.movie! , navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading,myMovieList:listController.mylistData, isMyFavorite:isMyFavorite)
-                   
-
+                
             }
         }
         .onAppear {
@@ -44,7 +43,7 @@ struct MovieDetailView: View {
                 }
                 self.todo = true
             })
-//
+    
         }
     }
 }
@@ -120,31 +119,31 @@ struct WebImages: View {
                             
                             .opacity((Double(proxy.frame(in:.global).minY * 0.0045 + 1)) < 0.45 ? 0.45 :(Double(proxy.frame(in:.global).minY * 0.0045 + 1)))
                             .blur(radius: CGFloat((Double(proxy.frame(in:.global).minY * 0.005 + 1)) < 0.45  ? (Double(proxy.frame(in:.global).minY) * -1 * 0.03) : 0))
-                            .onChange(of: proxy.frame(in:.global).minY, perform: { value in
-                                
-                            //-----下滑顯示bar上的討論區按鈕和電影名稱-----//
-                                
-//                                let offset = value + UIScreen.main.bounds.height / 2.2
-//                                print(offset)
-                                
+//                            .onChange(of: proxy.frame(in:.global).minY, perform: { value in
 //
-//                                if offset < 80{
+//                            //-----下滑顯示bar上的討論區按鈕和電影名稱-----//
 //
-//                                if offset > 0{
+////                                let offset = value + UIScreen.main.bounds.height / 2.2
+////                                print(offset)
 //
-//                                    let op_value = (80 - offset) / 80 * 5 * 1.2
-//                                    self.opacity = Double(op_value)
-//                                    self.showMovieName = true
-//
-//                                    return
-//                                }
-//                                self.opacity = 1
-//                                }
-//                                else{
-//                                    self.opacity = 0
-//                                    self.showMovieName = false
-//                                }
-                            })
+////
+////                                if offset < 80{
+////
+////                                if offset > 0{
+////
+////                                    let op_value = (80 - offset) / 80 * 5 * 1.2
+////                                    self.opacity = Double(op_value)
+////                                    self.showMovieName = true
+////
+////                                    return
+////                                }
+////                                self.opacity = 1
+////                                }
+////                                else{
+////                                    self.opacity = 0
+////                                    self.showMovieName = false
+////                                }
+//                            })
                         
                     }
                 }
@@ -166,60 +165,17 @@ struct WebImages: View {
             .foregroundColor(.white)
             .frame(width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height)
             .background(Color.init("navBarBlack").edgesIgnoringSafeArea(.all))
-            
-//            Group{
-//                HStack(alignment:.bottom){
-//                    HStack(alignment:.center,spacing:0){
-//                        Button(action:{
-//                            //back to the page
-//                            withAnimation{
-//                                isAction.toggle()
-//                                isAppear = true
-//                            }
-//                        }){
-//                            HStack(alignment:.center , spacing: 5){
-//                                Image(systemName: "chevron.backward")
-//                                    .font(.system(size:18,weight:.bold))
-//                                Text("Back")
-//                            }
-//
-//                        }
-//
-//                        Spacer()
-//
-//                            if self.showMovieName{
-//                                showBarItem(imgURL: movie.posterURL,name:movie.title)
-//                                    .animation(.easeInOut(duration: 0.08))
-//                                    .transition(.asymmetric(insertion: .flipFromBottom, removal:.fade))
-//                            }
-//
-//                    }
-//                }
-//                .frame(minHeight:50)
-//                .padding(.horizontal,10)
-//                .padding(.bottom,5)
-//
-//            }
-//            .foregroundColor(opacity > 0.6 ? Color(UIColor.systemGray3):.white)
-//            .padding(.top,UIApplication.shared.windows.first?.safeAreaInsets.top)
-//            .background(Color.init("navBarBlack").opacity(opacity))
-//            .shadow(color: Color.init("navBarBlack").opacity(self.opacity > 0.8 ? 0.5 : 0), radius: 5, x: 0, y: 5)
-//            .edgesIgnoringSafeArea(.top)
-//            .unredacted()
-
-
-            
-            
         }
         .edgesIgnoringSafeArea(.all)
         .frame(height:UIScreen.main.bounds.height)
-        .navigationTitle("")
-        .navigationBarTitle("")
+        .navigationTitle(self.isAction ?  movie.title : "")
+        .navigationBarTitle(self.isAction ?  movie.title  : "")
         .navigationBarItems(trailing:showBarItem(imgURL: movie.posterURL, name:movie.title).opacity(showMovieName ? 1 : 0).animation(.linear).transition(.flipFromBottom))
         .padding(.horizontal,10)
         .onAppear{
             isAppear = false
             loading()
+            print(self.movie)
 //            withAnimation(){
 //                self.navBarHidden = false
 //            }
@@ -251,6 +207,7 @@ struct MovieInfoDetail: View {
     @State var movie : Movie
     @ObservedObject private var controller = ListDetailController()
     @ObservedObject private var favoriteController = FavoriteController()
+    @ObservedObject var dramaData = dramaInfoData()
     @State var isMyFavorite: Bool 
     
     
@@ -306,12 +263,6 @@ struct MovieInfoDetail: View {
                         .cornerRadius(20)
                         .font(.system(size: 15))
                 }
-
-                
-
-
-       
-
             }
             .padding(.horizontal,10)
             
@@ -336,10 +287,10 @@ struct MovieInfoDetail: View {
             VStack(alignment:.leading,spacing:5){
 
                 HStack(spacing:10){
-                    SmallRectButton(title: "Play", icon: "arrowtriangle.right.fill"){
-                        //To Move to Video source page
-                        print("test")
-                    }
+//                    SmallRectButton(title: "Play", icon: "arrowtriangle.right.fill"){
+//                        //To Move to Video source page
+//                        print("test")
+//                    }
 
                     //------------------------  + MY List ----------------------- -//
                     Menu {
@@ -363,17 +314,17 @@ struct MovieInfoDetail: View {
                     
                     
                     Spacer()
-          
-                    SmallVerticalButton(IsOnImage: "heart.fill", IsOffImage: "heart", text: "Like", IsOn: $isMyFavorite){
-                        isMyFavorite.toggle()
-                        
-                        if isMyFavorite == true {
-                            favoriteController.PostLikeMovie(movie: movie.id, title: movie.title, posterPath: movie.posterPath!)
-                        } else{
-                            self.favoriteController.deleteLikeMovie(movieID: movie.id)
-                        }
-                    }
-                    .padding(.trailing)
+//
+//                    SmallVerticalButton(IsOnImage: "heart.fill", IsOffImage: "heart", text: "Like", IsOn: $isMyFavorite){
+//                        isMyFavorite.toggle()
+//
+//                        if isMyFavorite == true {
+//                            favoriteController.PostLikeMovie(movie: movie.id, title: movie.title, posterPath: movie.posterPath!)
+//                        } else{
+//                            self.favoriteController.deleteLikeMovie(movieID: movie.id)
+//                        }
+//                    }
+//                    .padding(.trailing)
 
                 }
                 .padding(.horizontal,10)
@@ -390,10 +341,6 @@ struct MovieInfoDetail: View {
             .padding(.top,5)
             .font(.system(size: 14))
             .foregroundColor(Color(UIColor.systemGray3))
-            
-
-            
-            
         }
         .font(.system(.title3))
         .foregroundColor(.white)
@@ -463,210 +410,3 @@ struct showBarItem:View{
     
 }
 //
-
-
-
-//struct testt:View{
-//    @Binding var videoList:[Trailer]
-//    @Binding var reload:Bool
-//    @Binding var value:Float
-//    @Binding var showDetailView:Bool
-//    @State var isAnimaing = false
-//    var pageHeigh:CGFloat
-//
-//    var body:some View{
-////
-////        NavigationView{
-//        PlayerScrollView(trailerList: $videoList, reload: $reload, value:$value, isAnimation:$isAnimaing  ,pageHegiht: pageHeigh){
-//                LazyVStack(spacing:0){
-//                    ForEach(0..<videoList.count){ i in
-//                        ZStack{
-//
-//                                Player(VideoPlayer: videoList[i].videoPlayer)
-//                                    .frame(height:pageHeigh)
-//                                    .offset(y:-7)
-//
-//                   //         MovieIntrol(trainer: videoList[i], isAnimation: $isAnimaing)
-//
-//                            VStack{
-//                                Spacer()
-//                                VideoProgressBar(value: $value, player: $videoList[i].videoPlayer)
-//                                    .offset(y:-7)
-//
-//                            }
-//
-//                        }
-//
-//                    }
-//                }
-//
-//            }
-//            .edgesIgnoringSafeArea(.all)
-//            .onAppear(perform: {
-//                videoList[0].videoPlayer.play()
-//                videoList[0].videoPlayer.actionAtItemEnd = .none
-//
-//                //Add this view to NotificationCentre and tell all of those evnet
-//                //Chage Replay to true
-//
-//                //get the time period of the play back control
-//                videoList[0].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-//                    self.value =
-//                        (Float(videoList[0].videoPlayer.currentTime().seconds / videoList[0].videoPlayer.currentItem!.duration.seconds))
-//
-//                }
-//
-//                NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: videoList[0].videoPlayer.currentItem, queue: .main){ _ in
-//                    videoList[0].videoReplay = true
-//                    videoList[0].videoPlayer.seek(to: .zero)
-//                    videoList[0].videoPlayer.play()
-//                    //                print(trainerList[0].videoPlayer.currentTime().seconds)
-//                }
-//            })
-//
-//
-//    }
-//
-////}
-//
-//struct testImage_Previews: PreviewProvider {
-//
-//    static var previews: some View {
-//        ZStack{
-//            Color.black.edgesIgnoringSafeArea(.all)
-//            b()
-//        }
-//        .foregroundColor(.black)
-//    }
-//}
-//
-//struct b:View{
-//    var body: some View{
-//
-//        VStack(spacing:0){
-//            GeometryReader{geo in
-//
-//                NavigationView{
-//
-//                    a(pageHeight: geo.frame(in: .global).height)
-//
-//                }
-//            }
-//
-//          //  NavBar(selectedIndex: .constant(0))
-//
-//        }
-//        .edgesIgnoringSafeArea(.all)
-//
-//
-//    }
-//}
-//
-//struct a:View {
-//    @State private var show = false
-//    @State private var topbar = 0
-//    @State private var data = VideoList
-//    @State private var reload = false
-//    @State private var value:Float = 0.0
-//    @State private var showDetailView = false
-//    @State private var anima = false
-//    @State private var navBarHidden = true
-//    @State private var isAction = false
-//    @State private var isLoading = true
-//    var pageHeight:CGFloat
-//    init(pageHeight:CGFloat){
-//        UINavigationBar.appearance().barTintColor = UIColor(Color.init("navBarBlack").opacity(0.85))
-//        UINavigationBar.appearance().tintColor = .white
-//        self.pageHeight = pageHeight
-//        UINavigationController().interactivePopGestureRecognizer?.isEnabled = false
-//
-//    }
-//
-//    var body: some View {
-//        NavigationLink(
-//            destination: WebImages(navBarHidden: $navBarHidden, isAction: $isAction, isLoading: $isLoading),
-//            isActive: $isAction){
-//            ZStack{
-//                PlayerScroll(anima: $anima, navBarHidden: $navBarHidden, isAction: $isAction, value: $value, isLoading: $isLoading, data: $data, reload: $reload, topbar: $topbar, pageHeight: pageHeight)
-//                    .onAppear(perform: {
-//                        data[0].videoPlayer.play()
-//                        data[0].videoPlayer.actionAtItemEnd = .none
-//
-//                        //Add this view to NotificationCentre and tell all of those evnet
-//                        //Chage Replay to true
-//
-//                        //get the time period of the play back control
-//                        data[0].videoPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1.0, preferredTimescale: 1), queue: .main){ _ in
-//                            self.value =
-//                                (Float(data[0].videoPlayer.currentTime().seconds / data[0].videoPlayer.currentItem!.duration.seconds))
-//
-//                        }
-//
-//                        NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: data[0].videoPlayer.currentItem, queue: .main){ _ in
-//                            data[0].videoReplay = true
-//                            data[0].videoPlayer.seek(to: .zero)
-//                            data[0].videoPlayer.play()
-//                            //                print(trainerList[0].videoPlayer.currentTime().seconds)
-//                        }
-//                    })
-//
-//                TopBar(topbar: $topbar)
-//
-//
-//
-//            }
-//
-//        }
-//        .navigationViewStyle(StackNavigationViewStyle())
-//        .navigationTitle("")
-//        .navigationBarTitle("")
-//        .navigationBarHidden(navBarHidden)
-//        .onAppear{
-//            UINavigationController().setNavigationBarHidden(navBarHidden, animated: true)
-//        }
-//
-//
-//
-//    }
-//
-//}
-//
-//struct PlayerScroll: View {
-//    @Binding var anima:Bool
-//    @Binding var navBarHidden:Bool
-//    @Binding var isAction:Bool
-//    @Binding var value:Float
-//    @Binding var isLoading:Bool
-//    @Binding  var data : [Trailer]
-//    @Binding var reload : Bool
-//    @Binding var topbar:Int
-//    var pageHeight :CGFloat
-//    var body: some View {
-//        Group{
-//
-//            PlayerScrollView(trailerList: $data, reload: $reload, value:$value, isAnimation: $anima ,pageHegiht: pageHeight){
-//                LazyVStack(spacing:0){
-//                    ForEach(0..<data.count){ i in
-//                        ZStack{
-//                            Player(VideoPlayer: data[i].videoPlayer)
-//                                .frame(height:pageHeight)
-//                            //  .offset(y:-7)
-//                            MovieIntrol(trailer: data[i], isAnimation: $anima, isActive: $isAction, navBarHidden: $navBarHidden,isLoading:$isLoading)
-//                            VStack{
-//                                Spacer()
-//                                VideoProgressBar(value: $value, player: $data[i].videoPlayer)
-//                                //.offset(y:-7)
-//
-//                            }
-//                        }
-//                        .onDisappear{
-//                         //   data[i].videoPlayer.pause()
-//                        }
-//                    }
-//                }
-//                .edgesIgnoringSafeArea(.all)
-//            }
-//            .edgesIgnoringSafeArea(.all)
-//        }
-//    }
-//}

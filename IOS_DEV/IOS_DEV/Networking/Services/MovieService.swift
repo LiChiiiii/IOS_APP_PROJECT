@@ -27,6 +27,9 @@ protocol MovieService {
 
 protocol ServerAPIServerServiceInterface {
     
+    //Conennection check
+    func serverConnection(completion : @escaping (Result<ServerStatus,MovieError>)->())
+    
     //Searching and playground
     //TODO - Person data format
     func fetchActors(page : Int ,completion : @escaping (Result<PersonInfoResponse,MovieError>) ->  ())

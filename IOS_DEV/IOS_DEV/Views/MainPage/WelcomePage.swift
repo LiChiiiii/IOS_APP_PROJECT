@@ -83,40 +83,23 @@ struct WelcomePage: View {
 
         }
         .onAppear{
-
-
-            if !userToken.isEmpty{
+            APIService.shared.serverConnection(){ result in
                 self.isLoading = true
-                networkingService.AuthUser(token: self.userToken){ result in
-                    switch result{
-                    case.success(let data):
-                        NowUserName = data.UserName
-                        NowUserID = data.id
-                        self.isLoggedIn.toggle()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8){
-                            self.isLoading.toggle()
-                        }
-                        
-                    case .failure(let err):
-                        DispatchQueue.main.async{
-                            if err.localizedDescription == NetworkingError.badUrl.localizedDescription{
-                                self.ServerInternalError.toggle()
-                            }else{
-                                self.isLoading.toggle()
-                            }
-                        }
-                        print("Error is : \(err.localizedDescription)")
-//
+                switch result{
+                case .success(let response):
+                    print(response)
+                    autoLogin()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    DispatchQueue.main.async{
+                        self.ServerInternalError.toggle()
                     }
-                    
+                    self.isLoading = false
                 }
-             
+                
             }
-
+//
             animateImagge = true
-            
-            
-            
         }
         .fullScreenCover(isPresented: self.$isLoggedIn, content: {
             NavBar(isLogOut: self.$isLoggedIn,index: 0)
@@ -136,6 +119,35 @@ struct WelcomePage: View {
         
     }
     
+    
+    func autoLogin(){
+        
+        if !userToken.isEmpty{
+            networkingService.AuthUser(token: self.userToken){ result in
+                switch result{
+                case.success(let data):
+                    NowUserName = data.UserName
+                    NowUserID = data.id
+                    self.isLoggedIn.toggle()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8){
+                        self.isLoading.toggle()
+                    }
+                    
+                case .failure(let err):
+                    DispatchQueue.main.async{
+//                        if err.localizedDescription == NetworkingError.badUrl.localizedDescription{
+//                            self.ServerInternalError.toggle()
+//                        }else{
+                            self.isLoading.toggle()
+//                        }
+                    }
+                    print("Error is : \(err.localizedDescription)")
+                    //
+                }
+                
+            }
+        }
+    }
 
 }
 

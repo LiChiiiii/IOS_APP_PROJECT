@@ -7,6 +7,7 @@
 
 import SwiftUI
 let controller = ListController()
+let favoriteController = FavoriteController()
 //Working Process
 //struct NavBar: View {
 ////    @Binding var selectedIndex:Int
@@ -313,7 +314,7 @@ struct NavBar: View {
                             .opacity(self.index == 2 ? 1 : 0)
                         
                         
-                        ProfileView()
+                        ProfileView(MovieData:favoriteController.MovieData, ArticleData: favoriteController.ArticleData)
                             .opacity(self.index == 3 ? 1 : 0)
                         //
                     }.onAppear(){

@@ -47,19 +47,22 @@ struct ProfileView: View {
 //        UISegmentedControl.appearance().selectedSegmentTintColor = .systemYellow
 //    }
     
-    @State private var userID = "Justin Bieber" //UserID
+    @State private var userID = NowUserName
     @State private var likedMovie = 30
     @State private var notification = true
     @State private var select: SideOfState = .movie
-    @ObservedObject private var userController = UserController()
-    @ObservedObject private var favoriteController = FavoriteController()
+//    @ObservedObject private var userController = UserController()
+//    @ObservedObject private var favoriteController = FavoriteController()
+    let MovieData:[LikeMovie]
+    let ArticleData:[LikeArticle]
     @State private var appearPhoto = false
     
     @State var isLoading : Bool = true
     
     var body: some View{
         NavigationView{
-                VStack{
+            
+            ScrollView{
                     VStack{
                             NowUserPhoto?
                                 .resizable()
@@ -70,11 +73,12 @@ struct ProfileView: View {
                             Text(NowUserName)
                                 .bold()
 
-                    }.onAppear(){
+                    }
+//                    .onAppear(){
 //                        self.userController.GetUserInfo(userID: NowUserID!)
 //                        self.favoriteController.GetLikeMovie(userID: NowUserID!)
 //                        self.favoriteController.GetLikeArticle(userID: NowUserID!)
-                    }
+//                    }
                   
                
                   
@@ -93,69 +97,78 @@ struct ProfileView: View {
                             destination: AccountSettingView(userID: $userID),
                             label: {
                                 Text("帳號設定")
-                                    .bold()
-                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .font(.system(size: 15))
+                                    .frame(width: 350, height: 40, alignment: .center)
                                     .background(Color("CustomRed"))
                                     .foregroundColor(.white)
                                     .cornerRadius(15)
                             })
-                            .padding(5)
+                            
+                        
                         NavigationLink(
-                            destination: MovieSettingView(userID: $userID, likedMovie: $likedMovie),
+                            destination: MovieSettingView(),
                             label: {
                                 Text("電影喜好設定")
-                                    .bold()
-                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .font(.system(size: 15))
+                                    .frame(width: 350, height: 40, alignment: .center)
                                     .background(Color("CustomRed"))
                                     .foregroundColor(.white)
                                     .cornerRadius(15)
                             })
-                            .padding(5)
+                            
                         NavigationLink(
                             destination: MyListView(),
                             label: {
                                 Text("我的片單")
-                                    .bold()
-                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .font(.system(size: 15))
+                                    .frame(width: 350, height: 40, alignment: .center)
                                     .background(Color("CustomRed"))
                                     .foregroundColor(.white)
                                     .cornerRadius(15)
                             })
-                            .padding(5)
+                            
                         NavigationLink(
                             destination: MyArticleView(),
                             label: {
                                 Text("我發表過的文章")
-                                    .bold()
-                                    .frame(width: 350, height: 45, alignment: .center)
+                                    .font(.system(size: 15))
+                                    .frame(width: 350, height: 40, alignment: .center)
                                     .background(Color("CustomRed"))
                                     .foregroundColor(.white)
                                     .cornerRadius(15)
                             })
-                            .padding(5)
+                           
                         
                     }
-                   
-                    Text("喜愛項目")
-                        .bold()
-                    Picker("123", selection: $select){
-                        ForEach(SideOfState.allCases, id:\.self){
-                            Text($0.rawValue)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding(5)
-                    .frame(width: 360)
-                    switch select{
-                    case .movie:
-                        ScrollView{
-                            movieRecord(movies: favoriteController.MovieData)
-                        }
-                    case .article:
-                        ScrollView{
-                            articleRecord(articles: favoriteController.ArticleData)
-                        }
-                    }
+                
+                Spacer()
+                
+                VStack{
+                    ContentChartView(MovieData:MovieData,ArticleData:ArticleData)
+                }
+                
+                Spacer()
+//----------喜愛項目----------//
+//                    Text("喜愛項目")
+//                        .bold()
+//                    Picker("123", selection: $select){
+//                        ForEach(SideOfState.allCases, id:\.self){
+//                            Text($0.rawValue)
+//                        }
+//                    }
+//                    .pickerStyle(SegmentedPickerStyle())
+//                    .padding(5)
+//                    .frame(width: 360)
+//                    switch select{
+//                    case .movie:
+//                        VStack{
+//                            movieRecord(movies: MovieData)
+//                        }
+//                    case .article:
+//                        VStack{
+//                            articleRecord(articles: ArticleData)
+//                        }
+//                    }
                     Spacer()
                 }
             .navigationTitle("")
@@ -257,9 +270,7 @@ struct AccountSettingView: View {
 }
 
 struct MovieSettingView: View {
-    
-    @Binding var userID: String
-    @Binding var likedMovie: Int
+    @ObservedObject var dramaData=dramaInfoData()
     let genreData = DataLoader().genreData
     var columns = Array(repeating: GridItem(.flexible(),spacing:15), count: 3)
     var body: some View{
@@ -276,12 +287,11 @@ struct MovieSettingView: View {
             LazyVGrid(columns: columns, spacing: 15){
 
                 ForEach(genreData, id:\.id){ genre in
-                    genrebutton(genreText: genre.name)
+                    genrebutton(genreInfo: genre, dramadata: dramaData)
                 }
 
             }
 
-            
         }
         .navigationTitle("電影喜好設定")
         .toolbar{
@@ -302,7 +312,8 @@ struct MovieSettingView: View {
 
 struct genrebutton: View {
     
-    var genreText: String
+    var genreInfo: MovieGenre
+    var dramadata:dramaInfoData
     @State private var choose : Bool = false
     
     var body: some View{
@@ -310,10 +321,10 @@ struct genrebutton: View {
         Button(action: {
             print("press!")
             self.choose.toggle()
-            
+            dramadata.mydramaInfo.insert(MovieGenre(id: genreInfo.id, name: genreInfo.name), at: 0)
         }) {
             HStack {
-                Text(genreText)
+                Text(genreInfo.name)
                     .fontWeight(.semibold)
                     .font(.system(size:15))
             }
@@ -321,10 +332,10 @@ struct genrebutton: View {
             .foregroundColor(self.choose == true ? Color.white : Color.black)
             .background(self.choose == true ? Color("CustomRed") : Color.gray)
             .cornerRadius(40)
+            
         }
     }
 }
-
 
 
 

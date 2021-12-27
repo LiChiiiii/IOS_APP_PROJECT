@@ -90,7 +90,8 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
 
     func makeUIView(context: Context) -> UIScrollView {
         let view = UIScrollView()
-        viewSetUp(view,context)
+        viewSetUp(view)
+        view.delegate = context.coordinator
         self.TrailerModel.loadMoreDataDone = false
         return view
 
@@ -100,16 +101,16 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         uiView.isScrollEnabled = !(self.TrailerModel.isSelectedEpisode &&  Appdelegate.orientationLock != .landscape) &&  Appdelegate.orientationLock == .portrait
         
         if isUpdateView{
-            viewSetUp(uiView,context)
+            viewSetUp(uiView)
             viewUpdated()
         }else if  TrailerModel.loadMoreDataDone{
-            viewSetUp(uiView,context) // Portrait mode
+            viewSetUp(uiView) // Portrait mode
             self.TrailerModel.loadMoreDataDone = false
         }
-
+        uiView.delegate = context.coordinator
     }
 
-    private func viewSetUp(_ view: UIScrollView,_ context: Context){
+    private func viewSetUp(_ view: UIScrollView){
         let rootView = UIHostingController(rootView: self.content())
         rootView.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: pageHegiht * CGFloat(TrailerModel.TrailerList.count))
         
@@ -125,7 +126,7 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
         view.contentInsetAdjustmentBehavior = .never
         view.isPagingEnabled  = true
         view.contentOffset.y =  CGFloat(self.TrailerModel.currentTrailer) * pageHegiht
-        view.delegate = context.coordinator
+//        view.delegate = context.coordinator
         
     }
 
@@ -180,7 +181,7 @@ struct PlayerScrollView<Content:View>: UIViewRepresentable{
                 NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: parentView.TrailerModel.TrailerList[index].videoPlayer.currentItem, queue: .main){ (_) in
                     self.parentView.TrailerModel.TrailerList[self.index].videoPlayer.seek(to: .zero)
                     self.parentView.TrailerModel.TrailerList[self.index].videoPlayer.play()
-
+                    print("end")
                 }
             }
             
